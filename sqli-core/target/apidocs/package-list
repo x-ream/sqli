@@ -1,0 +1,10 @@
+io.xream.sqli.api
+io.xream.sqli.core.builder
+io.xream.sqli.core.builder.condition
+io.xream.sqli.core.cache
+io.xream.sqli.core.filter
+io.xream.sqli.core.repository
+io.xream.sqli.core.support
+io.xream.sqli.core.util
+io.xream.sqli.core.web
+io.xream.sqli.exception
