@@ -16,10 +16,10 @@
  */
 package io.xream.x7.repository.util;
 
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.JsonWrapper;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;

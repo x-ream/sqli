@@ -16,8 +16,8 @@
  */
 package io.xream.x7.repository;
 
+import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.core.util.SqlStringUtil;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.x7.repository.mapper.Mapper;
 import io.xream.x7.repository.mapper.MapperFactory;

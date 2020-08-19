@@ -16,9 +16,9 @@
  */
 package io.xream.x7.repository.internal;
 
+import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.util.SqliExceptionUtil;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.x7.repository.dao.TemporaryDao;
 import io.xream.x7.repository.transform.DataTransform;

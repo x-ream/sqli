@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.core.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;

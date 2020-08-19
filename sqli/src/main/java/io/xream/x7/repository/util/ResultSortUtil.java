@@ -16,11 +16,11 @@
  */
 package io.xream.x7.repository.util;
 
+import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.KV;
 import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.util.SqliExceptionUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

@@ -16,11 +16,11 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.SqlStringUtil;
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.repository.ReflectionCache;
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.util.BeanUtilX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +112,7 @@ public class Parser {
                 parsed.setNoSpec(false);
             } else {
                 String name = BeanUtil.getByFirstLower(clz.getSimpleName());
-                String mapper = BeanUtil.getMapper(name);
+                String mapper = BeanUtilX.getMapper(name);
                 String prefix = mappingPrefix;
                 if (SqlStringUtil.isNotNull(prefix)) {
                     if (!prefix.endsWith("_")) {
@@ -126,7 +126,7 @@ public class Parser {
             }
         } else {
             String name = BeanUtil.getByFirstLower(clz.getSimpleName());
-            String mapper = BeanUtil.getMapper(name);
+            String mapper = BeanUtilX.getMapper(name);
             String prefix = mappingPrefix;
             if (SqlStringUtil.isNotNull(prefix)) {
                 if (!prefix.endsWith("_")) {

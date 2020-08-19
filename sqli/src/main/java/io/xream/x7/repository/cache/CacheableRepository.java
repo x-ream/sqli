@@ -17,13 +17,13 @@
 package io.xream.x7.repository.cache;
 
 
+import io.xream.sqli.common.util.LoggerProxy;
+import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.cache.L2CacheResolver;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.LoggerProxy;
-import io.xream.sqli.core.web.Page;
+import io.xream.sqli.util.BeanUtilX;
 import io.xream.x7.repository.KeyOne;
 import io.xream.x7.repository.Manuable;
 import io.xream.x7.repository.Repository;

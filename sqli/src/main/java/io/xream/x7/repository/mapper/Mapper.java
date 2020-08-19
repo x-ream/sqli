@@ -16,9 +16,9 @@
  */
 package io.xream.x7.repository.mapper;
 
+import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.core.util.BeanUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;

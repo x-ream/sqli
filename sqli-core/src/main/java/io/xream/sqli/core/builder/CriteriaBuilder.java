@@ -16,11 +16,11 @@
  */
 package io.xream.sqli.core.builder;
 
+import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.web.Direction;
+import io.xream.sqli.common.web.Sort;
 import io.xream.sqli.core.builder.Criteria.ResultMappedCriteria;
-import io.xream.sqli.core.util.SqlStringUtil;
-import io.xream.sqli.core.web.Direction;
-import io.xream.sqli.core.web.MapResult;
-import io.xream.sqli.core.web.Paged;
+
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -41,18 +41,12 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         return this.pageBuilder;
     }
 
-    public void paged(Paged paged) {
-        criteria.paged(paged);
-    }
-
-
     public CriteriaBuilder forceIndex(String indexName) {
         if (SqlStringUtil.isNullOrEmpty(indexName))
             return this;
         this.criteria.setForceIndex(indexName);
         return this;
     }
-
 
     private PageBuilder pageBuilder = new PageBuilder() {
 
@@ -82,7 +76,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             }
             return this;
         }
-
 
         @Override
         public PageBuilder sort(String orderBy, Direction direction) {
@@ -115,42 +108,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         if (criteria.getParsed() == null) {
             Parsed parsed = Parser.get(clz);
             criteria.setParsed(parsed);
-        }
-
-        return builder;
-    }
-
-    public static CriteriaBuilder build(Class<?> clz, Paged paged) {
-        Criteria criteria = new Criteria();
-        criteria.setClz(clz);
-        CriteriaBuilder builder = new CriteriaBuilder(criteria);
-
-        if (criteria.getParsed() == null) {
-            Parsed parsed = Parser.get(clz);
-            criteria.setParsed(parsed);
-        }
-
-        if (paged != null) {
-            builder.paged(paged);
-        }
-
-        return builder;
-    }
-
-
-    public static ResultMappedBuilder buildResultMapped(MapResult ro) {
-
-        ResultMappedCriteria resultMappedCriteria = new ResultMappedCriteria();
-
-        ResultMappedBuilder builder = new ResultMappedBuilder(resultMappedCriteria);
-
-        if (ro != null) {
-
-            builder.xAddResultKey(ro);
-
-            if (ro instanceof Paged) {
-                builder.paged((Paged) ro);
-            }
         }
 
         return builder;
@@ -267,17 +224,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             }
         }
 
-
-        private void xAddResultKey(MapResult mappedKey) {
-            if (mappedKey == null)
-                return;
-            String[] arr = mappedKey.getResultKeys();
-            if (arr == null || arr.length == 0)
-                return;
-            List<String> list = Arrays.asList(arr);
-            xAddResultKey(list);
-        }
-
         public ResultMappedBuilder resultKey(String resultKey) {
             if (SqlStringUtil.isNullOrEmpty(resultKey))
                 return this;
@@ -320,11 +266,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             functionResultKey.setKeys(keys);
             get().getResultFuntionList().add(functionResultKey);
             return this;
-        }
-
-        @Override
-        public void paged(Paged paged) {
-            super.criteria.paged(paged);
         }
 
         public ResultMappedBuilder sourceScript(String sourceScript) {

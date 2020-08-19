@@ -14,18 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.web;
+package io.xream.sqli.common.web;
 
-import io.xream.sqli.core.builder.Sort;
+public interface MapResult {
 
-import java.util.List;
+    String[] getResultKeys();
 
-/**
- * @author Sim Wang
- */
-public interface Paged {
-	boolean isTotalRowsIgnored();
-	int getPage();
-	int getRows();
-	List<Sort> getSortList();
 }

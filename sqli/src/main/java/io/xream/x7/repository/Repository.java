@@ -16,10 +16,10 @@
  */
 package io.xream.x7.repository;
 
+import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.RowHandler;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.core.web.Page;
 import io.xream.sqli.api.QueryForCache;
 
 import java.util.List;

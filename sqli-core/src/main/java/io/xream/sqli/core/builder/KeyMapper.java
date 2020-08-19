@@ -1,9 +1,9 @@
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.SqlStringUtil;
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.util.BeanUtilX;
 
 public interface KeyMapper {
 

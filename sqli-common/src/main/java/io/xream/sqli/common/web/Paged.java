@@ -14,11 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.web;
+package io.xream.sqli.common.web;
 
-public enum Direction {
 
-	ASC,
-	DESC,
-	;
+import java.util.List;
+
+/**
+ * @author Sim Wang
+ */
+public interface Paged {
+	boolean isTotalRowsIgnored();
+	int getPage();
+	int getRows();
+	List<Sort> getSortList();
 }

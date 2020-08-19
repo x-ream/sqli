@@ -17,10 +17,11 @@
 package io.xream.sqli.core.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.SqlStringUtil;
-import io.xream.sqli.core.web.Paged;
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.web.Paged;
+import io.xream.sqli.common.web.Sort;
+import io.xream.sqli.util.BeanUtilX;
 
 import java.io.Serializable;
 import java.util.*;

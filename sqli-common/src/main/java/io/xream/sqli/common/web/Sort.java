@@ -14,9 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.builder;
-
-import io.xream.sqli.core.web.Direction;
+package io.xream.sqli.common.web;
 
 import java.io.Serializable;
 import java.util.List;

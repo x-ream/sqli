@@ -16,7 +16,8 @@
  */
 package io.xream.sqli.core.cache;
 
-import io.xream.sqli.core.util.SqlStringUtil;
+
+import io.xream.sqli.common.util.SqlStringUtil;
 
 public final class L2CacheFilter {
 

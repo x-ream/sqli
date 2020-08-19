@@ -16,15 +16,15 @@
  */
 package io.xream.x7.repository.dao;
 
+import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.web.Page;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 
 public class PageBuilder {
 
-    public static <T> Page<T>  build(Criteria criteria, List<T> list, Callable<Long> callable) {
+    public static <T> Page<T> build(Criteria criteria, List<T> list, Callable<Long> callable) {
 
         long count = 0;
         int rows = criteria.getRows();

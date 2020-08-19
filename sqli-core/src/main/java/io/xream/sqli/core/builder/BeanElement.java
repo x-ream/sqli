@@ -16,9 +16,10 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.SqlStringUtil;
+
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.util.BeanUtilX;
 
 import java.lang.reflect.Method;
 
@@ -61,7 +62,7 @@ public class BeanElement {
 	}
 	
 	public void initMaper(){
-		mapper = BeanUtil.getMapper(property);
+		mapper = BeanUtilX.getMapper(property);
 		mapper = BeanUtilX.filterSQLKeyword(mapper);
 	}
 

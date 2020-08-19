@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.core.builder;
 
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.filter.BaseTypeFilter;
-import io.xream.sqli.core.util.BeanUtil;
 import io.xream.sqli.core.support.TimestampSupport;
-import io.xream.sqli.core.util.SqlStringUtil;
 
 import java.util.Iterator;
 import java.util.List;

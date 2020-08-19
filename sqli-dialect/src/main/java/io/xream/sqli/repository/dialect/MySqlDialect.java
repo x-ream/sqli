@@ -17,11 +17,11 @@
 package io.xream.sqli.repository.dialect;
 
 import io.xream.sqli.api.Dialect;
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.SqlScript;
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.JsonWrapper;
 
 import java.math.BigDecimal;
 import java.util.*;

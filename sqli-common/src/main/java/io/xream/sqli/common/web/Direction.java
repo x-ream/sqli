@@ -14,14 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.web;
+package io.xream.sqli.common.web;
 
-public interface Tokened {
+public enum Direction {
 
-	long getPassportId();
-	String getToken();
-	String getPassportType();
-	void setPassportId(String passportId);
-	void setToken(String token);
-	void setPassportType(String passportType);
+	ASC,
+	DESC,
+	;
 }

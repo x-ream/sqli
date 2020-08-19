@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.web;
+package io.xream.sqli.common.web;
 
 
 import com.alibaba.fastjson.JSONObject;
-import io.xream.sqli.core.builder.Sort;
-import io.xream.sqli.core.util.JsonWrapper;
+import io.xream.sqli.common.util.JsonWrapper;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,15 +49,6 @@ public class Page<T> implements Paged, Serializable{
 
 
 	public Page(){
-	}
-
-	public Page(Paged paged){
-		setTotalRowsIgnored(paged.isTotalRowsIgnored());
-		if (paged.getPage() > 0)
-			setPage(paged.getPage());
-		if (paged.getRows() > 0)
-			setRows(paged.getRows());
-		setSortList(paged.getSortList());
 	}
 
 	public Class<T> getClz() {
@@ -162,7 +153,6 @@ public class Page<T> implements Paged, Serializable{
 		this.totalRowsIgnored = totalRowsIgnored;
 	}
 
-	@Override
 	public List<Sort> getSortList() {
 		return sortList;
 	}

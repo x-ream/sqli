@@ -14,11 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.util;
+package io.xream.sqli.util;
 
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.repository.SqlFieldType;
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.core.builder.*;
+import io.xream.sqli.core.repository.ReflectionCache;
+import io.xream.sqli.core.repository.SqlFieldType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -35,6 +38,95 @@ public class BeanUtilX extends BeanUtil {
     private BeanUtilX() {
         super();
     }
+
+    /**
+     * 通过setter拷贝值
+     *
+     * @param clz
+     * @param origin
+     */
+    public static <T> T copy(Class<T> clz, Object origin) {
+
+        if (origin == null)
+            return null;
+
+        T t = null;
+        String p = "";
+        Object v = null;
+        try {
+            t = clz.newInstance();
+
+            Class oc = origin.getClass();
+
+            // Method[] originMethodArr = oc.getDeclaredMethods();
+            ReflectionCache originCache = Parser.getReflectionCache(oc); // origin
+
+            ReflectionCache cache = Parser.getReflectionCache(clz); // target
+
+            for (FieldAndMethod fnm : cache.getMap().values()) {
+
+                FieldAndMethod originFnm = originCache.get(fnm.getProperty());
+
+                if (originFnm == null) {
+
+                    originFnm = originCache.getTemp(fnm.getProperty());
+                    /*
+                     * 增加临时缓存
+                     */
+                    if (originFnm == null) {
+                        originFnm = new FieldAndMethod(); // NEW
+                        originCache.getTempMap().put(fnm.getProperty(), originFnm);
+
+                        String getterName = fnm.getGetterName();
+                        Method orginGetter = null;
+                        try {
+                            orginGetter = oc.getDeclaredMethod(getterName);
+                        } catch (Exception e) {
+
+                        }
+                        if (orginGetter != null) {
+
+                            originFnm.setGetter(orginGetter);
+                            originFnm.setGetterName(getterName);
+
+                            String setterName = fnm.getSetterName();
+                            Method orginSetter = null;
+                            try {
+                                orginSetter = oc.getDeclaredMethod(setterName, fnm.getField().getType());
+                            } catch (Exception e) {
+
+                            }
+                            if (orginSetter != null) {
+                                originFnm.setSetter(orginSetter);
+                                originFnm.setSetterName(setterName);
+                            }
+                            originFnm.setProperty(fnm.getProperty());
+
+                        }
+                    }
+                }
+
+                try {
+                    if (originFnm != null && originFnm.getGetterName() != null) {
+                        v = oc.getDeclaredMethod(originFnm.getGetterName()).invoke(origin);
+
+                        Method m = fnm.getSetter();
+                        m.invoke(t, v);
+                    }
+                } catch (Exception e) {
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("p = " + p + ", v = " + v);
+            e.printStackTrace();
+        }
+
+        return t;
+    }
+
 
     @SuppressWarnings("rawtypes")
     public static List<BeanElement> getElementList(Class clz) {
@@ -478,4 +570,110 @@ public class BeanUtilX extends BeanUtil {
     }
 
 
+
+    /**
+     * 通过setter拷贝原始对象的从getter获取的值
+     *
+     * @param target
+     * @param origin
+     */
+    public static void copyX(Object target, Object origin) {
+
+        if (origin == null || target == null)
+            return;
+
+        Class clz = target.getClass();
+
+        Class oc = origin.getClass();
+
+        ReflectionCache cache = Parser.getReflectionCache(clz); // target
+
+        Set<String> set = new HashSet<String>();
+        for (Method m : oc.getDeclaredMethods()) {
+            set.add(m.getName());
+        }
+
+        for (FieldAndMethod fam : cache.getMap().values()) {
+
+            if (!set.contains(fam.getGetterName())) {
+                continue;
+            }
+
+            Object v = null;
+            try {
+                Method om = oc.getDeclaredMethod(fam.getGetterName());
+                v = om.invoke(origin);
+                Class rt = om.getReturnType();
+                if (rt == int.class || rt == long.class || rt == double.class || rt == float.class
+                        || rt == boolean.class) {
+                    if (v.toString().equals("0")) {
+                        v = null;
+                    }
+                }
+
+            } catch (Exception e) {
+
+            }
+            if (v != null) {
+                try {
+                    fam.getSetter().invoke(target, v);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public static String getMapper(String property) {
+
+        String AZ = "AZ";
+        int min = AZ.charAt(0) - 1;
+        int max = AZ.charAt(1) + 1;
+
+        try {
+            String spec = Parser.mappingSpec;
+            if (SqlStringUtil.isNotNull(spec)) {
+                char[] arr = property.toCharArray();
+                int length = arr.length;
+                List<String> list = new ArrayList<String>();
+                StringBuilder temp = new StringBuilder();
+                for (int i = 0; i < length; i++) {
+                    char c = arr[i];
+                    if (c > min && c < max) {
+                        String ts = temp.toString();
+                        if (SqlStringUtil.isNotNull(ts)) {
+                            list.add(temp.toString());
+                        }
+                        temp = new StringBuilder();
+                        String s = String.valueOf(c);
+                        temp.append(s.toLowerCase());
+                    } else {
+                        temp = temp.append(c);
+                    }
+
+                    if (i == length - 1) {
+                        list.add(temp.toString());
+                    }
+
+                }
+
+                String str = "";
+
+                int size = list.size();
+                for (int i = 0; i < size; i++) {
+                    String s = list.get(i);
+                    str += s;
+                    if (i < size - 1) {
+                        str += "_";
+                    }
+                }
+                return str;
+            }
+
+        } catch (Exception e) {
+
+        }
+        return property;
+    }
 }

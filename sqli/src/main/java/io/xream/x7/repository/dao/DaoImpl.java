@@ -16,15 +16,15 @@
  */
 package io.xream.x7.repository.dao;
 
+import io.xream.sqli.common.util.LoggerProxy;
+import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.core.util.LoggerProxy;
-import io.xream.sqli.core.util.SqlStringUtil;
-import io.xream.sqli.core.web.Page;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.x7.repository.CriteriaToSql;
 import io.xream.x7.repository.KeyOne;

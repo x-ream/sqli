@@ -16,9 +16,9 @@
  */
 package io.xream.x7.repository.cache;
 
+import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.util.BeanUtilX;
-import io.xream.sqli.core.util.SqlStringUtil;
+import io.xream.sqli.util.BeanUtilX;
 
 public interface CreateOrReplaceOptimization {
 

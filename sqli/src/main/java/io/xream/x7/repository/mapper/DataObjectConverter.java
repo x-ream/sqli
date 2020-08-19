@@ -16,12 +16,12 @@
  */
 package io.xream.x7.repository.mapper;
 
+import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.common.util.JsonWrapper;
+import io.xream.sqli.common.util.LoggerProxy;
+import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.SqliExceptionUtil;
-import io.xream.sqli.core.util.JsonWrapper;
-import io.xream.sqli.core.util.LoggerProxy;
 import io.xream.sqli.exception.PersistenceException;
 
 import java.lang.reflect.Method;
