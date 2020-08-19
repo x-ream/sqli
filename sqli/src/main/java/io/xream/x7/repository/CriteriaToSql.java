@@ -20,7 +20,7 @@ import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.CriteriaCondition;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.core.repository.Dialect;
+import io.xream.sqli.api.Dialect;
 
 
 public interface CriteriaToSql {

@@ -14,17 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.x7.repository.dialect;
+package io.xream.sqli.repository.dialect;
 
+import io.xream.sqli.api.Dialect;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.SqlScript;
-import io.xream.sqli.core.repository.Dialect;
 import io.xream.sqli.core.util.BeanUtil;
-import io.xream.sqli.core.util.SqliExceptionUtil;
 import io.xream.sqli.core.util.JsonWrapper;
 import io.xream.sqli.core.util.SqlStringUtil;
-import io.xream.x7.repository.exception.NotSupportedException;
+import io.xream.sqli.core.util.SqliExceptionUtil;
+import io.xream.sqli.exception.NotSupportedException;
+
 
 import java.io.Reader;
 import java.math.BigDecimal;

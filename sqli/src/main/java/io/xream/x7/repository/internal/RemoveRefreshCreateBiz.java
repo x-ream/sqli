@@ -19,7 +19,7 @@ package io.xream.x7.repository.internal;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
-import io.xream.sqli.core.repository.X;
+import io.xream.sqli.annotation.X;
 import io.xream.sqli.core.util.SqliExceptionUtil;
 import io.xream.sqli.core.util.JsonWrapper;
 import io.xream.sqli.core.util.SqlStringUtil;

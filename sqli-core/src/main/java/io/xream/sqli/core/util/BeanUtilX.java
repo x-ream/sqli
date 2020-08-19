@@ -18,7 +18,7 @@ package io.xream.sqli.core.util;
 
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.repository.SqlFieldType;
-import io.xream.sqli.core.repository.X;
+import io.xream.sqli.annotation.X;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -19,7 +19,7 @@ package io.xream.x7.repository.mapper;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.core.repository.X;
+import io.xream.sqli.annotation.X;
 import io.xream.sqli.core.util.BeanUtil;
 import io.xream.sqli.core.util.LoggerProxy;
 import io.xream.x7.repository.DbType;
@@ -35,7 +35,7 @@ public class MapperFactory implements Mapper {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
-	public static io.xream.sqli.core.repository.Dialect Dialect;
+	public static io.xream.sqli.api.Dialect Dialect;
 
 	/**
 	 * 返回SQL

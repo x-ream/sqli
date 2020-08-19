@@ -18,7 +18,7 @@ package io.xream.sqli.core.builder.condition;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.repository.X;
+import io.xream.sqli.annotation.X;
 
 import java.util.*;
 

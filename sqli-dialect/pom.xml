@@ -9,15 +9,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sqli</artifactId>
+    <artifactId>sqli-dialect</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>io.xream.sqli</groupId>
             <artifactId>sqli-core</artifactId>
-            <version>${sqli.version}</version>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>12.2.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
-
 
 </project>

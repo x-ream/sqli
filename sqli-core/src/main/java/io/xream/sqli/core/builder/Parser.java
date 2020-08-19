@@ -20,7 +20,7 @@ import io.xream.sqli.core.util.BeanUtil;
 import io.xream.sqli.core.util.BeanUtilX;
 import io.xream.sqli.core.util.SqlStringUtil;
 import io.xream.sqli.core.repository.ReflectionCache;
-import io.xream.sqli.core.repository.X;
+import io.xream.sqli.annotation.X;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

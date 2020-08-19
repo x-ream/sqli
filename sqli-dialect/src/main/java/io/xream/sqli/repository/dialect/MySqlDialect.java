@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.x7.repository.dialect;
+package io.xream.sqli.repository.dialect;
 
+import io.xream.sqli.api.Dialect;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.SqlScript;
-import io.xream.sqli.core.repository.Dialect;
 import io.xream.sqli.core.util.BeanUtil;
 import io.xream.sqli.core.util.JsonWrapper;
 
@@ -71,7 +71,7 @@ public class MySqlDialect implements Dialect {
         String increamentV = map.get(INCREAMENT);
         String engineV = map.get(ENGINE);
 
-        return sql.replace(DATE.trim(), dateV).replace(BYTE.trim(), byteV).replace(INT.trim(), intV)
+        return sql.replace(DATE, dateV).replace(BYTE.trim(), byteV).replace(INT.trim(), intV)
                 .replace(LONG.trim(), longV).replace(BIG.trim(), bigV).replace(TEXT.trim(), textV)
                 .replace(LONG_TEXT.trim(), longTextV).replace(STRING.trim(), stringV)
                 .replace(INCREAMENT.trim(), increamentV).replace(ENGINE.trim(), engineV);

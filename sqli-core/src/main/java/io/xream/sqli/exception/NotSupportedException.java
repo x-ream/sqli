@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.x7.repository.exception;
+package io.xream.sqli.exception;
 
 public class NotSupportedException extends RuntimeException{
 

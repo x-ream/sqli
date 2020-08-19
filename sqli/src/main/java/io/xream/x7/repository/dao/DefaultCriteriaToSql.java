@@ -19,7 +19,7 @@ package io.xream.x7.repository.dao;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.filter.BaseTypeFilter;
-import io.xream.sqli.core.repository.Dialect;
+import io.xream.sqli.api.Dialect;
 import io.xream.sqli.core.support.TimestampSupport;
 import io.xream.sqli.core.util.BeanUtil;
 import io.xream.sqli.core.util.BeanUtilX;
