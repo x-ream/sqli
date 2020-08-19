@@ -6,4 +6,5 @@ target/
 */application-test.properties
 */application-prod.properties
 *.iml
+.idea/
 .settings/
