@@ -23,8 +23,7 @@ import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.core.builder.SqlScript;
-import io.xream.sqli.repository.CriteriaToSql;
-import io.xream.sqli.repository.SqlParsed;
+import io.xream.sqli.repository.api.CriteriaToSql;
 
 import java.sql.Timestamp;
 import java.util.Date;

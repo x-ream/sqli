@@ -22,7 +22,7 @@ import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.RowHandler;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.repository.KeyOne;
+import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.dao.Dao;
 
 import java.util.List;

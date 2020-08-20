@@ -14,10 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.transform;
+package io.xream.sqli.repository.api;
 
-import io.xream.sqli.repository.api.Manuable;
-import io.xream.sqli.repository.api.Repository;
+import io.xream.sqli.api.Dialect;
+import io.xream.sqli.core.builder.Criteria;
+import io.xream.sqli.core.builder.CriteriaCondition;
+import io.xream.sqli.core.builder.Parsed;
+import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.repository.dao.SqlParsed;
 
-public interface DataTransform extends Repository, Manuable {
+
+public interface CriteriaToSql {
+
+    void setDialect(Dialect dialect);
+
+    String fromCondition(CriteriaCondition criteriaCondition) ;
+
+    SqlParsed from(Criteria criteria) ;
+
+    String fromRefresh(Parsed parsed, RefreshCondition refreshCondition);
 }

@@ -14,19 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.starter;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryManagement;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parser;
+import io.xream.sqli.repository.api.ManuRepository;
 import io.xream.sqli.repository.mapper.Mapper;
 import io.xream.sqli.repository.mapper.MapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HealthChecker {
 

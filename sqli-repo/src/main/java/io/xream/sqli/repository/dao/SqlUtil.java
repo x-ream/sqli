@@ -24,11 +24,10 @@ import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.exception.PersistenceException;
-import io.xream.sqli.repository.CriteriaToSql;
-import io.xream.sqli.repository.DbType;
-import io.xream.sqli.repository.SqlParsed;
+import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.repository.mapper.DataObjectConverter;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.starter.DbType;
 
 import java.io.Reader;
 import java.io.StringReader;

@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.api;
 
-public interface Mapped {
-	String TAG = "${TAG}";
+public interface RepositoryInitializer {
+    <T> void register(BaseRepository<T> baseRepository);
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.repository.api;
 
 import io.xream.sqli.api.QueryForCache;
 import io.xream.sqli.common.web.Page;

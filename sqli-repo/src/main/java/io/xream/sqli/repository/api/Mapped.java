@@ -14,28 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.repository.api;
 
-public class SqlParsed {
-
-    private String countSql;
-    private StringBuilder sql;
-
-
-    public String getCountSql() {
-        return countSql;
-    }
-
-    public void setCountSql(String countSql) {
-        this.countSql = countSql;
-    }
-
-    public StringBuilder getSql() {
-        return sql;
-    }
-
-    public void setSql(StringBuilder sql) {
-        this.sql = sql;
-    }
-
+public interface Mapped {
+	String TAG = "${TAG}";
 }

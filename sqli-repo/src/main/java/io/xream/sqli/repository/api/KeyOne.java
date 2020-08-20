@@ -14,22 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.repository.api;
 
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.CriteriaCondition;
-import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+public interface KeyOne<T> {
 
-
-public interface CriteriaToSql {
-
-    void setDialect(Dialect dialect);
-
-    String fromCondition(CriteriaCondition criteriaCondition) ;
-
-    SqlParsed from(Criteria criteria) ;
-
-    String fromRefresh(Parsed parsed, RefreshCondition refreshCondition);
+    Object get();
+    Class<T> getClzz();
 }

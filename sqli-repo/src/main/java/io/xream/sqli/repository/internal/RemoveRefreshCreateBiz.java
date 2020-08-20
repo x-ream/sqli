@@ -23,8 +23,8 @@ import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
-import io.xream.sqli.repository.KeyOne;
-import io.xream.sqli.repository.Repository;
+import io.xream.sqli.repository.api.KeyOne;
+import io.xream.sqli.repository.api.Repository;
 
 import java.lang.reflect.Field;
 import java.util.*;

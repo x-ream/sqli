@@ -1,6 +1,6 @@
-package io.xream.sqli.repository;
+package io.xream.sqli.starter;
 
-public class BootListener {
+public class SqliListener {
 
     public static void onStarted(){
         HealthChecker.onStarted();

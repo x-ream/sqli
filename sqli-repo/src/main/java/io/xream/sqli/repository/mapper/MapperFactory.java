@@ -22,9 +22,9 @@ import io.xream.sqli.common.util.LoggerProxy;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.repository.DbType;
-import io.xream.sqli.repository.Mapped;
+import io.xream.sqli.repository.api.Mapped;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.starter.DbType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

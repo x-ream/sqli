@@ -28,8 +28,8 @@ import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
 import io.xream.sqli.exception.PersistenceException;
-import io.xream.sqli.repository.KeyOne;
-import io.xream.sqli.repository.Repository;
+import io.xream.sqli.repository.api.KeyOne;
+import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 
 import java.lang.reflect.Field;

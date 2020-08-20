@@ -14,28 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.repository.api;
 
 import java.util.List;
 import java.util.Map;
 
+public interface Manuable {
 
-public final class ManuRepository {
+     <T> boolean execute(T obj, String sql);
 
-	private static Manuable cacheableRepository;
-
-	protected static void init(Manuable repository){
-		cacheableRepository =repository;
-	}
-
-	public static <T> boolean execute(T obj, String sql){
-		return cacheableRepository.execute(obj, sql);
-	}
-	
-	
-	public static List<Map<String,Object>> list(Class clz, String sql, List<Object> conditionSet){
-		return cacheableRepository.list(clz, sql, conditionSet);
-	}
-
-
+     List<Map<String,Object>> list(Class clz, String sql, List<Object> conditionSet);
 }

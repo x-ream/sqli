@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.starter;
 
-import java.util.List;
-import java.util.Map;
+import io.xream.sqli.repository.api.ManuRepository;
+import io.xream.sqli.repository.api.Manuable;
 
-public interface Manuable {
+public class ManuRepositoryStarter {
 
-     <T> boolean execute(T obj, String sql);
-
-     List<Map<String,Object>> list(Class clz, String sql, List<Object> conditionSet);
+    public static void init(Manuable repository) {
+        ManuRepository.init(repository);;
+    }
 }

@@ -14,10 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository;
+package io.xream.sqli.starter;
 
-public interface KeyOne<T> {
 
-    Object get();
-    Class<T> getClzz();
+public class DbType {
+
+    public static final String MYSQL = "mysql";
+    public static final String ORACLE = "oracle";
+    public static String value = "mysql";
 }
