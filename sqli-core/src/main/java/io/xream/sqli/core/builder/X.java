@@ -19,6 +19,9 @@ package io.xream.sqli.core.builder;
 
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public class X {
 
     private ConjunctionAndOtherScript conjunction;

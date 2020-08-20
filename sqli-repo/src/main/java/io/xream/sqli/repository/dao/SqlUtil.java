@@ -38,6 +38,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * @Author Sim
+ */
 public class SqlUtil {
 
     protected static void adpterSqlKey(PreparedStatement pstmt, String keyOne, Object obj, int i) {

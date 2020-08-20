@@ -24,6 +24,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @Author Sim
+ */
 public class ConditionCriteriaBuilder {
 
     private ConditionCriteriaBuilder instance;

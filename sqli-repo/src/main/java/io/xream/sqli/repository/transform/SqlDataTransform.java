@@ -28,6 +28,9 @@ import io.xream.sqli.repository.dao.Dao;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author Sim
+ */
 public class SqlDataTransform implements DataTransform {
 
     private Dao dao;

@@ -19,6 +19,9 @@ package io.xream.sqli.core.cache;
 
 import io.xream.sqli.common.util.SqlStringUtil;
 
+/**
+ * @Author Sim
+ */
 public final class L2CacheFilter {
 
     private static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();

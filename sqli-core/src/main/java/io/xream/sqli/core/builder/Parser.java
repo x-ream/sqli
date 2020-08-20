@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @Author Sim
+ */
 public class Parser {
 
     private static Logger logger = LoggerFactory.getLogger(Parser.class);

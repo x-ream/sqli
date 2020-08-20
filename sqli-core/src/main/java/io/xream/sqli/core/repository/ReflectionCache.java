@@ -25,6 +25,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Author Sim
+ */
 public class ReflectionCache {
 
 	private Class clz;

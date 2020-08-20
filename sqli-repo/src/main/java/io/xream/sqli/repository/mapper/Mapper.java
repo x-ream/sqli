@@ -23,6 +23,9 @@ import io.xream.sqli.core.builder.BeanElement;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @Author Sim
+ */
 public interface Mapper {
 
     String CREATE = "CREATE";

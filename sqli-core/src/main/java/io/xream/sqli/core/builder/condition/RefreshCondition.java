@@ -23,6 +23,9 @@ import io.xream.sqli.core.builder.*;
 import java.util.*;
 
 
+/**
+ * @Author Sim
+ */
 public class RefreshCondition<T> extends ConditionCriteriaBuilder implements CriteriaCondition, Routeable {
 
     private List<io.xream.sqli.core.builder.X> refreshList = new ArrayList<>();

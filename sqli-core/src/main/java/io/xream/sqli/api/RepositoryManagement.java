@@ -19,6 +19,9 @@ package io.xream.sqli.api;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public interface RepositoryManagement {
 
     List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();

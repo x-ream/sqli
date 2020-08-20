@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.api;
 
+/**
+ * @Author Sim
+ */
 public interface Typed<T> {
 
     Class<T> getClz();

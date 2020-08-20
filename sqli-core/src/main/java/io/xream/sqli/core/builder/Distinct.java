@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @Author Sim
+ */
 public class Distinct implements Serializable {
 
     private static final long serialVersionUID = 5436698915888081349L;

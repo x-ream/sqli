@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.repository.api;
 
+/**
+ * @Author Sim
+ */
 public interface KeyOne<T> {
 
     Object get();

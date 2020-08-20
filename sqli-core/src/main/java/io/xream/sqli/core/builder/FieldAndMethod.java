@@ -19,6 +19,9 @@ package io.xream.sqli.core.builder;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * @Author Sim
+ */
 public class FieldAndMethod{
 	private Field field;
 	private Method setter;

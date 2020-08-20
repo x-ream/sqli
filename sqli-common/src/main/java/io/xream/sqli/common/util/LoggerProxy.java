@@ -5,6 +5,10 @@ import org.slf4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @Author Sim
+ */
 public class LoggerProxy {
 
     private LoggerProxy(){}

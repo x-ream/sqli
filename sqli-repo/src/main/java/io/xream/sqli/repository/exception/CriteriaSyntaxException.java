@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.repository.exception;
 
+/**
+ * @Author Sim
+ */
 public class CriteriaSyntaxException extends RuntimeException{
 
     private static final long serialVersionUID = 5749142995547236081L;

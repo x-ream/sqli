@@ -26,6 +26,9 @@ import io.xream.sqli.repository.mapper.MapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @Author Sim
+ */
 public class HealthChecker {
 
     private final static Logger logger = LoggerFactory.getLogger(HealthChecker.class);

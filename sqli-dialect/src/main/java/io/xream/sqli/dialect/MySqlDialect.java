@@ -27,6 +27,9 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
+/**
+ * @Author Sim
+ */
 public class MySqlDialect implements Dialect {
 
     private final Map<String, String> map = new HashMap<String, String>() {

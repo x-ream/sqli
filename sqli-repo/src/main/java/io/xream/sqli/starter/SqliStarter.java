@@ -30,6 +30,9 @@ import io.xream.sqli.repository.transform.DataTransform;
 
 import java.util.concurrent.Callable;
 
+/**
+ * @Author Sim
+ */
 public class SqliStarter implements RepositoryInitializer{
 
     private IdGenerator idGenerator;

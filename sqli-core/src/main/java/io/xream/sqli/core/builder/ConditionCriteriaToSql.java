@@ -24,6 +24,9 @@ import io.xream.sqli.core.support.TimestampSupport;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public interface ConditionCriteriaToSql extends KeyMapper{
 
     default void buildConditionSql(StringBuilder sb, List<X> listX) {

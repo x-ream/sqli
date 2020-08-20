@@ -19,6 +19,9 @@ package io.xream.sqli.core.builder;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public interface SqlScript {
 
 	List<String> SOURCE_SCRIPT = Arrays.asList("INNER","LEFT","RIGHT","OUTER","JOIN",",","FULL","ON", "AND","OR","LIKE", "!=", "<=", ">=", "<>", "=", "<",">", "(",")");

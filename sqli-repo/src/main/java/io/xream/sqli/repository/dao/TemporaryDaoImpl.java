@@ -29,6 +29,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public class TemporaryDaoImpl implements TemporaryDao{
 
     private CriteriaToSql criteriaToSql;

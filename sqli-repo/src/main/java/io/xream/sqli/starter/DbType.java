@@ -17,6 +17,9 @@
 package io.xream.sqli.starter;
 
 
+/**
+ * @Author Sim
+ */
 public class DbType {
 
     public static final String MYSQL = "mysql";

@@ -21,6 +21,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
+/**
+ * @Author Sim
+ */
 public class Md5Util {
 	
 	private Md5Util(){}

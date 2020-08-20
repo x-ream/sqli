@@ -30,6 +30,9 @@ import java.sql.Timestamp;
 import java.util.*;
 
 
+/**
+ * @Author Sim
+ */
 public class DataObjectConverter {
 
     public static Map<String,Object> dataToPropertyObjectMap(Class clz, Map<String,Object> dataMap, Criteria.ResultMappedCriteria resultMapped, Dialect dialect) {

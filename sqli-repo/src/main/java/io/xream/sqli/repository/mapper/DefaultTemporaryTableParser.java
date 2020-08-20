@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @Author Sim
+ */
 public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
     String CREATE_TABLE = "CREATE_TABLE";

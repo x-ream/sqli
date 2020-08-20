@@ -19,6 +19,9 @@ package io.xream.sqli.core.filter;
 import io.xream.sqli.core.builder.*;
 
 
+/**
+ * @Author Sim
+ */
 public class BaseTypeFilter {
 
     public static boolean beanWithoutBaseType = false;

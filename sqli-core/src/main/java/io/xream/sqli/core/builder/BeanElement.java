@@ -23,6 +23,9 @@ import io.xream.sqli.util.BeanUtilX;
 
 import java.lang.reflect.Method;
 
+/**
+ * @Author Sim
+ */
 public class BeanElement {
 
 	public String property;

@@ -5,6 +5,9 @@ import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.util.BeanUtilX;
 
+/**
+ * @Author Sim
+ */
 public interface KeyMapper {
 
     default String mapping(String key, CriteriaCondition criteria) {

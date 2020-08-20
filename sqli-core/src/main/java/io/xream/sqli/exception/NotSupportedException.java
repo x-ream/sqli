@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.exception;
 
+/**
+ * @Author Sim
+ */
 public class NotSupportedException extends RuntimeException{
 
     private static final long serialVersionUID = 5749142995896243581L;

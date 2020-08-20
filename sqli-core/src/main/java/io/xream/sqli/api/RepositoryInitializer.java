@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.api;
 
+/**
+ * @Author Sim
+ */
 public interface RepositoryInitializer {
     <T> void register(BaseRepository<T> baseRepository);
 }

@@ -20,6 +20,9 @@ import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.util.BeanUtilX;
 
+/**
+ * @Author Sim
+ */
 public interface CreateOrReplaceOptimization {
 
     static Object tryToGetId(Object obj, Parsed parsed){

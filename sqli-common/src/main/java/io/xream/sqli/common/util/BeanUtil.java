@@ -21,6 +21,10 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/**
+ * @Author Sim
+ */
 public class BeanUtil {
 
     protected BeanUtil(){}

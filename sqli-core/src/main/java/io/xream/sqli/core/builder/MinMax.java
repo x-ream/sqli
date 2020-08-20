@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.core.builder;
 
+/**
+ * @Author Sim
+ */
 public class MinMax {
 	private Object min;
 	private Object max;

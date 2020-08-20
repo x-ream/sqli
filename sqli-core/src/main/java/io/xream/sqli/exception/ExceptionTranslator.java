@@ -19,6 +19,9 @@ package io.xream.sqli.exception;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import org.slf4j.Logger;
 
+/**
+ * @Author Sim
+ */
 public class ExceptionTranslator {
 
     private ExceptionTranslator(){}

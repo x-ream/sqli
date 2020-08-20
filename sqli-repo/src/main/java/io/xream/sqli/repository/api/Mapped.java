@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.repository.api;
 
+/**
+ * @Author Sim
+ */
 public interface Mapped {
 	String TAG = "${TAG}";
 }

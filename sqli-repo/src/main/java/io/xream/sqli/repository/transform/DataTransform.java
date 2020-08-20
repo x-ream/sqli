@@ -19,5 +19,8 @@ package io.xream.sqli.repository.transform;
 import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
 
+/**
+ * @Author Sim
+ */
 public interface DataTransform extends Repository, Manuable {
 }

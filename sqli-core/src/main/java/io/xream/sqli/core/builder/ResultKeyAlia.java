@@ -19,6 +19,9 @@ package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.SqlStringUtil;
 
+/**
+ * @Author Sim
+ */
 public class ResultKeyAlia {
 
     private String objectOrAlia;

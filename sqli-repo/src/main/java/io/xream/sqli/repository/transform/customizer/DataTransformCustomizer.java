@@ -18,6 +18,9 @@ package io.xream.sqli.repository.transform.customizer;
 
 import io.xream.sqli.repository.transform.DataTransform;
 
+/**
+ * @Author Sim
+ */
 public interface DataTransformCustomizer {
 
     DataTransform customize();

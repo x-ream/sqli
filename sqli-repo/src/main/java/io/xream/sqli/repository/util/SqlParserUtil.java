@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @Author Sim
+ */
 public class SqlParserUtil {
 
     public final static String COMMA = ",";

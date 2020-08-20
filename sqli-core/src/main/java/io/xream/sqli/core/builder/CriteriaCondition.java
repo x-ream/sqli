@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * @Author Sim
+ */
 public interface CriteriaCondition{
     List<X> getListX();
     List<Object> getValueList();

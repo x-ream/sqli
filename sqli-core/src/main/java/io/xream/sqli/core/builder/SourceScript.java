@@ -21,6 +21,9 @@ import io.xream.sqli.common.util.SqlStringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaToSql.Pre {
 
     private String source;

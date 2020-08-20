@@ -31,6 +31,9 @@ import java.sql.Timestamp;
 import java.util.*;
 
 
+/**
+ * @Author Sim
+ */
 public class BeanUtilX extends BeanUtil {
 
     public final static String SQL_KEYWORD_MARK = "`";

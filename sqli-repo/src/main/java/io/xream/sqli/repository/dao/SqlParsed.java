@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.repository.dao;
 
+/**
+ * @Author Sim
+ */
 public class SqlParsed {
 
     private String countSql;

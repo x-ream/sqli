@@ -22,6 +22,9 @@ import io.xream.sqli.core.builder.Criteria;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * @Author Sim
+ */
 public class PageBuilder {
 
     public static <T> Page<T> build(Criteria criteria, List<T> list, Callable<Long> callable) {

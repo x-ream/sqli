@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @Author Sim
+ */
 public interface InOptimization {
 
     int IN_MAX = 500;

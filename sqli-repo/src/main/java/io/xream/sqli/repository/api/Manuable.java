@@ -19,6 +19,9 @@ package io.xream.sqli.repository.api;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author Sim
+ */
 public interface Manuable {
 
      <T> boolean execute(T obj, String sql);

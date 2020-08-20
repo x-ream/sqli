@@ -17,6 +17,9 @@
 package io.xream.sqli.core.builder;
 
 
+/**
+ * @Author Sim
+ */
 import io.xream.sqli.common.web.Direction;
 
 import java.util.List;

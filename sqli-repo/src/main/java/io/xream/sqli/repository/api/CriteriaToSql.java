@@ -24,6 +24,9 @@ import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.repository.dao.SqlParsed;
 
 
+/**
+ * @Author Sim
+ */
 public interface CriteriaToSql {
 
     void setDialect(Dialect dialect);

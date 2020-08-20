@@ -23,6 +23,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author Sim
+ */
 public interface JdbcWrapper {
 
     <T> boolean createBatch(Class<T> clzz, String sql, Collection<T> objList, int batchSize, Dialect dialect);

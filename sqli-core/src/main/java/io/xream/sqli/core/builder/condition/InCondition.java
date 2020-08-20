@@ -22,6 +22,9 @@ import io.xream.sqli.core.builder.Routeable;
 import java.util.List;
 
 
+/**
+ * @Author Sim
+ */
 public class InCondition implements Routeable {
 
     private String property;

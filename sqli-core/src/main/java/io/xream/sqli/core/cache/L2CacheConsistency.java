@@ -18,6 +18,7 @@ package io.xream.sqli.core.cache;
 
 /**
  *  Suggest send message to MQ to refresh again <br>
+ * @Author Sim
  */
 public interface L2CacheConsistency {
 

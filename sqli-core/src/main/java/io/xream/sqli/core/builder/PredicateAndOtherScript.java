@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.core.builder;
 
+/**
+ * @Author Sim
+ */
 public enum PredicateAndOtherScript implements SqlScript{
 
 	EQ(" = "),

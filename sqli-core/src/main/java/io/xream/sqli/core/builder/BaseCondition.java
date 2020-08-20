@@ -19,6 +19,9 @@ package io.xream.sqli.core.builder;
 
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public interface BaseCondition {
 
     BaseCondition eq(String property, Object value);

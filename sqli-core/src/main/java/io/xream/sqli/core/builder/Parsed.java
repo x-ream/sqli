@@ -27,6 +27,9 @@ import java.util.Map;
 import java.util.Objects;
 
 
+/**
+ * @Author Sim
+ */
 public class Parsed {
 
 

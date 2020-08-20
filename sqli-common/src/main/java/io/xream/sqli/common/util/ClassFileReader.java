@@ -27,6 +27,10 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+
+/**
+ * @Author Sim
+ */
 public class ClassFileReader {
 
 	private ClassFileReader(){}

@@ -23,6 +23,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+/**
+ * @Author Sim
+ */
 public class SqlStringUtil {
 
 	private SqlStringUtil(){}

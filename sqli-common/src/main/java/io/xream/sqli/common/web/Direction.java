@@ -16,6 +16,10 @@
  */
 package io.xream.sqli.common.web;
 
+
+/**
+ * @Author Sim
+ */
 public enum Direction {
 
 	ASC,

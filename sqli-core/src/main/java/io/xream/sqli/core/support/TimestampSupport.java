@@ -21,6 +21,9 @@ import io.xream.sqli.core.builder.X;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * @Author Sim
+ */
 public class TimestampSupport {
 
     public static boolean testNumberValueToDate(Class clzz, X x){

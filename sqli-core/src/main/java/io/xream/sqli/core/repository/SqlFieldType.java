@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.core.repository;
 
+/**
+ * @Author Sim
+ */
 public interface SqlFieldType {
 
 	String TEXT = "text";

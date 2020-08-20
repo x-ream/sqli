@@ -22,6 +22,9 @@ import io.xream.sqli.common.util.SqlStringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Sim
+ */
 public interface SourceScriptBuilder {
     SourceScriptBuilder source(String source);
 

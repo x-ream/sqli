@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @Author Sim
+ */
 public interface L2CacheStorage {
     boolean set(String key, String time);
 

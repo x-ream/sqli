@@ -35,6 +35,9 @@ import io.xream.sqli.util.BeanUtilX;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @Author Sim
+ */
 public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
 
     private Dialect dialect;

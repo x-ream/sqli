@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.core.cache;
 
+/**
+ * @Author Sim
+ */
 public interface Protection {
     String DEFAULT_VALUE = "NULL";
     int DEFAULT_NUM = Integer.MIN_VALUE;

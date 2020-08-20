@@ -19,6 +19,9 @@ package io.xream.sqli.starter;
 import io.xream.sqli.repository.api.ManuRepository;
 import io.xream.sqli.repository.api.Manuable;
 
+/**
+ * @Author Sim
+ */
 public class ManuRepositoryStarter {
 
     public static void init(Manuable repository) {

@@ -23,6 +23,9 @@ import io.xream.sqli.core.builder.Criteria;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * @Author Sim
+ */
 public interface Dialect {
 
     String DATE = " ${DATE}";

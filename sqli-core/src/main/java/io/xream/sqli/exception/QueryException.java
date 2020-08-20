@@ -16,6 +16,9 @@
  */
 package io.xream.sqli.exception;
 
+/**
+ * @Author Sim
+ */
 public class QueryException extends RuntimeException{
 
 	private static final long serialVersionUID = 5749142995896266081L;
