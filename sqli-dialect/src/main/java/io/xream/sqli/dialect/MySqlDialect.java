@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.dialect;
+package io.xream.sqli.dialect;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
