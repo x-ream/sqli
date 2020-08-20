@@ -20,6 +20,7 @@ package io.xream.sqli.repository.internal;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.IdGenerator;
+import io.xream.sqli.api.RepositoryManagement;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.*;
@@ -27,7 +28,6 @@ import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
 import io.xream.sqli.exception.PersistenceException;
-import io.xream.sqli.repository.HealthChecker;
 import io.xream.sqli.repository.KeyOne;
 import io.xream.sqli.repository.Repository;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
@@ -86,8 +86,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     }
 
     protected void hook() {
-        if (!HealthChecker.getRepositoryList().contains(this)) {
-            HealthChecker.getRepositoryList().add(this);
+        if (!RepositoryManagement.REPOSITORY_LIST.contains(this)) {
+            RepositoryManagement.REPOSITORY_LIST.add(this);
         }
     }
 

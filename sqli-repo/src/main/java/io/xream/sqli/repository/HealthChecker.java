@@ -17,6 +17,7 @@
 package io.xream.sqli.repository;
 
 import io.xream.sqli.api.BaseRepository;
+import io.xream.sqli.api.RepositoryManagement;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.repository.mapper.Mapper;
@@ -31,27 +32,19 @@ public class HealthChecker {
 
     private final static Logger logger = LoggerFactory.getLogger(HealthChecker.class);
 
-    private static List<BaseRepository> repositoryList = new ArrayList<BaseRepository>();
-
-
-    public static List<BaseRepository> getRepositoryList(){
-        return repositoryList;
-    }
 
     public static void onStarted() {
 
-        for (BaseRepository repository : repositoryList) {
+        for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
             logger.info("Parsing {}" ,repository.getClz());
             Parser.get(repository.getClz());
         }
-
-
 
         logger.info("-------------------------------------------------");
 
         boolean flag = false;
 
-        for (BaseRepository repository : repositoryList) {
+        for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
 
             try {
                 Class clz = repository.getClz();
