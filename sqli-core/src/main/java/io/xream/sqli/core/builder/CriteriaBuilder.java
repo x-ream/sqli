@@ -18,9 +18,9 @@ package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.common.web.Direction;
+import io.xream.sqli.common.web.Paged;
 import io.xream.sqli.common.web.Sort;
 import io.xream.sqli.core.builder.Criteria.ResultMappedCriteria;
-
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -39,6 +39,10 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
     public PageBuilder paged() {
         return this.pageBuilder;
+    }
+
+    public void paged(Paged paged) {
+        criteria.paged(paged);
     }
 
     public CriteriaBuilder forceIndex(String indexName) {
@@ -93,12 +97,10 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     };
 
 
-
     private CriteriaBuilder(Criteria criteria) {
         super(criteria.getListX());
         this.criteria = criteria;
     }
-
 
     public static CriteriaBuilder build(Class<?> clz) {
         Criteria criteria = new Criteria();
@@ -113,12 +115,9 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         return builder;
     }
 
-
     public static ResultMappedBuilder buildResultMapped() {
         ResultMappedCriteria resultMappedCriteria = new ResultMappedCriteria();
-
         return new ResultMappedBuilder(resultMappedCriteria);
-
     }
 
     public Class<?> getClz() {
@@ -200,13 +199,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             return (ResultMappedCriteria) super.get();
         }
 
-        private void init() {
-
-            ResultMappedCriteria resultMapped = new ResultMappedCriteria();
-            super.criteria = resultMapped;
-
-        }
-
         private void init(Class<?> clz) {
             ResultMappedCriteria f = (ResultMappedCriteria) super.criteria;
             f.setClz(clz);
@@ -216,12 +208,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         public ResultMappedBuilder(Criteria criteria) {
             super(criteria);
-        }
-
-        private void xAddResultKey(List<String> xExpressionList) {
-            for (String xExpression : xExpressionList) {
-                get().getResultKeyList().add(xExpression);
-            }
         }
 
         public ResultMappedBuilder resultKey(String resultKey) {
@@ -266,6 +252,11 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             functionResultKey.setKeys(keys);
             get().getResultFuntionList().add(functionResultKey);
             return this;
+        }
+
+        @Override
+        public void paged(Paged paged) {
+            super.criteria.paged(paged);
         }
 
         public ResultMappedBuilder sourceScript(String sourceScript) {
