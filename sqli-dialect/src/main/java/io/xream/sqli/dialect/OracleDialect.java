@@ -26,7 +26,6 @@ import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.SqlScript;
 import io.xream.sqli.exception.NotSupportedException;
 
-
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;

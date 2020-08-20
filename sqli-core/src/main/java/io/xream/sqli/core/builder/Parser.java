@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.core.builder;
 
+import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.repository.ReflectionCache;
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.util.BeanUtilX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

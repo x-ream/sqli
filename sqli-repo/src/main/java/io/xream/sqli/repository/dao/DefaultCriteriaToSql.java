@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.repository.dao;
 
+import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.common.util.SqlStringUtil;
@@ -24,15 +25,13 @@ import io.xream.sqli.common.web.Sort;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.filter.BaseTypeFilter;
-import io.xream.sqli.api.Dialect;
 import io.xream.sqli.core.support.TimestampSupport;
-import io.xream.sqli.util.BeanUtilX;
 import io.xream.sqli.repository.CriteriaToSql;
 import io.xream.sqli.repository.SqlParsed;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.repository.exception.SqlBuildException;
 import io.xream.sqli.repository.util.SqlParserUtil;
-
+import io.xream.sqli.util.BeanUtilX;
 
 import java.util.*;
 import java.util.stream.Collectors;

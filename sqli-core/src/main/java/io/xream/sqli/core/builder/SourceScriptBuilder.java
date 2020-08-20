@@ -19,7 +19,8 @@ package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.SqlStringUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface SourceScriptBuilder {
     SourceScriptBuilder source(String source);

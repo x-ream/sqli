@@ -23,11 +23,11 @@ import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.core.cache.L2CacheResolver;
-import io.xream.sqli.util.BeanUtilX;
 import io.xream.sqli.repository.KeyOne;
 import io.xream.sqli.repository.Manuable;
 import io.xream.sqli.repository.Repository;
 import io.xream.sqli.repository.transform.DataTransform;
+import io.xream.sqli.util.BeanUtilX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -16,15 +16,15 @@
  */
 package io.xream.sqli.repository.internal;
 
+import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
-import io.xream.sqli.annotation.X;
-import io.xream.sqli.repository.Repository;
 import io.xream.sqli.repository.KeyOne;
+import io.xream.sqli.repository.Repository;
 
 import java.lang.reflect.Field;
 import java.util.*;

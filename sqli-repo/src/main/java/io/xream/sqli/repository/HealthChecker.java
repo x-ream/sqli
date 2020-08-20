@@ -16,9 +16,9 @@
  */
 package io.xream.sqli.repository;
 
+import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.common.util.SqlStringUtil;
 import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.repository.mapper.Mapper;
 import io.xream.sqli.repository.mapper.MapperFactory;
 import org.slf4j.Logger;

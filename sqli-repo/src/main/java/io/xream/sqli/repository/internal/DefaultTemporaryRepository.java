@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.repository.internal;
 
+import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.transform.DataTransform;
 import org.slf4j.Logger;

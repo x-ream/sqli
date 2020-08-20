@@ -20,7 +20,6 @@ package io.xream.sqli.common.web;
 import com.alibaba.fastjson.JSONObject;
 import io.xream.sqli.common.util.JsonWrapper;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

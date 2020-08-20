@@ -16,12 +16,12 @@
  */
 package io.xream.sqli.repository.mapper;
 
+import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.LoggerProxy;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.repository.DbType;
 import io.xream.sqli.repository.Mapped;
 import io.xream.sqli.repository.util.SqlParserUtil;
