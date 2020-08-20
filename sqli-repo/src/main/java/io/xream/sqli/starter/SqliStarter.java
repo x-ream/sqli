@@ -19,13 +19,16 @@ package io.xream.sqli.starter;
 import io.xream.sqli.api.*;
 import io.xream.sqli.core.cache.L2CacheResolver;
 import io.xream.sqli.repository.api.CriteriaToSql;
+import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.cache.CacheableRepository;
 import io.xream.sqli.repository.dao.*;
 import io.xream.sqli.repository.internal.DefaultRepository;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.repository.mapper.DefaultTemporaryTableParser;
-import io.xream.sqli.repository.transform.SqlDataTransform;
+import io.xream.sqli.repository.transform.DataTransform;
+
+import java.util.concurrent.Callable;
 
 public class SqliStarter implements RepositoryInitializer{
 
@@ -52,23 +55,32 @@ public class SqliStarter implements RepositoryInitializer{
     private void init(){
         criteriaParser =  new DefaultCriteriaToSql();
 
-        SqlDataTransform dataTransform = new SqlDataTransform();
-
         dao = new DaoImpl();
-        dataTransform.setDao(dao);
+//        dataTransform.setDao(dao);
 
-        CacheableRepository cacheableRepository = new CacheableRepository();
-        cacheableRepository.setDataTransform(dataTransform);
-        dataRepository = cacheableRepository;
-        ManuRepositoryStarter.init(cacheableRepository);
+        dataRepository = new CacheableRepository();
+        ManuRepositoryStarter.init((Manuable) dataRepository);
 
         temporaryTableParser = new DefaultTemporaryTableParser();
         temporaryDao = new TemporaryDaoImpl();
         temporaryRepository = new DefaultTemporaryRepository();
-        ((DefaultTemporaryRepository)temporaryRepository).setDataTransform(dataTransform);
         ((DefaultTemporaryRepository)temporaryRepository).setTemporaryDao(temporaryDao);
         ((DefaultTemporaryRepository)temporaryRepository).setTemporaryRepositoryParser(temporaryTableParser);
 
+    }
+
+    public Dao getDao(){
+        return this.dao;
+    }
+
+    public void setDataTransformAfterInit(Callable<DataTransform> callable){
+        DataTransform dataTransform = null;
+        try{
+            dataTransform = callable.call();
+        }catch (Exception e){
+        }
+        ((CacheableRepository)dataRepository).setDataTransform(dataTransform);
+        ((DefaultTemporaryRepository)temporaryRepository).setDataTransform(dataTransform);
     }
 
     public void setJdbcWrapper(JdbcWrapper jdbcWrapper){
