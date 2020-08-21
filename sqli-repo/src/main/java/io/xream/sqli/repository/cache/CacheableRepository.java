@@ -18,7 +18,7 @@ package io.xream.sqli.repository.cache;
 
 
 import io.xream.sqli.common.util.LoggerProxy;
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;

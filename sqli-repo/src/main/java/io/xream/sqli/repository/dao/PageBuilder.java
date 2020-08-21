@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.Criteria;
 
 import java.util.List;

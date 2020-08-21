@@ -17,9 +17,9 @@
 package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.SqliStringUtil;
-import io.xream.sqli.common.web.Direction;
-import io.xream.sqli.common.web.Paged;
-import io.xream.sqli.common.web.Sort;
+import io.xream.sqli.page.Direction;
+import io.xream.sqli.page.Paged;
+import io.xream.sqli.page.Sort;
 import io.xream.sqli.core.builder.Criteria.ResultMappedCriteria;
 
 import java.util.*;

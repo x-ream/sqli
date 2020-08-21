@@ -17,7 +17,7 @@
 package io.xream.sqli.core.cache;
 
 import io.xream.sqli.api.QueryForCache;
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.Criteria;
 
 import java.util.List;

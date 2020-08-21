@@ -20,7 +20,7 @@ package io.xream.sqli.core.builder;
 /**
  * @Author Sim
  */
-import io.xream.sqli.common.web.Direction;
+import io.xream.sqli.page.Direction;
 
 import java.util.List;
 

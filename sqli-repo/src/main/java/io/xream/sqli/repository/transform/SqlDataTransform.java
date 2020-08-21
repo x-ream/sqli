@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.transform;
 
 import io.xream.sqli.common.util.SqliExceptionUtil;
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.RowHandler;
 import io.xream.sqli.core.builder.condition.InCondition;

@@ -22,7 +22,7 @@ import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.IdGenerator;
 import io.xream.sqli.api.RepositoryManagement;
 import io.xream.sqli.common.util.SqliStringUtil;
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
 import io.xream.sqli.core.builder.condition.RefreshCondition;

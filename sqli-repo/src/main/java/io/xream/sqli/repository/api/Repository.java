@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.api;
 
 import io.xream.sqli.api.QueryForCache;
-import io.xream.sqli.common.web.Page;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.core.builder.Criteria;
 import io.xream.sqli.core.builder.RowHandler;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
