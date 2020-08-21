@@ -17,7 +17,7 @@
 package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.filter.BaseTypeFilter;
 import io.xream.sqli.core.support.TimestampSupport;
 
@@ -74,7 +74,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
 
             for (int j = 0; j < length; j++) {
                 Object value = inList.get(j);
-                if (value == null || SqlStringUtil.isNullOrEmpty(value.toString()))
+                if (value == null || SqliStringUtil.isNullOrEmpty(value.toString()))
                     continue;
                 value = filter(value.toString());
                 sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'

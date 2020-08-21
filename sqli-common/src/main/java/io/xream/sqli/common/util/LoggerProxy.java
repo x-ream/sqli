@@ -37,7 +37,7 @@ public class LoggerProxy {
             if (callable == null)
                 return;
             String str = callable.call();
-            if (SqlStringUtil.isNullOrEmpty(str))
+            if (SqliStringUtil.isNullOrEmpty(str))
                 return;
             logger.debug(str);
         }

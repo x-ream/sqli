@@ -21,7 +21,7 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.IdGenerator;
 import io.xream.sqli.api.RepositoryManagement;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
@@ -168,7 +168,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     @Override
     public boolean remove(String keyOne) {
 
-        if (SqlStringUtil.isNullOrEmpty(keyOne))
+        if (SqliStringUtil.isNullOrEmpty(keyOne))
             return false;
 
         return repository.remove(new KeyOne<T>() {
@@ -226,7 +226,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     @Override
     public T get(String keyOne) {
 
-        if (SqlStringUtil.isNullOrEmpty(keyOne))
+        if (SqliStringUtil.isNullOrEmpty(keyOne))
             return null;
 
         return repository.get(new KeyOne<T>() {

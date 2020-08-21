@@ -17,7 +17,7 @@
 package io.xream.sqli.core.builder;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 
 import java.lang.reflect.Field;
@@ -173,7 +173,7 @@ public class Parsed {
 
 
 	public String getTableName(String alia) {
-		if (SqlStringUtil.isNullOrEmpty(alia))
+		if (SqliStringUtil.isNullOrEmpty(alia))
 			return tableName;
 		if (! alia.toLowerCase().equals(getClzName().toLowerCase()))
 			return alia;

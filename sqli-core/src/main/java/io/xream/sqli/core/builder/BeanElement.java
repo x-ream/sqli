@@ -18,7 +18,7 @@ package io.xream.sqli.core.builder;
 
 
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 
 import java.lang.reflect.Method;
@@ -47,7 +47,7 @@ public class BeanElement {
 	private String getPrefix() {
 		try {
 			String prefix = Parser.mappingPrefix;
-			if (SqlStringUtil.isNotNull(prefix))
+			if (SqliStringUtil.isNotNull(prefix))
 				return prefix;
 		} catch (Exception e) {
 

@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.web.Direction;
 import io.xream.sqli.common.web.Paged;
 import io.xream.sqli.common.web.Sort;
@@ -46,7 +46,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     }
 
     public CriteriaBuilder forceIndex(String indexName) {
-        if (SqlStringUtil.isNullOrEmpty(indexName))
+        if (SqliStringUtil.isNullOrEmpty(indexName))
             return this;
         this.criteria.setForceIndex(indexName);
         return this;
@@ -83,7 +83,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         @Override
         public PageBuilder sort(String orderBy, Direction direction) {
-            if (SqlStringUtil.isNullOrEmpty(orderBy))
+            if (SqliStringUtil.isNullOrEmpty(orderBy))
                 return this;
             List<Sort> sortList = criteria.getSortList();
             if (sortList == null) {
@@ -211,7 +211,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         }
 
         public ResultMappedBuilder resultKey(String resultKey) {
-            if (SqlStringUtil.isNullOrEmpty(resultKey))
+            if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             get().getResultKeyList().add(resultKey);
             return this;
@@ -225,7 +225,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
          *
          */
         public ResultMappedBuilder resultKey(String resultKey, String alia) {
-            if (SqlStringUtil.isNullOrEmpty(resultKey))
+            if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
 //            Assert.notNull(alia,"resultKeyAssignedAlia(), alia can not null");
             get().getResultKeyAssignedAliaList().add(new KV(resultKey,alia));
@@ -242,7 +242,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
          * @param keys           test.createAt, test.endAt
          */
         public ResultMappedBuilder resultKeyFunction(ResultKeyAlia functionAlia_wrap, String functionScript, String... keys) {
-            if (SqlStringUtil.isNullOrEmpty(functionScript) || keys == null)
+            if (SqliStringUtil.isNullOrEmpty(functionScript) || keys == null)
                 return this;
 //            Assert.notNull(functionAlia_wrap, "function no alia");
 //            Assert.notNull(functionAlia_wrap.getPropertyOrAlia());
@@ -260,7 +260,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         }
 
         public ResultMappedBuilder sourceScript(String sourceScript) {
-            if (SqlStringUtil.isNullOrEmpty(sourceScript))
+            if (SqliStringUtil.isNullOrEmpty(sourceScript))
                 return this;
             get().setSourceScript(sourceScript);
             return this;

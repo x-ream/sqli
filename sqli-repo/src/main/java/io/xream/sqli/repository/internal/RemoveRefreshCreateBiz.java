@@ -18,7 +18,7 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.JsonWrapper;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.core.builder.Parser;
@@ -60,7 +60,7 @@ public final class RemoveRefreshCreateBiz {
                 if (in == null)
                     continue;
                 String strId = String.valueOf(in);
-                if (SqlStringUtil.isNullOrEmpty(strId))
+                if (SqliStringUtil.isNullOrEmpty(strId))
                     continue;
                 inList.add(strId);
             }

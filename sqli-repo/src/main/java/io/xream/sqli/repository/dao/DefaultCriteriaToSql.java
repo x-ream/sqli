@@ -19,7 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.JsonWrapper;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.web.Direction;
 import io.xream.sqli.common.web.Sort;
 import io.xream.sqli.core.builder.*;
@@ -132,7 +132,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
         String sourceScript = refreshCondition.getSourceScript();
-        if (SqlStringUtil.isNullOrEmpty(sourceScript))
+        if (SqliStringUtil.isNullOrEmpty(sourceScript))
             return parsed.getTableName();
 
         parseAliaFromRefresh(refreshCondition);
@@ -229,7 +229,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
                     TimestampSupport.testNumberValueToDate(be.clz, x);
 
-                    if (SqlStringUtil.isNullOrEmpty(String.valueOf(x.getValue())) || BaseTypeFilter.isBaseType_0(key, x.getValue(), parsed)) {
+                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(x.getValue())) || BaseTypeFilter.isBaseType_0(key, x.getValue(), parsed)) {
                         continue;
                     }
 
@@ -455,7 +455,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
         }
 
         String script = column.toString();
-        if (SqlStringUtil.isNullOrEmpty(script)) {
+        if (SqliStringUtil.isNullOrEmpty(script)) {
             throw new CriteriaSyntaxException("Suggest API: find(Criteria criteria), no any resultKey for ResultMappedCriteria");
         }
         criteria.setCustomedResultKey(column.toString());
@@ -472,7 +472,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
             Criteria.ResultMappedCriteria rm = (Criteria.ResultMappedCriteria) criteria;
 
             String groupByS = rm.getGroupBy();
-            if (SqlStringUtil.isNullOrEmpty(groupByS))
+            if (SqliStringUtil.isNullOrEmpty(groupByS))
                 return;
 
             sb.sbCondition.append(ConjunctionAndOtherScript.GROUP_BY.sql());
@@ -483,7 +483,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
             for (String groupBy : arr) {
                 groupBy = groupBy.trim();
                 sb.conditionSet.add(groupBy);
-                if (SqlStringUtil.isNotNull(groupBy)) {
+                if (SqliStringUtil.isNotNull(groupBy)) {
                     String mapper = mapping(groupBy, criteria);
                     sb.sbCondition.append(mapper);
                     i++;
@@ -585,7 +585,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
             for (String key : conditionSet) {
                 if (key == null)
                     continue;
-                if (SqlStringUtil.isNullOrEmpty(sourceScript.getAlia())) {
+                if (SqliStringUtil.isNullOrEmpty(sourceScript.getAlia())) {
                     if (key.contains(sourceScript.getSource() + ".")) {
                         sourceScript.used();
                         break;
@@ -660,7 +660,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
     }
 
     private void forceIndex(SqlBuilder sqlBuilder, Criteria criteria) {
-        if (SqlStringUtil.isNullOrEmpty(criteria.getForceIndex()))
+        if (SqliStringUtil.isNullOrEmpty(criteria.getForceIndex()))
             return;
         sqlBuilder.sbCondition.append("FORCE INDEX(" + criteria.getForceIndex() + ")");
         sqlBuilder.conditionSet.add(criteria.getForceIndex());

@@ -20,7 +20,7 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.common.util.LoggerProxy;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.web.Page;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.InCondition;
@@ -301,7 +301,7 @@ public class DaoImpl implements Dao {
         Parsed parsed = Parser.get(clz);
 
         String inProperty = inCondition.getProperty();
-        if (SqlStringUtil.isNullOrEmpty(inProperty)) {
+        if (SqliStringUtil.isNullOrEmpty(inProperty)) {
             inProperty = parsed.getKey(X.KEY_ONE);
         }
 

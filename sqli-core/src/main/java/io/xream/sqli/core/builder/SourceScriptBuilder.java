@@ -17,7 +17,7 @@
 package io.xream.sqli.core.builder;
 
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,7 +170,7 @@ public interface SourceScriptBuilder {
         String[] arr = sourceScript.split(" ");
         List<String> list = new ArrayList<>();
         for (String str : arr) {
-            if (SqlStringUtil.isNotNull(str))
+            if (SqliStringUtil.isNotNull(str))
                 list.add(str);
         }
         return list;

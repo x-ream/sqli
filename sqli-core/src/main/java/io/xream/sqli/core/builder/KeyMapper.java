@@ -1,7 +1,7 @@
 package io.xream.sqli.core.builder;
 
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
 import io.xream.sqli.util.BeanUtilX;
 
@@ -27,7 +27,7 @@ public interface KeyMapper {
                 throw new RuntimeException("Entity Bean Not Exist: " + BeanUtil.getByFirstUpper(key));
 
             String p = parsed.getMapper(property);
-            if (SqlStringUtil.isNullOrEmpty(p)) {
+            if (SqliStringUtil.isNullOrEmpty(p)) {
                 return ((Criteria.ResultMappedCriteria) criteria).getResultKeyAliaMap().get(key);
             }
 

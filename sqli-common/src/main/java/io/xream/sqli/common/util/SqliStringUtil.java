@@ -14,34 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.cache;
-
-
-import io.xream.sqli.common.util.SqliStringUtil;
+package io.xream.sqli.common.util;
 
 /**
  * @Author Sim
  */
-public final class L2CacheFilter {
+public class SqliStringUtil {
 
-    private static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+	private SqliStringUtil(){}
+	
+	public static boolean isNotNull(String str){
+		return !isNullOrEmpty(str);
+	}
+	
+	public static boolean isNullOrEmpty(String str){
+		return str == null || str.equals("") || str.equals("null") || str.equals("NaN") || str.equals("undefined");
+	}
 
-    /**
-     * partialKey maybe is userId
-     * @param partialKey
-     */
-    public static void filter(Object partialKey) {
-        if (SqliStringUtil.isNullOrEmpty(partialKey))
-            return;
-        threadLocal.set(partialKey);
-    }
+	public static boolean isNullOrEmpty(Object obj) {
 
-    protected static Object get() {
-        return threadLocal.get();
-    }
-
-    protected static void close() {
-        threadLocal.remove();
-    }
+		if (obj == null)
+			return true;
+		Class<?> clz = obj.getClass();
+		if (clz == String.class) {
+			return isNullOrEmpty(obj.toString());
+		}
+		return false;
+	}
 
 }

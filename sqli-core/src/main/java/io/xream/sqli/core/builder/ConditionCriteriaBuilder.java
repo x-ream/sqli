@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class ConditionCriteriaBuilder {
     }
 
     public ConditionCriteriaBuilder like(String property, String value){
-        if (SqlStringUtil.isNullOrEmpty(value)) {
+        if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
         }
@@ -89,7 +89,7 @@ public class ConditionCriteriaBuilder {
     }
 
     public ConditionCriteriaBuilder likeRight(String property, String value){
-        if (SqlStringUtil.isNullOrEmpty(value)) {
+        if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
         }
@@ -98,7 +98,7 @@ public class ConditionCriteriaBuilder {
     }
 
     public ConditionCriteriaBuilder notLike(String property, String value){
-        if (SqlStringUtil.isNullOrEmpty(value)) {
+        if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
         }
@@ -125,7 +125,7 @@ public class ConditionCriteriaBuilder {
 
     public ConditionCriteriaBuilder x(String sql, Object... values){
 
-        if (SqlStringUtil.isNullOrEmpty(sql)){
+        if (SqliStringUtil.isNullOrEmpty(sql)){
             isOr();
             return instance;
         }
@@ -184,7 +184,7 @@ public class ConditionCriteriaBuilder {
             isOr();
             return instance;
         }
-        if (SqlStringUtil.isNullOrEmpty(value)){
+        if (SqliStringUtil.isNullOrEmpty(value)){
             isOr();
             return instance;
         }
@@ -239,7 +239,7 @@ public class ConditionCriteriaBuilder {
     }
 
     private ConditionCriteriaBuilder doNull(PredicateAndOtherScript p, String property){
-        if (SqlStringUtil.isNullOrEmpty(property)){
+        if (SqliStringUtil.isNullOrEmpty(property)){
             isOr();
             return instance;
         }

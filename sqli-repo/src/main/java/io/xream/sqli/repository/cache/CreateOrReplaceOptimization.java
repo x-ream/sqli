@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.repository.cache;
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.builder.Parsed;
 import io.xream.sqli.util.BeanUtilX;
 
@@ -28,7 +28,7 @@ public interface CreateOrReplaceOptimization {
     static Object tryToGetId(Object obj, Parsed parsed){
         Object id = BeanUtilX.tryToGetId(obj, parsed);
         String idStr = String.valueOf(id);
-        if (SqlStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
+        if (SqliStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
             throw new IllegalArgumentException("createOrReplace(obj),  obj keyOne = " + id);
         return id;
     }

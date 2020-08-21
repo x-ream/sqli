@@ -75,7 +75,7 @@ public class BeanUtil {
     }
 
     public static String getByFirstLower(String str) {
-        if (SqlStringUtil.isNullOrEmpty(str))
+        if (SqliStringUtil.isNullOrEmpty(str))
             return str;
 
         String a = str.substring(0, 1);
@@ -86,7 +86,7 @@ public class BeanUtil {
     }
 
     public static String getByFirstUpper(String str) {
-        if (SqlStringUtil.isNullOrEmpty(str))
+        if (SqliStringUtil.isNullOrEmpty(str))
             return str;
 
         String a = str.substring(0, 1);
@@ -182,11 +182,6 @@ public class BeanUtil {
             }
         }
         return false;
-    }
-
-    public static boolean isEnumConstant(Class<? extends Enum> clz, String value) {
-        Enum.valueOf(clz, (String)value);
-        return true;
     }
 
 }

@@ -18,7 +18,7 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryManagement;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.builder.Parser;
 import io.xream.sqli.repository.api.ManuRepository;
 import io.xream.sqli.repository.mapper.Mapper;
@@ -51,13 +51,13 @@ public class HealthChecker {
                 Class clz = repository.getClz();
                 String createSql = MapperFactory.tryToCreate(clz);
                 String test = MapperFactory.getSql(clz, Mapper.CREATE);
-                if (SqlStringUtil.isNullOrEmpty(test)) {
+                if (SqliStringUtil.isNullOrEmpty(test)) {
                     logger.info("Failed to start x7-jdbc-template-plus, check Bean: {}",clz);
                     System.exit(1);
                 }
 
                 if (DbType.value.equals(DbType.MYSQL)) {
-                    if (SqlStringUtil.isNotNull(createSql)) {
+                    if (SqliStringUtil.isNotNull(createSql)) {
                         ManuRepository.execute(clz.newInstance(), createSql);
                     }
                 }

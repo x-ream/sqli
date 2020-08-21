@@ -18,7 +18,7 @@ package io.xream.sqli.core.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.web.Paged;
 import io.xream.sqli.common.web.Sort;
 import io.xream.sqli.util.BeanUtilX;
@@ -94,7 +94,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		Iterator<Sort> ite = sortList.iterator();
 		while (ite.hasNext()){
 			Sort sort = ite.next();
-			if (SqlStringUtil.isNullOrEmpty(sort.getOrderBy())) {
+			if (SqliStringUtil.isNullOrEmpty(sort.getOrderBy())) {
 				ite.remove();
 			}
 		}
@@ -106,7 +106,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 	}
 
 	public void setCustomedResultKey(String str){
-		if (SqlStringUtil.isNullOrEmpty(str))
+		if (SqliStringUtil.isNullOrEmpty(str))
 			this.customedResultKey = SqlScript.STAR;
 		else
 			this.customedResultKey = str;
@@ -263,7 +263,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		}
 
 		public void setGroupBy(String groupBy) {
-			if (SqlStringUtil.isNullOrEmpty(this.groupBy)){
+			if (SqliStringUtil.isNullOrEmpty(this.groupBy)){
 				this.groupBy = groupBy;
 				return;
 			}

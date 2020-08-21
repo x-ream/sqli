@@ -18,7 +18,7 @@ package io.xream.sqli.core.builder;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.repository.ReflectionCache;
 import io.xream.sqli.util.BeanUtilX;
 import org.slf4j.Logger;
@@ -80,13 +80,13 @@ public class Parser {
         List<BeanElement> elementList = BeanUtilX.getElementList(clz);
         Parsed parsed = new Parsed(clz);
         for (BeanElement element : elementList) {
-            if (SqlStringUtil.isNullOrEmpty(element.getMapper())) {
+            if (SqliStringUtil.isNullOrEmpty(element.getMapper())) {
                 element.initMaper();
             }
         }
         boolean isNoSpec = true;
         try {
-            if (SqlStringUtil.isNotNull(mappingSpec)) {
+            if (SqliStringUtil.isNotNull(mappingSpec)) {
                 isNoSpec = false;
             } else {
                 for (BeanElement element : elementList) {
@@ -117,7 +117,7 @@ public class Parser {
                 String name = BeanUtil.getByFirstLower(clz.getSimpleName());
                 String mapper = BeanUtilX.getMapper(name);
                 String prefix = mappingPrefix;
-                if (SqlStringUtil.isNotNull(prefix)) {
+                if (SqliStringUtil.isNotNull(prefix)) {
                     if (!prefix.endsWith("_")) {
                         prefix += "_";
                     }
@@ -131,7 +131,7 @@ public class Parser {
             String name = BeanUtil.getByFirstLower(clz.getSimpleName());
             String mapper = BeanUtilX.getMapper(name);
             String prefix = mappingPrefix;
-            if (SqlStringUtil.isNotNull(prefix)) {
+            if (SqliStringUtil.isNotNull(prefix)) {
                 if (!prefix.endsWith("_")) {
                     prefix += "_";
                 }

@@ -19,7 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.builder.condition.RefreshCondition;
@@ -159,7 +159,7 @@ public class SqlUtil {
 
             for (int j = 0; j < length; j++) {
                 Object value = inList.get(j);
-                if (value == null || SqlStringUtil.isNullOrEmpty(value.toString()))
+                if (value == null || SqliStringUtil.isNullOrEmpty(value.toString()))
                     continue;
                 value = SqlUtil.filter(value.toString());
                 sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'

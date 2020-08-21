@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.core.builder;
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaTo
     }
 
     public String sql() {
-        if (SqlStringUtil.isNullOrEmpty(source))
+        if (SqliStringUtil.isNullOrEmpty(source))
             return "";
         if (joinType == null || joinType == JoinType.MAIN) {
             if (alia != null && !alia.equals(source))
@@ -119,7 +119,7 @@ public class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaTo
                 sb.append(SqlScript.ON);
                 String aliaName = alia == null ? source : alia;
                 String key = on.getKey();
-                if (SqlStringUtil.isNotNull(key)) {
+                if (SqliStringUtil.isNotNull(key)) {
                     sb.append(on.getJoinFrom().getAlia()).append(".").append(on.getJoinFrom().getKey())
                             .append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
                             .append(aliaName)

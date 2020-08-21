@@ -19,7 +19,7 @@ package io.xream.sqli.dialect;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.JsonWrapper;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.core.builder.BeanElement;
 import io.xream.sqli.core.builder.Criteria;
@@ -118,7 +118,7 @@ public class OracleDialect implements Dialect {
                 str = obj.toString();
             }
 
-            if (SqlStringUtil.isNullOrEmpty(str))
+            if (SqliStringUtil.isNullOrEmpty(str))
                 return null;
 
             str = str.trim();
@@ -197,7 +197,7 @@ public class OracleDialect implements Dialect {
             String alia = arr[0];
             String p = arr[1];
             String clzName = aliaMap.get(alia);
-            if (SqlStringUtil.isNullOrEmpty(clzName)) {
+            if (SqliStringUtil.isNullOrEmpty(clzName)) {
                 clzName = alia;
             }
             return clzName + "." + p;

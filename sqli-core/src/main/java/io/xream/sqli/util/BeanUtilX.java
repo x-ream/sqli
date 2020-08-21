@@ -18,7 +18,7 @@ package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.core.builder.*;
 import io.xream.sqli.core.repository.ReflectionCache;
 import io.xream.sqli.core.repository.SqlFieldType;
@@ -350,7 +350,7 @@ public class BeanUtilX extends BeanUtil {
 
             X.Mapping mapping = (X.Mapping) f.getAnnotation(X.Mapping.class);
             if (mapping != null) {
-                if (SqlStringUtil.isNotNull(mapping.value()))
+                if (SqliStringUtil.isNotNull(mapping.value()))
                     ele.mapper = mapping.value();
             }
 
@@ -516,7 +516,7 @@ public class BeanUtilX extends BeanUtil {
     public static String getClzName(String alia, CriteriaCondition criteria) {
         if (criteria.getAliaMap() != null) {
             String a = criteria.getAliaMap().get(alia);
-            if (SqlStringUtil.isNotNull(a))
+            if (SqliStringUtil.isNotNull(a))
                 return a;
         }
         return alia;
@@ -636,7 +636,7 @@ public class BeanUtilX extends BeanUtil {
 
         try {
             String spec = Parser.mappingSpec;
-            if (SqlStringUtil.isNotNull(spec)) {
+            if (SqliStringUtil.isNotNull(spec)) {
                 char[] arr = property.toCharArray();
                 int length = arr.length;
                 List<String> list = new ArrayList<String>();
@@ -645,7 +645,7 @@ public class BeanUtilX extends BeanUtil {
                     char c = arr[i];
                     if (c > min && c < max) {
                         String ts = temp.toString();
-                        if (SqlStringUtil.isNotNull(ts)) {
+                        if (SqliStringUtil.isNotNull(ts)) {
                             list.add(temp.toString());
                         }
                         temp = new StringBuilder();

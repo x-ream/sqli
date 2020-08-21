@@ -17,7 +17,7 @@
 package io.xream.sqli.core.builder;
 
 
-import io.xream.sqli.common.util.SqlStringUtil;
+import io.xream.sqli.common.util.SqliStringUtil;
 
 /**
  * @Author Sim
@@ -57,7 +57,7 @@ public class ResultKeyAlia {
     }
 
     public String getAlia(){
-        if (SqlStringUtil.isNullOrEmpty(objectOrAlia))
+        if (SqliStringUtil.isNullOrEmpty(objectOrAlia))
             return propertyOrAlia;
         return objectOrAlia + "." + propertyOrAlia;
     }
