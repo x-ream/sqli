@@ -24,10 +24,10 @@ import io.xream.sqli.core.builder.*;
  */
 public class BaseTypeFilter {
 
-    public static boolean beanWithoutBaseType = false;
+    public static boolean baseTypeSupported = false;
 
     public static boolean isBaseType_0(String key, Object v, CriteriaCondition criteria) {
-        if (beanWithoutBaseType)
+        if (! baseTypeSupported)
             return false;
         String[] arr = key.split("\\.");
         String alia = arr[0];
@@ -41,7 +41,7 @@ public class BaseTypeFilter {
 
     public static boolean isBaseType_0(String property, Object v, Parsed parsed) {
 
-        if (beanWithoutBaseType)
+        if (! baseTypeSupported)
             return false;
 
         if (v instanceof String)
