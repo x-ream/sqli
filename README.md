@@ -4,10 +4,11 @@
     sqli/sqli-core
     sqli/sqli-dialect
     sqli/sqli-repo
+
    
 ## 二级缓存 
 
-    注解使用
+    在x7项目里实现，spring boot的注解实现或使用的模板如下:
         @EnableX7L2Caching
         public class App{
             main()
@@ -53,6 +54,8 @@
 ##  sqli-repo 
 
 ####    使用方法
+    在x7项目里实现，spring boot的注解实现或使用的模板如下:
+    
     @EnableX7Repostory  // code at x7/x7-repo/x7-spring-boot-starter
     public class App{
         main()
@@ -62,14 +65,14 @@
     public interface FooRepository extends BaseRepository<Foo> {}
     
 ####    实体类注解
-    @X.Key //主键, 必须
-    private Long id;
-    
-    @X.Mapping("t_dog_demo") // 可选, 默认表名是 dog
-    public class Dog {
-    
-    @X.Mapping("dog_name") // 可选, 默认列名是 name
-    private String name;
+        
+        @X.Mapping("t_foo")//默认是foo
+        public class Foo {
+            @X.Key
+            private Long id;
+            @X.Mapping("full_name") //默认是fullName
+            private String fullName;
+        }
     
     
 ####    BaseRepository API
