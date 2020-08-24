@@ -17,12 +17,14 @@
 package io.xream.sqli.repository.cache;
 
 
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.common.util.LoggerProxy;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.core.cache.L2CacheResolver;
+import io.xream.sqli.builder.*;
+import io.xream.sqli.cache.L2CacheResolver;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
@@ -296,17 +298,17 @@ public final class CacheableRepository implements Repository, Manuable {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMappedCriteria resultMapped) {
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
         return dataTransform.find(resultMapped);
     }
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMappedCriteria resultMapped) {
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
         return dataTransform.list(resultMapped);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped){
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
         return dataTransform.listPlainValue(clzz,resultMapped);
     }
 
@@ -322,8 +324,8 @@ public final class CacheableRepository implements Repository, Manuable {
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String, Object>> handler) {
-        this.dataTransform.findToHandle(resultMappedCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler) {
+        this.dataTransform.findToHandle(ResultMapCriteria,handler);
     }
 
 }

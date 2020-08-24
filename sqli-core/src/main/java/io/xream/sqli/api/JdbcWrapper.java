@@ -16,8 +16,7 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.RowHandler;
+import io.xream.sqli.builder.Criteria;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +43,7 @@ public interface JdbcWrapper {
 
     <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
 
-    List<Map<String, Object>> queryForMapList(String sql, Criteria.ResultMappedCriteria resultMapped, Dialect dialect);
+    List<Map<String, Object>> queryForMapList(String sql, Criteria.ResultMapCriteria resultMapped, Dialect dialect);
 
-    <T> void queryForMapToHandle(Class clzz, String sql, Collection<Object> valueList, Dialect dialect, Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<T> handler);
+    <T> void queryForMapToHandle(Class clzz, String sql, Collection<Object> valueList, Dialect dialect, Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<T> handler);
 }

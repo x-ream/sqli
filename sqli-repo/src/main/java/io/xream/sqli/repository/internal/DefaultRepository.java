@@ -21,13 +21,14 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.IdGenerator;
 import io.xream.sqli.api.RepositoryManagement;
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
@@ -134,12 +135,12 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
 
         if (unSafe) {
             String key = parsed.getKey(X.KEY_ONE);
-            List<io.xream.sqli.core.builder.X> listX = refreshCondition.getListX();
-            for (io.xream.sqli.core.builder.X x : listX) {
-                String k = x.getKey();
+            List<BuildingBlock> buildingBlockList = refreshCondition.getBuildingBlockList();
+            for (BuildingBlock buildingBlock : buildingBlockList) {
+                String k = buildingBlock.getKey();
                 boolean b = k.contains(".") ? k.endsWith("."+key) : key.equals(k);
                 if (b) {
-                    Object value = x.getValue();
+                    Object value = buildingBlock.getValue();
                     if (Objects.nonNull(value) && !value.toString().equals("0")) {
                         unSafe = false;//Safe
                         break;
@@ -279,8 +280,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     @Override
     public Page<T> find(Criteria criteria) {
 
-        if (criteria instanceof Criteria.ResultMappedCriteria)
-            throw new CriteriaSyntaxException("Codeing Exception: maybe {Criteria.ResultMappedCriteria criteria = builder.get();} instead of {Criteria criteria = builder.get();}");
+        if (criteria instanceof Criteria.ResultMapCriteria)
+            throw new CriteriaSyntaxException("Codeing Exception: maybe {Criteria.ResultMapCriteria criteria = builder.build();} instead of {Criteria criteria = builder.build();}");
         criteria.setClz(this.clz);
         criteria.setParsed(Parser.get(this.clz));
         return repository.find(criteria);
@@ -288,7 +289,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
 
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMappedCriteria resultMapped) {
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
         resultMapped.setClz(this.clz);
         resultMapped.setParsed(Parser.get(this.clz));
         return repository.find(resultMapped);
@@ -296,14 +297,14 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
 
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMappedCriteria resultMapped) {
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
         resultMapped.setClz(this.clz);
         resultMapped.setParsed(Parser.get(this.clz));
         return repository.list(resultMapped);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped){
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
         resultMapped.setClz(this.clz);
         resultMapped.setParsed(Parser.get(this.clz));
         return repository.listPlainValue(clzz,resultMapped);
@@ -312,8 +313,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     @Override
     public List<T> list(Criteria criteria) {
 
-        if (criteria instanceof Criteria.ResultMappedCriteria)
-            throw new CriteriaSyntaxException("Codeing Exception: mraybe {Criteria.ResultMappedCriteria criteria = builder.get();} instead of {Criteria criteria = builder.get();}");
+        if (criteria instanceof Criteria.ResultMapCriteria)
+            throw new CriteriaSyntaxException("Codeing Exception: mraybe {Criteria.ResultMapCriteria criteria = builder.build();} instead of {Criteria criteria = builder.build();}");
         criteria.setClz(this.clz);
         criteria.setParsed(Parser.get(this.clz));
         return repository.list(criteria);
@@ -328,10 +329,10 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String,Object>> handler) {
-        resultMappedCriteria.setClz(this.clz);
-        resultMappedCriteria.setParsed(Parser.get(this.clz));
-        this.repository.findToHandle(resultMappedCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String,Object>> handler) {
+        ResultMapCriteria.setClz(this.clz);
+        ResultMapCriteria.setParsed(Parser.get(this.clz));
+        this.repository.findToHandle(ResultMapCriteria,handler);
     }
 
 }

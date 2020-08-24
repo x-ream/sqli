@@ -17,11 +17,10 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.RowHandler;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
-import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.RemoveRefreshCreate;
 
 import java.util.List;
 import java.util.Map;
@@ -102,11 +101,11 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     Page<T> find(Criteria CriteriaBuilder_build_get);
 
-    Page<Map<String, Object>> find(Criteria.ResultMappedCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
+    Page<Map<String, Object>> find(Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
 
-    List<Map<String, Object>> list(Criteria.ResultMappedCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
+    List<Map<String, Object>> list(Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
 
-    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
+    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
 
     List<T> list(Criteria CriteriaBuilder_build_get);
 
@@ -120,8 +119,8 @@ public interface BaseRepository<T> extends Typed<T> {
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param resultMappedCriteria
+     * @param ResultMapCriteria
      * @param handler
      */
-    void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String, Object>> handler);
+    void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
 }

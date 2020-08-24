@@ -17,11 +17,10 @@
 package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.SqliStringUtil;
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.repository.ReflectionCache;
-import io.xream.sqli.core.repository.SqlFieldType;
+import io.xream.sqli.parser.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -522,7 +521,7 @@ public class BeanUtilX extends BeanUtil {
         return alia;
     }
 
-    public static void aliaToClzzForMapResult(Criteria.ResultMappedCriteria resultMapped, List<Map<String, Object>> mapList) {
+    public static void aliaToClzzForMapResult(Criteria.ResultMapCriteria resultMapped, List<Map<String, Object>> mapList) {
         Map<String, String> aliaMap = resultMapped.getAliaMap();
 
         for (Map.Entry<String, String> entry : aliaMap.entrySet()) {
@@ -678,5 +677,19 @@ public class BeanUtilX extends BeanUtil {
 
         }
         return property;
+    }
+
+    public interface SqlFieldType {
+
+        String TEXT = "text";
+        String VARCHAR = "varchar";
+        String DATE = "timestamp";
+        String INT = "int";
+        String LONG = "bigint";
+        String BYTE = "tinyint";
+        String DOUBLE = "float";//float
+        String FLOAT = "float";//real
+        String DOUBLE_COMMON = "double";//float
+        String DECIMAL = "decimal";
     }
 }

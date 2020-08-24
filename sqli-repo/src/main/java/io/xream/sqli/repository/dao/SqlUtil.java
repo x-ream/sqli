@@ -18,12 +18,15 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.repository.mapper.DataObjectConverter;
 import io.xream.sqli.repository.util.SqlParserUtil;

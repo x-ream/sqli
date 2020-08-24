@@ -18,9 +18,9 @@ package io.xream.sqli.repository.api;
 
 import io.xream.sqli.api.QueryForCache;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.RowHandler;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.RefreshCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -81,16 +81,16 @@ public interface Repository extends QueryForCache {
 	 * @param resultMapped
 	 * 
 	 */
-	Page<Map<String,Object>> find(Criteria.ResultMappedCriteria resultMapped);
+	Page<Map<String,Object>> find(Criteria.ResultMapCriteria resultMapped);
 	/**
 	 * 
 	 * 不要通过WEB传来的参数调用此接口, 因为没有分页限制
 	 * @param resultMapped
 	 * 
 	 */
-	List<Map<String,Object>> list(Criteria.ResultMappedCriteria resultMapped);
+	List<Map<String,Object>> list(Criteria.ResultMapCriteria resultMapped);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped);
+	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped);
 
 	<T> List<T> list(Criteria criteria);
 
@@ -101,7 +101,7 @@ public interface Repository extends QueryForCache {
     <T> boolean refresh(T t);
 
 	<T> void findToHandle(Criteria criteria, RowHandler<T> handler);
-	void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
 
 	<T> List<T> listByClzz(Class<T> clzz);
 }

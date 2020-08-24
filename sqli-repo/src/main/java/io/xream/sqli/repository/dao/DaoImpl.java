@@ -19,13 +19,16 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.common.util.LoggerProxy;
 import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.*;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ExceptionTranslator;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.exception.TooManyResultsException;
@@ -319,7 +322,7 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMappedCriteria resultMapped) {
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
 
         Class clz = resultMapped.getClz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
@@ -335,7 +338,7 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMappedCriteria resultMapped) {
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
 
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
@@ -346,7 +349,7 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped){
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
 
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
@@ -384,7 +387,7 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMappedCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
+    public void findToHandle(Criteria.ResultMapCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
 
         Class clz = resultMapped.getClz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);

@@ -18,10 +18,10 @@ package io.xream.sqli.repository.transform;
 
 import io.xream.sqli.common.util.SqliExceptionUtil;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.RowHandler;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.dao.Dao;
 
@@ -115,17 +115,17 @@ public class SqlDataTransform implements DataTransform {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMappedCriteria resultMapped) {
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
         return this.dao.find(resultMapped);
     }
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMappedCriteria resultMapped) {
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
         return this.dao.list(resultMapped);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped){
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
         return this.dao.listPlainValue(clzz, resultMapped);
     }
 
@@ -141,8 +141,8 @@ public class SqlDataTransform implements DataTransform {
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String,Object>> handler) {
-        this.dao.findToHandle(resultMappedCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String,Object>> handler) {
+        this.dao.findToHandle(ResultMapCriteria,handler);
     }
 
     @Override

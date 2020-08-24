@@ -18,8 +18,8 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.common.util.SqliExceptionUtil;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.Parsed;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.transform.DataTransform;
 import org.slf4j.Logger;
@@ -81,15 +81,15 @@ public class DefaultTemporaryRepository implements TemporaryRepository {
     }
 
     @Override
-    public boolean findToCreate(Class clzz, Criteria.ResultMappedCriteria resultMappedCriteria) {
+    public boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
 
-        return doProxy("findToCreate(Class, ResultMappedCriteria)", () -> {
-            Parsed parsed = io.xream.sqli.core.builder.Parser.get(clzz.getSimpleName());
+        return doProxy("findToCreate(Class, ResultMapCriteria)", () -> {
+            Parsed parsed = io.xream.sqli.parser.Parser.get(clzz.getSimpleName());
             if (parsed == null) {
-                io.xream.sqli.core.builder.Parser.parse(clzz);
+                io.xream.sqli.parser.Parser.parse(clzz);
             }
 
-            return temporaryDao.findToCreate(clzz, resultMappedCriteria);
+            return temporaryDao.findToCreate(clzz, ResultMapCriteria);
         });
 
     }
@@ -108,9 +108,9 @@ public class DefaultTemporaryRepository implements TemporaryRepository {
     public boolean dropRepository(Class clzz) {
 
         return doProxy("dropRepository(Class)", () -> {
-            Parsed parsed = io.xream.sqli.core.builder.Parser.get(clzz.getSimpleName());
+            Parsed parsed = io.xream.sqli.parser.Parser.get(clzz.getSimpleName());
             if (parsed == null) {
-                parsed = io.xream.sqli.core.builder.Parser.get(clzz);
+                parsed = io.xream.sqli.parser.Parser.get(clzz);
             }
             String sql = "DROP TABLE " + parsed.getTableName();
             return temporaryDao.execute(sql);

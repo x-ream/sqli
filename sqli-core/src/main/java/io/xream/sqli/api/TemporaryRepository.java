@@ -16,14 +16,14 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.core.builder.Criteria;
+import io.xream.sqli.builder.Criteria;
 
 import java.util.List;
 
 /**
  * How to update with TemporaryRepository?
  * suggest:
- *      .findToHandle(resultMappedCriteria, map -> {
+ *      .findToHandle(ResultMapCriteria, map -> {
  *
  *             refresh(
  *                  RefreshCondition.build()....
@@ -37,7 +37,7 @@ public interface TemporaryRepository {
 
     boolean create(Object obj);
     boolean createBatch(List objList);
-    boolean findToCreate(Class clzz, Criteria.ResultMappedCriteria resultMappedCriteria);
+    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
 
     boolean createRepository(Class clzz);
     boolean dropRepository(Class clzz);

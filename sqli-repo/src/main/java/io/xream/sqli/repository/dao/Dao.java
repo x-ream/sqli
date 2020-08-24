@@ -17,10 +17,10 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.RowHandler;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.builder.condition.RefreshCondition;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.repository.api.KeyOne;
 
 import java.util.List;
@@ -53,11 +53,11 @@ public interface Dao {
 	
 	<T> List<T> in(InCondition inCondition);
 	
-	Page<Map<String, Object>> find(Criteria.ResultMappedCriteria resultMapped);
+	Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped);
 
-	List<Map<String,Object>> list(Criteria.ResultMappedCriteria resultMapped);
+	List<Map<String,Object>> list(Criteria.ResultMapCriteria resultMapped);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMappedCriteria resultMapped);
+	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped);
 
 	<T> Page<T> find(Criteria criteria);
 
@@ -71,5 +71,5 @@ public interface Dao {
     <T> boolean refresh(T t);
 
 	<T> void findToHandle(Criteria criteria, RowHandler<T> handler);
-	void findToHandle(Criteria.ResultMappedCriteria resultMappedCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
 }

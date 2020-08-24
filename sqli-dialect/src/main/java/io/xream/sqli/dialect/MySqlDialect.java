@@ -19,9 +19,9 @@ package io.xream.sqli.dialect;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.JsonWrapper;
-import io.xream.sqli.core.builder.BeanElement;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.SqlScript;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.SqlScript;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -151,7 +151,7 @@ public class MySqlDialect implements Dialect {
 
 
     @Override
-    public String resultKeyAlian(String mapper, Criteria.ResultMappedCriteria criteria) {
+    public String resultKeyAlian(String mapper, Criteria.ResultMapCriteria criteria) {
 
         if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
             Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();

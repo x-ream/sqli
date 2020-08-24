@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.cache;
 
 import io.xream.sqli.common.util.SqliStringUtil;
-import io.xream.sqli.core.builder.Parsed;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtilX;
 
 /**

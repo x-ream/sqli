@@ -20,9 +20,9 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
-import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.core.builder.condition.RemoveRefreshCreate;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
+import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Repository;
 

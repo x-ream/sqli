@@ -17,8 +17,8 @@
 package io.xream.sqli.api;
 
 
-import io.xream.sqli.core.builder.BeanElement;
-import io.xream.sqli.core.builder.Criteria;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.builder.Criteria;
 
 import java.util.Collection;
 import java.util.Map;
@@ -48,7 +48,7 @@ public interface Dialect {
 
     Object filterValue(Object value);
 
-    String resultKeyAlian(String mapper, Criteria.ResultMappedCriteria criteria);
+    String resultKeyAlian(String mapper, Criteria.ResultMapCriteria criteria);
 
     Object[] toArr(Collection<Object> list);
 

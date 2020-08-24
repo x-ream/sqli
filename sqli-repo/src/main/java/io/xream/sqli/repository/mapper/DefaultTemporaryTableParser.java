@@ -20,9 +20,9 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.core.builder.BeanElement;
-import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.builder.Parser;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.util.SqlParserUtil;
 
 import java.util.ArrayList;

@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.repository.cache;
 
-import io.xream.sqli.core.builder.Parsed;
-import io.xream.sqli.core.builder.Parser;
-import io.xream.sqli.core.builder.condition.InCondition;
-import io.xream.sqli.core.filter.BaseTypeFilter;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.filter.BaseTypeFilter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,9 +21,9 @@ import io.xream.sqli.common.util.BeanUtil;
 import io.xream.sqli.common.util.JsonWrapper;
 import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.common.util.SqliExceptionUtil;
-import io.xream.sqli.core.builder.BeanElement;
-import io.xream.sqli.core.builder.Criteria;
-import io.xream.sqli.core.builder.SqlScript;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.exception.NotSupportedException;
 
 import java.io.Reader;
@@ -208,7 +208,7 @@ public class OracleDialect implements Dialect {
     }
 
     @Override
-    public String resultKeyAlian(String mapper, Criteria.ResultMappedCriteria criteria) {
+    public String resultKeyAlian(String mapper, Criteria.ResultMapCriteria criteria) {
 
         if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
             Map<String, String> aliaMap = criteria.getResultKeyAliaMap();

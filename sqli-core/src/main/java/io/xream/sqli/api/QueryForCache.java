@@ -1,6 +1,6 @@
 package io.xream.sqli.api;
 
-import io.xream.sqli.core.builder.condition.InCondition;
+import io.xream.sqli.builder.InCondition;
 
 import java.util.List;
 

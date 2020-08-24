@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.page.Page;
-import io.xream.sqli.core.builder.Criteria;
+import io.xream.sqli.builder.Criteria;
 
 import java.util.List;
 import java.util.concurrent.Callable;

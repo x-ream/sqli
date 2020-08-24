@@ -29,16 +29,16 @@
         
     不含二级缓存的BaseRepository的API:
         1. list()
-        2. find(ResultMappedCriteria)
-        3. list(ResultMappedCriteria)
-        4. listPlainValue(ResultMappedCriteria)
+        2. find(ResultMapCriteria)
+        3. list(ResultMapCriteria)
+        4. listPlainValue(ResultMapCriteria)
         
     以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
     会失去高速响应的效果，请务必关闭二级缓存. 
     如果需要返回很多条记录，需要自定义返回列, 请使用:
-        find(ResultMappedCriteria)
-        list(ResultMappedCriteria)
-        listPlainValue(ResultMappedCriteria)
+        find(ResultMapCriteria)
+        list(ResultMapCriteria)
+        listPlainValue(ResultMapCriteria)
         
     用户级的过滤
     {
@@ -84,10 +84,10 @@
             5. get(Id) //根据主键查询记录
             6. getOne(Object) //数据库只有一条记录时，就返回那条记录
             7. list() //无条件查全表, 几乎没使用场景
-            8. find(ResultMappedCriteria) //标准拼接查询，返回Map形式记录，返回分页对象
-            9. list(ResultMappedCriteria) //标准拼接查询，返回Map形式记录，不返回分页对象
-            10. listPlainValue(Class<K>, ResultMappedCriteria)//返回没有key的单列数据列表 (结果优化1)
-            11. findToHandle(ResultMappedCriteria, RowHandler<Map<String,Object>>) //流处理API
+            8. find(ResultMapCriteria) //标准拼接查询，返回Map形式记录，返回分页对象
+            9. list(ResultMapCriteria) //标准拼接查询，返回Map形式记录，不返回分页对象
+            10. listPlainValue(Class<K>, ResultMapCriteria)//返回没有key的单列数据列表 (结果优化1)
+            11. findToHandle(ResultMapCriteria, RowHandler<Map<String,Object>>) //流处理API
             12. creaet(Object) //插入一条
             13. createBatch(List<Object>) //批量插入
             14. refresh(RefreshCondition) //根据主键更新
@@ -98,26 +98,26 @@
             
 ####    标准拼接API
         CriteriaBuilder // 返回Criteria, 查出对象形式记录
-        CriteriaBuilder.ResultMappedBuilder //返回ResultMappedCriteria, 查出Map形式记录，支持连表查询
+        CriteriaBuilder.ResultMapBuilder //返回ResultMapCriteria, 查出Map形式记录，支持连表查询
         RefreshCondition //构建要更新的字段和条件
         
         代码片段:
             {
-                CriteriaBuilder builder = CriteriaBuilder.build(Order.class); 
+                CriteriaBuilder builder = CriteriaBuilder.builder(Order.class); 
                 builder.eq("userId",obj.getUserId()).eq("status","PAID");
                 Criteria criteria = builer.get();
                 orderRepository.find(criteria);
             }
         
             {
-                CriteriaBuilder.ResultMappedBuilder builder = CriteriaBuilder.buildResultMapped();
+                CriteriaBuilder.ResultMapBuilder builder = CriteriaBuilder.resultMapBuilder();
                 builder.resultKey("o.id);
                 builder.eq("o.status","PAID");
                 builder.beginSub().gt("o.createAt",obj.getStartTime()).lt("o.createAt",obj.getEndTime()).endSub();
                 builder.beginSub().eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()).endSub();
                 builder.sourceScript("FROM order o INNER JOIN orderItem i ON i.orderId = o.id");
                 builder.paged(obj);
-                Criteria.ResultMappedCriteria criteria = builder.get();
+                Criteria.ResultMapCriteria criteria = builder.build();
                 orderRepository.find(criteria);
             }
             
@@ -127,7 +127,7 @@
                 );
             }
         
-        条件构建API  (CriteriaBuilder | ResultMappedBuilder)
+        条件构建API  (CriteriaBuilder | ResultMapBuilder)
             1. and // AND 默认, 可省略，也可不省略
             2. or // OR
             3. eq // = (eq, 以及其它的API, 值为null，不会被拼接到SQL)
@@ -147,7 +147,7 @@
             17. beginSub // 左括号
             18. endSub // 右括号
 
-        MAP查询结果构建API  (ResultMappedBuilder)
+        MAP查询结果构建API  (ResultMapBuilder)
             19. distinct //去重
             20. reduce //归并计算
                     // .reduce(ReduceType.SUM, "dogTest.petId") 
@@ -159,14 +159,14 @@
                     // .resultKeyFunction(ResultKeyAlia.of("o","at"),"YEAR(?)","o.createAt")
             24. resultWithDottedKey //连表查询返回非JSON格式数据,map的key包含"."  (结果优化2)
            
-        连表构建API  (ResultMappedBuilder)
+        连表构建API  (ResultMapBuilder)
             25. sourceScript(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
             26. sourceScript("order").alia("o") //连表里的主表
             27. sourceScript().source("orderItem").alia("i").joinType(JoinType.INNER_JOIN)
                                               .on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             28.               .more().[1~18] // LEFT JOIN等, 更多条件
             
-        分页及排序API  (ResultMappedBuilder)
+        分页及排序API  (ResultMapBuilder)
             29. paged(PagedRo) //前端请求参数构建分页及排序; 或者服务端编程API[30]
             30. paged().ignoreTotalRows().page(1).rows(10).sort("o.id", Direction.DESC) 
                                            
@@ -182,7 +182,7 @@
             
         不支持项
             in(sql) // 和连表查询及二级缓存的设计有一定的冲突
-            x(function, ...values) // 建议业务设计避免需要函数计算的查询条件
+            buildingBlock(function, ...values) // 建议业务设计避免需要函数计算的查询条件
             union // 过于复杂
             
                 
