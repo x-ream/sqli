@@ -182,7 +182,6 @@
             
         不支持项
             in(sql) // 和连表查询及二级缓存的设计有一定的冲突
-            buildingBlock(function, ...values) // 建议业务设计避免需要函数计算的查询条件
             union // 过于复杂
             
                 
