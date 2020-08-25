@@ -17,7 +17,7 @@
  */
 package io.xream.sqli.parser;
 
-import io.xream.sqli.common.util.BeanUtil;
+import io.xream.sqli.util.BeanUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

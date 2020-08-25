@@ -1,6 +1,5 @@
 # sqli 简单的SQL 拼写接口框架
 
-    sqli/sqli-common
     sqli/sqli-core
     sqli/sqli-dialect
     sqli/sqli-repo

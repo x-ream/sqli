@@ -1,4 +1,4 @@
-package io.xream.sqli.common.util;
+package io.xream.sqli.util;
 
 import org.slf4j.Logger;
 

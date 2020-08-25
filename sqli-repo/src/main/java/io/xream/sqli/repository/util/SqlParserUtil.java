@@ -16,8 +16,8 @@
  */
 package io.xream.sqli.repository.util;
 
-import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.JsonWrapper;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 

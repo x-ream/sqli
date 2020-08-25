@@ -18,12 +18,11 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.JsonWrapper;
-import io.xream.sqli.common.util.SqliStringUtil;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.page.Direction;
 import io.xream.sqli.page.Sort;
-import io.xream.sqli.builder.*;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;

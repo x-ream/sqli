@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.repository.util;
 
-import io.xream.sqli.common.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.KV;

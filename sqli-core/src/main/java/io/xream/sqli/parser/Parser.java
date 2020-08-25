@@ -18,8 +18,8 @@ package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqliStringUtil;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

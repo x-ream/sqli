@@ -18,8 +18,6 @@ package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.SqliStringUtil;
 import io.xream.sqli.parser.*;
 
 import java.lang.reflect.Field;

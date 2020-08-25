@@ -19,9 +19,8 @@ package io.xream.sqli.repository.cache;
 
 import io.xream.sqli.api.RowHandler;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.common.util.LoggerProxy;
+import io.xream.sqli.util.LoggerProxy;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.builder.*;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

@@ -17,8 +17,8 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.common.util.BeanUtil;
-import io.xream.sqli.common.util.JsonWrapper;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.SqlScript;

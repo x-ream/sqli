@@ -17,7 +17,7 @@
 package io.xream.sqli.cache;
 
 
-import io.xream.sqli.common.util.SqliStringUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 /**
  * @Author Sim
