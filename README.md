@@ -20,20 +20,23 @@
     public class App{
         main()
     
-    代码片段:
+    更多代码片段:
+    
     @Repository
     public interface FooRepository extends BaseRepository<Foo> {}
+
+    @X.Mapping("t_foo")//默认是foo
+    public class Foo {
+        @X.Key
+        private Long id;
+        @X.Mapping("full_name") //默认是fullName
+        private String fullName;
+    }
     
-### 实体类注解
-        
-        @X.Mapping("t_foo")//默认是foo
-        public class Foo {
-            @X.Key
-            private Long id;
-            @X.Mapping("full_name") //默认是fullName
-            private String fullName;
-        }
-    
+    {
+        @Autowired
+        private TemporaryRepository temporaryRepository;
+    }
     
 ### BaseRepository API
     
@@ -56,12 +59,6 @@
             17. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
 
 ### TemporaryRepository API   
-
-            使用方法：
-                {
-                    @Autowired
-                    private TemporaryRepository temporaryRepository;
-                }
 
             1. creaet(Object) //插入一条
             2. createBatch(List<Object>) //批量插入, 适用于数据导入场景     
@@ -176,18 +173,18 @@
     如果需要开启二级缓存，所有对数据库的写操作项目都需要开启二级缓存。
     
     包含二级缓存的BaseRepository的API：
-        1. in(InCondition)
-        2. list(Object)
-        3. find(Criteria)
-        4. list(Criteria)
-        5. get(Id)
-        6. getOne(Object)
+            1. in(InCondition)
+            2. list(Object)
+            3. find(Criteria)
+            4. list(Criteria)
+            5. get(Id)
+            6. getOne(Object)
         
     不含二级缓存的BaseRepository的API:
-        1. list()
-        2. find(ResultMapCriteria)
-        3. list(ResultMapCriteria)
-        4. listPlainValue(ResultMapCriteria)
+            1. list()
+            2. find(ResultMapCriteria)
+            3. list(ResultMapCriteria)
+            4. listPlainValue(ResultMapCriteria)
         
     以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
     会失去高速响应的效果，请务必关闭二级缓存. 
