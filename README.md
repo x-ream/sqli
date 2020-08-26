@@ -11,7 +11,6 @@
     sqli/sqli-dialect
     sqli/sqli-repo
 
-   
 ## 二级缓存 
 
     在x7项目里实现，spring boot的注解实现或使用的模板如下:
@@ -101,7 +100,6 @@
             16. remove(Id)//根据主键删除
             17. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
 
-
 ### TemporaryRepository API   
 
             使用方法：
@@ -120,8 +118,8 @@
             提醒: 不建议基于临时表调用refresh(RefreshCondition), 建议尝试调用findToHandle(....)流处理API,
                   异步更新, 用fallback替代事务
             
-            
 ### 标准拼接API
+
         CriteriaBuilder // 返回Criteria, 查出对象形式记录
         CriteriaBuilder.ResultMapBuilder //返回ResultMapCriteria, 查出Map形式记录，支持连表查询
         RefreshCondition //构建要更新的字段和条件
