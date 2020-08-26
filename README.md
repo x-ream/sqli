@@ -1,6 +1,7 @@
 # sqli 简单的SQL 拼写接口框架
    [http://sqli.xream.io](http://sqli.xream.io) 
    
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f37e6bc92f394796afdef59c0d9f70e1)](https://app.codacy.com/gh/x-ream/sqli?utm_source=github.com&utm_medium=referral&utm_content=x-ream/sqli&utm_campaign=Badge_Grade_Dashboard)
 [![license](https://img.shields.io/github/license/x-ream/sqli.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![maven](https://img.shields.io/maven-central/v/io.xream.sqli/sqli-parent.svg)](https://search.maven.org/search?q=io.xream)
 
