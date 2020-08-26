@@ -14,17 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.exception;
 
-import io.xream.sqli.repository.api.ManuRepository;
-import io.xream.sqli.repository.api.Manuable;
+import java.io.Serializable;
 
 /**
  * @Author Sim
  */
-public class ManuRepositoryStarter {
+public class ProxyException extends RuntimeException implements Serializable {
 
-    public static void init(Manuable repository) {
-        ManuRepository.init(repository);
+    private String message;
+
+    public ProxyException(){
+
+    }
+
+    public ProxyException(String message){
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

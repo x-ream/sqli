@@ -17,14 +17,15 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.SqliStringUtil;
-import io.xream.sqli.util.SqliExceptionUtil;
-import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.exception.NotSupportedException;
+import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -103,7 +104,7 @@ public class OracleDialect implements Dialect {
                     reader.read(charArr);
                     str = new String(charArr);//FIXME UIF-8 ?
                 } catch (Exception e) {
-                    throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+                    throw new PersistenceException(SqliExceptionUtil.getMessage(e));
                 }finally{
                     if (reader !=null) {
                         try {
@@ -184,10 +185,8 @@ public class OracleDialect implements Dialect {
     @Override
     public String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) {
 
-        if (!resultKeyAliaMap.isEmpty()) {
-            if (resultKeyAliaMap.containsKey(mapper)) {
-                mapper = resultKeyAliaMap.get(mapper);
-            }
+        if (resultKeyAliaMap.containsKey(mapper)) {
+            mapper = resultKeyAliaMap.get(mapper);
         }
         if (aliaMap.isEmpty())
             return mapper;
@@ -230,7 +229,7 @@ public class OracleDialect implements Dialect {
             return timestamp;
         } else if (value instanceof Boolean) {
             Boolean b = (Boolean) value;
-            return b.booleanValue() == true ? 1 : 0;
+            return b.booleanValue() ? 1 : 0;
         }
         if (Objects.nonNull(value) && BeanUtil.isEnum(value.getClass()))
             return ((Enum) value).name();

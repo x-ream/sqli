@@ -17,6 +17,7 @@
 package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 
@@ -77,7 +78,7 @@ public class Parsed {
 
 		BeanElement be = elementMap.get(property);
 		if (be == null)
-			throw new RuntimeException(
+			throw new ParsingException(
 					"Not exist: "
 							+ property);
 		return be;
@@ -102,7 +103,7 @@ public class Parsed {
 	public Field getKeyField(int index){
 		Field field = keyFieldMap.get(index);
 		if (Objects.isNull(field))
-			throw new RuntimeException("No setting of PrimaryKey by @X.Key");
+			throw new ParsingException("No setting of PrimaryKey by @X.Key");
 		return field;
 	}
 
@@ -116,7 +117,7 @@ public class Parsed {
 	public String getKey(int index){
 		String key = keyMap.get(index);
 		if (Objects.isNull(key))
-			throw new RuntimeException("No setting of PrimaryKey by @X.Key");
+			throw new ParsingException("No setting of PrimaryKey by @X.Key");
 		return key;
 	}
 
@@ -124,7 +125,7 @@ public class Parsed {
 		Long keyOneValue = 0L;
 		Field keyOneField = getKeyField(X.KEY_ONE);
 		if (Objects.isNull(keyOneField))
-			throw new RuntimeException("No setting of PrimaryKey by @X.Key");
+			throw new ParsingException("No setting of PrimaryKey by @X.Key");
 		Class keyOneType = keyOneField.getType();
 		if (keyOneType != String.class) {
 			try {
@@ -133,7 +134,7 @@ public class Parsed {
 					keyOneValue = Long.valueOf(keyValue.toString());
 				}
 			}catch (Exception e){
-				throw new RuntimeException(e.getMessage());
+				throw new ParsingException(e.getMessage());
 			}
 		}
 		return keyOneValue;
@@ -175,7 +176,7 @@ public class Parsed {
 	public String getTableName(String alia) {
 		if (SqliStringUtil.isNullOrEmpty(alia))
 			return tableName;
-		if (! alia.toLowerCase().equals(getClzName().toLowerCase()))
+		if (! alia.equalsIgnoreCase(getClzName()))
 			return alia;
 		return tableName;
 	}

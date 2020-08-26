@@ -17,14 +17,15 @@
 package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.SqliStringUtil;
-import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.builder.RemoveRefreshCreate;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Repository;
+import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -75,7 +76,7 @@ public final class RemoveRefreshCreateBiz {
                 map.put(String.valueOf(id), t);
             }
         }catch (Exception e){
-            throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
 

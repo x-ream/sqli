@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -56,10 +57,9 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                     Object v = inList.get(0);
                     Class<?> vType = v.getClass();
                     buildIn(sb, vType, inList);
-                } else if (buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
+                } else if (!(buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
                         || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.X) {
-                } else {
+                        || buildingBlock.getPredicate() == PredicateAndOtherScript.X)) {
                     sb.append(SqlScript.PLACE_HOLDER).append(SqlScript.SPACE);
                 }
             }
@@ -159,7 +159,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         }else{
                             BeanElement be = parsed.getElement(arr[1]);
                             if (be == null){
-                                throw new RuntimeException("property of " + parsed.getClz() +" not exists: " + arr[1]);
+                                throw new ParsingException("property of " + parsed.getClz() +" not exists: " + arr[1]);
                             }
                             TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
                             if (buildingBlock.getValue() == null)
@@ -172,7 +172,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         }else{
                             BeanElement be = parsed.getElement(key);
                             if (be == null){
-                                throw new RuntimeException("property of " + parsed.getClz() +" not exists: " + key);
+                                throw new ParsingException("property of " + parsed.getClz() +" not exists: " + key);
                             }
                             TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
                             if (buildingBlock.getValue() == null)

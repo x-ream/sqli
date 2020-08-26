@@ -130,7 +130,7 @@ public interface SourceScriptBuilder {
                             i++;
                         }
                     }
-
+                    break;
             }
         }
 

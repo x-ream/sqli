@@ -56,7 +56,7 @@ public class SqlUtil {
             try {
                 method = obj.getClass().getSuperclass().getDeclaredMethod(BeanUtil.getGetter(keyOne));
             } catch (Exception ee) {
-                throw new RuntimeException(SqliExceptionUtil.getMessage(ee));
+                throw new PersistenceException(SqliExceptionUtil.getMessage(ee));
             }
         }
         try {

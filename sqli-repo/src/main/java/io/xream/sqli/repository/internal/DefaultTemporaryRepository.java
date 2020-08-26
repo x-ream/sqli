@@ -17,6 +17,7 @@
 package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.parser.Parsed;
@@ -60,7 +61,7 @@ public class DefaultTemporaryRepository implements TemporaryRepository {
             flag = callable.call();
         }catch (Exception e){
             logger.warn("{} exception: {}" , logTag, SqliExceptionUtil.getMessage(e));
-            throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+            throw new ProxyException(SqliExceptionUtil.getMessage(e));
         }finally {
             long endTime = System.currentTimeMillis();
             logger.info("{} result: {}, cost time: {}ms" , logTag, flag, (endTime - startTime));

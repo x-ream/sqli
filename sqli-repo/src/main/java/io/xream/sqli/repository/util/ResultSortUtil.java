@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.repository.util;
 
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.builder.Criteria;
@@ -69,7 +70,7 @@ public class ResultSortUtil {
                 }
             }
         }catch (Exception e) {
-            throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
     }

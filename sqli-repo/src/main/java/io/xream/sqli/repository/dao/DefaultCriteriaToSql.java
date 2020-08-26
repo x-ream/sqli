@@ -18,6 +18,7 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliStringUtil;
@@ -217,7 +218,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                         String[] arr = key.split("\\.");
                         p = Parser.get(arr[0]);
                         if (p == null)
-                            throw new RuntimeException("can not find the clzz: " + arr[0]);
+                            throw new ParsingException("can not find the clzz: " + arr[0]);
                         k = arr[1];
                     }else{
                         k = key;
@@ -226,7 +227,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
                     BeanElement be = p.getElementMap().get(k);
                     if (be == null) {
-                        throw new RuntimeException("can not find the property " + key + " of " + parsed.getClzName());
+                        throw new ParsingException("can not find the property " + key + " of " + parsed.getClzName());
                     }
 
                     TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
@@ -245,14 +246,16 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                     sb.append(mapper);
                     sb.append(SqlScript.EQ_PLACE_HOLDER);
 
-                    if (BeanUtil.testEnumConstant(be.clz, buildingBlock.getValue())) {
-                    } else if (be.isJson) {
+                    if (be.isJson) {
                         Object v = buildingBlock.getValue();
                         if (v != null) {
                             String str = JsonWrapper.toJson(v);
                             buildingBlock.setValue(str);
                         }
                     }
+//                    else if (BeanUtil.testEnumConstant(be.clz, buildingBlock.getValue())) {
+//                        //FIXME
+//                    }
                 }
 
                 refreshValueList.add(buildingBlock.getValue());
@@ -640,10 +643,8 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 script = criteria.sourceScript();
             } else {
-                if (!rmc.isWithoutOptimization()) {
-                    if (!rmc.resultAllScript().trim().equals("*")) {
-                        optimizeSourceScript(rmc.getSourceScripts(), sb.conditionSet);//FIXME  + ON AND
-                    }
+                if (!rmc.isWithoutOptimization() && !rmc.resultAllScript().trim().equals("*")) {
+                    optimizeSourceScript(rmc.getSourceScripts(), sb.conditionSet);//FIXME  + ON AND
                 }
                 script = rmc.getSourceScripts().stream().map(SourceScript::sql).collect(Collectors.joining()).trim();
             }

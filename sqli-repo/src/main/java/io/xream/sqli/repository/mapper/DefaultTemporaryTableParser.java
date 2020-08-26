@@ -19,6 +19,7 @@ package io.xream.sqli.repository.mapper;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -54,7 +55,7 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
         Parsed parsed = Parser.get(clzz.getSimpleName());
         if (parsed != null)
-            throw new RuntimeException("Table exists while parse temporary table entity to get sql: " + clzz.getName());
+            throw new ParsingException("Table exists while parse temporary table entity to get sql: " + clzz.getName());
         Parser.parse(clzz);
 
         return getTableSql(clzz);

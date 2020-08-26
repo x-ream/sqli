@@ -92,7 +92,7 @@ public class SqlParserUtil {
                         map.put(property, value);
                     }
                 } else if (type == boolean.class) {
-                    if ((boolean) value != false) {
+                    if ((boolean) value) {
                         map.put(property, value);
                     }
                 } else if (type == Boolean.class) {
@@ -115,12 +115,9 @@ public class SqlParserUtil {
                     if (value != null) {
                         map.put(property, value);
                     }
-                }else if (element.isJson) {
-
-                    if (value != null) {
-                        String str = JsonWrapper.toJson(value);
-                        map.put(property, str);
-                    }
+                }else if (element.isJson && value != null) {
+                    String str = JsonWrapper.toJson(value);
+                    map.put(property, str);
                 }
             }
         } catch (Exception e) {

@@ -16,14 +16,16 @@
  */
 package io.xream.sqli.repository.transform;
 
-import io.xream.sqli.util.SqliExceptionUtil;
-import io.xream.sqli.page.Page;
-import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.exception.NotSupportedException;
+import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.dao.Dao;
+import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class SqlDataTransform implements DataTransform {
     @Deprecated
     @Override
     public <T> void refreshCache(Class<T> clz) {
-        throw new RuntimeException("Wrong Code");
+        throw new NotSupportedException("Wrong Code");
     }
 
     @Override
@@ -152,7 +154,7 @@ public class SqlDataTransform implements DataTransform {
         try{
             obj = clzz.newInstance();
         }catch (Exception e){
-            throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
         return this.dao.list(obj);
     }

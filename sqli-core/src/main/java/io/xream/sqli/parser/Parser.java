@@ -18,6 +18,7 @@ package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
@@ -62,7 +63,7 @@ public class Parser {
             parsed = map.get(clz);
             Field f = parsed.getKeyField(X.KEY_ONE);
             if (f == null)
-                throw new RuntimeException("No Primary Key, class: " + clz.getName());
+                throw new ParsingException("No Primary Key, class: " + clz.getName());
         }
         return parsed;
     }
@@ -75,7 +76,7 @@ public class Parser {
     public static void parse(Class clz) {
 
         if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class)
-            throw new RuntimeException("parser unsupport Criteria, CriteriaJoinable, ....");
+            throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
 
         List<BeanElement> elementList = BeanUtilX.getElementList(clz);
         Parsed parsed = new Parsed(clz);

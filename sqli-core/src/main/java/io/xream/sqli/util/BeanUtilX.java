@@ -346,9 +346,8 @@ public class BeanUtilX extends BeanUtil {
             }
 
             X.Mapping mapping = (X.Mapping) f.getAnnotation(X.Mapping.class);
-            if (mapping != null) {
-                if (SqliStringUtil.isNotNull(mapping.value()))
-                    ele.mapper = mapping.value();
+            if (mapping != null && SqliStringUtil.isNotNull(mapping.value())) {
+                ele.mapper = mapping.value();
             }
 
         }
@@ -604,11 +603,9 @@ public class BeanUtilX extends BeanUtil {
                 Method om = oc.getDeclaredMethod(fam.getGetterName());
                 v = om.invoke(origin);
                 Class rt = om.getReturnType();
-                if (rt == int.class || rt == long.class || rt == double.class || rt == float.class
-                        || rt == boolean.class) {
-                    if (v.toString().equals("0")) {
-                        v = null;
-                    }
+                if ((rt == int.class || rt == long.class || rt == double.class || rt == float.class
+                        || rt == boolean.class || rt == short.class || rt == byte.class ) && v.toString().equals("0")) {
+                    v = null;
                 }
 
             } catch (Exception e) {

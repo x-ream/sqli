@@ -44,7 +44,7 @@ public class BaseTypeFilter {
 
     public static boolean isBaseType_0(String property, Object v, Parsed parsed) {
 
-        if (! baseTypeSupported)
+        if (!baseTypeSupported)
             return false;
 
         if (v instanceof String)
@@ -66,15 +66,10 @@ public class BaseTypeFilter {
 
         Class<?> vType = be.clz;
 
-        if (vType == int.class || vType == long.class || vType == float.class
+        return vType == int.class || vType == long.class || vType == float.class
                 || vType == double.class
                 || vType == short.class
-                || vType == byte.class) {
-
-            return true;
-        }
-
-        return false;
+                || vType == byte.class ;
     }
 
     private static BeanElement getBeanElement(String property, Parsed parsed) {

@@ -18,6 +18,7 @@ package io.xream.sqli.repository.mapper;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.LoggerProxy;
@@ -130,9 +131,7 @@ public class DataObjectConverter {
                 }
             }
         } catch (Exception e) {
-            if (e instanceof RuntimeException)
-                throw (RuntimeException) e;
-            throw new RuntimeException(SqliExceptionUtil.getMessage(e));
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
         return list;
@@ -199,7 +198,7 @@ public class DataObjectConverter {
                         map.put(property, value);
                     }
                 } else if (type == boolean.class) {
-                    if ((boolean) value != false) {
+                    if ((boolean) value) {
                         map.put(property, value);
                     }
                 } else if (type == BigDecimal.class) {

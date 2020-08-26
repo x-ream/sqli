@@ -278,7 +278,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         public ResultMapBuilder distinct(Object... objs) {
             if (objs == null)
-                throw new RuntimeException("distinct non resultKey");
+                throw new IllegalArgumentException("distinct non resultKey");
             Criteria.ResultMapCriteria resultMapped = get();
             Distinct distinct = resultMapped.getDistinct();
             if (Objects.isNull(distinct)) {
@@ -303,7 +303,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
                     }
 
                 } else {
-                    throw new RuntimeException("distinct param suggests String, or Map");
+                    throw new IllegalArgumentException("distinct param suggests String, or Map");
                 }
             }
             return this;

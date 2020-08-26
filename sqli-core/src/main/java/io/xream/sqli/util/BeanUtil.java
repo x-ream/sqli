@@ -31,11 +31,8 @@ public class BeanUtil {
 
     public static String getSetter(Class<?> type, String property) {
 
-        if (type != Boolean.class) {
-            if (property.startsWith("is")) {
-                String rest = property.substring(2);
-                return "set" + rest;
-            }
+        if (type != Boolean.class && property.startsWith("is")) {
+            return "set" + property.substring(2);
         }
 
         String a = property.substring(0, 1);
@@ -175,11 +172,9 @@ public class BeanUtil {
     }
 
     public static boolean testEnumConstant(Class clz, Object value) {
-        if (value instanceof String){
-            if (isEnum(clz)) {
-                Enum.valueOf(clz, (String)value);
-                return true;
-            }
+        if (value instanceof String && isEnum(clz)){
+            Enum.valueOf(clz, (String)value);
+            return true;
         }
         return false;
     }

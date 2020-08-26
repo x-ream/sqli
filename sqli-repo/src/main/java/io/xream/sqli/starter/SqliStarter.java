@@ -37,7 +37,6 @@ public class SqliStarter implements RepositoryInitializer{
 
     private IdGenerator idGenerator;
     private CriteriaToSql criteriaParser;
-    private JdbcWrapper jdbcWrapper;
     private Dao dao;
     private Repository dataRepository;
     private TemporaryRepository.Parser temporaryTableParser;
@@ -87,7 +86,6 @@ public class SqliStarter implements RepositoryInitializer{
     }
 
     public void setJdbcWrapper(JdbcWrapper jdbcWrapper){
-        this.jdbcWrapper = jdbcWrapper;
         ((DaoImpl)dao).setJdbcWrapper(jdbcWrapper);
         ((TemporaryDaoImpl)temporaryDao).setJdbcWrapper(jdbcWrapper);
     }
