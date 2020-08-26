@@ -16,8 +16,6 @@
  */
 package io.xream.sqli.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.Map.Entry;
 

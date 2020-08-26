@@ -16,8 +16,8 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

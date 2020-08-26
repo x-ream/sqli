@@ -18,8 +18,8 @@ package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

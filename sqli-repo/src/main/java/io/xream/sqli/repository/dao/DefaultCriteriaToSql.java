@@ -19,21 +19,20 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.SqliStringUtil;
+import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.page.Direction;
 import io.xream.sqli.page.Sort;
-import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.support.TimestampSupport;
 import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.repository.exception.SqlBuildException;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.support.TimestampSupport;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -130,7 +129,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
          */
         sourceScript(sqlBuilder, criteria);
 
-        return sqlArr(sqlBuilder, criteria, countSql);
+        return sqlArr(sqlBuilder, countSql);
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
@@ -268,7 +267,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
         }
     }
 
-    private SqlParsed sqlArr(SqlBuilder sb, Criteria criteria, SqlBuilder countSb) {
+    private SqlParsed sqlArr(SqlBuilder sb, SqlBuilder countSb) {
 
         SqlParsed sqlParsed = new SqlParsed();
 
@@ -484,7 +483,8 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
             String[] arr = groupByS.split(SqlScript.COMMA);
 
-            int i = 0, l = arr.length;
+            int i = 0;
+            int l = arr.length;
             for (String groupBy : arr) {
                 groupBy = groupBy.trim();
                 sb.conditionSet.add(groupBy);

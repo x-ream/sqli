@@ -47,9 +47,6 @@ public class Page<T> implements Paged, Serializable{
 	private List<Sort> sortList;
 
 
-	public Page(){
-	}
-
 	public Class<T> getClz() {
 		return clz;
 	}

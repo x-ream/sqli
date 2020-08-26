@@ -27,10 +27,10 @@ public enum  Op {
     GTE (">="),
     LTE ("<=");
 
+    private String op;
     private Op(String str){
         op = str;
     }
-    private String op;
     public String sql(){
         return op;
     }

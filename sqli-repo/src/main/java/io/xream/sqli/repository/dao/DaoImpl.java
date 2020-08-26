@@ -20,11 +20,11 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.api.RowHandler;
-import io.xream.sqli.builder.*;
-import io.xream.sqli.util.LoggerProxy;
-import io.xream.sqli.util.SqliStringUtil;
-import io.xream.sqli.page.Page;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.exception.ExceptionTranslator;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -36,6 +36,8 @@ import io.xream.sqli.repository.mapper.Mapper;
 import io.xream.sqli.repository.mapper.MapperFactory;
 import io.xream.sqli.repository.util.ResultSortUtil;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.util.LoggerProxy;
+import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +82,6 @@ public class DaoImpl implements Dao {
 
         LoggerProxy.debug(clz, sql);
 
-        Parsed parsed = Parser.get(clz);
         final int batchSize = 500;
         try {
             return this.jdbcWrapper.createBatch(clz, sql, objList, batchSize, this.dialect);

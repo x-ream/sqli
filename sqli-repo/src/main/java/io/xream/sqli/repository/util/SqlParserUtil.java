@@ -17,10 +17,10 @@
 package io.xream.sqli.repository.util;
 
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.lang.reflect.Method;

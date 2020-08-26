@@ -18,7 +18,6 @@ package io.xream.sqli.parser;
 
 
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.util.BeanUtilX;
 
 import java.lang.reflect.Method;
@@ -44,19 +43,8 @@ public class BeanElement {
 	public boolean isJson;
 	public Class geneType;
 
-	private String getPrefix() {
-		try {
-			String prefix = Parser.mappingPrefix;
-			if (SqliStringUtil.isNotNull(prefix))
-				return prefix;
-		} catch (Exception e) {
-
-		}
-		return "";
-	}
 
 	public String getProperty() {
-		
 		return property;
 	}
 

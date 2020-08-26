@@ -18,12 +18,12 @@ package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routeable;
-import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Serializable;
 import java.util.*;
@@ -56,7 +56,6 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 	@JsonIgnore
 	private transient String customedResultKey = SqlScript.STAR;
 
-	public Criteria(){}
 
 	@Override
 	public List<Object> getValueList() {
@@ -251,13 +250,8 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 			return reduceList;
 		}
 
-
 		public List<SourceScript> getSourceScripts() {
 			return sourceScripts;
-		}
-
-		public ResultMapCriteria(){
-			super();
 		}
 
 		public String getGroupBy() {

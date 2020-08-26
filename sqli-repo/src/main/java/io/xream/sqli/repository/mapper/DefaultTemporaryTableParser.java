@@ -20,11 +20,11 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.util.BeanUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
-    String CREATE_TABLE = "CREATE_TABLE";
+    private String CREATE_TABLE = "CREATE_TABLE";
+    private Dialect dialect;
 
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
 
-    private Dialect dialect;
     public void setDialect(Dialect dialect){
         this.dialect = dialect;
     }

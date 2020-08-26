@@ -18,12 +18,12 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
-import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.repository.api.CriteriaToSql;
+import io.xream.sqli.util.BeanUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;

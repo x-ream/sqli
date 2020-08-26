@@ -33,7 +33,7 @@ import java.util.concurrent.Callable;
 /**
  * @Author Sim
  */
-public class SqliStarter implements RepositoryInitializer{
+public class SqliStarter implements RepositoryInitializer {
 
     private IdGenerator idGenerator;
     private CriteriaToSql criteriaParser;
@@ -45,7 +45,7 @@ public class SqliStarter implements RepositoryInitializer{
 
 
     private static SqliStarter instance;
-    private static SqliStarter getInstance(){
+    public static SqliStarter getInstance(){
         if (instance == null) {
             instance = new SqliStarter();
         }

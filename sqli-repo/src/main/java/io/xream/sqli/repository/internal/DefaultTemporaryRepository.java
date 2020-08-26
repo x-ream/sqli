@@ -17,12 +17,12 @@
 package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.exception.ProxyException;
-import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.transform.DataTransform;
+import io.xream.sqli.util.SqliExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

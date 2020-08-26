@@ -17,8 +17,8 @@
 package io.xream.sqli.api;
 
 
-import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.parser.BeanElement;
 
 import java.util.Collection;
 import java.util.Map;

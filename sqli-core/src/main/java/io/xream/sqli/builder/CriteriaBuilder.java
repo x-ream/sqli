@@ -16,12 +16,12 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.util.SqliStringUtil;
 import io.xream.sqli.page.Direction;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
     private Criteria criteria;
+    protected SourceScript sourceScriptTemp;
 
     public CriteriaBuilder routeKey(Object routeKey) {
         this.criteria.setRouteKey(routeKey);
@@ -133,7 +134,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         return this.criteria;
     }
 
-    protected SourceScript sourceScriptTemp;
 
     public static class ResultMapBuilder extends CriteriaBuilder {
 

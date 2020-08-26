@@ -19,8 +19,8 @@ package io.xream.sqli.repository.api;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.SqlParsed;
 
 

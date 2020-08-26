@@ -18,10 +18,12 @@ package io.xream.sqli.repository.cache;
 
 
 import io.xream.sqli.api.RowHandler;
-import io.xream.sqli.builder.*;
-import io.xream.sqli.util.LoggerProxy;
-import io.xream.sqli.page.Page;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.KV;
+import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.cache.L2CacheResolver;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.KeyOne;
@@ -29,6 +31,7 @@ import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.transform.DataTransform;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.LoggerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,13 +48,12 @@ public final class CacheableRepository implements Repository, Manuable {
     private final static Logger logger = LoggerFactory.getLogger(Repository.class);
 
     private DataTransform dataTransform;
+    private L2CacheResolver cacheResolver;
 
     public void setDataTransform(DataTransform dataTransform) {
         logger.info("x7-repo/x7-jdbc-template-plus on starting....");
         this.dataTransform = dataTransform;
     }
-
-    private L2CacheResolver cacheResolver;
 
     public void setCacheResolver(L2CacheResolver cacheResolver) {
         this.cacheResolver = cacheResolver;

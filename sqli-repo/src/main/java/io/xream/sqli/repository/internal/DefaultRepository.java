@@ -23,14 +23,14 @@ import io.xream.sqli.api.IdGenerator;
 import io.xream.sqli.api.RepositoryManagement;
 import io.xream.sqli.api.RowHandler;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.util.SqliStringUtil;
-import io.xream.sqli.page.Page;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -48,6 +48,8 @@ import java.util.Objects;
 public abstract class DefaultRepository<T> implements BaseRepository<T> {
 
     private Class<T> clz;
+    private IdGenerator idGeneratorService;
+    private Repository repository;
 
     @Override
     public Class<T> getClz() {
@@ -58,13 +60,10 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
         this.clz = clz;
     }
 
-
-    private IdGenerator idGeneratorService;
     public void setIdGeneratorService(IdGenerator  idGeneratorService){
         this.idGeneratorService = idGeneratorService;
     }
 
-    private Repository repository;
     public void setRepository(Repository repository) {
         this.repository =repository;
     }
