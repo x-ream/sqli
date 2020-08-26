@@ -212,11 +212,6 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                 if (buildingBlock.getPredicate() == PredicateAndOtherScript.SUB){
                     pre(valueList, buildingBlock.getSubList());
                     continue;
-                } else if (buildingBlock.getPredicate() == PredicateAndOtherScript.IN
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL) {
-                    //....
                 }else if (buildingBlock.getPredicate() == PredicateAndOtherScript.X) {
                     Object value = buildingBlock.getValue();
                     if (value == null)
@@ -226,10 +221,19 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                             add(valueList,v);
                         }
                     }
-                }else {
+                }else if (!(buildingBlock.getPredicate() == PredicateAndOtherScript.IN
+                        || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN
+                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
+                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL)) {
                     Object v = buildingBlock.getValue();
                     add(valueList, v);
                 }
+//                 else if (buildingBlock.getPredicate() == PredicateAndOtherScript.IN
+//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN
+//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
+//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL) {
+//                    //....
+//                }
                 // NO JSON OBJECT CONDITION
             }
         }

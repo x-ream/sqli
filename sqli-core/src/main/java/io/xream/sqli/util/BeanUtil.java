@@ -41,10 +41,8 @@ public class BeanUtil {
     }
 
     public static String getGetter(Class<?> type, String property) {
-        if (type != Boolean.class) {
-            if (property.startsWith("is")) {
-                return property;
-            }
+        if (type != Boolean.class && property.startsWith("is")) {
+            return property;
         }
         String a = property.substring(0, 1);
         String rest = property.substring(1);

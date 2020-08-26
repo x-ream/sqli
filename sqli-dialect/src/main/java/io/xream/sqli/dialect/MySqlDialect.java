@@ -114,24 +114,9 @@ public class MySqlDialect implements Dialect {
     @Override
     public String transformAlia(String mapper,Map<String, String> aliaMap,  Map<String, String> resultKeyAliaMap) {
 
-        if (!resultKeyAliaMap.isEmpty()) {
-            if (resultKeyAliaMap.containsKey(mapper)) {
-                mapper = resultKeyAliaMap.get(mapper);
-            }
+        if (resultKeyAliaMap.containsKey(mapper)) {
+             mapper = resultKeyAliaMap.get(mapper);
         }
-//        if (aliaMap.isEmpty())
-//            return mapper;
-
-//        if (mapper.contains(".")) {
-//            String[] arr = mapper.split("\\.");
-//            String alia = arr[0];
-//            String p = arr[1];
-//            String clzName = aliaMap.get(alia);
-//            if (StringUtil.isNullOrEmpty(clzName)){
-//                clzName = alia;
-//            }
-//            return clzName+"."+p;
-//        }
 
         return mapper;
 
