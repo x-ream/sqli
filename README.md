@@ -10,51 +10,6 @@
     sqli/sqli-core
     sqli/sqli-dialect
     sqli/sqli-repo
-
-## 二级缓存 
-
-    在x7项目里实现，spring boot的注解实现或使用的模板如下:
-        @EnableX7L2Caching
-        public class App{
-            main()
-
-    二级缓存是基于redis.multiGet的高速缓存实现。
-
-    二级缓存建议返回记录条数不超过20条。调用带二级缓存的API，返回记录条数超过了
-    20条，请关闭二级缓存。
-    如果需要开启二级缓存，所有对数据库的写操作项目都需要开启二级缓存。
-    
-    包含二级缓存的BaseRepository的API：
-        1. in(InCondition)
-        2. list(Object)
-        3. find(Criteria)
-        4. list(Criteria)
-        5. get(Id)
-        6. getOne(Object)
-        
-    不含二级缓存的BaseRepository的API:
-        1. list()
-        2. find(ResultMapCriteria)
-        3. list(ResultMapCriteria)
-        4. listPlainValue(ResultMapCriteria)
-        
-    以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
-    会失去高速响应的效果，请务必关闭二级缓存. 
-    如果需要返回很多条记录，需要自定义返回列, 请使用:
-        find(ResultMapCriteria)
-        list(ResultMapCriteria)
-        listPlainValue(ResultMapCriteria)
-        
-    用户级的过滤
-    {
-        L2CacheFilter.filter(userId);
-        this.orderRepository.create(order); // refresh and remove
-    }
-    
-    {
-        L2CacheFilter.filter(userId);
-        this.orderRepository.find(criteria);
-    }
         
 ## sqli-repo 
 
@@ -207,4 +162,48 @@
             in(sql) // 和连表查询及二级缓存的设计有一定的冲突
             union // 过于复杂
             
-                
+## 二级缓存 
+
+    在x7项目里实现，spring boot的注解实现或使用的模板如下:
+        @EnableX7L2Caching
+        public class App{
+            main()
+
+    二级缓存是基于redis.multiGet的高速缓存实现。
+
+    二级缓存建议返回记录条数不超过20条。调用带二级缓存的API，返回记录条数超过了
+    20条，请关闭二级缓存。
+    如果需要开启二级缓存，所有对数据库的写操作项目都需要开启二级缓存。
+    
+    包含二级缓存的BaseRepository的API：
+        1. in(InCondition)
+        2. list(Object)
+        3. find(Criteria)
+        4. list(Criteria)
+        5. get(Id)
+        6. getOne(Object)
+        
+    不含二级缓存的BaseRepository的API:
+        1. list()
+        2. find(ResultMapCriteria)
+        3. list(ResultMapCriteria)
+        4. listPlainValue(ResultMapCriteria)
+        
+    以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
+    会失去高速响应的效果，请务必关闭二级缓存. 
+    如果需要返回很多条记录，需要自定义返回列, 请使用:
+        find(ResultMapCriteria)
+        list(ResultMapCriteria)
+        listPlainValue(ResultMapCriteria)
+        
+    用户级的过滤
+    {
+        L2CacheFilter.filter(userId);
+        this.orderRepository.create(order); // refresh and remove
+    }
+    
+    {
+        L2CacheFilter.filter(userId);
+        this.orderRepository.find(criteria);
+    }               
+    
