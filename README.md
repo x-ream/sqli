@@ -1,4 +1,4 @@
-# sqli 简单的SQL 拼写接口框架
+# sqli 简单的SQL拼写接口
    [http://sqli.xream.io](http://sqli.xream.io) 
    
 [![license](https://img.shields.io/github/license/x-ream/sqli.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
