@@ -55,9 +55,9 @@
         this.orderRepository.find(criteria);
     }
         
-##  sqli-repo 
+## sqli-repo 
 
-####    使用方法
+#### 使用方法
     在x7项目里实现，spring boot的注解实现或使用的模板如下:
     
     @EnableX7Repostory  // code at x7/x7-repo/x7-spring-boot-starter
@@ -68,7 +68,7 @@
     @Repository
     public interface FooRepository extends BaseRepository<Foo> {}
     
-####    实体类注解
+#### 实体类注解
         
         @X.Mapping("t_foo")//默认是foo
         public class Foo {
@@ -79,7 +79,7 @@
         }
     
     
-####    BaseRepository API
+#### BaseRepository API
     
             1. in(InCondition) //in查询, 例如: 页面上需要的主表ID或记录已经查出后，补充查询其他表的文本说明数据时使用
             2. list(Object) //对象查列表
@@ -100,7 +100,7 @@
             17. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
 
 
-####    TemporaryRepository API   
+#### TemporaryRepository API   
 
             使用方法：
                 {
@@ -119,7 +119,7 @@
                   异步更新, 用fallback替代事务
             
             
-####    标准拼接API
+#### 标准拼接API
         CriteriaBuilder // 返回Criteria, 查出对象形式记录
         CriteriaBuilder.ResultMapBuilder //返回ResultMapCriteria, 查出Map形式记录，支持连表查询
         RefreshCondition //构建要更新的字段和条件
