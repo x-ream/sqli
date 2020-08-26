@@ -16,10 +16,12 @@
  */
 package io.xream.sqli.repository.util;
 
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -57,6 +59,8 @@ public class SqlParserUtil {
 
                 Method method = element.getMethod;
                 Object value = method.invoke(obj);
+                if (value == null)
+                    continue;
                 Class type = method.getReturnType();
                 String property = element.getProperty();
                 if (type == int.class) {
@@ -64,64 +68,46 @@ public class SqlParserUtil {
                         map.put(property, value);
                     }
                 } else if (type == Integer.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == long.class) {
                     if ((long) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Long.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == double.class) {
                     if ((double) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Double.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == float.class) {
                     if ((float) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Float.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == boolean.class) {
                     if ((boolean) value) {
                         map.put(property, value);
                     }
                 } else if (type == Boolean.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == String.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (BeanUtil.isEnum(type)){
-                    if (value != null) {
-                        map.put(property, ((Enum)value).name());
-                    }
+                    map.put(property, ((Enum)value).name());
                 }else if (type == Date.class || clz == java.sql.Date.class || type == Timestamp.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == BigDecimal.class){
-                    if (value != null) {
-                        map.put(property, value);
-                    }
-                }else if (element.isJson && value != null) {
+                    map.put(property, value);
+                }else if (element.isJson) {
                     String str = JsonWrapper.toJson(value);
                     map.put(property, str);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
         return map;
