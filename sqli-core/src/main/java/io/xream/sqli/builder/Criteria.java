@@ -292,12 +292,9 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 			this.aliaMap = aliaMap;
 		}
 
-
 		public void setSourceScript(String sourceScript) {
-			sourceScript = BeanUtilX.normalizeSql(sourceScript);
-			this.sourceScript = sourceScript;
+			this.sourceScript = BeanUtilX.normalizeSql(sourceScript);
 		}
-		
 
 		public List<String> getResultKeyList() {
 			return resultKeyList;

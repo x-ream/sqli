@@ -138,11 +138,12 @@ public interface SourceScriptBuilder {
     }
 
 
-    static List<String> split(String sourceScript) {
+    static List<String> split(String script) {
         String[] opArrTwo = {"!=", "<>", "<=", ">="};
         String[] opArrTwoTemp = {"&ne", "&ne", "&lte", "&gte"};
         String[] opArrOne = {"=", "<", ">"};
 
+        String sourceScript = script;
         boolean flag = false;
         for (int i = 0; i < 4; i++) {
             if (sourceScript.contains(opArrTwo[i])) {

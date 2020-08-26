@@ -43,7 +43,7 @@ public class BaseTypeFilter {
         return BaseTypeFilter.isBaseType_0(arr[1],v,parsed);
     }
 
-    public static boolean isBaseType_0(String property, Object v, Parsed parsed) {
+    public static boolean isBaseType_0(String prop, Object v, Parsed parsed) {
 
         if (!baseTypeSupported)
             return false;
@@ -59,7 +59,7 @@ public class BaseTypeFilter {
             return false;
         }
 
-        BeanElement be = getBeanElement(property, parsed);
+        BeanElement be = getBeanElement(prop, parsed);
 
         if (be == null) {
             return false; //FIXME
@@ -73,8 +73,9 @@ public class BaseTypeFilter {
                 || vType == byte.class ;
     }
 
-    private static BeanElement getBeanElement(String property, Parsed parsed) {
+    private static BeanElement getBeanElement(String prop, Parsed parsed) {
 
+        String property = prop;
         String str = null;
         if (property.contains(SqlScript.SPACE)) {
             String[] arr = property.split(SqlScript.SPACE);

@@ -31,7 +31,6 @@ public final class ManuRepository {
 	private static Manuable cacheableRepository;
 
 	private ManuRepository(){
-
 	}
 
 	public static void init(Manuable repository){

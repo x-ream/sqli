@@ -22,7 +22,6 @@ import io.xream.sqli.builder.ConjunctionAndOtherScript;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -31,13 +30,10 @@ import io.xream.sqli.repository.mapper.DataObjectConverter;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,28 +43,6 @@ import java.util.Map;
  * @Author Sim
  */
 public class SqlUtil {
-
-    protected static void adpterSqlKey(PreparedStatement pstmt, String keyOne, Object obj, int i) {
-        /*
-         * 处理KEY
-         */
-        Method method = null;
-        try {
-            method = obj.getClass().getDeclaredMethod(BeanUtil.getGetter(keyOne));
-        } catch (NoSuchMethodException e) {
-            try {
-                method = obj.getClass().getSuperclass().getDeclaredMethod(BeanUtil.getGetter(keyOne));
-            } catch (Exception ee) {
-                throw new PersistenceException(SqliExceptionUtil.getMessage(ee));
-            }
-        }
-        try {
-            Object value = method.invoke(obj);
-            pstmt.setObject(i++, value);
-        } catch (Exception e) {
-            throw new PersistenceException(SqliExceptionUtil.getMessage(e));
-        }
-    }
 
     protected static String paged(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;
@@ -103,7 +77,6 @@ public class SqlUtil {
 
 
     protected static String buildRefresh(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser) {
-
         return criteriaParser.fromRefresh(parsed,refreshCondition);
     }
 
@@ -138,9 +111,6 @@ public class SqlUtil {
 
         return sb.toString();
     }
-
-
-
 
     protected static String buildIn(String sql, String mapper, BeanElement be, List<? extends Object> inList) {
 

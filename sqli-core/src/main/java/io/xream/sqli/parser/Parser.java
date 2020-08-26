@@ -21,6 +21,7 @@ import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +99,7 @@ public class Parser {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(SqliExceptionUtil.getMessage(e));
         }
         parsed.setNoSpec(isNoSpec);
         parsed.reset(elementList);

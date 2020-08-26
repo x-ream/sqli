@@ -40,68 +40,6 @@ import java.util.*;
  */
 public class DataObjectConverter {
 
-    public static Map<String,Object> dataToPropertyObjectMap(Class clz, Map<String,Object> dataMap, Criteria.ResultMapCriteria resultMapped, Dialect dialect) {
-        Map<String, Object> propertyMap = new HashMap<>();
-        for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-            String mapper = entry.getKey();
-            String property = null;
-            BeanElement be = null;
-            if (resultMapped == null) {
-                Parsed parsed = Parser.get(clz);
-                property = parsed.getPropertyByLower(mapper);
-                be = parsed.getElement(property);
-            } else {
-
-                if (mapper.contains(SqlScript.DOLLOR)) {
-                    property = dialect.transformAlia(mapper, resultMapped.getAliaMap(), resultMapped.getResultKeyAliaMap());
-                } else {
-                    mapper = dialect.transformAlia(mapper, resultMapped.getAliaMap(), resultMapped.getResultKeyAliaMap());
-                    property = resultMapped.getPropertyMapping().property(mapper);
-
-                    if (property.contains(".")) {
-                        String[] arr = property.split("\\.");
-                        String clzName = resultMapped.getAliaMap().get(arr[0]);
-                        Parsed parsed = Parser.get(clzName);
-                        be = parsed.getElement(arr[1]);
-                    } else {
-                        Parsed parsed = Parser.get(clz);
-                        be = parsed.getElement(property);
-                    }
-                }
-            }
-            Object value = entry.getValue();
-            value = filter(value);
-            if (be != null) {
-                value = dialect.mappingToObject(value, be);
-            }
-            propertyMap.put(property, value);
-        }
-        return propertyMap;
-    }
-
-
-    public static <T> void initObj(T obj, Map<String, Object> map, List<BeanElement> eles,Dialect dialect) throws Exception {
-
-        for (BeanElement ele : eles) {
-
-            Method method = ele.setMethod;
-            String mapper = ele.mapper;
-
-            Object value = map.get(mapper);
-
-            if (value == null) {
-                if (BeanUtil.isEnum(ele.clz))
-                    throw new PersistenceException(
-                            "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
-            } else {
-                value = filter(value);
-                Object v = dialect.mappingToObject(value,ele);
-                method.invoke(obj, v);
-            }
-
-        }
-    }
-
     public static List<Object> objectToListForCreate(Object obj, List<BeanElement> eles, Dialect dialect) {
 
         List<Object> list = new ArrayList<>();
@@ -235,14 +173,14 @@ public class DataObjectConverter {
         LoggerProxy.debug(clz, valueList);
     }
 
-    private static Object filter(Object value) {
-        if (value == null)
+    private static Object filter(Object obj) {
+        if (obj == null)
             return null;
-        if (value instanceof String) {
-            String str = (String) value;
-            value = str.replace("<","&lt").replace(">","&gt");
+        if (obj instanceof String) {
+            String str = (String) obj;
+            obj = str.replace("<","&lt").replace(">","&gt");
         }
-        return value;
+        return obj;
     }
 
 }
