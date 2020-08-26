@@ -31,7 +31,7 @@ import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.transform.DataTransform;
 import io.xream.sqli.util.BeanUtilX;
-import io.xream.sqli.util.LoggerProxy;
+import io.xream.sqli.util.SqliLoggerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,9 +62,9 @@ public final class CacheableRepository implements Repository, Manuable {
     private boolean isCacheEnabled(Parsed parsed) {
         boolean b = cacheResolver.isEnabled() && !parsed.isNoCache();
         if (b){
-            LoggerProxy.debug(parsed.getClz(), "L2Cache effected");
+            SqliLoggerProxy.debug(parsed.getClz(), "L2Cache effected");
         }else{
-            LoggerProxy.debug(parsed.getClz(), "L2Cache not effected");
+            SqliLoggerProxy.debug(parsed.getClz(), "L2Cache not effected");
         }
         return b;
     }

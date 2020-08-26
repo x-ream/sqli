@@ -17,16 +17,13 @@
 package io.xream.sqli.repository.mapper;
 
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.LoggerProxy;
+import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.lang.reflect.Method;
@@ -162,7 +159,7 @@ public class DataObjectConverter {
             e.printStackTrace();
         }
 
-        LoggerProxy.debug(clz, map);
+        SqliLoggerProxy.debug(clz, map);
 
         return map;
 
@@ -170,7 +167,7 @@ public class DataObjectConverter {
 
 
     public static void log(Class clz, List<Object> valueList) {
-        LoggerProxy.debug(clz, valueList);
+        SqliLoggerProxy.debug(clz, valueList);
     }
 
     private static Object filter(Object obj) {

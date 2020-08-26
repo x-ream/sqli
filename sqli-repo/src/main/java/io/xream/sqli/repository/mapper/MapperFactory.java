@@ -24,7 +24,7 @@ import io.xream.sqli.repository.api.Mapped;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.LoggerProxy;
+import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,7 +150,7 @@ public class MapperFactory implements Mapper {
 
 			sqlsMap.get(clz).put(REFRESH, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -172,7 +172,7 @@ public class MapperFactory implements Mapper {
 
 			sqlsMap.get(clz).put(REMOVE, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -194,7 +194,7 @@ public class MapperFactory implements Mapper {
 
 			sqlsMap.get(clz).put(GET_ONE, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -225,7 +225,7 @@ public class MapperFactory implements Mapper {
 
 			sqlsMap.get(clz).put(QUERY, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -244,7 +244,7 @@ public class MapperFactory implements Mapper {
 
 			sqlsMap.get(clz).put(LOAD, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -294,7 +294,7 @@ public class MapperFactory implements Mapper {
 			sql = SqlParserUtil.mapper(sql, parsed);
 			sqlsMap.get(clz).put(CREATE, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 
@@ -394,7 +394,7 @@ public class MapperFactory implements Mapper {
 			sql = SqlParserUtil.mapper(sql, parsed);
 			sqlsMap.get(clz).put(TAG, sql);
 
-			LoggerProxy.debug(clz, sb);
+			SqliLoggerProxy.debug(clz, sb);
 
 			return sql;
 		}

@@ -9,11 +9,11 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public class LoggerProxy {
+public class SqliLoggerProxy {
 
     private final static Map<Class, Logger> loggerMap = new HashMap<>();
 
-    private LoggerProxy(){}
+    private SqliLoggerProxy(){}
 
     public static void put(Class clzz, Logger logger) {
         loggerMap.put(clzz,logger);

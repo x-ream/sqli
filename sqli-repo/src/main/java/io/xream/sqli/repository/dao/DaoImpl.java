@@ -36,7 +36,7 @@ import io.xream.sqli.repository.mapper.Mapper;
 import io.xream.sqli.repository.mapper.MapperFactory;
 import io.xream.sqli.repository.util.ResultSortUtil;
 import io.xream.sqli.repository.util.SqlParserUtil;
-import io.xream.sqli.util.LoggerProxy;
+import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +80,7 @@ public class DaoImpl implements Dao {
         Class clz = obj.getClass();
         String sql = MapperFactory.getSql(clz, Mapper.CREATE);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         final int batchSize = 500;
         try {
@@ -98,8 +98,8 @@ public class DaoImpl implements Dao {
         Class clz = keyOne.getClzz();
         String sql = MapperFactory.getSql(clz, Mapper.REMOVE);
 
-        LoggerProxy.debug(clz, keyOne.get());
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, keyOne.get());
+        SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcWrapper.remove(sql, keyOne.get());
     }
@@ -119,8 +119,8 @@ public class DaoImpl implements Dao {
 
             List<Object> valueList = DataObjectConverter.objectToListForCreate(obj, parsed.getBeanElementList(), dialect);
 
-            LoggerProxy.debug(clz, valueList);
-            LoggerProxy.debug(clz, sql);
+            SqliLoggerProxy.debug(clz, valueList);
+            SqliLoggerProxy.debug(clz, sql);
 
             return this.jdbcWrapper.create(isAutoIncreaseId,sql,valueList);
 
@@ -142,8 +142,8 @@ public class DaoImpl implements Dao {
             Parsed parsed = Parser.get(clz);
             List<Object> valueList = DataObjectConverter.objectToListForCreate(obj, parsed.getBeanElementList(), dialect);
 
-            LoggerProxy.debug(clz, valueList);
-            LoggerProxy.debug(clz, sql);
+            SqliLoggerProxy.debug(clz, valueList);
+            SqliLoggerProxy.debug(clz, sql);
 
             return this.jdbcWrapper.createOrReplace(sql, valueList);
 
@@ -160,7 +160,7 @@ public class DaoImpl implements Dao {
         Parsed parsed = Parser.get(clz);
         sql = SqlParserUtil.mapperForManu(sql, parsed);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcWrapper.queryForList(sql, clz, conditionList, this.dialect);
     }
@@ -172,7 +172,7 @@ public class DaoImpl implements Dao {
         Class clz = keyOne.getClzz();
         String sql = MapperFactory.getSql(clz, Mapper.GET_ONE);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<T> list = this.jdbcWrapper.queryForList(sql, keyOne.getClzz(), Arrays.asList(keyOne.get()), this.dialect);
 
@@ -192,7 +192,7 @@ public class DaoImpl implements Dao {
 
         Map<String, Object> queryMap = DataObjectConverter.objectToMapForQuery(parsed, conditionObj);
         sql = SqlUtil.concat(parsed, sql, queryMap);
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcWrapper.queryForList(sql, clz, queryMap.values(), this.dialect);
 
@@ -204,7 +204,7 @@ public class DaoImpl implements Dao {
         Class clz = criteria.getClz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<Object> valueList = criteria.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, clz, valueList, this.dialect);
@@ -219,7 +219,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<Object> valueList = criteria.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, clz, valueList, this.dialect);
@@ -240,7 +240,7 @@ public class DaoImpl implements Dao {
      * @return
      */
     private long getCount(Class clz, String sql, Collection<Object> list) {
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
         return this.jdbcWrapper.queryForPlainValueList(Long.class,sql,list,this.dialect).get(0);
     }
 
@@ -261,7 +261,7 @@ public class DaoImpl implements Dao {
         sql = SqlUtil.filter(sql);
         sql = SqlParserUtil.mapperForManu(sql, parsed);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcWrapper.execute(sql);
 
@@ -276,8 +276,8 @@ public class DaoImpl implements Dao {
         String sql = SqlUtil.buildRefresh(parsed, refreshCondition, this.criteriaToSql);
         List<Object> valueList = refreshCondition.getValueList();
 
-        LoggerProxy.debug(clz, valueList);
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, valueList);
+        SqliLoggerProxy.debug(clz, sql);
 
         return update(sql, valueList, dialect, jdbcWrapper);
     }
@@ -290,8 +290,8 @@ public class DaoImpl implements Dao {
 
         String sql = (String)arr[0];
         Collection<Object> valueList = (Collection<Object>)arr[1];
-        LoggerProxy.debug(clz, valueList);
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, valueList);
+        SqliLoggerProxy.debug(clz, sql);
 
         return update(sql,valueList,dialect,jdbcWrapper);
     }
@@ -316,7 +316,7 @@ public class DaoImpl implements Dao {
 
         sql = SqlUtil.buildIn(sql, mapper, be, inList);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcWrapper.queryForList(sql, clz, null, this.dialect);
     }
@@ -328,7 +328,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<Map<String, Object>> list = this.jdbcWrapper.queryForMapList(sql, resultMapped, this.dialect);
 
@@ -343,7 +343,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        LoggerProxy.debug(resultMapped.getClz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getClz(), sql);
 
         return this.jdbcWrapper.queryForMapList(sql, resultMapped, this.dialect);
     }
@@ -354,7 +354,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        LoggerProxy.debug(resultMapped.getClz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getClz(), sql);
 
         List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,resultMapped.getValueList(),this.dialect);
         return list;
@@ -372,7 +372,7 @@ public class DaoImpl implements Dao {
         sql = SqlUtil.concat(parsed, sql, queryMap);
         sql = SqlUtil.paged(sql, 1, 1, this.dialect);
 
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         if (queryMap.isEmpty())
             throw new IllegalArgumentException("API of getOne(T) can't accept blank object: " + conditionObj);
@@ -392,7 +392,7 @@ public class DaoImpl implements Dao {
         Class clz = resultMapped.getClz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<Object> valueList = resultMapped.getValueList();
 
@@ -405,7 +405,7 @@ public class DaoImpl implements Dao {
         Class clz = criteria.getClz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
-        LoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clz, sql);
 
         List<Object> valueList = criteria.getValueList();
 
