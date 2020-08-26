@@ -1,4 +1,8 @@
 # sqli 简单的SQL 拼写接口框架
+   [http://sqli.xream.io](http://sqli.xream.io) 
+   
+[![license](https://img.shields.io/github/license/x-ream/sqli.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![maven](https://img.shields.io/maven-central/v/io.xream.sqli/sqli-parent.svg)](https://search.maven.org/search?q=io.xream)
 
     sqli/sqli-core
     sqli/sqli-dialect
