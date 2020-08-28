@@ -18,10 +18,7 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.ConjunctionAndOtherScript;
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -112,66 +109,17 @@ public class SqlUtil {
         return sb.toString();
     }
 
-    protected static String buildIn(String sql, String mapper, BeanElement be, List<? extends Object> inList) {
+    protected static String buildIn(String sqlSegment, String mapper, BeanElement be, List<? extends Object> inList) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(sql).append(SqlScript.WHERE);
+        sb.append(sqlSegment).append(SqlScript.WHERE);
         sb.append(mapper).append(SqlScript.IN);//" IN "
 
         Class<?> keyType = be.getMethod.getReturnType();
 
-        buildIn(sb,keyType,inList);
+        ConditionCriteriaToSql.buildIn(sb,keyType,inList);
 
         return sb.toString();
-    }
-
-    protected static void buildIn(StringBuilder sb, Class clz,List<? extends Object> inList ){
-
-        sb.append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);//"( "
-
-        int length = inList.size();
-        if (clz == String.class) {
-
-            for (int j = 0; j < length; j++) {
-                Object value = inList.get(j);
-                if (value == null || SqliStringUtil.isNullOrEmpty(value.toString()))
-                    continue;
-                value = SqlUtil.filter(value.toString());
-                sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'
-                if (j < length - 1) {
-                    sb.append(SqlScript.COMMA);
-                }
-            }
-
-        }else if (BeanUtil.isEnum(clz)) {
-            for (int j = 0; j < length; j++) {
-                Object value = inList.get(j);
-                if (value == null )
-                    continue;
-                String ev = null;
-                if (value instanceof String){ //只需要判断是否是String, 防止远程调用时无法把String转成枚举
-                    ev = (String)value;
-                }else {
-                    ev = ((Enum) value).name();
-                }
-                sb.append(SqlScript.SINGLE_QUOTES).append(ev).append(SqlScript.SINGLE_QUOTES);//'string'
-                if (j < length - 1) {
-                    sb.append(SqlScript.COMMA);
-                }
-            }
-        }else {
-            for (int j = 0; j < length; j++) {
-                Object value = inList.get(j);
-                if (value == null)
-                    continue;
-                sb.append(value);
-                if (j < length - 1) {
-                    sb.append(SqlScript.COMMA);
-                }
-            }
-        }
-
-        sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
     }
 
     protected static SqlParsed fromCriteria(Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {

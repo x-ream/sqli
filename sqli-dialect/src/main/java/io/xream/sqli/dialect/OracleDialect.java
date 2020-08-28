@@ -56,12 +56,12 @@ public class OracleDialect implements Dialect {
     private final static String ORACLE_PAGINATION_REGX_END = "${END}";
 
 
-    public String match(String sql, long start, long rows) {
+    public String match(String sqlStr, long start, long rows) {
 
         if (rows > 0)
             return ORACLE_PAGINATION.replace(ORACLE_PAGINATION_REGX_END, String.valueOf(start + rows))
-                    .replace(ORACLE_PAGINATION_REGX_BEGIN, String.valueOf(start)).replace(ORACLE_PAGINATION_REGX_SQL, sql);
-        return sql;
+                    .replace(ORACLE_PAGINATION_REGX_BEGIN, String.valueOf(start)).replace(ORACLE_PAGINATION_REGX_SQL, sqlStr);
+        return sqlStr;
 
     }
 

@@ -223,8 +223,8 @@ public class RefreshCondition<T> extends ConditionCriteriaBuilder implements Cri
         return (RefreshCondition) super.isNull(property);
     }
 
-    public RefreshCondition  x(String sql){
-        return (RefreshCondition) super.x(sql);
+    public RefreshCondition  x(String sqlSegment){
+        return (RefreshCondition) super.x(sqlSegment);
     }
 
     public RefreshCondition  x(String sql, List<? extends Object> valueList){

@@ -115,27 +115,27 @@ public class SqlParserUtil {
     }
 
 
-    public static String mapperForManu(String sql, Parsed parsed) {
+    public static String mapperForManu(String sqlSegment, Parsed parsed) {
 
-        sql = mapper(sql,parsed);
+        sqlSegment = mapper(sqlSegment,parsed);
 
         if (parsed.isNoSpec())
-            return sql;
+            return sqlSegment;
 
-        if (!sql.contains(COMMA))
-            return sql;
+        if (!sqlSegment.contains(COMMA))
+            return sqlSegment;
 
         for (String property : parsed.getPropertyMapperMap().keySet()){//FIXME 解析之后, 替换,拼接
             String key = SPACE+property+COMMA;
             String value = SPACE+parsed.getMapper(property)+COMMA;
-            sql = sql.replaceAll(key, value);
+            sqlSegment = sqlSegment.replaceAll(key, value);
         }
         for (String property : parsed.getPropertyMapperMap().keySet()){//FIXME 解析之后, 替换,拼接
             String key = COMMA+property+COMMA;
             String value = COMMA+parsed.getMapper(property)+COMMA;
-            sql = sql.replaceAll(key, value);
+            sqlSegment = sqlSegment.replaceAll(key, value);
         }
-        return sql;
+        return sqlSegment;
     }
 
 

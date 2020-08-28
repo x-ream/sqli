@@ -228,13 +228,6 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                     Object v = buildingBlock.getValue();
                     add(valueList, v);
                 }
-//                 else if (buildingBlock.getPredicate() == PredicateAndOtherScript.IN
-//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN
-//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
-//                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL) {
-//                    //....
-//                }
-                // NO JSON OBJECT CONDITION
             }
         }
 
