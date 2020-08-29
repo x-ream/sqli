@@ -19,6 +19,7 @@ package io.xream.sqli.converter;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -86,7 +87,7 @@ public class DataObjectConverter {
 
             if (value == null) {
                 if (BeanUtil.isEnum(ele.getClz()))
-                    throw new RuntimeException(
+                    throw new PersistenceException(
                             "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
             } else {
                 value = filter(value);
