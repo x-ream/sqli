@@ -79,7 +79,7 @@ public class Parser {
         if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class)
             throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
 
-        List<BeanElement> elementList = BeanUtilX.getElementList(clz);
+        List<BeanElement> elementList = BeanUtilX.parseElementList(clz);
         Parsed parsed = new Parsed(clz);
         for (BeanElement element : elementList) {
             if (SqliStringUtil.isNullOrEmpty(element.getMapper())) {
@@ -166,14 +166,12 @@ public class Parser {
                 beIte.remove();
             }
         }
-
         /*
          * parseCacheable
          */
         BeanUtilX.parseCacheableAnno(clz, parsed);
 
         put(clz, parsed);
-
 
     }
 

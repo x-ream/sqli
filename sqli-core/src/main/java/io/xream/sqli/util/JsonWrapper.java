@@ -29,24 +29,6 @@ import java.util.*;
 public class JsonWrapper {
 
 	private JsonWrapper(){}
-
-	public static String toJson(List list){
-		if (list == null)
-			return null;
-		if (list.isEmpty()){
-			return "[]";
-		}
-		return JSON.toJSONString(list);
-	}
-	
-	public static String toJson(Map map){
-		if (map == null)
-			return null;
-		if (map.isEmpty()){
-			return "{}";
-		}
-		return JSON.toJSONString(map);
-	}
 	
 	public static <T> List<T> toList(String json, Class<T> clz){
 		if (json == null || json.equals(""))

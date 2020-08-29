@@ -33,12 +33,7 @@ import java.lang.annotation.Target;
 public @interface X {
 	
 	int KEY_ONE = 1;
-	
-	/**
-	 * just string(60<=length < 512), datetime, text<br>
-	 * only effect on getter<br>
-	 */
-	String type() default "";
+
 	/**
 	 * 
 	 * only effect on getter<br>

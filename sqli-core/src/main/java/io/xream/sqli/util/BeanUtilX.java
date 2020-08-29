@@ -17,10 +17,11 @@
 package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -34,6 +35,8 @@ import java.util.*;
  * @Author Sim
  */
 public class BeanUtilX extends BeanUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(BeanUtilX.class);
 
     public final static String SQL_KEYWORD_MARK = "`";
 
@@ -122,8 +125,7 @@ public class BeanUtilX extends BeanUtil {
             }
 
         } catch (Exception e) {
-            System.out.println("p = " + p + ", v = " + v);
-            e.printStackTrace();
+            logger.info("Copy() exception: p = " + p + ", v = " + v);
         }
 
         return t;
@@ -131,7 +133,7 @@ public class BeanUtilX extends BeanUtil {
 
 
     @SuppressWarnings("rawtypes")
-    public static List<BeanElement> getElementList(Class clz) {
+    public static List<BeanElement> parseElementList(Class clz) {
 
         List<Field> fl = new ArrayList<Field>();
 
@@ -324,7 +326,7 @@ public class BeanUtilX extends BeanUtil {
 
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void parseAnno(Class clz, BeanElement ele, Field f) {
+    private static void parseAnno(Class clz, BeanElement ele, Field f) {
 
         Method m = null;
         try {
@@ -335,7 +337,6 @@ public class BeanUtilX extends BeanUtil {
         if (m != null) {
             X p = m.getAnnotation(X.class);
             if (p != null) {
-                ele.sqlType = p.type();
                 ele.length = p.length();
             }
         }
@@ -343,11 +344,10 @@ public class BeanUtilX extends BeanUtil {
         if (f != null) {
             X p = f.getAnnotation(X.class);
             if (p != null) {
-                ele.sqlType = p.type();
                 ele.length = p.length();
             }
 
-            X.Mapping mapping = (X.Mapping) f.getAnnotation(X.Mapping.class);
+            X.Mapping mapping = f.getAnnotation(X.Mapping.class);
             if (mapping != null && SqliStringUtil.isNotNull(mapping.value())) {
                 ele.mapper = mapping.value();
             }
@@ -384,69 +384,6 @@ public class BeanUtilX extends BeanUtil {
 
         }
     }
-
-
-    public static <T> void sort(Class<T> clz, List<T> list, String property, boolean isAsc) {
-        list.sort(
-                (a, b) -> compare(clz, property, isAsc, a, b)
-        );
-    }
-
-    private static <T> int compare(Class clz, String orderBy, boolean isAsc, T a, T b) {
-        try {
-            int scValue = isAsc ? 1 : -1;
-            Field field = clz.getDeclaredField(orderBy);
-            field.setAccessible(true);
-            Object valueA = field.get(a);
-            Object valueB = field.get(b);
-            if (field.getType() == String.class) {
-                int intA = valueA.toString().charAt(0);
-                int intB = valueB.toString().charAt(0);
-                if (intA > intB)
-                    return 1 * scValue;
-                if (intA < intB)
-                    return -1 * scValue;
-                return 0;
-            } else {
-                BigDecimal bdA = new BigDecimal(valueA.toString().toCharArray());
-                BigDecimal bdB = new BigDecimal(valueB.toString().toCharArray());
-                return bdA.compareTo(bdB) * scValue;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public static void sort(List<Map<String, Object>> list, String property, boolean isAsc) {
-        list.sort(
-                (a, b) -> compare(property, isAsc, a, b)
-        );
-    }
-
-    private static int compare(String property, boolean isAsc, Map<String, Object> a, Map<String, Object> b) {
-
-        int scValue = isAsc ? 1 : -1;
-
-        Object valueA = a.get(property);
-        Object valueB = b.get(property);
-
-        if (valueA instanceof String) {
-            int intA = valueA.toString().charAt(0);
-            int intB = valueB.toString().charAt(0);
-            if (intA > intB)
-                return 1 * scValue;
-            if (intA < intB)
-                return -1 * scValue;
-            return 0;
-        } else {
-            BigDecimal bdA = new BigDecimal(valueA.toString().toCharArray());
-            BigDecimal bdB = new BigDecimal(valueB.toString().toCharArray());
-            return bdA.compareTo(bdB) * scValue;
-        }
-
-    }
-
 
     public static String filterSQLKeyword(String mapper) {
         for (String keyWord : SqlScript.KEYWORDS) {
@@ -520,31 +457,6 @@ public class BeanUtilX extends BeanUtil {
         return alia;
     }
 
-    public static void aliaToClzzForMapResult(Criteria.ResultMapCriteria resultMapped, List<Map<String, Object>> mapList) {
-        Map<String, String> aliaMap = resultMapped.getAliaMap();
-
-        for (Map.Entry<String, String> entry : aliaMap.entrySet()) {
-            if (entry.getKey().equals(entry.getValue()))
-                return;
-        }
-
-        for (Map<String, Object> aliaKeyMap : mapList) {
-
-            Map<String, Object> clzKeyMap = new HashMap<>();
-
-            for (Map.Entry<String, Object> entry : aliaKeyMap.entrySet()) {
-                String alia = entry.getKey();
-                Object obj = entry.getValue();
-                String clzName = aliaMap.get(alia);
-                clzKeyMap.put(clzName, obj);
-            }
-
-            aliaKeyMap.clear();
-            aliaKeyMap.putAll(clzKeyMap);
-        }
-
-    }
-
     public static <T> Object tryToGetId(T t, Parsed parsed) {
 
         Field f = parsed.getKeyField(X.KEY_ONE);
@@ -570,59 +482,6 @@ public class BeanUtilX extends BeanUtil {
         return null;
     }
 
-
-
-    /**
-     * 通过setter拷贝原始对象的从getter获取的值
-     *
-     * @param target
-     * @param origin
-     */
-    public static void copyX(Object target, Object origin) {
-
-        if (origin == null || target == null)
-            return;
-
-        Class clz = target.getClass();
-
-        Class oc = origin.getClass();
-
-        ReflectionCache cache = Parser.getReflectionCache(clz); // target
-
-        Set<String> set = new HashSet<String>();
-        for (Method m : oc.getDeclaredMethods()) {
-            set.add(m.getName());
-        }
-
-        for (FieldAndMethod fam : cache.getMap().values()) {
-
-            if (!set.contains(fam.getGetterName())) {
-                continue;
-            }
-
-            Object v = null;
-            try {
-                Method om = oc.getDeclaredMethod(fam.getGetterName());
-                v = om.invoke(origin);
-                Class rt = om.getReturnType();
-                if ((rt == int.class || rt == long.class || rt == double.class || rt == float.class
-                        || rt == boolean.class || rt == short.class || rt == byte.class ) && v.toString().equals("0")) {
-                    v = null;
-                }
-
-            } catch (Exception e) {
-
-            }
-            if (v != null) {
-                try {
-                    fam.getSetter().invoke(target, v);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
 
     public static String getMapper(String property) {
 

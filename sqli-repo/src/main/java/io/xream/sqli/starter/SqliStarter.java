@@ -58,7 +58,6 @@ public class SqliStarter implements RepositoryInitializer {
         criteriaParser =  new DefaultCriteriaToSql();
 
         dao = new DaoImpl();
-//        dataTransform.setDao(dao);
 
         dataRepository = new CacheableRepository();
         ManuRepositoryStarter.init((Manuable) dataRepository);

@@ -27,14 +27,6 @@ public class PropertyMapping {
     private Map<String, String> propertyMappingMap = new HashMap<String, String>();
     private Map<String, String> columnPropertyMap = new HashMap<String, String>();
 
-    public Map<String, String> getPropertyMappingMap() {
-        return propertyMappingMap;
-    }
-
-    public Map<String, String> getColumnPropertyMap() {
-        return columnPropertyMap;
-    }
-
     public void put(String property, String mapper) {
         this.propertyMappingMap.put(property, mapper);
         this.columnPropertyMap.put(mapper, property);

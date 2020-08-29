@@ -27,16 +27,8 @@ public class ResultKeyAlia {
     private String objectOrAlia;
     private String propertyOrAlia;
 
-    public String getObjectOrAlia() {
-        return objectOrAlia;
-    }
-
     public void setObjectOrAlia(String objectOrAlia) {
         this.objectOrAlia = objectOrAlia;
-    }
-
-    public String getPropertyOrAlia() {
-        return propertyOrAlia;
     }
 
     public void setPropertyOrAlia(String propertyOrAlia) {
