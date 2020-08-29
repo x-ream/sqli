@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.mapper;
+package io.xream.sqli.converter;
 
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.exception.ParsingException;
@@ -23,8 +23,8 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -35,29 +35,30 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public class DataObjectConverter {
+public class ObjectDataConverter {
 
     public static List<Object> objectToListForCreate(Object obj, List<BeanElement> eles, Dialect dialect) {
 
         List<Object> list = new ArrayList<>();
         try {
             for (BeanElement ele : eles) {
-                Object value = ele.getMethod.invoke(obj);
+                Object value = ele.getGetMethod().invoke(obj);
+                Class clz = ele.getClz();
                 if (value == null) {
-                    if (BeanUtil.isEnum(ele.clz))
+                    if (BeanUtil.isEnum(clz))
                         throw new PersistenceException(
                                 "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
-                    if (ele.clz == Boolean.class || ele.clz == Integer.class || ele.clz == Long.class
-                            || ele.clz == Double.class || ele.clz == Float.class || ele.clz == BigDecimal.class
-                            || ele.clz == Byte.class || ele.clz == Short.class)
+                    if (clz == Boolean.class || clz == Integer.class || clz == Long.class
+                            || clz == Double.class || clz == Float.class || clz == BigDecimal.class
+                            || clz == Byte.class || clz == Short.class)
                         list.add(0);
                     else
                         list.add(null);
                 } else {
-                    if (ele.isJson) {
+                    if (ele.isJson()) {
                         String str = JsonWrapper.toJson(value);
                         list.add(str);
-                    } else if (BeanUtil.isEnum(ele.clz)) {
+                    } else if (BeanUtil.isEnum(clz)) {
                         String str = ((Enum) value).name();
                         list.add(str);
                     } else {
@@ -85,9 +86,10 @@ public class DataObjectConverter {
 
         Class clz = obj.getClass();
         try {
-            for (BeanElement element : parsed.getBeanElementList()) {
+            List<BeanElement> beanElementList = parsed.getBeanElementList();
+            for (BeanElement element : beanElementList) {
 
-                Method method = element.getMethod;
+                Method method = element.getGetMethod();
                 Object value = method.invoke(obj);
                 Class type = method.getReturnType();
 
@@ -170,14 +172,5 @@ public class DataObjectConverter {
         SqliLoggerProxy.debug(clz, valueList);
     }
 
-    private static Object filter(Object obj) {
-        if (obj == null)
-            return null;
-        if (obj instanceof String) {
-            String str = (String) obj;
-            obj = str.replace("<","&lt").replace(">","&gt");
-        }
-        return obj;
-    }
 
 }

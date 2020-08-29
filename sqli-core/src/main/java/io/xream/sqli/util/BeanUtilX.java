@@ -44,93 +44,6 @@ public class BeanUtilX extends BeanUtil {
         super();
     }
 
-    /**
-     * 通过setter拷贝值
-     *
-     * @param clz
-     * @param origin
-     */
-    public static <T> T copy(Class<T> clz, Object origin) {
-
-        if (origin == null)
-            return null;
-
-        T t = null;
-        String p = "";
-        Object v = null;
-        try {
-            t = clz.newInstance();
-
-            Class oc = origin.getClass();
-
-            // Method[] originMethodArr = oc.getDeclaredMethods();
-            ReflectionCache originCache = Parser.getReflectionCache(oc); // origin
-
-            ReflectionCache cache = Parser.getReflectionCache(clz); // target
-
-            for (FieldAndMethod fnm : cache.getMap().values()) {
-
-                FieldAndMethod originFnm = originCache.get(fnm.getProperty());
-
-                if (originFnm == null) {
-
-                    originFnm = originCache.getTemp(fnm.getProperty());
-                    /*
-                     * 增加临时缓存
-                     */
-                    if (originFnm == null) {
-                        originFnm = new FieldAndMethod(); // NEW
-                        originCache.getTempMap().put(fnm.getProperty(), originFnm);
-
-                        String getterName = fnm.getGetterName();
-                        Method orginGetter = null;
-                        try {
-                            orginGetter = oc.getDeclaredMethod(getterName);
-                        } catch (Exception e) {
-
-                        }
-                        if (orginGetter != null) {
-
-                            originFnm.setGetter(orginGetter);
-                            originFnm.setGetterName(getterName);
-
-                            String setterName = fnm.getSetterName();
-                            Method orginSetter = null;
-                            try {
-                                orginSetter = oc.getDeclaredMethod(setterName, fnm.getField().getType());
-                            } catch (Exception e) {
-
-                            }
-                            if (orginSetter != null) {
-                                originFnm.setSetter(orginSetter);
-                                originFnm.setSetterName(setterName);
-                            }
-                            originFnm.setProperty(fnm.getProperty());
-
-                        }
-                    }
-                }
-
-                try {
-                    if (originFnm != null && originFnm.getGetterName() != null) {
-                        v = oc.getDeclaredMethod(originFnm.getGetterName()).invoke(origin);
-
-                        Method m = fnm.getSetter();
-                        m.invoke(t, v);
-                    }
-                } catch (Exception e) {
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            logger.info("Copy() exception: p = " + p + ", v = " + v);
-        }
-
-        return t;
-    }
-
 
     @SuppressWarnings("rawtypes")
     public static List<BeanElement> parseElementList(Class clz) {
@@ -194,17 +107,17 @@ public class BeanUtilX extends BeanUtil {
                 filterList.add(be);
             }
             if (name.startsWith("set")) {
-                be.setter = name;
+                be.setSetter(name);
             } else if (name.startsWith("get")) {
-                be.getter = name;
-                be.clz = m.getReturnType();
+                be.setGetter(name);
+                be.setClz(m.getReturnType());
             } else if (name.startsWith("is")) {
-                be.getter = name;
-                be.clz = m.getReturnType();
+                be.setGetter(name);
+                be.setClz(m.getReturnType());
                 be.setProperty(name);
                 String setter = getSetter(name); // FIXME 可能有BUG
                 if (mns.contains(setter)) {
-                    be.setter = setter;
+                    be.setSetter(setter);
                 }
             }
 
@@ -241,37 +154,37 @@ public class BeanUtilX extends BeanUtil {
 
             parseAnno(clz, element, allMap.get(element.getProperty()));
 
-            Class ec = element.clz;
-            if (element.sqlType == null) {
+            Class ec = element.getClz();
+            if (element.getSqlType() == null) {
                 if (ec == int.class || ec == Integer.class) {
-                    element.sqlType = SqlFieldType.INT;
-                    element.length = 11;
+                    element.setSqlType(SqlFieldType.INT);
+                    element.setLength(11);
                 } else if (ec == long.class || ec == Long.class) {
-                    element.sqlType = SqlFieldType.LONG;
-                    element.length = 13;
+                    element.setSqlType(SqlFieldType.LONG);
+                    element.setLength(13);
                 } else if (ec == double.class || ec == Double.class) {
-                    element.sqlType = SqlFieldType.DOUBLE;
-                    element.length = 13;
+                    element.setSqlType(SqlFieldType.DOUBLE);
+                    element.setLength(13);
                 } else if (ec == float.class || ec == Float.class) {
-                    element.sqlType = SqlFieldType.FLOAT;
-                    element.length = 13;
+                    element.setSqlType(SqlFieldType.FLOAT);
+                    element.setLength(13);
                 } else if (ec == boolean.class || ec == Boolean.class) {
-                    element.sqlType = SqlFieldType.BYTE;
-                    element.length = 1;
+                    element.setSqlType(SqlFieldType.BYTE);
+                    element.setLength(1);
                 } else if (ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class) {
-                    element.sqlType = SqlFieldType.DATE;
+                    element.setSqlType(SqlFieldType.DATE);
                 } else if (ec == String.class) {
-                    element.sqlType = SqlFieldType.VARCHAR;
-                    if (element.length == 0)
-                        element.length = 60;
+                    element.setSqlType(SqlFieldType.VARCHAR);
+                    if (element.getLength() == 0)
+                        element.setLength(60);
                 } else if (ec == BigDecimal.class) {
-                    element.sqlType = SqlFieldType.DECIMAL;
+                    element.setSqlType(SqlFieldType.DECIMAL);
                 } else if (BeanUtil.isEnum(ec)) {
-                    element.sqlType = SqlFieldType.VARCHAR;
-                    if (element.length == 0)
-                        element.length = 40;
+                    element.setSqlType(SqlFieldType.VARCHAR);
+                    if (element.getLength() == 0)
+                        element.setLength(20);
                 } else {
-                    element.isJson = true;
+                    element.setJson(true);
                     if (ec == List.class) {
                         Field field = null;
                         try {
@@ -282,16 +195,16 @@ public class BeanUtilX extends BeanUtil {
                         ParameterizedType pt = (ParameterizedType) field.getGenericType();
 
                         Class geneType = (Class) pt.getActualTypeArguments()[0];
-                        element.geneType = geneType;
+                        element.setGeneType(geneType);
                     }
-                    element.sqlType = SqlFieldType.VARCHAR;
-                    if (element.length == 0)
-                        element.length = 512;
+                    element.setSqlType(SqlFieldType.VARCHAR);
+                    if (element.getLength() == 0)
+                        element.setLength(512);
                 }
-            } else if (element.sqlType.contains(SqlFieldType.TEXT)) {
-                element.length = 0;
+            } else if (element.getSqlType().contains(SqlFieldType.TEXT)) {
+                element.setLength(0);
             } else {
-                element.sqlType = SqlFieldType.VARCHAR;
+                element.setSqlType(SqlFieldType.VARCHAR);
             }
 
             list.add(element);
@@ -300,14 +213,14 @@ public class BeanUtilX extends BeanUtil {
         try {
             for (BeanElement be : list) {
                 try {
-                    be.setMethod = clz.getDeclaredMethod(be.setter, be.clz);
+                    be.setSetMethod(clz.getDeclaredMethod(be.getSetter(),be.getClz()));
                 } catch (NoSuchMethodException e) {
-                    be.setMethod = clz.getSuperclass().getDeclaredMethod(be.setter, be.clz);
+                    be.setSetMethod(clz.getSuperclass().getDeclaredMethod(be.getSetter(),be.getClz()));
                 }
                 try {
-                    be.getMethod = clz.getDeclaredMethod(be.getter);
+                    be.setGetMethod(clz.getDeclaredMethod(be.getGetter()));
                 } catch (NoSuchMethodException e) {
-                    be.getMethod = clz.getSuperclass().getDeclaredMethod(be.getter);
+                    be.setGetMethod(clz.getSuperclass().getDeclaredMethod(be.getGetter()));
                 }
             }
         } catch (Exception e) {
@@ -330,26 +243,26 @@ public class BeanUtilX extends BeanUtil {
 
         Method m = null;
         try {
-            m = clz.getDeclaredMethod(ele.getter);
+            m = clz.getDeclaredMethod(ele.getGetter());
         } catch (NoSuchMethodException e) {
 
         }
         if (m != null) {
             X p = m.getAnnotation(X.class);
             if (p != null) {
-                ele.length = p.length();
+                ele.setLength(p.length());
             }
         }
 
         if (f != null) {
             X p = f.getAnnotation(X.class);
             if (p != null) {
-                ele.length = p.length();
+                ele.setLength(p.length());
             }
 
             X.Mapping mapping = f.getAnnotation(X.Mapping.class);
             if (mapping != null && SqliStringUtil.isNotNull(mapping.value())) {
-                ele.mapper = mapping.value();
+                ele.setMapper(mapping.value());
             }
 
         }

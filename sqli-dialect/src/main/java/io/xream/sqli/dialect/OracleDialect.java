@@ -87,9 +87,9 @@ public class OracleDialect implements Dialect {
         if (obj == null)
             return null;
 
-        Class ec = element.clz;
+        Class ec = element.getClz();
 
-        if (element.isJson) {
+        if (element.isJson()) {
 
             String str = null;
             if (obj instanceof oracle.sql.NCLOB) {
@@ -127,7 +127,7 @@ public class OracleDialect implements Dialect {
             if (!(str.startsWith("{") || str.startsWith("[")))
                 return str;
             if (ec == List.class) {
-                Class geneType = element.geneType;
+                Class geneType = element.getGeneType();
                 return JsonWrapper.toList(str, geneType);
             } else if (ec == Map.class) {
                 return JsonWrapper.toMap(str);

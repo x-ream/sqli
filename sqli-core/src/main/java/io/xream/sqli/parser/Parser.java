@@ -43,7 +43,6 @@ public class Parser {
 
     private final static Map<String, Parsed> simpleNameMap = new ConcurrentHashMap<String, Parsed>();
 
-    private final static Map<Class, ReflectionCache> cacheMap = new ConcurrentHashMap<Class, ReflectionCache>();
 
     public static String mappingPrefix;
     public static String mappingSpec;
@@ -174,17 +173,5 @@ public class Parser {
         put(clz, parsed);
 
     }
-
-    public static ReflectionCache getReflectionCache(Class clz) {
-        ReflectionCache cache = cacheMap.get(clz);
-        if (cache == null) {
-            cache = new ReflectionCache();
-            cache.setClz(clz);
-            cache.cache();
-            cacheMap.put(clz, cache);
-        }
-        return cache;
-    }
-
 
 }

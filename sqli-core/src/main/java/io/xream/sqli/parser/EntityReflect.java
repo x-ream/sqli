@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,6 +20,7 @@ import io.xream.sqli.util.BeanUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +28,10 @@ import java.util.Map;
  * JDK反射加了缓存之后，method.invoke比setter/getter慢10倍, 比没缓存反射快30倍，比缓存后的ReflectASM快2倍
  * @Author Sim
  */
-public class ReflectionCache {
+public class EntityReflect {
 
 	private Class clz;
 	private Map<String, FieldAndMethod> map = new HashMap<String, FieldAndMethod> ();
-	
-	private Map<String, FieldAndMethod> tempMap = new HashMap<String, FieldAndMethod> ();
 	
 	public Class getClz() {
 		return clz;
@@ -50,15 +48,6 @@ public class ReflectionCache {
 	
 	public FieldAndMethod get(String property){
 		return map.get(property);
-	}
-	public FieldAndMethod getTemp(String property){
-		return tempMap.get(property);
-	}
-	public Map<String, FieldAndMethod> getTempMap() {
-		return tempMap;
-	}
-	public void setTempMap(Map<String, FieldAndMethod> tempMap) {
-		this.tempMap = tempMap;
 	}
 	
 	public void cache() {
@@ -77,9 +66,7 @@ public class ReflectionCache {
 				
 				try{
 					Method getter = clz.getDeclaredMethod(getterName);
-					Class rt = f.getType();
-					Method setter = clz.getDeclaredMethod(setterName, rt);
-					
+					Method setter = clz.getDeclaredMethod(setterName, type);
 					if (getter == null || setter == null)
 						continue;
 					f.setAccessible(true);
@@ -90,6 +77,8 @@ public class ReflectionCache {
 					fnm.setField(f);
 					fnm.setGetter(getter);
 					fnm.setSetter(setter);
+					fnm.setClzz(type);
+					fnm.setGeneType(getReturnGenericTypeForList(f));
 					map.put(property, fnm);
 				}catch (Exception e){
 					
@@ -98,7 +87,12 @@ public class ReflectionCache {
 		}
 		
 	}
-	
+
+	private Class getReturnGenericTypeForList(Field field){
+		ParameterizedType pt = (ParameterizedType) field.getGenericType();
+		return (Class) pt.getActualTypeArguments()[0];
+	}
+
 	@Override
 	public String toString() {
 		return "ReflectionCache [clz=" + clz + ", map=" + map + "]";

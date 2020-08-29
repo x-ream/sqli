@@ -84,13 +84,13 @@ public class MySqlDialect implements Dialect {
     public Object mappingToObject( Object obj, BeanElement element) {
         if (obj == null)
             return null;
-        Class ec = element.clz;
+        Class ec = element.getClz();
 
         if (BeanUtil.isEnum(ec)) {
             return Enum.valueOf(ec, obj.toString());
-        } else if (element.isJson) {
+        } else if (element.isJson()) {
             if (ec == List.class) {
-                Class geneType = element.geneType;
+                Class geneType = element.getGeneType();
                 return JsonWrapper.toList(obj.toString(), geneType);
             } else if (ec == Map.class) {
                 return JsonWrapper.toMap(obj);

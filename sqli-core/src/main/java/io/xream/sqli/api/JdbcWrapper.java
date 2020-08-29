@@ -16,18 +16,15 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.builder.Criteria;
-
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface JdbcWrapper {
+public interface JdbcWrapper extends Parseable, ObjectFinder, ResultMapFinder {
 
-    <T> boolean createBatch(Class<T> clzz, String sql, Collection<T> objList, int batchSize, Dialect dialect);
+    <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
 
     boolean create(boolean isAutoIncreaseId, String sql, List<Object> valueList);
 
@@ -39,11 +36,9 @@ public interface JdbcWrapper {
 
     boolean execute(String sql);
 
-    <T> List<T> queryForList(String sql, Class<T> clz, Collection<Object> list, Dialect dialect);
-
     <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
 
-    List<Map<String, Object>> queryForMapList(String sql, Criteria.ResultMapCriteria resultMapped, Dialect dialect);
-
-    <T> void queryForMapToHandle(Class clzz, String sql, Collection<Object> valueList, Dialect dialect, Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<T> handler);
+    interface BatchObjectValues {
+        List<Collection<Object>> valuesList();
+    }
 }

@@ -63,7 +63,7 @@ public class ResultSortUtil {
             for (Object para : (List<Object>) kv0.v) {
                 for (T result : tempList) {
                     BeanElement be = parsed.getElement(property);
-                    Object o = be.getMethod.invoke(result);
+                    Object o = be.getGetMethod().invoke(result);
                     if (String.valueOf(para).equals(String.valueOf(o))) {
                         list.add(result);
                     }

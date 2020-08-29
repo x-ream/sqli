@@ -19,15 +19,13 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
+import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.CriteriaToSql;
-import io.xream.sqli.repository.mapper.DataObjectConverter;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
-import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -85,7 +83,7 @@ public class SqlUtil {
         for (String key : refreshMap.keySet()) {
 
             BeanElement element = parsed.getElement(key);
-            if (element.isJson && DbType.ORACLE.equals(DbType.value)){
+            if (element.isJson() && DbType.ORACLE.equals(DbType.value)){
                 Object obj = refreshMap.get(key);
                 Reader reader = new StringReader(obj.toString());
                 refreshMap.put(key,reader);
@@ -115,7 +113,7 @@ public class SqlUtil {
         sb.append(sqlSegment).append(SqlScript.WHERE);
         sb.append(mapper).append(SqlScript.IN);//" IN "
 
-        Class<?> keyType = be.getMethod.getReturnType();
+        Class<?> keyType = be.getClz();
 
         ConditionCriteriaToSql.buildIn(sb,keyType,inList);
 
@@ -136,7 +134,7 @@ public class SqlUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlParsed.setSql(sb);
-        DataObjectConverter.log(criteria.getClz(), criteria.getValueList());
+        ObjectDataConverter.log(criteria.getClz(), criteria.getValueList());
 
         return sqlParsed;
     }

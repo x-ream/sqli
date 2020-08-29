@@ -22,10 +22,12 @@ import java.lang.reflect.Method;
 /**
  * @Author Sim
  */
-public class FieldAndMethod{
+public class FieldAndMethod<T>{
 	private Field field;
 	private Method setter;
 	private Method getter;
+	public Class<T> clzz;
+	public Class geneType;
 
 	private String property;
 	private String setterName;
@@ -67,8 +69,20 @@ public class FieldAndMethod{
 	public void setGetterName(String getterName) {
 		this.getterName = getterName;
 	}
-	@Override
-	public String toString() {
-		return "FieldAndMethod [field=" + field == null ? "null" : field.getName() + ", setter=" + setter.getName() + ", getter=" + getter.getName() + "]";
+
+	public Class<T> getClzz() {
+		return clzz;
+	}
+
+	public void setClzz(Class<T> clzz) {
+		this.clzz = clzz;
+	}
+
+	public Class getGeneType() {
+		return geneType;
+	}
+
+	public void setGeneType(Class geneType) {
+		this.geneType = geneType;
 	}
 }

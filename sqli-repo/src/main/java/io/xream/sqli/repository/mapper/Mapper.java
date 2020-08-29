@@ -55,7 +55,7 @@ public interface Mapper {
 
     static String getSqlTypeRegX(BeanElement be) {
 
-        Class clz = be.clz;
+        Class clz = be.getClz();
         if (clz == Date.class || clz == java.sql.Date.class || clz == java.sql.Timestamp.class) {
             return Dialect.DATE;
         } else if (clz == String.class) {

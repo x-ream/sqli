@@ -68,11 +68,11 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
         Map<String, BeanElement> map = new HashMap<String, BeanElement>();
         List<BeanElement> list = new ArrayList<BeanElement>();
         for (BeanElement be : temp) {
-            if (be.sqlType != null && be.sqlType.equals("text")) {
+            if (be.getSqlType() != null && be.getSqlType().equals("text")) {
                 list.add(be);
                 continue;
             }
-            map.put(be.property, be);
+            map.put(be.getProperty(), be);
         }
         Parsed parsed = Parser.get(clz);
 
@@ -92,7 +92,7 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
         } else if (sqlType.equals(Dialect.LONG)) {
             sb.append(Dialect.LONG + " NOT NULL");
         } else if (sqlType.equals(Dialect.STRING)) {
-            sb.append(Dialect.STRING).append("(").append(be.length).append(") NOT NULL");
+            sb.append(Dialect.STRING).append("(").append(be.getLength()).append(") NOT NULL");
         }
 
         sb.append(", ");// FIXME ORACLE
@@ -101,8 +101,9 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
         map.remove(keyOne);
 
         for (BeanElement bet : map.values()) {
+            Class clzz = bet.getClz();
             sqlType = Mapper.getSqlTypeRegX(bet);
-            sb.append("   ").append(bet.property).append(" ");
+            sb.append("   ").append(bet.getProperty()).append(" ");
 
             sb.append(sqlType);
 
@@ -111,13 +112,13 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
             } else if (sqlType.equals(Dialect.DATE)) {
                 sb.append(" NULL");
 
-            }else if (BeanUtil.isEnum(bet.clz)) {
-                sb.append("(").append(bet.length).append(") NOT NULL");
+            }else if (BeanUtil.isEnum(bet.getClz())) {
+                sb.append("(").append(bet.getLength()).append(") NOT NULL");
             } else if (sqlType.equals(Dialect.STRING)) {
-                sb.append("(").append(bet.length).append(") NULL");
+                sb.append("(").append(bet.getLength()).append(") NULL");
             } else {
-                if (bet.clz == Boolean.class || bet.clz == boolean.class || bet.clz == Integer.class
-                        || bet.clz == int.class || bet.clz == Long.class || bet.clz == long.class) {
+                if (clzz == Boolean.class || clzz== boolean.class || clzz == Integer.class
+                        || clzz == int.class || clzz == Long.class || clzz == long.class) {
                     sb.append(" DEFAULT 0");
                 } else {
                     sb.append(" DEFAULT NULL");
@@ -128,7 +129,7 @@ public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
         for (BeanElement bet : list) {
             sqlType = Mapper.getSqlTypeRegX(bet);
-            sb.append("   ").append(bet.property).append(" ").append(sqlType).append(",").append("\n");
+            sb.append("   ").append(bet.getProperty()).append(" ").append(sqlType).append(",").append("\n");
         }
 
         sb.append("   PRIMARY KEY ( ").append(keyOne).append(" )");

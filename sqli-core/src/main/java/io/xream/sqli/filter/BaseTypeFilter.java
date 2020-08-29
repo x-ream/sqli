@@ -65,7 +65,7 @@ public class BaseTypeFilter {
             return false; //FIXME
         }
 
-        Class<?> vType = be.clz;
+        Class<?> vType = be.getClz();
 
         return vType == int.class || vType == long.class || vType == float.class
                 || vType == double.class

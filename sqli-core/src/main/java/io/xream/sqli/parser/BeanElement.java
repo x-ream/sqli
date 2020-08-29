@@ -27,38 +27,23 @@ import java.lang.reflect.Method;
  */
 public class BeanElement {
 
-	public String property;
-	public String setter;
-	public String getter;
-	@SuppressWarnings("rawtypes")
-	public Class clz;
-	public int length;
-	public String sqlType;
+	private String property;
+	private String setter;
+	private String getter;
+	private Class clz;
+	private Class geneType;
+	private Method getMethod;
+	private Method setMethod;
 
-	public String mapper = "";
-
-	public Method getMethod;
-	public Method setMethod;
-
-	public boolean isJson;
-	public Class geneType;
+	private String mapper = "";
+	private int length;
+	private String sqlType;
+	private boolean isJson;
 
 
-	public String getProperty() {
-		return property;
-	}
-
-	public void setProperty(String property) {
-		this.property = property;
-	}
-	
 	public void initMaper(){
 		mapper = BeanUtilX.getMapper(property);
 		mapper = BeanUtilX.filterSQLKeyword(mapper);
-	}
-
-	public String getMapper() {
-		return mapper;
 	}
 
 	public String property() {
@@ -75,7 +60,94 @@ public class BeanElement {
 		}
 		return BeanUtil.getProperty(setter).equals(BeanUtil.getProperty(getter));
 	}
-	
+
+	public String getProperty() {
+		return property;
+	}
+
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
+	public String getSetter() {
+		return setter;
+	}
+
+	public void setSetter(String setter) {
+		this.setter = setter;
+	}
+
+	public String getGetter() {
+		return getter;
+	}
+
+	public void setGetter(String getter) {
+		this.getter = getter;
+	}
+
+	public Class getClz() {
+		return clz;
+	}
+
+	public void setClz(Class clz) {
+		this.clz = clz;
+	}
+
+	public Class getGeneType() {
+		return geneType;
+	}
+
+	public void setGeneType(Class geneType) {
+		this.geneType = geneType;
+	}
+
+	public Method getGetMethod() {
+		return getMethod;
+	}
+
+	public void setGetMethod(Method getMethod) {
+		this.getMethod = getMethod;
+	}
+
+	public Method getSetMethod() {
+		return setMethod;
+	}
+
+	public void setSetMethod(Method setMethod) {
+		this.setMethod = setMethod;
+	}
+
+	public String getMapper() {
+		return mapper;
+	}
+
+	public void setMapper(String mapper) {
+		this.mapper = mapper;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public String getSqlType() {
+		return sqlType;
+	}
+
+	public void setSqlType(String sqlType) {
+		this.sqlType = sqlType;
+	}
+
+	public boolean isJson() {
+		return isJson;
+	}
+
+	public void setJson(boolean json) {
+		isJson = json;
+	}
 
 	@Override
 	public String toString() {

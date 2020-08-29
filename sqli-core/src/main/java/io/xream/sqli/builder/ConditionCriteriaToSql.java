@@ -161,7 +161,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                             if (be == null){
                                 throw new ParsingException("property of " + parsed.getClz() +" not exists: " + arr[1]);
                             }
-                            TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
+                            TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
                             if (buildingBlock.getValue() == null)
                                 ite.remove();
                         }
@@ -174,7 +174,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                             if (be == null){
                                 throw new ParsingException("property of " + parsed.getClz() +" not exists: " + key);
                             }
-                            TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
+                            TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
                             if (buildingBlock.getValue() == null)
                                 ite.remove();
                         }

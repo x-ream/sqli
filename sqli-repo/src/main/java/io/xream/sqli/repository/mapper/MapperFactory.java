@@ -123,7 +123,7 @@ public class MapperFactory implements Mapper {
 
 			List<BeanElement> tempList = new ArrayList<BeanElement>();
 			for (BeanElement p : list) {
-				String column = p.property;
+				String column = p.getProperty();
 				if (column.equals(keyOne))
 					continue;
 
@@ -132,7 +132,7 @@ public class MapperFactory implements Mapper {
 
 			int size = tempList.size();
 			for (int i = 0; i < size; i++) {
-				String column = tempList.get(i).property;
+				String column = tempList.get(i).getProperty();
 
 				sb.append(column).append(" = ?");
 				if (i < size - 1) {
@@ -272,7 +272,7 @@ public class MapperFactory implements Mapper {
 			sb.append("(");
 			int size = tempList.size();
 			for (int i = 0; i < size; i++) {
-				String p = tempList.get(i).property;
+				String p = tempList.get(i).getProperty();
 
 				sb.append(" ").append(p).append(" ");
 				if (i < size - 1) {
@@ -306,11 +306,11 @@ public class MapperFactory implements Mapper {
 			Map<String, BeanElement> map = new HashMap<String, BeanElement>();
 			List<BeanElement> list = new ArrayList<BeanElement>();
 			for (BeanElement be : temp) {
-				if (be.sqlType != null && be.sqlType.equals("text")) {
+				if (be.getSqlType() != null && be.getSqlType().equals("text")) {
 					list.add(be);
 					continue;
 				}
-				map.put(be.property, be);
+				map.put(be.getProperty(), be);
 			}
 			Parsed parsed = Parser.get(clz);
 
@@ -330,7 +330,7 @@ public class MapperFactory implements Mapper {
 			} else if (sqlType.equals(Dialect.LONG)) {
 				sb.append(Dialect.LONG + " NOT NULL");
 			} else if (sqlType.equals(Dialect.STRING)) {
-				sb.append(Dialect.STRING).append("(").append(be.length).append(") NOT NULL");
+				sb.append(Dialect.STRING).append("(").append(be.getLength()).append(") NOT NULL");
 			}
 
 			sb.append(", ");// FIXME ORACLE
@@ -340,7 +340,7 @@ public class MapperFactory implements Mapper {
 
 			for (BeanElement bet : map.values()) {
 				sqlType = Mapper.getSqlTypeRegX(bet);
-				sb.append("   ").append(bet.property).append(" ");
+				sb.append("   ").append(bet.getProperty()).append(" ");
 
 				sb.append(sqlType);
 
@@ -349,13 +349,14 @@ public class MapperFactory implements Mapper {
 				} else if (sqlType.equals(Dialect.DATE)) {
 					sb.append(" NULL");
 
-				}else if (BeanUtil.isEnum(bet.clz)) {
-					sb.append("(").append(bet.length).append(") NOT NULL");
+				}else if (BeanUtil.isEnum(bet.getClz())) {
+					sb.append("(").append(bet.getLength()).append(") NOT NULL");
 				} else if (sqlType.equals(Dialect.STRING)) {
-					sb.append("(").append(bet.length).append(") NULL");
+					sb.append("(").append(bet.getLength()).append(") NULL");
 				} else {
-					if (bet.clz == Boolean.class || bet.clz == boolean.class || bet.clz == Integer.class
-							|| bet.clz == int.class || bet.clz == Long.class || bet.clz == long.class) {
+					Class clzz = bet.getClz();
+					if (clzz == Boolean.class || clzz == boolean.class || clzz == Integer.class
+							|| clzz == int.class || clzz == Long.class || clzz == long.class) {
 						sb.append(" DEFAULT 0");
 					} else {
 						sb.append(" DEFAULT NULL");
@@ -366,7 +367,7 @@ public class MapperFactory implements Mapper {
 
 			for (BeanElement bet : list) {
 				sqlType = Mapper.getSqlTypeRegX(bet);
-				sb.append("   ").append(bet.property).append(" ").append(sqlType).append(",").append("\n");
+				sb.append("   ").append(bet.getProperty()).append(" ").append(sqlType).append(",").append("\n");
 			}
 
 			sb.append("   PRIMARY KEY ( ").append(keyOne).append(" )");

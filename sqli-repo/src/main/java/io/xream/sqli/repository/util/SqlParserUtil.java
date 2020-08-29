@@ -57,7 +57,7 @@ public class SqlParserUtil {
         try {
             for (BeanElement element : parsed.getBeanElementList()) {
 
-                Method method = element.getMethod;
+                Method method = element.getGetMethod();
                 Object value = method.invoke(obj);
                 if (value == null)
                     continue;
@@ -101,7 +101,7 @@ public class SqlParserUtil {
                     map.put(property, value);
                 } else if (type == BigDecimal.class){
                     map.put(property, value);
-                }else if (element.isJson) {
+                }else if (element.isJson()) {
                     String str = JsonWrapper.toJson(value);
                     map.put(property, str);
                 }

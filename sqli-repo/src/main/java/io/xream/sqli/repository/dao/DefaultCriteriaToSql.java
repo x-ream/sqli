@@ -229,7 +229,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                         throw new ParsingException("can not find the property " + key + " of " + parsed.getClzName());
                     }
 
-                    TimestampSupport.testNumberValueToDate(be.clz, buildingBlock);
+                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
 
                     if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue())) || BaseTypeFilter.isBaseType_0(key, buildingBlock.getValue(), parsed)) {
                         continue;
@@ -245,7 +245,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                     sb.append(mapper);
                     sb.append(SqlScript.EQ_PLACE_HOLDER);
 
-                    if (be.isJson) {
+                    if (be.isJson()) {
                         Object v = buildingBlock.getValue();
                         if (v != null) {
                             String str = JsonWrapper.toJson(v);
