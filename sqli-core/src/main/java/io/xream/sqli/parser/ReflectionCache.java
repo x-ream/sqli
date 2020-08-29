@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * JDK反射加了缓存之后，method.invoke比setter/getter慢10倍, 比没缓存反射快30倍，比缓存后的ReflectASM快2倍
  * @Author Sim
  */
 public class ReflectionCache {
