@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface Dialect {
+public interface Dialect extends ValuePost {
 
     String DATE = "${DATE}";
     String BYTE = "${BYTE}";
@@ -70,4 +70,5 @@ public interface Dialect {
                 .replace(LONG_TEXT, longTextV).replace(STRING, stringV)
                 .replace(INCREAMENT, increamentV).replace(ENGINE, engineV);
     }
+
 }

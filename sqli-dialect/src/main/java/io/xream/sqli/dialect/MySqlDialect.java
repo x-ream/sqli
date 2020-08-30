@@ -107,16 +107,8 @@ public class MySqlDialect implements Dialect {
 
     }
 
-    public Object filterValue(Object value) {
-
-        if (value instanceof String) {
-            String str = (String) value;
-            value = str.replace("<", "&lt").replace(">", "&gt");
-        }
-        if (Objects.nonNull(value) && BeanUtil.isEnum(value.getClass()))
-            return ((Enum)value).name();
-
-        return value;
+    public Object filterValue(Object object) {
+        return filter(object,null);
     }
 
     @Override

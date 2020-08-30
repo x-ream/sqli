@@ -190,21 +190,19 @@ public class OracleDialect implements Dialect {
 
     }
 
-    public Object filterValue(Object value) {
-        if (value instanceof String) {
-            String str = (String) value;
-            value = str.replace("<", "&lt").replace(">", "&gt");
-        } else if (value instanceof Date) {
-            Date date = (Date) value;
-            Timestamp timestamp = new Timestamp(date.getTime());
-            return timestamp;
-        } else if (value instanceof Boolean) {
-            Boolean b = (Boolean) value;
-            return b.booleanValue() ? 1 : 0;
-        }
-        if (Objects.nonNull(value) && BeanUtil.isEnum(value.getClass()))
-            return ((Enum) value).name();
-        return value;
+    public Object filterValue(Object object) {
+        return filter(object, (obj) -> {
+            if (obj instanceof Date) {
+                Date date = (Date) obj;
+                Timestamp timestamp = new Timestamp(date.getTime());
+                return timestamp;
+            } else if (obj instanceof Boolean) {
+                Boolean b = (Boolean) obj;
+                return b.booleanValue() ? 1 : 0;
+            }
+            return obj;
+        });
+
     }
 
     @Override
