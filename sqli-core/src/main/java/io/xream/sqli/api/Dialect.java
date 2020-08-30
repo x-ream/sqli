@@ -17,7 +17,6 @@
 package io.xream.sqli.api;
 
 
-import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.parser.BeanElement;
 
 import java.util.Collection;
@@ -28,31 +27,47 @@ import java.util.Map;
  */
 public interface Dialect {
 
-    String DATE = " ${DATE}";
-    String BYTE = " ${BYTE}";
-    String INT = " ${INT}";
-    String LONG = " ${LONG}";
-    String BIG = " ${BIG}";
-    String STRING = " ${STRING}";
-    String TEXT = " ${TEXT}";
-    String LONG_TEXT = " ${LONG_TEXT}";
-    String INCREAMENT = " ${INCREAMENT}";
-    String ENGINE = " ${ENGINE}";
+    String DATE = "${DATE}";
+    String BYTE = "${BYTE}";
+    String INT = "${INT}";
+    String LONG = "${LONG}";
+    String BIG = "${BIG}";
+    String STRING = "${STRING}";
+    String TEXT = "${TEXT}";
+    String LONG_TEXT = "${LONG_TEXT}";
+    String INCREAMENT = "${INCREAMENT}";
+    String ENGINE = "${ENGINE}";
 
 
-    String match(String sql, long start, long rows);
+    String buildPage(String sql, long start, long rows);
 
-    String match(String sql, String sqlType);
+    String replaceAll(String sql);
 
     String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) ;
 
     Object filterValue(Object value);
-
-    String resultKeyAlian(String mapper, Criteria.ResultMapCriteria criteria);
 
     Object[] toArr(Collection<Object> list);
 
     Object mappingToObject(Object obj, BeanElement element);
 
     String createOrReplaceSql(String sql);
+
+    default String replace(String originSql, Map<String, String> map){
+        String dateV = map.get(DATE);
+        String byteV = map.get(BYTE);
+        String intV = map.get(INT);
+        String longV = map.get(LONG);
+        String bigV = map.get(BIG);
+        String textV = map.get(TEXT);
+        String longTextV = map.get(LONG_TEXT);
+        String stringV = map.get(STRING);
+        String increamentV = map.get(INCREAMENT);
+        String engineV = map.get(ENGINE);
+
+        return originSql.replace(DATE, dateV).replace(BYTE, byteV).replace(INT, intV)
+                .replace(LONG, longV).replace(BIG, bigV).replace(TEXT, textV)
+                .replace(LONG_TEXT, longTextV).replace(STRING, stringV)
+                .replace(INCREAMENT, increamentV).replace(ENGINE, engineV);
+    }
 }

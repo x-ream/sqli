@@ -17,7 +17,6 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.util.BeanUtil;
@@ -51,33 +50,19 @@ public class MySqlDialect implements Dialect {
     };
 
 
-    public String match(String sql, long start, long rows) {
+    public String buildPage(String origin, long start, long rows) {
 
         if (rows == 0)
-            return sql;
+            return origin;
         StringBuilder sb = new StringBuilder();
-        sb.append(sql);
+        sb.append(origin);
         sb.append(SqlScript.LIMIT).append(start).append(",").append(rows);
         return sb.toString();
 
     }
 
-    public String match(String sql, String sqlType) {
-        String dateV = map.get(DATE);
-        String byteV = map.get(BYTE);
-        String intV = map.get(INT);
-        String longV = map.get(LONG);
-        String bigV = map.get(BIG);
-        String textV = map.get(TEXT);
-        String longTextV = map.get(LONG_TEXT);
-        String stringV = map.get(STRING);
-        String increamentV = map.get(INCREAMENT);
-        String engineV = map.get(ENGINE);
-
-        return sql.replace(DATE, dateV).replace(BYTE.trim(), byteV).replace(INT.trim(), intV)
-                .replace(LONG.trim(), longV).replace(BIG.trim(), bigV).replace(TEXT.trim(), textV)
-                .replace(LONG_TEXT.trim(), longTextV).replace(STRING.trim(), stringV)
-                .replace(INCREAMENT.trim(), increamentV).replace(ENGINE.trim(), engineV);
+    public String replaceAll(String origin) {
+        return replace(origin,map);
     }
 
     @Override
@@ -132,20 +117,6 @@ public class MySqlDialect implements Dialect {
             return ((Enum)value).name();
 
         return value;
-    }
-
-
-    @Override
-    public String resultKeyAlian(String mapper, Criteria.ResultMapCriteria criteria) {
-
-        if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
-            Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();
-            String alian = "c" + resultKeyAliaMap.size();
-            resultKeyAliaMap.put(alian, mapper);
-            String target = mapper + SqlScript.AS + alian;
-            return target;
-        }
-        return mapper;
     }
 
     @Override

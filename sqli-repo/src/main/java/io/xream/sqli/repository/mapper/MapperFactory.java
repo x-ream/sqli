@@ -317,11 +317,11 @@ public class MapperFactory implements Mapper {
 			String sqlType = Mapper.getSqlTypeRegX(be);
 
 			if (sqlType.equals(Dialect.INT)) {
-				sb.append(Dialect.INT + " NOT NULL");
+				sb.append(" ").append(Dialect.INT + " NOT NULL");
 			} else if (sqlType.equals(Dialect.LONG)) {
-				sb.append(Dialect.LONG + " NOT NULL");
+				sb.append(" ").append(Dialect.LONG + " NOT NULL");
 			} else if (sqlType.equals(Dialect.STRING)) {
-				sb.append(Dialect.STRING).append("(").append(be.getLength()).append(") NOT NULL");
+				sb.append(" ").append(Dialect.STRING).append("(").append(be.getLength()).append(") NOT NULL");
 			}
 
 			sb.append(", ");// FIXME ORACLE
@@ -364,9 +364,9 @@ public class MapperFactory implements Mapper {
 			sb.append("   PRIMARY KEY ( ").append(keyOne).append(" )");
 
 			sb.append("\n");
-			sb.append(") ").append(Dialect.ENGINE).append(";");
+			sb.append(") ").append(" ").append(Dialect.ENGINE).append(";");
 			String sql = sb.toString();
-			sql = Dialect.match(sql, CREATE_TABLE);
+			sql = Dialect.replaceAll(sql);
 			sql = SqlParserUtil.mapper(sql, Parser.get(clz));
 			sqlsMap.get(clz).put(CREATE_TABLE, sql);
 			return sql;

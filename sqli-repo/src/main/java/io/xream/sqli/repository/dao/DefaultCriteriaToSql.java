@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements SqlNormalizer,CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
+public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
 
     private Dialect dialect;
 
@@ -323,7 +323,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer,CriteriaToSql, Condit
                 String mapper = mapping(resultKey, criteria);
                 propertyMapping.put(resultKey, mapper);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
-                mapper = this.dialect.resultKeyAlian(mapper, resultMapped);
+                mapper = generate(mapper, resultMapped);
                 column.append(SqlScript.SPACE).append(mapper);
                 i++;
                 if (i < size) {
@@ -394,7 +394,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer,CriteriaToSql, Condit
                 sqlBuilder.conditionSet.add(key);
                 String mapper = mapping(key, criteria);
                 propertyMapping.put(key, mapper);
-                mapper = this.dialect.resultKeyAlian(mapper, resultMapped);
+                mapper = generate(mapper, resultMapped);
                 column.append(SqlScript.SPACE).append(mapper);
                 if (i < size - 1) {
                     column.append(SqlScript.COMMA);

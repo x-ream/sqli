@@ -41,7 +41,7 @@ public class SqlUtil {
 
     protected static String paged(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;
-        return dialect.match(sql, start, rows);
+        return dialect.buildPage(sql, start, rows);
     }
 
     /**
@@ -129,7 +129,7 @@ public class SqlUtil {
 
         int start = (page - 1) * rows;
 
-        sql = dialect.match(sql, start, rows);
+        sql = dialect.buildPage(sql, start, rows);
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
