@@ -16,7 +16,6 @@
  */
 package io.xream.sqli.repository.mapper;
 
-import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
@@ -30,13 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
-    private Dialect dialect;
-
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
-
-    public void setDialect(Dialect dialect){
-        this.dialect = dialect;
-    }
 
     @Override
     public String parseAndGetSql(Class clzz){
