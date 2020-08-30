@@ -60,8 +60,8 @@ public class BeanUtil {
     public static String getProperty(String methodName) {
         if (methodName.startsWith("is"))
             return methodName;
-        methodName = methodName.substring(3);
-        return getByFirstLower(methodName);
+        String str = methodName.substring(3);
+        return getByFirstLower(str);
     }
 
     public static boolean isEnum(Class clz) {

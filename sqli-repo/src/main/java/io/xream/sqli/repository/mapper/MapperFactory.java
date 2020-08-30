@@ -54,7 +54,7 @@ public class MapperFactory implements Mapper {
 
 		Map<String, String> sqlMap = sqlsMap.get(clz);
 		if (sqlMap == null) {
-			sqlMap = new HashMap<String, String>();
+			sqlMap = new HashMap<>();
 			sqlsMap.put(clz, sqlMap);
 			parseBean(clz);
 		}
@@ -66,25 +66,12 @@ public class MapperFactory implements Mapper {
 	@SuppressWarnings({ "rawtypes" })
 	public static String tryToCreate(Class clz) {
 
-		Map<String, String> sqlMap = sqlsMap.get(clz);
-		if (sqlMap == null) {
-			sqlMap = new HashMap<>();
-			sqlsMap.put(clz, sqlMap);
-			parseBean(clz);
-			return sqlMap.remove(CREATE_TABLE);
-		}
+		getSql(clz,CREATE_TABLE);
+		sqlsMap.get(clz).remove(CREATE_TABLE);
 
 		return "";
-
 	}
 
-	/**
-	 * 
-	 * @param clz
-	 */
-	public static List<BeanElement> getElementList(Class clz) {
-		return Parser.get(clz).getBeanElementList();
-	}
 
 	@SuppressWarnings({ "rawtypes" })
 	public static void parseBean(Class clz) {
@@ -300,9 +287,9 @@ public class MapperFactory implements Mapper {
 
 		}
 
-		public String getTableSql(Class clz) {
-
-			List<BeanElement> temp = Parser.get(clz).getBeanElementList();
+		public static String buildTableSql(Class clz,boolean isTemporary){
+			Parsed parsed = Parser.get(clz);
+			List<BeanElement> temp = parsed.getBeanElementList();
 			Map<String, BeanElement> map = new HashMap<String, BeanElement>();
 			List<BeanElement> list = new ArrayList<BeanElement>();
 			for (BeanElement be : temp) {
@@ -312,12 +299,16 @@ public class MapperFactory implements Mapper {
 				}
 				map.put(be.getProperty(), be);
 			}
-			Parsed parsed = Parser.get(clz);
 
 			final String keyOne = parsed.getKey(X.KEY_ONE);
 
 			StringBuilder sb = new StringBuilder();
-			sb.append("CREATE TABLE IF NOT EXISTS ").append(BeanUtil.getByFirstLower(parsed.getClzName())).append(" (")
+			if (isTemporary){
+				sb.append("\"CREATE TEMPORARY TABLE IF NOT EXISTS \"");
+			}else{
+				sb.append("CREATE TABLE IF NOT EXISTS ");
+			}
+			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(" (")
 					.append("\n");
 
 			sb.append("   ").append(keyOne);
@@ -374,13 +365,15 @@ public class MapperFactory implements Mapper {
 
 			sb.append("\n");
 			sb.append(") ").append(Dialect.ENGINE).append(";");
-
 			String sql = sb.toString();
 			sql = Dialect.match(sql, CREATE_TABLE);
-			sql = SqlParserUtil.mapper(sql, parsed);
+			sql = SqlParserUtil.mapper(sql, Parser.get(clz));
 			sqlsMap.get(clz).put(CREATE_TABLE, sql);
-
 			return sql;
+		}
+
+		public String getTableSql(Class clz) {
+			return buildTableSql(clz,false);
 		}
 
 		public String getTagSql(Class clz) {

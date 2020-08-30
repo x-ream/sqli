@@ -19,10 +19,9 @@ package io.xream.sqli.util;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.parser.*;
-import jdk.internal.dynalink.support.ClassMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -37,14 +36,11 @@ import java.util.*;
  */
 public class ParserUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(ParserUtil.class);
-
     public final static String SQL_KEYWORD_MARK = "`";
 
     private ParserUtil() {
         super();
     }
-
 
     private static void parseFieldsOfElementList(Class clz,Map<String,Field> filterMap, Map<String,Field> allMap){
 
@@ -86,7 +82,7 @@ public class ParserUtil {
         }
     }
 
-    private static void parseFilterListOfElementList(Class clz, List<BeanElement> filterList,Set<String> mns, List<Method> ml){
+    private static void parseFilterListOfElementList(List<BeanElement> filterList,Set<String> mns, List<Method> ml){
 
         for (Method m : ml) {
             String name = m.getName();
@@ -193,6 +189,7 @@ public class ParserUtil {
                         Field field = null;
                         try {
                             field = clz.getDeclaredField(element.getProperty());
+                            System.out.println("___________"+element.getProperty());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -248,7 +245,7 @@ public class ParserUtil {
 
 
         List<BeanElement> filterList = new ArrayList<>();
-        parseFilterListOfElementList(clz,filterList,mns,ml);
+        parseFilterListOfElementList(filterList,mns,ml);
         filterElementList(filterList,filterMap);
 
         List<BeanElement> list = buildElementList(clz,filterList,allMap);
