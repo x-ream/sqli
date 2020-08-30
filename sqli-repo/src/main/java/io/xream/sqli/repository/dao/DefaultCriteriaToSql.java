@@ -30,7 +30,6 @@ import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.repository.exception.SqlBuildException;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.support.TimestampSupport;
-import io.xream.sqli.util.BeanUtilX;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliStringUtil;
 
@@ -40,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
+public class DefaultCriteriaToSql implements SqlNormalizer,CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
 
     private Dialect dialect;
 
@@ -139,7 +138,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
         parseAliaFromRefresh(refreshCondition);
 
-        sourceScript = BeanUtilX.normalizeSql(sourceScript);
+        sourceScript = normalizeSql(sourceScript);
 
         StringBuilder sb = new StringBuilder();
         mapping(sourceScript, refreshCondition, sb);
@@ -194,7 +193,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
 
                 Object key = buildingBlock.getKey();
                 String str = key.toString();
-                String sql = BeanUtilX.normalizeSql(str);
+                String sql = normalizeSql(str);
                 mapping(sql, refreshCondition, sb);
 
             } else {
@@ -206,7 +205,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                     }
 
                     isNotFirst = true;
-                    String sql = BeanUtilX.normalizeSql(key);
+                    String sql = normalizeSql(key);
 
                     mapping(sql, refreshCondition, sb);
                 } else {
@@ -649,7 +648,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ConditionCriteriaToS
                 script = rmc.getSourceScripts().stream().map(SourceScript::sql).collect(Collectors.joining()).trim();
             }
 
-//            Assert.notNull(script, "Not set sourceScript of ResultMappedBuilder");
+            Objects.requireNonNull(script,"Not set sourceScript of ResultMappedBuilder");
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
 
         } else {

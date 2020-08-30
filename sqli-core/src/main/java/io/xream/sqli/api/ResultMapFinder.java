@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public interface ResultMapFinder {
 
-    <T> void queryForMapToHandle(String sql, Collection<Object> valueList, Dialect dialect, Criteria.ResultMapCriteria ResultMapCriteria, Parsed orParsed, RowHandler<T> handler);
-
     List<Map<String, Object>> queryForResultMapList(String sql, Criteria.ResultMapCriteria resultMapped, Dialect dialect);
+
+    <T> void queryForMapToHandle(String sql, Collection<Object> valueList, Dialect dialect, Criteria.ResultMapCriteria ResultMapCriteria, Parsed orParsed, RowHandler<T> handler);
 
     default List<Map<String, Object>> toResultMapList(boolean isResultWithDottedKey, DataMapQuery dataMapQuery) {
 
@@ -58,7 +58,6 @@ public interface ResultMapFinder {
     interface DataMapQuery {
         FixedRowMapper FIXED_ROW_MAPPER = (dataMap, clzz, resultMapCriteria, dialect) -> DataObjectConverter.toMapWithKeyOfObjectProperty(dataMap,clzz,resultMapCriteria,dialect);
         List<Map<String,Object>> query(FixedRowMapper fixedRowMapper);
-
     }
 
     interface FixedRowMapper{

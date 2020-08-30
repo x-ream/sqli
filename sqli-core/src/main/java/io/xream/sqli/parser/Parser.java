@@ -20,7 +20,7 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
@@ -78,7 +78,7 @@ public class Parser {
         if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class)
             throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
 
-        List<BeanElement> elementList = BeanUtilX.parseElementList(clz);
+        List<BeanElement> elementList = ParserUtil.parseElementList(clz);
         Parsed parsed = new Parsed(clz);
         for (BeanElement element : elementList) {
             if (SqliStringUtil.isNullOrEmpty(element.getMapper())) {
@@ -102,7 +102,7 @@ public class Parser {
         }
         parsed.setNoSpec(isNoSpec);
         parsed.reset(elementList);
-        BeanUtilX.parseKey(parsed, clz);
+        ParserUtil.parseKey(parsed, clz);
 
         /*
          * tableName,
@@ -116,7 +116,7 @@ public class Parser {
                 parsed.setNoSpec(false);
             } else {
                 String name = BeanUtil.getByFirstLower(clz.getSimpleName());
-                String mapper = BeanUtilX.getMapper(name);
+                String mapper = ParserUtil.getMapper(name);
                 String prefix = mappingPrefix;
                 if (SqliStringUtil.isNotNull(prefix)) {
                     if (!prefix.endsWith("_")) {
@@ -130,7 +130,7 @@ public class Parser {
             }
         } else {
             String name = BeanUtil.getByFirstLower(clz.getSimpleName());
-            String mapper = BeanUtilX.getMapper(name);
+            String mapper = ParserUtil.getMapper(name);
             String prefix = mappingPrefix;
             if (SqliStringUtil.isNotNull(prefix)) {
                 if (!prefix.endsWith("_")) {
@@ -168,7 +168,7 @@ public class Parser {
         /*
          * parseCacheable
          */
-        BeanUtilX.parseCacheableAnno(clz, parsed);
+        ParserUtil.parseCacheableAnno(clz, parsed);
 
         put(clz, parsed);
 

@@ -18,7 +18,7 @@ package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
@@ -48,11 +48,9 @@ public class Parsed {
 	
 	private Map<String, BeanElement> elementMap = new HashMap<String, BeanElement>();
 	private Map<String,String> propertyMapperMap = new HashMap<String,String>();
-	private Map<String,String> mapperPropertyMap = new HashMap<String,String>();
 	private Map<String,String> mapperPropertyMapLower = new HashMap<String,String>();
 	
 	private boolean isNoCache;
-
 
 	public Class getClz() {
 		return clz;
@@ -144,14 +142,6 @@ public class Parsed {
 		return beanElementList;
 	}
 
-	public void setBeanElementList(List<BeanElement> beanElementList) {
-		this.beanElementList = beanElementList;
-	}
-
-	public String getOriginTable() {
-		return originTable;
-	}
-
 	public void setOriginTable(String originTable) {
 		this.originTable = originTable;
 	}
@@ -159,7 +149,6 @@ public class Parsed {
 	public void reset(List<BeanElement> beanElementList){
 		this.beanElementList = beanElementList;
 		this.propertyMapperMap.clear();
-		this.mapperPropertyMap.clear();
 		this.elementMap.clear();
 		this.mapperPropertyMapLower.clear();
 		for (BeanElement e : this.beanElementList){
@@ -167,7 +156,6 @@ public class Parsed {
 			String mapper = e.getMapper();
 			this.elementMap.put(property, e);
 			this.propertyMapperMap.put(property, mapper);
-			this.mapperPropertyMap.put(mapper, property);
 			this.mapperPropertyMapLower.put(mapper.toLowerCase(),property);
 		}
 	}
@@ -186,7 +174,7 @@ public class Parsed {
 	}
 
 	public void setTableName(String tableName) {
-		this.tableName = BeanUtilX.filterSQLKeyword(tableName);
+		this.tableName = ParserUtil.filterSQLKeyword(tableName);
 	}
 	
 	public String getClzName() {
@@ -209,17 +197,9 @@ public class Parsed {
 	public String getPropertyByLower(String mapper){
 		return mapperPropertyMapLower.get(mapper.toLowerCase());
 	}
-	
-	public String getProperty(String mapper){
-		return mapperPropertyMap.get(mapper);
-	}
 
 	public Map<String, String> getPropertyMapperMap() {
 		return propertyMapperMap;
-	}
-
-	public Map<String, String> getMapperPropertyMap() {
-		return mapperPropertyMap;
 	}
 	
 	public boolean isNoSpec() {
@@ -243,7 +223,6 @@ public class Parsed {
 				", beanElementList=" + beanElementList +
 				", elementMap=" + elementMap +
 				", propertyMapperMap=" + propertyMapperMap +
-				", mapperPropertyMap=" + mapperPropertyMap +
 				", isNoCache=" + isNoCache +
 				'}';
 	}

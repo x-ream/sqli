@@ -20,6 +20,7 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.*;
+import jdk.internal.dynalink.support.ClassMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,21 +35,20 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public class BeanUtilX extends BeanUtil {
+public class ParserUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(BeanUtilX.class);
+    private static Logger logger = LoggerFactory.getLogger(ParserUtil.class);
 
     public final static String SQL_KEYWORD_MARK = "`";
 
-    private BeanUtilX() {
+    private ParserUtil() {
         super();
     }
 
 
-    @SuppressWarnings("rawtypes")
-    public static List<BeanElement> parseElementList(Class clz) {
+    private static void parseFieldsOfElementList(Class clz,Map<String,Field> filterMap, Map<String,Field> allMap){
 
-        List<Field> fl = new ArrayList<Field>();
+        List<Field> fl = new ArrayList<>();
 
         if (clz.getSuperclass() != Object.class) {
             fl.addAll(Arrays.asList(clz.getSuperclass().getDeclaredFields()));
@@ -58,8 +58,6 @@ public class BeanUtilX extends BeanUtil {
         /*
          * 排除transient
          */
-        Map<String, Field> filterMap = new HashMap<String, Field>();
-        Map<String, Field> allMap = new HashMap<String, Field>();
         for (Field f : fl) {
             allMap.put(f.getName(), f);
 
@@ -75,25 +73,27 @@ public class BeanUtilX extends BeanUtil {
                 filterMap.put(f.getName(), f);
             }
         }
+    }
 
-        Set<String> mns = new HashSet<String>();
-        List<Method> ml = new ArrayList<Method>();
+    private static void parseMethodsOfElementList(Class clz, Set<String> mns, List<Method> methodList){
         if (clz.getSuperclass() != Object.class) {
-            ml.addAll(Arrays.asList(clz.getSuperclass().getDeclaredMethods()));
+            methodList.addAll(Arrays.asList(clz.getSuperclass().getDeclaredMethods()));
         }
-        ml.addAll(Arrays.asList(clz.getDeclaredMethods())); // 仅仅XxxMapped子类
+        methodList.addAll(Arrays.asList(clz.getDeclaredMethods())); // 仅仅XxxMapped子类
 
-        for (Method m : ml) {
+        for (Method m : methodList) {
             mns.add(m.getName());
         }
+    }
 
-        List<BeanElement> filterList = new ArrayList<BeanElement>();
+    private static void parseFilterListOfElementList(Class clz, List<BeanElement> filterList,Set<String> mns, List<Method> ml){
+
         for (Method m : ml) {
             String name = m.getName();
             if (!(name.startsWith("set") || name.startsWith("get") || name.startsWith("is")))
                 continue;
 
-            String key = getProperty(name);
+            String key = BeanUtil.getProperty(name);
             BeanElement be = null;
             for (BeanElement b : filterList) {
                 if (b.getProperty().equals(key)) {
@@ -115,14 +115,16 @@ public class BeanUtilX extends BeanUtil {
                 be.setGetter(name);
                 be.setClz(m.getReturnType());
                 be.setProperty(name);
-                String setter = getSetter(name); // FIXME 可能有BUG
+                String setter = BeanUtil.getSetter(name); // FIXME 可能有BUG
                 if (mns.contains(setter)) {
                     be.setSetter(setter);
                 }
             }
 
         }
+    }
 
+    private static void filterElementList(List<BeanElement> filterList,Map<String, Field> filterMap){
         /*
          * 找出有setter 和 getter的一对
          */
@@ -147,7 +149,9 @@ public class BeanUtilX extends BeanUtil {
                 }
             }
         }
+    }
 
+    private static List<BeanElement> buildElementList(Class clz, List<BeanElement> filterList, Map<String,Field> allMap){
         List<BeanElement> list = new ArrayList<BeanElement>();
 
         for (BeanElement element : filterList) {
@@ -209,7 +213,10 @@ public class BeanUtilX extends BeanUtil {
 
             list.add(element);
         }
+        return list;
+    }
 
+    private static void initMethodCache(Class clz,List<BeanElement> list) {
         try {
             for (BeanElement be : list) {
                 try {
@@ -226,6 +233,27 @@ public class BeanUtilX extends BeanUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static List<BeanElement> parseElementList(Class clz) {
+
+        Map<String, Field> filterMap = new HashMap<>();
+        Map<String, Field> allMap = new HashMap<>();
+        parseFieldsOfElementList(clz,filterMap,allMap); //Step 1
+
+        Set<String> mns = new HashSet<>();
+        List<Method> ml = new ArrayList<>();
+        parseMethodsOfElementList(clz,mns,ml);
+
+
+        List<BeanElement> filterList = new ArrayList<>();
+        parseFilterListOfElementList(clz,filterList,mns,ml);
+        filterElementList(filterList,filterMap);
+
+        List<BeanElement> list = buildElementList(clz,filterList,allMap);
+
+        initMethodCache(clz, list);
 
         return list;
     }
@@ -305,59 +333,6 @@ public class BeanUtilX extends BeanUtil {
             }
         }
         return mapper;
-    }
-
-
-    private static Set<String> opSet = new HashSet() {
-        {
-            add("=");
-            add("!");
-            add(">");
-            add("<");
-            add("+");
-            add("-");
-            add("*");
-            add("/");
-            add("(");
-            add(")");
-            add(";");
-        }
-    };
-
-    public static String normalizeSql(final String manuSql) {
-        StringBuilder valueSb = new StringBuilder();
-
-        boolean ignore = false;
-        int length = manuSql.length();
-        for (int j = 0; j < length; j++) {
-            String strEle = String.valueOf(manuSql.charAt(j));
-            if (SqlScript.SPACE.equals(strEle)) {
-                ignore = true;
-                continue;
-            }
-            if (opSet.contains(strEle)) {
-
-                valueSb.append(SqlScript.SPACE);
-
-                valueSb.append(strEle);
-                if (j + 1 < length) {
-                    String nextOp = String.valueOf(manuSql.charAt(j + 1));
-                    if (opSet.contains(nextOp)) {
-                        valueSb.append(nextOp);
-                        j++;
-                    }
-                }
-                valueSb.append(SqlScript.SPACE);
-            } else {
-                if (ignore)
-                    valueSb.append(SqlScript.SPACE);
-                valueSb.append(strEle);
-            }
-            ignore = false;
-        }
-
-        return valueSb.toString();
-
     }
 
 
@@ -458,7 +433,6 @@ public class BeanUtilX extends BeanUtil {
         String BYTE = "tinyint";
         String DOUBLE = "float";//float
         String FLOAT = "float";//real
-        String DOUBLE_COMMON = "double";//float
         String DECIMAL = "decimal";
     }
 }

@@ -16,7 +16,6 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.util.BeanUtilX;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import java.util.Objects;
 /**
  * @Author Sim
  */
-public class ConditionCriteriaBuilder {
+public class ConditionCriteriaBuilder implements SqlNormalizer{
 
     private ConditionCriteriaBuilder instance;
 
@@ -130,7 +129,7 @@ public class ConditionCriteriaBuilder {
             return instance;
         }
 
-        sql = BeanUtilX.normalizeSql(sql);
+        sql = normalizeSql(sql);
 
         BuildingBlock buildingBlock = new BuildingBlock(isOr());
         buildingBlock.setPredicate(PredicateAndOtherScript.X);

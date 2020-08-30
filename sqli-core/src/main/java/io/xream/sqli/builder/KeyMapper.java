@@ -4,7 +4,7 @@ import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 /**
@@ -22,7 +22,7 @@ public interface KeyMapper {
             String property = arr[1];
 
 
-            String clzName = BeanUtilX.getClzName(alia, criteria);
+            String clzName = ParserUtil.getClzName(alia, criteria);
 
             Parsed parsed = Parser.get(clzName);
             if (parsed == null)
@@ -54,7 +54,7 @@ public interface KeyMapper {
         }
 
         Parsed parsed = criteria.getParsed();
-        if (key.equals(BeanUtilX.getByFirstLower(parsed.getClz().getSimpleName())))
+        if (key.equals(BeanUtil.getByFirstLower(parsed.getClz().getSimpleName())))
             return parsed.getTableName();
         String value = parsed.getMapper(key);
         if (value == null)

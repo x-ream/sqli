@@ -22,7 +22,6 @@ import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.BeanUtilX;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Serializable;
@@ -222,7 +221,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 				'}';
 	}
 
-	public static class ResultMapCriteria extends Criteria implements Serializable{
+	public static class ResultMapCriteria extends Criteria implements SqlNormalizer,Serializable{
 
 		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();
@@ -293,7 +292,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		}
 
 		public void setSourceScript(String sourceScript) {
-			this.sourceScript = BeanUtilX.normalizeSql(sourceScript);
+			this.sourceScript = normalizeSql(sourceScript);
 		}
 
 		public List<String> getResultKeyList() {

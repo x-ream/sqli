@@ -30,7 +30,7 @@ import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;
 import io.xream.sqli.repository.transform.DataTransform;
-import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,7 +109,7 @@ public final class CacheableRepository implements Repository, Manuable {
         Class clz = t.getClass();
         Parsed parsed = Parser.get(clz);
         if (isCacheEnabled(parsed)) {
-            Object id = BeanUtilX.tryToGetId(t, parsed);
+            Object id = ParserUtil.tryToGetId(t, parsed);
             cacheResolver.refresh(clz, String.valueOf(id));
         }
 
@@ -224,7 +224,7 @@ public final class CacheableRepository implements Repository, Manuable {
         if (!b)
             return b;
         if (isCacheEnabled(parsed)) {
-            String key = BeanUtilX.getCacheKey(obj, parsed);
+            String key = ParserUtil.getCacheKey(obj, parsed);
             cacheResolver.refresh(clz, key);
         }
 

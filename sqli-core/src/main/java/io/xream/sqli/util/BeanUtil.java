@@ -24,26 +24,6 @@ public class BeanUtil {
 
     protected BeanUtil(){}
 
-    public static String getSetter(Class<?> type, String property) {
-
-        if (type != Boolean.class && property.startsWith("is")) {
-            return "set" + property.substring(2);
-        }
-
-        String a = property.substring(0, 1);
-        String rest = property.substring(1);
-        return "set" + a.toUpperCase() + rest;
-    }
-
-    public static String getGetter(Class<?> type, String property) {
-        if (type != Boolean.class && property.startsWith("is")) {
-            return property;
-        }
-        String a = property.substring(0, 1);
-        String rest = property.substring(1);
-        return "get" + a.toUpperCase() + rest;
-    }
-
     public static String getSetter(String property) {
         if (property.startsWith("is")) {
             String rest = property.substring(2);

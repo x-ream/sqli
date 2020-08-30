@@ -18,11 +18,12 @@ package io.xream.sqli.parser;
 
 
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.BeanUtilX;
+import io.xream.sqli.util.ParserUtil;
 
 import java.lang.reflect.Method;
 
 /**
+ * JDK reflect cached better than RelfectASM
  * @Author Sim
  */
 public class BeanElement {
@@ -42,8 +43,8 @@ public class BeanElement {
 
 
 	public void initMaper(){
-		mapper = BeanUtilX.getMapper(property);
-		mapper = BeanUtilX.filterSQLKeyword(mapper);
+		mapper = ParserUtil.getMapper(property);
+		mapper = ParserUtil.filterSQLKeyword(mapper);
 	}
 
 	public String property() {

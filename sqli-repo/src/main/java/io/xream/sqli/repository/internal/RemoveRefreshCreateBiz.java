@@ -37,7 +37,7 @@ public final class RemoveRefreshCreateBiz {
 
     protected static <T> boolean doIt(Class<T> clz, Repository repository, RemoveRefreshCreate wrapper) {
 
-//        Assert.notNull(wrapper, "removeRefreshCreate(wrapper),wrapper is null");.
+        Objects.requireNonNull(wrapper, "removeRefreshCreate(wrapper),wrapper is null");
 
         if (wrapper.getList() == null || wrapper.getList().isEmpty())
             return false;

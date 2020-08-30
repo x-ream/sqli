@@ -237,7 +237,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         public ResultMapBuilder resultKey(String resultKey, String alia) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
-//            Assert.notNull(alia,"resultKeyAssignedAlia(), alia can not null");
+Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
             get().getResultKeyAssignedAliaList().add(new KV(resultKey,alia));
             return this;
         }
@@ -254,8 +254,8 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_wrap, String functionScript, String... keys) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || keys == null)
                 return this;
-//            Assert.notNull(functionAlia_wrap, "function no alia");
-//            Assert.notNull(functionAlia_wrap.getPropertyOrAlia());
+            Objects.requireNonNull(functionAlia_wrap, "function no alia");
+            Objects.requireNonNull(functionAlia_wrap.getAlia());
             FunctionResultKey functionResultKey = new FunctionResultKey();
             functionResultKey.setScript(functionScript);
             functionResultKey.setAlia(functionAlia_wrap.getAlia());
