@@ -23,6 +23,9 @@
     
     @Repository
     public interface FooRepository extends BaseRepository<Foo> {}
+    
+    @Repository
+    public interface FooFindRepository extends ResultMapRepository {}
 
     @X.Mapping("t_foo")//默认是foo
     public class Foo {
@@ -46,16 +49,18 @@
             5. get(Id) //根据主键查询记录
             6. getOne(Object) //数据库只有一条记录时，就返回那条记录
             7. list() //无条件查全表, 几乎没使用场景
-            8. find(ResultMapCriteria) //标准拼接查询，返回Map形式记录，返回分页对象
-            9. list(ResultMapCriteria) //标准拼接查询，返回Map形式记录，不返回分页对象
-            10. listPlainValue(Class<K>, ResultMapCriteria)//返回没有key的单列数据列表 (结果优化1)
-            11. findToHandle(ResultMapCriteria, RowHandler<Map<String,Object>>) //流处理API
-            12. creaet(Object) //插入一条
-            13. createBatch(List<Object>) //批量插入
-            14. refresh(RefreshCondition) //根据主键更新
-            15. refreshUnSafe(RefreshCondition)//不根据主键更新
-            16. remove(Id)//根据主键删除
-            17. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
+            8. creaet(Object) //插入一条
+            9. createBatch(List<Object>) //批量插入
+            10. refresh(RefreshCondition) //根据主键更新
+            11. refreshUnSafe(RefreshCondition)//不根据主键更新
+            12. remove(Id)//根据主键删除
+            13. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
+            
+### ResultMapRepository API
+            14. find(ResultMapCriteria) //标准拼接查询，返回Map形式记录，返回分页对象
+            15. list(ResultMapCriteria) //标准拼接查询，返回Map形式记录，不返回分页对象
+            16. listPlainValue(Class<K>, ResultMapCriteria)//返回没有key的单列数据列表 (结果优化1)
+            17. findToHandle(ResultMapCriteria, RowHandler<Map<String,Object>>) //流处理API
 
 ### TemporaryRepository API   
 
