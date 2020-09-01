@@ -84,7 +84,7 @@
             {
                 CriteriaBuilder builder = CriteriaBuilder.builder(Order.class); 
                 builder.eq("userId",obj.getUserId()).eq("status","PAID");
-                Criteria criteria = builer.get();
+                Criteria criteria = builer.build();
                 orderRepository.find(criteria);
             }
         
@@ -96,8 +96,8 @@
                 builder.beginSub().eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()).endSub();
                 builder.sourceScript("FROM order o INNER JOIN orderItem i ON i.orderId = o.id");
                 builder.paged(obj);
-                Criteria.ResultMapCriteria criteria = builder.build();
-                orderRepository.find(criteria);
+                Criteria.ResultMapCriteria resultMapCriteria = builder.build();
+                omsRepository.find(resultMapCriteria);
             }
             
             {
@@ -176,7 +176,7 @@
     20条，请关闭二级缓存。
     如果需要开启二级缓存，所有对数据库的写操作项目都需要开启二级缓存。
     
-    包含二级缓存的BaseRepository的API：
+    支持二级缓存的BaseRepository的API：
             1. in(InCondition)
             2. list(Object)
             3. find(Criteria)
@@ -184,7 +184,7 @@
             5. get(Id)
             6. getOne(Object)
         
-    不含二级缓存的BaseRepository的API:
+    不支持二级缓存的BaseRepository, ResultMapRepository的API:
             1. list()
             2. find(ResultMapCriteria)
             3. list(ResultMapCriteria)
