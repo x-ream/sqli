@@ -101,12 +101,6 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     Page<T> find(Criteria CriteriaBuilder_build_get);
 
-    Page<Map<String, Object>> find(Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
-
-    List<Map<String, Object>> list(Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
-
-    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria CriteriaBuilder_ResultMappedBuilder_build_get);
-
     List<T> list(Criteria CriteriaBuilder_build_get);
 
     /**
@@ -117,10 +111,5 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     <T> void findToHandle(Criteria criteria, RowHandler<T> handler);
 
-    /**
-     * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param ResultMapCriteria
-     * @param handler
-     */
-    void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
+
 }

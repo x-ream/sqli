@@ -37,6 +37,8 @@ public class HealthChecker {
     public static void onStarted() {
 
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
+            if (repository.getClz() == Void.class)
+                continue;
             logger.info("Parsing {}" ,repository.getClz());
             Parser.get(repository.getClz());
         }
@@ -49,6 +51,8 @@ public class HealthChecker {
 
             try {
                 Class clz = repository.getClz();
+                if (repository.getClz() == Void.class)
+                    continue;
                 String createSql = MapperFactory.tryToCreate(clz);
                 String test = MapperFactory.getSql(clz, Mapper.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {

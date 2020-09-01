@@ -18,10 +18,7 @@ package io.xream.sqli.repository.internal;
 
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.api.BaseRepository;
-import io.xream.sqli.api.IdGenerator;
-import io.xream.sqli.api.RepositoryManagement;
-import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.api.*;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
@@ -45,7 +42,7 @@ import java.util.Objects;
  * @param <T>
  * @author Sim
  */
-public abstract class DefaultRepository<T> implements BaseRepository<T> {
+public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository {
 
     private Class<T> clz;
     private IdGenerator idGeneratorService;
@@ -79,6 +76,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T> {
 
         if (! (params[0] instanceof Class))
             return;
+
         this.clz = (Class) params[0];
 
         hook();
