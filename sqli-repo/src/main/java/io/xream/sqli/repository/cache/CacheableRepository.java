@@ -185,7 +185,7 @@ public final class CacheableRepository implements Repository, Manuable {
     @Override
     public <T> Page<T> find(Criteria criteria) {
 
-        Class clz = criteria.getClz();
+        Class clz = criteria.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
@@ -201,7 +201,7 @@ public final class CacheableRepository implements Repository, Manuable {
     @Override
     public <T> List<T> list(Criteria criteria) {
 
-        Class clz = criteria.getClz();
+        Class clz = criteria.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))

@@ -37,24 +37,28 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Implement BaseRepository
+ * Implement of BaseRepository, ResultMapRepository
  *
  * @param <T>
  * @author Sim
  */
 public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository {
 
-    private Class<T> clz;
+    private Class<T> clzz;
     private IdGenerator idGeneratorService;
     private Repository repository;
 
     @Override
     public Class<T> getClzz() {
-        return this.clz;
+        return this.clzz;
     }
 
+    /**
+     *
+     * Can not rename setClzz
+     */
     public void setClz(Class<T> clz) {
-        this.clz = clz;
+        this.clzz = clz;
     }
 
     public void setIdGeneratorService(IdGenerator  idGeneratorService){
@@ -77,7 +81,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         if (! (params[0] instanceof Class))
             return;
 
-        this.clz = (Class) params[0];
+        this.clzz = (Class) params[0];
 
         hook();
     }
@@ -92,7 +96,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     @Override
     public long createId() {
 
-        final String clzName = this.clz.getName();
+        final String clzName = this.clzz.getName();
 
         final long id = this.idGeneratorService.createId(clzName);
 
@@ -121,8 +125,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     @Override
     public boolean refresh(RefreshCondition refreshCondition) {
 
-        refreshCondition.setClz(this.clz);
-        Parsed parsed = Parser.get(this.clz);
+        refreshCondition.setClz(this.clzz);
+        Parsed parsed = Parser.get(this.clzz);
         Field keyField = parsed.getKeyField(X.KEY_ONE);
         if (Objects.isNull(keyField))
             throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
@@ -153,13 +157,13 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public boolean refreshUnSafe(RefreshCondition<T> refreshCondition) {
-        refreshCondition.setClz(this.clz);
+        refreshCondition.setClz(this.clzz);
         return repository.refresh(refreshCondition);
     }
 
     @Override
     public boolean removeRefreshCreate(RemoveRefreshCreate<T> wrapper){
-        return RemoveRefreshCreateBiz.doIt(this.clz,this.repository,wrapper);
+        return RemoveRefreshCreateBiz.doIt(this.clzz,this.repository,wrapper);
     }
 
     @Override
@@ -177,7 +181,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
             @Override
             public Class<T> getClzz() {
-                return clz;
+                return clzz;
             }
         });
     }
@@ -196,7 +200,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
             @Override
             public Class<T> getClzz() {
-                return clz;
+                return clzz;
             }
         });
     }
@@ -215,7 +219,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
             @Override
             public Class<T> getClzz() {
-                return clz;
+                return clzz;
             }
         });
     }
@@ -234,22 +238,18 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
             @Override
             public Class<T> getClzz() {
-                return clz;
+                return clzz;
             }
         });
     }
 
     @Override
     public List<T> list() {
-        return repository.listByClzz(this.clz);
+        return repository.listByClzz(this.clzz);
     }
 
     @Override
     public List<T> list(T conditionObj) {
-
-        if (conditionObj instanceof CriteriaBuilder || conditionObj instanceof Criteria)
-            throw new IllegalArgumentException("list(obj), obj: " + conditionObj);
-
         return repository.list(conditionObj);
     }
 
@@ -262,66 +262,72 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public void refreshCache() {
-        repository.refreshCache(this.clz);
+        repository.refreshCache(this.clzz);
     }
 
 
     @Override
     public List<T> in(InCondition inCondition) {
-        inCondition.setClz(this.clz);
+        inCondition.setClz(this.clzz);
         return repository.in(inCondition);
     }
 
 
     @Override
     public Page<T> find(Criteria criteria) {
-
-        if (criteria instanceof Criteria.ResultMapCriteria)
-            throw new CriteriaSyntaxException("Codeing Exception: maybe {Criteria.ResultMapCriteria criteria = builder.build();} instead of {Criteria criteria = builder.build();}");
-        criteria.setClz(this.clz);
-        criteria.setParsed(Parser.get(this.clz));
+        this.setDefaultClzz(criteria);
         return repository.find(criteria);
     }
 
 
     @Override
     public List<T> list(Criteria criteria) {
-
-        if (criteria instanceof Criteria.ResultMapCriteria)
-            throw new CriteriaSyntaxException("Codeing Exception: mraybe {Criteria.ResultMapCriteria criteria = builder.build();} instead of {Criteria criteria = builder.build();}");
-        criteria.setClz(this.clz);
-        criteria.setParsed(Parser.get(this.clz));
+        this.setDefaultClzz(criteria);
         return repository.list(criteria);
 
     }
 
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
-        criteria.setClz(this.clz);
-        criteria.setParsed(Parser.get(this.clz));
+        this.setDefaultClzz(criteria);
         this.repository.findToHandle(criteria,handler);
     }
 
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
-        return repository.find(resultMapped);
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapCriteria) {
+        this.setDefaultClzz(resultMapCriteria);
+        return repository.find(resultMapCriteria);
     }
 
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
-        return repository.list(resultMapped);
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapCriteria) {
+        this.setDefaultClzz(resultMapCriteria);
+        return repository.list(resultMapCriteria);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
-        return repository.listPlainValue(clzz,resultMapped);
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapCriteria){
+        this.setDefaultClzz(resultMapCriteria);
+        return repository.listPlainValue(clzz,resultMapCriteria);
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String,Object>> handler) {
-        this.repository.findToHandle(ResultMapCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String,Object>> handler) {
+        this.setDefaultClzz(resultMapCriteria);
+        this.repository.findToHandle(resultMapCriteria,handler);
+    }
+
+    private void setDefaultClzz(Criteria.ResultMapCriteria resultMapCriteria) {
+        if (this.clzz != null) {
+            resultMapCriteria.setClzz(this.clzz);
+            resultMapCriteria.setParsed(Parser.get(this.clzz));
+        }
+    }
+    private void setDefaultClzz(Criteria criteria) {
+        criteria.setClzz(this.clzz);
+        criteria.setParsed(Parser.get(this.clzz));
     }
 
 }

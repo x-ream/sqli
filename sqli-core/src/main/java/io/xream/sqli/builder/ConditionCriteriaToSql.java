@@ -16,7 +16,6 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -158,9 +157,6 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                             ite.remove();
                         }else{
                             BeanElement be = parsed.getElement(arr[1]);
-                            if (be == null){
-                                throw new ParsingException("property of " + parsed.getClz() +" not exists: " + arr[1]);
-                            }
                             TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
                             if (buildingBlock.getValue() == null)
                                 ite.remove();
@@ -171,9 +167,6 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                             ite.remove();
                         }else{
                             BeanElement be = parsed.getElement(key);
-                            if (be == null){
-                                throw new ParsingException("property of " + parsed.getClz() +" not exists: " + key);
-                            }
                             TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
                             if (buildingBlock.getValue() == null)
                                 ite.remove();

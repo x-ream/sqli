@@ -80,97 +80,78 @@ public class ObjectDataConverter {
      * boolean必须从另外一个map参数获得
      */
     @SuppressWarnings({"rawtypes", "unused"})
-    public static Map<String, Object> objectToMapForQuery(Parsed parsed, Object obj) {
+    public static Map<String, Object> objectToMap(Parsed parsed, Object obj) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
+        if (Objects.isNull(obj))
+            return map;
+
         Class clz = obj.getClass();
+
         try {
-            List<BeanElement> beanElementList = parsed.getBeanElementList();
-            for (BeanElement element : beanElementList) {
+            for (BeanElement element : parsed.getBeanElementList()) {
 
                 Method method = element.getGetMethod();
                 Object value = method.invoke(obj);
+                if (value == null)
+                    continue;
                 Class type = method.getReturnType();
-
                 String property = element.getProperty();
-
-                if (type == long.class) {
-                    if ((long) value != 0) {
-                        map.put(property, value);
-                    }
-                } else if (type == Long.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
-                } else if (type == String.class) {
-                    if (value != null && !value.equals("")) {
-                        map.put(property, value);
-                    }
-                } else if (BeanUtil.isEnum(type)) {
-                    if (value != null) {
-                        map.put(property, ((Enum) value).name());
-                    }
-                } else if (type == int.class) {
+                if (type == int.class) {
                     if ((int) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Integer.class) {
-                    if (value != null) {
+                    map.put(property, value);
+                } else if (type == long.class) {
+                    if ((long) value != 0) {
                         map.put(property, value);
                     }
+                } else if (type == Long.class) {
+                    map.put(property, value);
                 } else if (type == double.class) {
                     if ((double) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Double.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == float.class) {
                     if ((float) value != 0) {
                         map.put(property, value);
                     }
                 } else if (type == Float.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
                 } else if (type == boolean.class) {
                     if ((boolean) value) {
                         map.put(property, value);
                     }
-                } else if (type == BigDecimal.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
                 } else if (type == Boolean.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
-                } else if (type == Date.class || clz == java.sql.Date.class || type == Timestamp.class) {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
-                } else {
-                    if (value != null) {
-                        map.put(property, value);
-                    }
+                    map.put(property, value);
+                } else if (type == String.class) {
+                    map.put(property, value);
+                } else if (BeanUtil.isEnum(type)){
+                    map.put(property, ((Enum)value).name());
+                }else if (type == Date.class || clz == java.sql.Date.class || type == Timestamp.class) {
+                    map.put(property, value);
+                } else if (type == BigDecimal.class){
+                    map.put(property, value);
+                }else if (element.isJson()) {
+                    String str = JsonWrapper.toJson(value);
+                    map.put(property, str);
+                }else {
+                    map.put(property, value);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
-        SqliLoggerProxy.debug(clz, map);
-
         return map;
-
     }
-
 
     public static void log(Class clz, List<Object> valueList) {
         SqliLoggerProxy.debug(clz, valueList);
     }
-
 
 }

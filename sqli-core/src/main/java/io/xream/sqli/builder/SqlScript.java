@@ -131,7 +131,6 @@ public interface SqlScript {
 
 	String AS = " AS ";
 
-	String NONE = "";
 	String SPACE = " ";
 	String PLACE_HOLDER = "?";
 	String EQ_PLACE_HOLDER = " = ?";
@@ -142,10 +141,9 @@ public interface SqlScript {
 	String UNDER_LINE = "_";
 	String LEFT_PARENTTHESIS = "(";
 	String RIGHT_PARENTTHESIS = ")";
-	String WELL_NO = "#";
 	String DOLLOR = "$";
 	String SINGLE_QUOTES = "'";
-	String KEY_SQL = "`";
+	String KEYWORD_MARK = "`";
 
 	String sql();
 }

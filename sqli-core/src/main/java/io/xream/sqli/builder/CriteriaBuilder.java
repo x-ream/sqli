@@ -24,7 +24,6 @@ import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * @author Sim
@@ -106,7 +105,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
     public static CriteriaBuilder builder(Class<?> clz) {
         Criteria criteria = new Criteria();
-        criteria.setClz(clz);
+        criteria.setClzz(clz);
         CriteriaBuilder builder = new CriteriaBuilder(criteria);
 
         if (criteria.getParsed() == null) {
@@ -123,7 +122,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     }
 
     public Class<?> getClz() {
-        return this.criteria.getClz();
+        return this.criteria.getClzz();
     }
 
     protected Criteria get() {
@@ -211,7 +210,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         private void init(Class<?> clz) {
             Criteria.ResultMapCriteria f = (Criteria.ResultMapCriteria) super.criteria;
-            f.setClz(clz);
+            f.setClzz(clz);
             Parsed parsed = Parser.get(clz);
             f.setParsed(parsed);
         }
@@ -237,7 +236,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         public ResultMapBuilder resultKey(String resultKey, String alia) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
-Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
+            Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
             get().getResultKeyAssignedAliaList().add(new KV(resultKey,alia));
             return this;
         }

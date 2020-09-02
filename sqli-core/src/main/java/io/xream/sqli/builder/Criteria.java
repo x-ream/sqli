@@ -36,7 +36,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 
 	private static final long serialVersionUID = 7088698915888081349L;
 
-	private Class<?> clz;
+	private Class<?> clzz;
 	private boolean isTotalRowsIgnored;
 	private int page;
 	private int rows;
@@ -61,12 +61,12 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		return valueList;
 	}
 
-	public Class<?> getClz() {
-		return clz;
+	public Class<?> getClzz() {
+		return clzz;
 	}
 
-	public void setClz(Class<?> clz) {
-		this.clz = clz;
+	public void setClzz(Class<?> clz) {
+		this.clzz = clz;
 	}
 
 	public Parsed getParsed() {
@@ -78,7 +78,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 	}
 
 	public String sourceScript() {
-		return BeanUtil.getByFirstLower(getClz().getSimpleName());
+		return BeanUtil.getByFirstLower(getClzz().getSimpleName());
 	}
 
 	public void setCountDistinct(String str){
@@ -202,7 +202,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 			sb.append(buildingBlock.getConjunction()).append(buildingBlock.getPredicate()).append(buildingBlock.getKey()).append(buildingBlock.getValue());
 		}
 		sb.append(forceIndex);
-		sb.append(clz);
+		sb.append(clzz);
 		sb.append(routeKey);
 
 		return sb.toString();
@@ -217,7 +217,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 				", sortList='" + sortList + '\'' +
 				", buildingBlockList=" + buildingBlockList +
 				", forceIndex=" + forceIndex +
-				", clz=" + clz +
+				", clz=" + clzz +
 				'}';
 	}
 
@@ -324,14 +324,14 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		}
 
 		@Override
-		public Class<?> getClz() {
-			return super.clz == null ? Map.class : super.clz;
+		public Class<?> getClzz() {
+			return super.clzz == null ? Map.class : super.clzz;
 		}
 
 		@Override
 		public String sourceScript() {
 			if (sourceScript == null) {
-				return BeanUtil.getByFirstLower(super.getClz().getSimpleName());
+				return BeanUtil.getByFirstLower(super.getClzz().getSimpleName());
 			} else {
 				return sourceScript;
 			}

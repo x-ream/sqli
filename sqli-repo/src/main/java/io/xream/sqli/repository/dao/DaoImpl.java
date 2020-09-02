@@ -196,7 +196,7 @@ public class DaoImpl implements Dao {
         String sql = MapperFactory.getSql(clz, Mapper.LOAD);
         Parsed parsed = Parser.get(clz);
 
-        Map<String, Object> queryMap = ObjectDataConverter.objectToMapForQuery(parsed, conditionObj);
+        Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
         sql = SqlUtil.concat(parsed, sql, queryMap);
         SqliLoggerProxy.debug(clz, sql);
 
@@ -207,7 +207,7 @@ public class DaoImpl implements Dao {
     @Override
     public <T> List<T> list(Criteria criteria) {
 
-        Class clz = criteria.getClz();
+        Class clz = criteria.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);
@@ -221,7 +221,7 @@ public class DaoImpl implements Dao {
     @Override
     public <T> Page<T> find(Criteria criteria) {
 
-        Class clz = criteria.getClz();
+        Class clz = criteria.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
@@ -330,7 +330,7 @@ public class DaoImpl implements Dao {
     @Override
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
 
-        Class clz = resultMapped.getClz();
+        Class clz = resultMapped.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
@@ -349,7 +349,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        SqliLoggerProxy.debug(resultMapped.getClz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
         return this.jdbcWrapper.queryForResultMapList(sql, resultMapped, this.dialect);
     }
@@ -360,7 +360,7 @@ public class DaoImpl implements Dao {
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
-        SqliLoggerProxy.debug(resultMapped.getClz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
         List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,resultMapped.getValueList(),this.dialect);
         return list;
@@ -374,7 +374,7 @@ public class DaoImpl implements Dao {
         String sql = MapperFactory.getSql(clz, Mapper.LOAD);
         Parsed parsed = Parser.get(clz);
 
-        Map<String, Object> queryMap = ObjectDataConverter.objectToMapForQuery(parsed, conditionObj);
+        Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
         sql = SqlUtil.concat(parsed, sql, queryMap);
         sql = SqlUtil.paged(sql, 1, 1, this.dialect);
 
@@ -395,7 +395,7 @@ public class DaoImpl implements Dao {
     @Override
     public void findToHandle(Criteria.ResultMapCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
 
-        Class clz = resultMapped.getClz();
+        Class clz = resultMapped.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);
@@ -408,7 +408,7 @@ public class DaoImpl implements Dao {
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
 
-        Class clz = criteria.getClz();
+        Class clz = criteria.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);

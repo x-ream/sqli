@@ -16,20 +16,8 @@
  */
 package io.xream.sqli.repository.util;
 
-import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
-import io.xream.sqli.util.SqliExceptionUtil;
-
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @Author Sim
@@ -39,80 +27,6 @@ public class SqlParserUtil {
     public final static String COMMA = ",";
     public final static String SPACE = " ";
     public final static String SQL_KEYWORD_MARK = "`";
-
-    /**
-     *
-     * @param parsed
-     * @param obj
-     */
-    public static Map<String, Object> getRefreshMap(Parsed parsed, Object obj) {
-
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        if (Objects.isNull(obj))
-            return map;
-
-        Class clz = obj.getClass();
-
-        try {
-            for (BeanElement element : parsed.getBeanElementList()) {
-
-                Method method = element.getGetMethod();
-                Object value = method.invoke(obj);
-                if (value == null)
-                    continue;
-                Class type = method.getReturnType();
-                String property = element.getProperty();
-                if (type == int.class) {
-                    if ((int) value != 0) {
-                        map.put(property, value);
-                    }
-                } else if (type == Integer.class) {
-                    map.put(property, value);
-                } else if (type == long.class) {
-                    if ((long) value != 0) {
-                        map.put(property, value);
-                    }
-                } else if (type == Long.class) {
-                    map.put(property, value);
-                } else if (type == double.class) {
-                    if ((double) value != 0) {
-                        map.put(property, value);
-                    }
-                } else if (type == Double.class) {
-                    map.put(property, value);
-                } else if (type == float.class) {
-                    if ((float) value != 0) {
-                        map.put(property, value);
-                    }
-                } else if (type == Float.class) {
-                    map.put(property, value);
-                } else if (type == boolean.class) {
-                    if ((boolean) value) {
-                        map.put(property, value);
-                    }
-                } else if (type == Boolean.class) {
-                    map.put(property, value);
-                } else if (type == String.class) {
-                    map.put(property, value);
-                } else if (BeanUtil.isEnum(type)){
-                    map.put(property, ((Enum)value).name());
-                }else if (type == Date.class || clz == java.sql.Date.class || type == Timestamp.class) {
-                    map.put(property, value);
-                } else if (type == BigDecimal.class){
-                    map.put(property, value);
-                }else if (element.isJson()) {
-                    String str = JsonWrapper.toJson(value);
-                    map.put(property, str);
-                }
-            }
-        } catch (Exception e) {
-            throw new ParsingException(SqliExceptionUtil.getMessage(e));
-        }
-
-        return map;
-
-    }
 
 
     public static String mapperForManu(String sqlSegment, Parsed parsed) {

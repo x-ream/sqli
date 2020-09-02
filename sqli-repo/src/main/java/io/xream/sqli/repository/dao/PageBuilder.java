@@ -48,7 +48,7 @@ public class PageBuilder {
         }
 
         Page<T> pagination = new Page<>();
-        pagination.setClz(criteria.getClz());
+        pagination.setClz(criteria.getClzz());
         pagination.setPage(page == 0 ? 1 : page);
         pagination.setRows(rows == 0 ? Integer.MAX_VALUE : rows);
         pagination.setSortList(criteria.getSortList());

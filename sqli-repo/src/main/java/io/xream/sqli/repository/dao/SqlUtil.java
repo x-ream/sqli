@@ -24,7 +24,6 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.CriteriaToSql;
-import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 
 import java.io.Reader;
@@ -134,7 +133,7 @@ public class SqlUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlParsed.setSql(sb);
-        ObjectDataConverter.log(criteria.getClz(), criteria.getValueList());
+        ObjectDataConverter.log(criteria.getClzz(), criteria.getValueList());
 
         return sqlParsed;
     }
@@ -154,7 +153,7 @@ public class SqlUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(SqlScript.UPDATE).append(SqlScript.SPACE).append(tableName).append(SqlScript.SPACE);
 
-        Map<String, Object> refreshMap = SqlParserUtil.getRefreshMap(parsed, t);
+        Map<String, Object> refreshMap = ObjectDataConverter.objectToMap(parsed, t);
 
         String keyOne = parsed.getKey(X.KEY_ONE);
         Object keyOneValue = refreshMap.remove(keyOne);
