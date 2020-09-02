@@ -23,10 +23,9 @@ import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.page.Page;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * jdbc-template-plus programmer API
+ * API
  *
  * @param <T>
  * @author Sim

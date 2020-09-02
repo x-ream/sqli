@@ -43,7 +43,7 @@ public interface InOptimization {
             if (Objects.isNull(obj))
                 continue;
             Parsed parsed = Parser.get(inCondition.getClz());
-            if (BaseTypeFilter.isBaseType_0(inCondition.getProperty(), obj, parsed))
+            if (BaseTypeFilter.isBaseType(inCondition.getProperty(), obj, parsed))
                 continue;
             if (!inList.contains(obj)) {
                 inList.add(obj);

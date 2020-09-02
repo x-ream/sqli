@@ -276,7 +276,7 @@ Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
             return this;
         }
 
-        public ResultMapBuilder distinct(Object... objs) {
+        public ResultMapBuilder distinct(String... objs) {
             if (objs == null)
                 throw new IllegalArgumentException("distinct non resultKey");
             Criteria.ResultMapCriteria resultMapped = get();
@@ -285,26 +285,8 @@ Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
                 distinct = new Distinct();
                 resultMapped.setDistinct(distinct);
             }
-            for (Object obj : objs) {
-                if (obj instanceof String) {
-                    distinct.add(obj.toString());
-                } else if (obj instanceof Map) {
-                    Map map = (Map) obj;
-                    Set<Entry> set = map.entrySet();
-                    for (Entry entry : set) {
-                        Object key = entry.getKey();
-                        Object value = entry.getValue();
-                        if (value instanceof Map) {
-                            Map vMap = (Map) value;
-                            for (Object k : vMap.keySet()) {
-                                distinct.add(key.toString() + SqlScript.DOT + k.toString());
-                            }
-                        }
-                    }
-
-                } else {
-                    throw new IllegalArgumentException("distinct param suggests String, or Map");
-                }
+            for (String obj : objs) {
+                distinct.add(obj);
             }
             return this;
         }

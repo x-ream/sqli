@@ -49,7 +49,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     private Repository repository;
 
     @Override
-    public Class<T> getClz() {
+    public Class<T> getClzz() {
         return this.clz;
     }
 
@@ -285,28 +285,6 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
-        resultMapped.setClz(this.clz);
-        resultMapped.setParsed(Parser.get(this.clz));
-        return repository.find(resultMapped);
-    }
-
-
-    @Override
-    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
-        resultMapped.setClz(this.clz);
-        resultMapped.setParsed(Parser.get(this.clz));
-        return repository.list(resultMapped);
-    }
-
-    @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
-        resultMapped.setClz(this.clz);
-        resultMapped.setParsed(Parser.get(this.clz));
-        return repository.listPlainValue(clzz,resultMapped);
-    }
-
-    @Override
     public List<T> list(Criteria criteria) {
 
         if (criteria instanceof Criteria.ResultMapCriteria)
@@ -324,10 +302,25 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         this.repository.findToHandle(criteria,handler);
     }
 
+
+    @Override
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
+        return repository.find(resultMapped);
+    }
+
+
+    @Override
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
+        return repository.list(resultMapped);
+    }
+
+    @Override
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
+        return repository.listPlainValue(clzz,resultMapped);
+    }
+
     @Override
     public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String,Object>> handler) {
-        ResultMapCriteria.setClz(this.clz);
-        ResultMapCriteria.setParsed(Parser.get(this.clz));
         this.repository.findToHandle(ResultMapCriteria,handler);
     }
 

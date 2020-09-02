@@ -40,13 +40,10 @@ public class Parser {
     private static Logger logger = LoggerFactory.getLogger(Parser.class);
     @SuppressWarnings("rawtypes")
     private final static Map<Class, Parsed> map = new ConcurrentHashMap<Class, Parsed>();
-
     private final static Map<String, Parsed> simpleNameMap = new ConcurrentHashMap<String, Parsed>();
-
 
     public static String mappingPrefix;
     public static String mappingSpec;
-
 
     @SuppressWarnings("rawtypes")
     public static void put(Class clz, Parsed parsed) {
@@ -72,14 +69,8 @@ public class Parser {
         return simpleNameMap.get(simpleName);
     }
 
-    @SuppressWarnings({"rawtypes"})
-    public static void parse(Class clz) {
+    private static void parseElement(Class clz, Parsed parsed,List<BeanElement> elementList) {
 
-        if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class)
-            throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
-
-        List<BeanElement> elementList = ParserUtil.parseElementList(clz);
-        Parsed parsed = new Parsed(clz);
         for (BeanElement element : elementList) {
             if (SqliStringUtil.isNullOrEmpty(element.getMapper())) {
                 element.initMaper();
@@ -103,10 +94,9 @@ public class Parser {
         parsed.setNoSpec(isNoSpec);
         parsed.reset(elementList);
         ParserUtil.parseKey(parsed, clz);
+    }
 
-        /*
-         * tableName,
-         */
+    private static void parseTableNameMapping(Class clz, Parsed parsed) {
         X.Mapping mapping = (X.Mapping) clz.getAnnotation(X.Mapping.class);
         if (mapping != null) {
             String tableName = mapping.value();
@@ -142,10 +132,10 @@ public class Parser {
             parsed.setTableName(mapper);
             parsed.setOriginTable(mapper);
         }
+    }
 
-        /*
-         * 排序
-         */
+    private static void sortOnParsing(Parsed parsed, List<BeanElement> elementList) {
+
         BeanElement one = null;
         Iterator<BeanElement> ite = elementList.iterator();
         while (ite.hasNext()) {
@@ -165,9 +155,23 @@ public class Parser {
                 beIte.remove();
             }
         }
-        /*
-         * parseCacheable
-         */
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    public static void parse(Class clz) {
+
+        if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class || clz == Void.class)
+            throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
+
+        Parsed parsed = new Parsed(clz);
+        List<BeanElement> elementList = ParserUtil.parseElementList(clz);
+
+        parseElement(clz, parsed, elementList);
+
+        parseTableNameMapping(clz, parsed);
+
+        sortOnParsing(parsed,elementList);
+
         ParserUtil.parseCacheableAnno(clz, parsed);
 
         put(clz, parsed);

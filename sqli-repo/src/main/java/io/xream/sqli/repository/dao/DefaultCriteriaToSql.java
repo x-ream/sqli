@@ -230,7 +230,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
                     TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
 
-                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue())) || BaseTypeFilter.isBaseType_0(key, buildingBlock.getValue(), parsed)) {
+                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue())) || BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
                         continue;
                     }
 

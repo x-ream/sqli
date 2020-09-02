@@ -14,7 +14,8 @@ public interface KeyMapper {
 
     default String mapping(String key, CriteriaCondition criteria) {
 
-
+        if (SqliStringUtil.isNullOrEmpty(key))
+            return key;
         if (key.contains(SqlScript.DOT)) {
 
             String[] arr = key.split("\\.");
@@ -54,6 +55,8 @@ public interface KeyMapper {
         }
 
         Parsed parsed = criteria.getParsed();
+        if (parsed == null)
+            return key;
         if (key.equals(BeanUtil.getByFirstLower(parsed.getClz().getSimpleName())))
             return parsed.getTableName();
         String value = parsed.getMapper(key);

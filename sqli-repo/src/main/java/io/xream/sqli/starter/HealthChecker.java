@@ -37,10 +37,10 @@ public class HealthChecker {
     public static void onStarted() {
 
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
-            if (repository.getClz() == Void.class)
+            if (repository.getClzz() == Void.class)
                 continue;
-            logger.info("Parsing {}" ,repository.getClz());
-            Parser.get(repository.getClz());
+            logger.info("Parsing {}" ,repository.getClzz());
+            Parser.get(repository.getClzz());
         }
 
         logger.info("-------------------------------------------------");
@@ -50,8 +50,8 @@ public class HealthChecker {
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
 
             try {
-                Class clz = repository.getClz();
-                if (repository.getClz() == Void.class)
+                Class clz = repository.getClzz();
+                if (repository.getClzz() == Void.class)
                     continue;
                 String createSql = MapperFactory.tryToCreate(clz);
                 String test = MapperFactory.getSql(clz, Mapper.CREATE);

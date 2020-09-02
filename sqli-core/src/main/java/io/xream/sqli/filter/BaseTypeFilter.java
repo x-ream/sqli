@@ -30,7 +30,7 @@ public class BaseTypeFilter {
 
     public static boolean baseTypeSupported = false;
 
-    public static boolean isBaseType_0(String key, Object v, CriteriaCondition criteria) {
+    public static boolean isBaseType(String key, Object v, CriteriaCondition criteria) {
         if (! baseTypeSupported)
             return false;
         String[] arr = key.split("\\.");
@@ -40,10 +40,10 @@ public class BaseTypeFilter {
             clzName = alia;
         Parsed parsed = Parser.get(clzName);
 
-        return BaseTypeFilter.isBaseType_0(arr[1],v,parsed);
+        return isBaseType(arr[1],v,parsed);
     }
 
-    public static boolean isBaseType_0(String prop, Object v, Parsed parsed) {
+    public static boolean isBaseType(String prop, Object v, Parsed parsed) {
 
         if (!baseTypeSupported)
             return false;
@@ -93,10 +93,7 @@ public class BaseTypeFilter {
             property = str;
         }
 
-        BeanElement be = parsed.getElement(property);
-
-        return be;
-
+        return parsed.getElement(property);
     }
 
 }

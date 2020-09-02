@@ -21,5 +21,5 @@ package io.xream.sqli.api;
  */
 public interface Typed<T> {
 
-    Class<T> getClz();
+    Class<T> getClzz();
 }

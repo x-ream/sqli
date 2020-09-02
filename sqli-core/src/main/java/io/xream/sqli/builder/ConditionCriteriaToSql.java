@@ -154,7 +154,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         if (clzName == null)
                             clzName = alia;
                         Parsed parsed = Parser.get(clzName);
-                        if (BaseTypeFilter.isBaseType_0(arr[1], buildingBlock.getValue(),parsed)){
+                        if (BaseTypeFilter.isBaseType(arr[1], buildingBlock.getValue(),parsed)){
                             ite.remove();
                         }else{
                             BeanElement be = parsed.getElement(arr[1]);
@@ -167,7 +167,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         }
                     }else{
                         Parsed parsed = criteria.getParsed();
-                        if (BaseTypeFilter.isBaseType_0(key, buildingBlock.getValue(),parsed)){
+                        if (BaseTypeFilter.isBaseType(key, buildingBlock.getValue(),parsed)){
                             ite.remove();
                         }else{
                             BeanElement be = parsed.getElement(key);
@@ -187,12 +187,12 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         continue;
 
                     if (key.contains(".")){
-                        if (BaseTypeFilter.isBaseType_0(key,valueList.get(0),criteria)){
+                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),criteria)){
                             ite.remove();
                         }
                     }else{
                         Parsed parsed = criteria.getParsed();
-                        if (BaseTypeFilter.isBaseType_0(key,valueList.get(0),parsed)){
+                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),parsed)){
                             ite.remove();
                         }
                     }
