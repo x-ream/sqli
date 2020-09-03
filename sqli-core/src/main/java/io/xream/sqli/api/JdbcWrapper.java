@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface JdbcWrapper extends Parseable, ObjectFinder, ResultMapFinder {
+public interface JdbcWrapper extends Parseable, BaseFinder, ResultMapFinder {
 
     <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
 

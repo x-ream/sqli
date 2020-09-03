@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface ObjectFinder {
+public interface BaseFinder {
 
     <T> List<T> queryForList(String sql, Collection<Object> list, Parsed parsed, Dialect dialect);
 
