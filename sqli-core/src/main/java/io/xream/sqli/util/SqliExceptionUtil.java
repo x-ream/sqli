@@ -17,19 +17,10 @@ public class SqliExceptionUtil {
         StackTraceElement[] eleArr = e.getStackTrace();
         if (eleArr == null || eleArr.length == 0)
             return msg;
-        msg += eleArr[0].toString();
-        msg += "\n";
-        int length = eleArr.length;
-        if (eleArr != null && length > 0){
-            if (length > 2){
-                msg += eleArr[1].toString();
-                msg += "\n";
-                msg += eleArr[2].toString();
-            }else if (length > 1){
-                msg += eleArr[1].toString();
-            }
+        for (StackTraceElement ele : eleArr) {
+            msg += ele.toString();
+            msg += "\n";
         }
-
         return msg;
     }
 

@@ -25,10 +25,6 @@ public class ProxyException extends RuntimeException implements Serializable {
 
     private String message;
 
-    public ProxyException(){
-
-    }
-
     public ProxyException(String message){
         this.message = message;
     }

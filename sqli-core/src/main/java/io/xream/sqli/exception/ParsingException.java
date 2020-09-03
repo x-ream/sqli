@@ -25,10 +25,6 @@ public class ParsingException extends RuntimeException implements Serializable {
 
     private String message;
 
-    public ParsingException(){
-
-    }
-
     public ParsingException(String message){
         this.message = message;
     }

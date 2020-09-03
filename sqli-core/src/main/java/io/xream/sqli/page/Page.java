@@ -36,7 +36,7 @@ public final class Page<T> implements Paged, Serializable{
 	
 	private static final long serialVersionUID = -3917421382413274341L;
 
-	private Class<T> clz;
+	private Class<T> clzz;
 
 	private int rows = 20;
 	private int page = 1;
@@ -47,12 +47,12 @@ public final class Page<T> implements Paged, Serializable{
 	private List<Sort> sortList;
 
 
-	public Class<T> getClz() {
-		return clz;
+	public Class<T> getClzz() {
+		return clzz;
 	}
 
-	public void setClz(Class clz) {
-		this.clz = clz;
+	public void setClzz(Class clz) {
+		this.clzz = clz;
 		if (Objects.nonNull(this.list) && this.list.size() > 0){
 
 			List tempList = new ArrayList<>();
@@ -102,7 +102,7 @@ public final class Page<T> implements Paged, Serializable{
 
 	@Deprecated
 	public void setList(List<T> list) {
-		if (Objects.isNull(this.clz)){
+		if (Objects.isNull(this.clzz)){
 			this.list = list;
 			return;
 		}
@@ -120,11 +120,11 @@ public final class Page<T> implements Paged, Serializable{
 		}
 		for (T t : list){
 
-			if (this.clz == Map.class){
+			if (this.clzz == Map.class){
 				this.list.add(t);
 			}else {
 				if (t instanceof JSONObject){
-					T obj = JsonWrapper.toObject(t,this.clz);
+					T obj = JsonWrapper.toObject(t,this.clzz);
 					this.list.add(obj);
 				}else{
 					this.list.add(t);
