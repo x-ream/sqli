@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class InCondition implements Routeable {
+public final class InCondition implements Routeable {
 
     private String property;
     private List<? extends Object> inList;

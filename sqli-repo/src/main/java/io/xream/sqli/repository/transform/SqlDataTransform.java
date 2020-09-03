@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public class SqlDataTransform implements DataTransform {
+public final class SqlDataTransform implements DataTransform {
 
     private Dao dao;
 

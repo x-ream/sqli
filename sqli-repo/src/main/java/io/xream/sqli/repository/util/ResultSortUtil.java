@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class ResultSortUtil {
+public final class ResultSortUtil {
 
     /**
      * by orderIn0

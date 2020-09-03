@@ -32,7 +32,7 @@ import java.util.concurrent.Callable;
 /**
  * @Author Sim
  */
-public class DefaultTemporaryRepository implements TemporaryRepository {
+public final class DefaultTemporaryRepository implements TemporaryRepository {
 
     private Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
 

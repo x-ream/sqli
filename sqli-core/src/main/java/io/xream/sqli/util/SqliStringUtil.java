@@ -19,7 +19,7 @@ package io.xream.sqli.util;
 /**
  * @Author Sim
  */
-public class SqliStringUtil {
+public final class SqliStringUtil {
 
 	private SqliStringUtil(){}
 	

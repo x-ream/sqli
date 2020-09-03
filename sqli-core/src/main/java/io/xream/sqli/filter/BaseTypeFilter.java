@@ -26,7 +26,7 @@ import io.xream.sqli.parser.Parser;
 /**
  * @Author Sim
  */
-public class BaseTypeFilter {
+public final class BaseTypeFilter {
 
     public static boolean baseTypeSupported = false;
 

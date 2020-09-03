@@ -35,7 +35,7 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public class ObjectDataConverter {
+public final class ObjectDataConverter {
 
     public static List<Object> objectToListForCreate(Object obj, List<BeanElement> eles, Dialect dialect) {
 

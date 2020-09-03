@@ -19,7 +19,7 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-public class FunctionResultKey {
+public final class FunctionResultKey {
 
     private String script;
     private String alia;

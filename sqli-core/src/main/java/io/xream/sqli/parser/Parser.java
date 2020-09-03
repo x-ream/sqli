@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author Sim
  */
-public class Parser {
+public final class Parser {
 
     private static Logger logger = LoggerFactory.getLogger(Parser.class);
     @SuppressWarnings("rawtypes")

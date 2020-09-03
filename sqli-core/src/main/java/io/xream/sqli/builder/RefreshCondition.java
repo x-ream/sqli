@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public class RefreshCondition<T> extends ConditionCriteriaBuilder implements CriteriaCondition, Routeable {
+public final class RefreshCondition<T> extends ConditionCriteriaBuilder implements CriteriaCondition, Routeable {
 
     private List<BuildingBlock> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME

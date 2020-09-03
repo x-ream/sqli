@@ -25,7 +25,7 @@ import java.util.Map.Entry;
  * @author Sim
  *
  */
-public class JsonStyleMapUtil {
+public final class JsonStyleMapUtil {
 
 	private JsonStyleMapUtil(){}
 

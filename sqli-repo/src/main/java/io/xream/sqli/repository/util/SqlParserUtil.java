@@ -22,7 +22,7 @@ import io.xream.sqli.util.BeanUtil;
 /**
  * @Author Sim
  */
-public class SqlParserUtil {
+public final class SqlParserUtil {
 
     public final static String COMMA = ",";
     public final static String SPACE = " ";

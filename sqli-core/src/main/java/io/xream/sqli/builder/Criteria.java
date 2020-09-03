@@ -221,7 +221,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 				'}';
 	}
 
-	public static class ResultMapCriteria extends Criteria implements SqlNormalizer,Serializable{
+	public static final class ResultMapCriteria extends Criteria implements SqlNormalizer,Serializable{
 
 		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();

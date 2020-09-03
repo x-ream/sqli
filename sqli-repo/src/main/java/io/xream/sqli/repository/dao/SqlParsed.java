@@ -19,7 +19,7 @@ package io.xream.sqli.repository.dao;
 /**
  * @Author Sim
  */
-public class SqlParsed {
+public final class SqlParsed {
 
     private String countSql;
     private StringBuilder sql;

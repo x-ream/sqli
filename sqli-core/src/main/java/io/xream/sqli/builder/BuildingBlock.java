@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class BuildingBlock {
+public final class BuildingBlock {
 
     private ConjunctionAndOtherScript conjunction;
     private PredicateAndOtherScript predicate;

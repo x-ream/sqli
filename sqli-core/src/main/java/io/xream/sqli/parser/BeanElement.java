@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
  * JDK reflect cached better than RelfectASM
  * @Author Sim
  */
-public class BeanElement {
+public final class BeanElement {
 
 	private String property;
 	private String setter;

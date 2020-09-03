@@ -20,7 +20,7 @@ package io.xream.sqli.util;
 /**
  * @Author Sim
  */
-public class BeanUtil {
+public final class BeanUtil {
 
     protected BeanUtil(){}
 

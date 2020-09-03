@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public class PropertyMapping {
+public final class PropertyMapping {
     private Map<String, String> propertyMappingMap = new HashMap<String, String>();
     private Map<String, String> columnPropertyMap = new HashMap<String, String>();
 

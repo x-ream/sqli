@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class TemporaryDaoImpl implements TemporaryDao{
+public final class TemporaryDaoImpl implements TemporaryDao{
 
     private CriteriaToSql criteriaToSql;
 

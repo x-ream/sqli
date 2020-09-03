@@ -32,7 +32,7 @@ import java.util.Objects;
  *
  * @param <T>
  */
-public class Page<T> implements Paged, Serializable{
+public final class Page<T> implements Paged, Serializable{
 	
 	private static final long serialVersionUID = -3917421382413274341L;
 

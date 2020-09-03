@@ -19,7 +19,7 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-public class On {
+public final class On {
     private String key;
     private String op;
     private JoinFrom joinFrom;

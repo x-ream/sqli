@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * @Author Sim
  */
-public class Parsed {
+public final class Parsed {
 
 
 	private boolean isChecked = false;

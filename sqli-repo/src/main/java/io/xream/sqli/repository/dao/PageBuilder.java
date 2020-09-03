@@ -25,7 +25,7 @@ import java.util.concurrent.Callable;
 /**
  * @Author Sim
  */
-public class PageBuilder {
+public final class PageBuilder {
 
     public static <T> Page<T> build(Criteria criteria, List<T> list, Callable<Long> callable) {
 

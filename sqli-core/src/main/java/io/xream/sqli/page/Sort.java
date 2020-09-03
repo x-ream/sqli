@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class Sort implements Serializable {
+public final class Sort implements Serializable {
     private static final long serialVersionUID = 7492946384236689679L;
 
     private Direction direction = Direction.DESC;

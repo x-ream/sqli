@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * @Author Sim
  */
-public class KV implements Serializable{
+public final class KV implements Serializable{
 
 	private static final long serialVersionUID = -3617796537738183236L;
 	public String k;

@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public class MapperFactory implements Mapper {
+public final class MapperFactory implements Mapper {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 

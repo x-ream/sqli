@@ -24,7 +24,7 @@ import java.util.Date;
 /**
  * @Author Sim
  */
-public class TimestampSupport {
+public final class TimestampSupport {
 
     public static boolean testNumberValueToDate(Class clzz, BuildingBlock buildingBlock){
         if (clzz == Date.class) {

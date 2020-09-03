@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public class SqlUtil {
+public final class SqlUtil {
 
     protected static String paged(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;

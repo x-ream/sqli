@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaToSql.Pre {
+public final class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaToSql.Pre {
 
     private String source;
     private JoinType joinType;

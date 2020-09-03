@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class RemoveRefreshCreate<T> implements Routeable {
+public final class RemoveRefreshCreate<T> implements Routeable {
 
     private Object routeKey;
     @JsonIgnore

@@ -26,7 +26,7 @@ import java.util.*;
  * @author Sim
  *
  */
-public class JsonWrapper {
+public final class JsonWrapper {
 
 	private JsonWrapper(){}
 	

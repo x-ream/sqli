@@ -46,7 +46,7 @@ import java.util.*;
 /**
  * @author Sim
  */
-public class DaoImpl implements Dao {
+public final class DaoImpl implements Dao {
 
     private Logger logger = LoggerFactory.getLogger(Dao.class);
 

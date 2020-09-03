@@ -101,7 +101,7 @@ public class SqliStarter implements RepositoryInitializer {
 
         criteriaParser.setDialect(dialect);
         ((DaoImpl)dao).setDialect(dialect);
-        ((TemporaryDaoImpl)temporaryRepository).setDialect(dialect);
+        ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
     }
 
     @Override

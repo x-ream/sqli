@@ -19,7 +19,7 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-public  class Having {
+public final class Having {
 
     private String key;
     private Op op;

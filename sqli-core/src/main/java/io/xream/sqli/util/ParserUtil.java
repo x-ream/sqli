@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public class ParserUtil {
+public final class ParserUtil {
 
     public final static String SQL_KEYWORD_MARK = "`";
 

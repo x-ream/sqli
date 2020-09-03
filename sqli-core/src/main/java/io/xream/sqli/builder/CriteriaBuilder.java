@@ -134,7 +134,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     }
 
 
-    public static class ResultMapBuilder extends CriteriaBuilder {
+    public static final class ResultMapBuilder extends CriteriaBuilder {
 
         private SourceScriptBuilder sourceScriptBuilder = new SourceScriptBuilder() {
 

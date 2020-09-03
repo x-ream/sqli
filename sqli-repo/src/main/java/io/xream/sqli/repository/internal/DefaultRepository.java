@@ -320,7 +320,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     }
 
     private void setDefaultClzz(Criteria.ResultMapCriteria resultMapCriteria) {
-        if (this.clzz != null) {
+        if (this.clzz != Void.class) {
             resultMapCriteria.setClzz(this.clzz);
             resultMapCriteria.setParsed(Parser.get(this.clzz));
         }

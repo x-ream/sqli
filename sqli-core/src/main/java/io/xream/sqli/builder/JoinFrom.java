@@ -19,7 +19,7 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-public class JoinFrom {
+public final class JoinFrom {
 
     private String alia;
     private String key;

@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author Sim
  */
-public class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
+public final class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
 
