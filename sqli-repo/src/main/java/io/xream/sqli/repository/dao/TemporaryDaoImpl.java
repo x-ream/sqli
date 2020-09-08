@@ -19,12 +19,14 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
+import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.SqlParsed;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -67,8 +69,9 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         sb.append("CREATE TEMPORARY TABLE IF NOT EXISTS ").append(parsed.getTableName())
                 .append(SqlScript.AS);
 
+        String sql = null;
         if (valueList == null || valueList.isEmpty()) {
-            this.jdbcWrapper.execute(sb.append(fromSqlSb).toString());
+            sql = sb.append(fromSqlSb).toString();
         } else {
             Object[] arr = dialect.toArr(valueList);
             String fromSql = fromSqlSb.toString();
@@ -92,8 +95,10 @@ public final class TemporaryDaoImpl implements TemporaryDao{
                 }
             }
             sb.append(fromSql);
-            this.jdbcWrapper.execute(sb.toString());
+            sql = sb.toString();
         }
+        this.jdbcWrapper.execute(sql);
+        SqliLoggerProxy.debug(TemporaryRepository.class,sql);
 
         return true;
     }

@@ -23,6 +23,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.transform.DataTransform;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliLoggerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,11 @@ import java.util.concurrent.Callable;
  */
 public final class DefaultTemporaryRepository implements TemporaryRepository {
 
-    private Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
+    private static Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
 
+    public DefaultTemporaryRepository(){
+        SqliLoggerProxy.put(TemporaryRepository.class,logger);
+    }
 
     private TemporaryDao temporaryDao;
 
