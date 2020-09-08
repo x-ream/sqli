@@ -1,5 +1,6 @@
 package io.xream.sqli.builder;
 
+import io.xream.sqli.api.Alias;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public interface KeyMapper {
 
-    default String mapping(String key, CriteriaCondition criteria) {
+    default String mapping(String key, Alias criteria) {
 
         if (SqliStringUtil.isNullOrEmpty(key))
             return key;
@@ -28,7 +29,8 @@ public interface KeyMapper {
 
             Parsed parsed = Parser.get(clzName);
             if (parsed == null)
-                throw new ParsingException("Entity Bean Not Exist: " + BeanUtil.getByFirstUpper(key));
+                return key;
+//                throw new ParsingException("Entity Bean Not Exist: " + BeanUtil.getByFirstUpper(key));
 
             String p = parsed.getMapper(property);
             if (SqliStringUtil.isNullOrEmpty(p)) {
@@ -52,7 +54,7 @@ public interface KeyMapper {
             }
         }
 
-        Parsed parsed = criteria.getParsed();
+        Parsed parsed = ((CriteriaCondition)criteria).getParsed();
         if (parsed == null)
             return key;
         if (key.equals(BeanUtil.getByFirstLower(parsed.getClz().getSimpleName())))

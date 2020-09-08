@@ -17,13 +17,13 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.starter.DbType;
 
 import java.io.Reader;
@@ -119,8 +119,9 @@ public final class SqlUtil {
         return sb.toString();
     }
 
-    protected static SqlParsed fromCriteria(Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
-        SqlParsed sqlParsed = criteriaParser.toSql(false,criteria);
+    protected static SqlParsed fromCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
+        SqlParsed sqlParsed = criteriaParser.toSql(false,criteria,valueList);
+
         String sql = sqlParsed.getSql().toString();
 
         int page = criteria.getPage();
@@ -133,7 +134,7 @@ public final class SqlUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlParsed.setSql(sb);
-        ObjectDataConverter.log(criteria.getClzz(), sqlParsed.getValueList());
+        ObjectDataConverter.log(criteria.getClzz(), valueList);
 
         return sqlParsed;
     }

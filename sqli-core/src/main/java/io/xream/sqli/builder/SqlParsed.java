@@ -14,29 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.builder;
 
-import io.xream.sqli.api.Alias;
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlParsed;
-import io.xream.sqli.parser.Parsed;
-
+import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * @Author Sim
  */
-public interface CriteriaToSql {
+public final class SqlParsed {
 
-    void setDialect(Dialect dialect);
+    private String countSql;
+    private StringBuilder sql;
 
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
+    private List<SqlParsed> subList = new ArrayList<>();
 
-    SqlParsed toSql(boolean isSub, Criteria criteria, List<Object> valueList) ;
+    public String getCountSql() {
+        return countSql;
+    }
 
-    String toSql(Parsed parsed, RefreshCondition refreshCondition);
+    public void setCountSql(String countSql) {
+        this.countSql = countSql;
+    }
+
+    public StringBuilder getSql() {
+        return sql;
+    }
+
+    public void setSql(StringBuilder sql) {
+        this.sql = sql;
+    }
+
+
+    public List<SqlParsed> getSubList() {
+        return subList;
+    }
+
+    public void setSubList(List<SqlParsed> subList) {
+        this.subList = subList;
+    }
 }

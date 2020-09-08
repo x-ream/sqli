@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -114,16 +115,26 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
     }
 
 
-    public void pre(List<Object> valueList) {
+    public void pre(List<Object> valueList, CriteriaToSql criteriaToSql, SqlParsed sqlParsed) {
+
+        if (subCriteria != null) {
+            final SqlParsed subParsed = criteriaToSql.toSql(true, subCriteria,valueList);
+            sqlParsed.getSubList().add(subParsed);
+        }
+
         pre(valueList, buildingBlockList);
     }
 
     public String sql() {
-        if (SqliStringUtil.isNullOrEmpty(source))
+        if (SqliStringUtil.isNullOrEmpty(source) && subCriteria == null)
             return "";
+        if (subCriteria != null) {
+            source = SqlScript.SUB;
+        }
         if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
-            if (alia != null && !alia.equals(source))
+            if (alia != null && !alia.equals(source)) {
                 return source + " " + alia;
+            }
             return source;
         }
         StringBuilder sb = new StringBuilder();

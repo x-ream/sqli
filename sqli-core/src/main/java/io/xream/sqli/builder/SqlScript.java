@@ -144,6 +144,7 @@ public interface SqlScript {
 	String DOLLOR = "$";
 	String SINGLE_QUOTES = "'";
 	String KEYWORD_MARK = "`";
+	String SUB = "${SUB}";
 
 	String sql();
 }

@@ -47,6 +47,11 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     private Class<T> clzz;
     private IdGenerator idGeneratorService;
     private Repository repository;
+    private Class childClzz;
+
+    public void setChildClzz(Class childClzz){
+        this.childClzz = childClzz;
+    }
 
     @Override
     public Class<T> getClzz() {
@@ -324,6 +329,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         if (this.clzz != Void.class) {
             resultMapCriteria.setClzz(this.clzz);
             resultMapCriteria.setParsed(Parser.get(this.clzz));
+        }else{
+            resultMapCriteria.setClzz(this.childClzz);
         }
     }
     private void setDefaultClzz(Criteria criteria) {

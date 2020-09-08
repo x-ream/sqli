@@ -16,16 +16,18 @@
  */
 package io.xream.sqli.repository.dao;
 
+import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.SqlParsed;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.util.BeanUtil;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,10 +57,9 @@ public final class TemporaryDaoImpl implements TemporaryDao{
     @Override
     public boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
 
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(ResultMapCriteria, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
         StringBuilder fromSqlSb = sqlParsed.getSql();
-
-        List<Object> list = sqlParsed.getValueList();
 
         Parsed parsed = Parser.get(clzz);
 
@@ -66,10 +67,10 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         sb.append("CREATE TEMPORARY TABLE IF NOT EXISTS ").append(parsed.getTableName())
                 .append(SqlScript.AS);
 
-        if (list == null || list.isEmpty()) {
+        if (valueList == null || valueList.isEmpty()) {
             this.jdbcWrapper.execute(sb.append(fromSqlSb).toString());
         } else {
-            Object[] arr = dialect.toArr(list);
+            Object[] arr = dialect.toArr(valueList);
             String fromSql = fromSqlSb.toString();
             for (Object obj : arr) {
                 if (obj instanceof String) {

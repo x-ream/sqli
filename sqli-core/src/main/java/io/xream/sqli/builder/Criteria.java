@@ -17,6 +17,7 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.xream.sqli.api.Alias;
 import io.xream.sqli.api.ResultMapHelper;
 import io.xream.sqli.api.Routeable;
 import io.xream.sqli.page.Paged;
@@ -33,7 +34,7 @@ import java.util.*;
  * @author sim
  *
  */
-public class Criteria implements CriteriaCondition, Paged, Routeable,Serializable {
+public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Serializable {
 
 	private static final long serialVersionUID = 7088698915888081349L;
 
@@ -65,6 +66,10 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 //	public void setValueList(List<Object> valueList) {
 //		this.valueList = valueList;
 //	}
+	@Override
+	public Map<String,String> getAliaMap(){
+		return null;
+	}
 
 	public Class<?> getClzz() {
 		return clzz;
@@ -241,7 +246,7 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		@JsonIgnore
 		private transient PropertyMapping propertyMapping;
 		@JsonIgnore
-		private transient Map<String,String> aliaMap;
+		private transient Map<String,String> aliaMap = new HashMap<>();
 		@JsonIgnore
 		private transient Map<String,String> resultKeyAliaMap = new HashMap<>();
 
@@ -289,10 +294,6 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 
 		public Map<String, String> getAliaMap() {
 			return aliaMap;
-		}
-
-		public void setAliaMap(Map<String, String> aliaMap) {
-			this.aliaMap = aliaMap;
 		}
 
 		public void setSourceScript(String sourceScript) {

@@ -343,6 +343,15 @@ public final class ParserUtil {
         return alia;
     }
 
+    public static String getClzName(String alia, Alias alias) {
+
+        String a = alias.getAliaMap().get(alia);
+        if (SqliStringUtil.isNotNull(a))
+            return a;
+
+        return alia;
+    }
+
     public static <T> Object tryToGetId(T t, Parsed parsed) {
 
         Field f = parsed.getKeyField(X.KEY_ONE);

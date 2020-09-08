@@ -17,19 +17,20 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.api.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.SqlParsed;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.CriteriaToSql;
 import io.xream.sqli.repository.api.KeyOne;
 import io.xream.sqli.repository.exception.TooManyResultsException;
 import io.xream.sqli.repository.mapper.Mapper;
@@ -208,11 +209,11 @@ public final class DaoImpl implements Dao {
     public <T> List<T> list(Criteria criteria) {
 
         Class clz = criteria.getClzz();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = sqlParsed.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
         ResultSortUtil.sort(list, criteria, Parser.get(clz));
         return list;
@@ -222,12 +223,12 @@ public final class DaoImpl implements Dao {
     public <T> Page<T> find(Criteria criteria) {
 
         Class clz = criteria.getClzz();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = sqlParsed.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, valueList,Parser.get(clz), this.dialect);
         Parsed parsed = Parser.get(clz);
         ResultSortUtil.sort(list, criteria, parsed);
@@ -330,15 +331,16 @@ public final class DaoImpl implements Dao {
     @Override
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
 
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, sqlParsed.getValueList(),resultMapped, clz, this.dialect);
+        List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, valueList,resultMapped, clz, this.dialect);
 
-        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlParsed.getCountSql(), sqlParsed.getValueList()));
+        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlParsed.getCountSql(), valueList));
 
         return pagination;
     }
@@ -346,23 +348,24 @@ public final class DaoImpl implements Dao {
     @Override
     public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
 
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
-        return this.jdbcWrapper.queryForResultMapList(sql, sqlParsed.getValueList(),resultMapped, resultMapped.getClzz(), this.dialect);
+        return this.jdbcWrapper.queryForResultMapList(sql, valueList,resultMapped, resultMapped.getClzz(), this.dialect);
     }
 
     @Override
     public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
-
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
-        List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,sqlParsed.getValueList(),this.dialect);
+        List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,valueList,this.dialect);
         return list;
     }
 
@@ -395,13 +398,12 @@ public final class DaoImpl implements Dao {
     @Override
     public void findToHandle(Criteria.ResultMapCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
 
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
-
-        List<Object> valueList = sqlParsed.getValueList();
 
         this.jdbcWrapper.queryForMapToHandle(sql, valueList, dialect, resultMapped, null, handler);
     }
@@ -409,13 +411,12 @@ public final class DaoImpl implements Dao {
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
 
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
         Class clz = criteria.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
-
-        List<Object> valueList = sqlParsed.getValueList();
 
         this.jdbcWrapper.queryForMapToHandle(sql, valueList, dialect,null, Parser.get(clz), handler);
     }

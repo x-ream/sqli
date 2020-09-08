@@ -165,6 +165,9 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         }
                     }else{
                         Parsed parsed = criteria.getParsed();
+                        if (parsed == null) {
+                            parsed = Parser.get(((Criteria.ResultMapCriteria)criteria).sourceScript());
+                        }
                         if (BaseTypeFilter.isBaseType(key, buildingBlock.getValue(),parsed)){
                             ite.remove();
                         }else{
