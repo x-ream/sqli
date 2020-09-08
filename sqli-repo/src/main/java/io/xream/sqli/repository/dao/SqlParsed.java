@@ -16,6 +16,8 @@
  */
 package io.xream.sqli.repository.dao;
 
+import java.util.List;
+
 /**
  * @Author Sim
  */
@@ -23,7 +25,7 @@ public final class SqlParsed {
 
     private String countSql;
     private StringBuilder sql;
-
+    private List<Object> valueList;
 
     public String getCountSql() {
         return countSql;
@@ -41,4 +43,11 @@ public final class SqlParsed {
         this.sql = sql;
     }
 
+    public List<Object> getValueList() {
+        return valueList;
+    }
+
+    public void setValueList(List<Object> valueList) {
+        this.valueList = valueList;
+    }
 }

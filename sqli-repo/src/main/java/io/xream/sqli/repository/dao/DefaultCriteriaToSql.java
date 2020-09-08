@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.repository.dao;
 
+import io.xream.sqli.api.Alias;
 import io.xream.sqli.api.Dialect;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
@@ -48,6 +49,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
     }
 
     private void mapping(String script, CriteriaCondition criteria, StringBuilder sb) {
+
         String[] keyArr = script.split(SqlScript.SPACE);//
         int length = keyArr.length;
         for (int i = 0; i < length; i++) {
@@ -60,7 +62,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
 
     @Override
-    public String fromCondition(CriteriaCondition criteriaCondition) {
+    public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Alias alias) {
         if (Objects.isNull(criteriaCondition))
             return "";
         StringBuilder sb = new StringBuilder();
@@ -69,11 +71,11 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
         if (buildingBlockList.isEmpty())
             return "";
 
-        filter(buildingBlockList, criteriaCondition);//过滤
+        filter(buildingBlockList, criteriaCondition,alias);//过滤
         if (buildingBlockList.isEmpty())
             return "";
 
-        pre(criteriaCondition.getValueList(), buildingBlockList);
+        pre(valueList, buildingBlockList);
 
         buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
 
@@ -86,9 +88,13 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
     }
 
     @Override
-    public SqlParsed from(Criteria criteria) {
+    public SqlParsed toSql(boolean isSub, Criteria criteria) {
 
         SqlBuilder sqlBuilder = SqlBuilder.get();
+
+        List<Object> valueList = new ArrayList<>();
+        SqlParsed sqlParsed = new SqlParsed();
+        sqlParsed.setValueList(valueList);
 
         parseAlia(criteria, sqlBuilder);
 
@@ -104,15 +110,15 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
         /*
          * force index
          */
-        forceIndex(sqlBuilder, criteria);
+        forceIndex(isSub,sqlBuilder, criteria);
 
-        sourceScriptValueList(criteria);
+        sourceScriptValueList(criteria,valueList);
         /*
          * StringList
          */
-        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria);
+        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria,valueList);
 
-        SqlBuilder countSql = count(sqlBuilder.sbCondition, criteria);
+        SqlBuilder countSql = count(isSub, sqlBuilder.sbCondition, criteria);
         /*
          * group by
          */
@@ -128,7 +134,9 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
          */
         sourceScript(sqlBuilder, criteria);
 
-        return sqlArr(sqlBuilder, countSql);
+        sqlArr(sqlParsed, sqlBuilder, countSql);
+
+        return sqlParsed;
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
@@ -147,7 +155,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
     }
 
     @Override
-    public String fromRefresh(Parsed parsed, RefreshCondition refreshCondition) {
+    public String toSql(Parsed parsed, RefreshCondition refreshCondition) {
 
         String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
 
@@ -156,9 +164,9 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
         concatRefresh(sb, parsed, refreshCondition);
 
-        filter(refreshCondition.getBuildingBlockList(), refreshCondition);
+//        filter(refreshCondition.getBuildingBlockList(), refreshCondition, refreshCondition.getAliaMap());
 
-        String conditionSql = fromCondition(refreshCondition);
+        String conditionSql = toSql(refreshCondition,refreshCondition.getValueList(),refreshCondition);
 
         conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
 
@@ -230,7 +238,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
                     TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
 
-                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue())) || BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
+                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue()))
+                            || BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
                         continue;
                     }
 
@@ -266,9 +275,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
         }
     }
 
-    private SqlParsed sqlArr(SqlBuilder sb, SqlBuilder countSb) {
-
-        SqlParsed sqlParsed = new SqlParsed();
+    private void sqlArr(SqlParsed sqlParsed,SqlBuilder sb, SqlBuilder countSb) {
 
         if (countSb != null) {
             StringBuilder sqlSb = new StringBuilder();
@@ -281,7 +288,6 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
         sqlParsed.setSql(sqlSb);
 
-        return sqlParsed;
     }
 
 
@@ -294,7 +300,6 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
                 resultMapped.setPropertyMapping(propertyMapping);
             }
         }
-        criteria.getValueList().clear();
     }
 
     private void resultKey(SqlBuilder sqlBuilder, Criteria criteria) {
@@ -320,7 +325,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
             distinctColumn.append(column);
             for (String resultKey : list) {
                 sqlBuilder.conditionSet.add(resultKey);
-                String mapper = mapping(resultKey, criteria);
+                String mapper = mapping(resultKey, resultMapped);
                 propertyMapping.put(resultKey, mapper);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
                 mapper = generate(mapper, resultMapped);
@@ -427,7 +432,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
         }
 
-        List<FunctionResultKey> functionList = resultMapped.getResultFuntionList();
+        List<FunctionResultKey> functionList = resultMapped.getResultFunctionList();
         if (!functionList.isEmpty()) {//
             if (flag) {
                 column.append(SqlScript.COMMA);
@@ -488,7 +493,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
                 groupBy = groupBy.trim();
                 sb.conditionSet.add(groupBy);
                 if (SqliStringUtil.isNotNull(groupBy)) {
-                    String mapper = mapping(groupBy, criteria);
+                    String mapper = mapping(groupBy, rm);
                     sb.sbCondition.append(mapper);
                     i++;
                     if (i < l) {
@@ -661,14 +666,18 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
         mapping(script, criteria, sb.sbSource);
     }
 
-    private void forceIndex(SqlBuilder sqlBuilder, Criteria criteria) {
+    private void forceIndex(boolean isSub, SqlBuilder sqlBuilder, Criteria criteria) {
+        if (isSub)
+            return;
         if (SqliStringUtil.isNullOrEmpty(criteria.getForceIndex()))
             return;
         sqlBuilder.sbCondition.append("FORCE INDEX(" + criteria.getForceIndex() + ")");
         sqlBuilder.conditionSet.add(criteria.getForceIndex());
     }
 
-    private SqlBuilder count(StringBuilder sbCondition, Criteria criteria) {
+    private SqlBuilder count(boolean isSub, StringBuilder sbCondition, Criteria criteria) {
+        if (isSub)
+            return null;
         if (!criteria.isTotalRowsIgnored()) {
             SqlBuilder sqlBuilder = SqlBuilder.get();
             sqlBuilder.sbResult.append(SqlScript.SELECT).append(SqlScript.SPACE).append(criteria.getCountDistinct()).append(SqlScript.SPACE);
@@ -711,32 +720,34 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator,C
 
     private void filter0(Criteria criteria) {
         List<BuildingBlock> buildingBlockList = criteria.getBuildingBlockList();
-        filter(buildingBlockList, criteria);
-        if (criteria instanceof Criteria.ResultMapCriteria) {
 
+        if (criteria instanceof Criteria.ResultMapCriteria) {
+            Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;
+            filter(buildingBlockList, criteria, resultMapCriteria);
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                filter(sourceScript.getBuildingBlockList(), criteria);
+                filter(sourceScript.getBuildingBlockList(), criteria, resultMapCriteria);
             }
+        }else{
+            filter(buildingBlockList,criteria,null);
         }
     }
 
-    private void sourceScriptValueList(Criteria criteria) {
+    private void sourceScriptValueList(Criteria criteria,List<Object> valueList) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
-            List<Object> valueList = criteria.getValueList();
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
                 sourceScript.pre(valueList);
             }
         }
     }
 
-    private void condition(SqlBuilder sqlBuilder, List<BuildingBlock> buildingBlockList, Criteria criteria) {
+    private void condition(SqlBuilder sqlBuilder, List<BuildingBlock> buildingBlockList, Criteria criteria,List<Object> valueList) {
         if (buildingBlockList.isEmpty())
             return;
         preOptimizeListX(buildingBlockList, sqlBuilder.conditionSet);//优化连表查询前的准备
 
         StringBuilder xsb = new StringBuilder();
 
-        pre(criteria.getValueList(), buildingBlockList);//提取占位符对应的值
+        pre(valueList, buildingBlockList);//提取占位符对应的值
         if (buildingBlockList.isEmpty())
             return;
         buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);

@@ -58,7 +58,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         SqlParsed sqlParsed = SqlUtil.fromCriteria(ResultMapCriteria, criteriaToSql, dialect);
         StringBuilder fromSqlSb = sqlParsed.getSql();
 
-        List<Object> list = ResultMapCriteria.getValueList();
+        List<Object> list = sqlParsed.getValueList();
 
         Parsed parsed = Parser.get(clzz);
 

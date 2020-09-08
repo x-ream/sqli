@@ -27,7 +27,9 @@ import java.util.List;
 public final class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaToSql.Pre {
 
     private String source;
+    private Criteria.ResultMapCriteria subCriteria;
     private JoinType joinType;
+    private String joinStr;
     private On on;
     private String alia;
     private List<BuildingBlock> buildingBlockList = new ArrayList<>();
@@ -43,12 +45,28 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
         this.source = source;
     }
 
+    public Criteria.ResultMapCriteria getSubCriteria() {
+        return subCriteria;
+    }
+
+    public void setSubCriteria(Criteria.ResultMapCriteria subCriteria) {
+        this.subCriteria = subCriteria;
+    }
+
     public JoinType getJoinType() {
         return joinType;
     }
 
     public void setJoinType(JoinType joinType) {
         this.joinType = joinType;
+    }
+
+    public String getJoinStr() {
+        return joinStr;
+    }
+
+    public void setJoinStr(String joinStr) {
+        this.joinStr = joinStr;
     }
 
     public List<BuildingBlock> getBuildingBlockList() {
@@ -103,13 +121,13 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
     public String sql() {
         if (SqliStringUtil.isNullOrEmpty(source))
             return "";
-        if (joinType == null || joinType == JoinType.MAIN) {
+        if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
             if (alia != null && !alia.equals(source))
                 return source + " " + alia;
             return source;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(joinType.sql()).append(source);
+        sb.append(joinStr == null ? joinType.sql() : joinStr).append(source);
 
         if (alia != null && !alia.equals(source))
             sb.append(SqlScript.SPACE).append(alia);
@@ -138,13 +156,14 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
     public String toString() {
         return "SourceScript{" +
                 "source='" + source + '\'' +
+                ", subCriteria=" + subCriteria +
                 ", joinType=" + joinType +
-                ", on =" + on +
+                ", joinStr='" + joinStr + '\'' +
+                ", on=" + on +
                 ", alia='" + alia + '\'' +
-                ", buildingBlockList='" + buildingBlockList + '\'' +
+                ", buildingBlockList=" + buildingBlockList +
                 ", used=" + used +
                 ", targeted=" + targeted +
                 '}';
     }
-
 }

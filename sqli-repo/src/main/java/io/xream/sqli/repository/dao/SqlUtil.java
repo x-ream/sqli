@@ -71,7 +71,7 @@ public final class SqlUtil {
 
 
     protected static String buildRefresh(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser) {
-        return criteriaParser.fromRefresh(parsed,refreshCondition);
+        return criteriaParser.toSql(parsed,refreshCondition);
     }
 
     protected static String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap) {
@@ -120,7 +120,7 @@ public final class SqlUtil {
     }
 
     protected static SqlParsed fromCriteria(Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
-        SqlParsed sqlParsed = criteriaParser.from(criteria);
+        SqlParsed sqlParsed = criteriaParser.toSql(false,criteria);
         String sql = sqlParsed.getSql().toString();
 
         int page = criteria.getPage();
@@ -133,7 +133,7 @@ public final class SqlUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlParsed.setSql(sb);
-        ObjectDataConverter.log(criteria.getClzz(), criteria.getValueList());
+        ObjectDataConverter.log(criteria.getClzz(), sqlParsed.getValueList());
 
         return sqlParsed;
     }

@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.api.Alias;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -26,6 +27,7 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
@@ -124,7 +126,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
 
     interface Filter {
 
-        default void filter(List<BuildingBlock> buildingBlockList, CriteriaCondition criteria) {
+        default void filter(List<BuildingBlock> buildingBlockList, CriteriaCondition criteria, Alias alias) {
 
             if (buildingBlockList == null || buildingBlockList.isEmpty())
                 return;
@@ -135,7 +137,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                 PredicateAndOtherScript p = buildingBlock.getPredicate();
                 String key = buildingBlock.getKey();
                 if (p == PredicateAndOtherScript.SUB){
-                    filter(buildingBlock.getSubList(),criteria);
+                    filter(buildingBlock.getSubList(),criteria,alias);
                     if (buildingBlock.getSubList().isEmpty()) {
                         ite.remove();
                     }
@@ -149,7 +151,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                     if (key.contains(".")){
                         String[] arr = key.split("\\.");
                         String alia = arr[0];
-                        String clzName = criteria.getAliaMap().get(alia);
+                        String clzName = alias.getAliaMap().get(alia);
                         if (clzName == null)
                             clzName = alia;
                         Parsed parsed = Parser.get(clzName);
@@ -180,7 +182,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         continue;
 
                     if (key.contains(".")){
-                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),criteria)){
+                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),(Alias)criteria)){
                             ite.remove();
                         }
                     }else{
@@ -193,7 +195,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                 List<BuildingBlock> subList = buildingBlock.getSubList();
                 if (subList == null || subList.isEmpty())
                     continue;
-                filter(subList,criteria);
+                filter(subList,criteria,alias);
             }
         }
 

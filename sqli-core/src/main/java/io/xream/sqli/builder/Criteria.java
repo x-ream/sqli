@@ -17,6 +17,7 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.xream.sqli.api.ResultMapHelper;
 import io.xream.sqli.api.Routeable;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
@@ -48,18 +49,22 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 
 	@JsonIgnore
 	private transient Parsed parsed;
-	@JsonIgnore
-	private transient List<Object> valueList = new ArrayList<Object>();
+//	@JsonIgnore
+//	private transient List<Object> valueList;
 	@JsonIgnore
 	private transient String countDistinct = "COUNT(*) count";
 	@JsonIgnore
 	private transient String customedResultKey = SqlScript.STAR;
 
 
-	@Override
-	public List<Object> getValueList() {
-		return valueList;
-	}
+//	@Override
+//	public List<Object> getValueList() {
+//		return valueList;
+//	}
+
+//	public void setValueList(List<Object> valueList) {
+//		this.valueList = valueList;
+//	}
 
 	public Class<?> getClzz() {
 		return clzz;
@@ -175,10 +180,9 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 		return !this.fixedSortList.isEmpty();
 	}
 
-
-	public Map<String, String> getAliaMap() {
-		return null;
-	}
+//	public Map<String, String> getAliaMap() {
+//		return null;
+//	}
 	public void paged(Paged paged) {
 
 		this.isTotalRowsIgnored = paged.isTotalRowsIgnored();
@@ -221,11 +225,11 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 				'}';
 	}
 
-	public static final class ResultMapCriteria extends Criteria implements SqlNormalizer,Serializable{
+	public static final class ResultMapCriteria extends Criteria implements ResultMapHelper,SqlNormalizer,Serializable{
 
 		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();
-		private List<FunctionResultKey> resultFuntionList = new ArrayList<>();
+		private List<FunctionResultKey> resultFunctionList = new ArrayList<>();
 		private List<KV> resultKeyAssignedAliaList = new ArrayList<>();
 		private String groupBy;
 		private Distinct distinct;
@@ -303,8 +307,8 @@ public class Criteria implements CriteriaCondition, Paged, Routeable,Serializabl
 			return resultKeyAssignedAliaList;
 		}
 
-		public List<FunctionResultKey> getResultFuntionList() {
-			return resultFuntionList;
+		public List<FunctionResultKey> getResultFunctionList() {
+			return resultFunctionList;
 		}
 
 		public boolean isResultWithDottedKey() {

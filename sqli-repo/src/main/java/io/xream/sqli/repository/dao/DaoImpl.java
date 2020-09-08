@@ -212,7 +212,7 @@ public final class DaoImpl implements Dao {
         String sql = sqlParsed.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = criteria.getValueList();
+        List<Object> valueList = sqlParsed.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
         ResultSortUtil.sort(list, criteria, Parser.get(clz));
         return list;
@@ -227,7 +227,7 @@ public final class DaoImpl implements Dao {
 
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = criteria.getValueList();
+        List<Object> valueList = sqlParsed.getValueList();
         List<T> list = this.jdbcWrapper.queryForList(sql, valueList,Parser.get(clz), this.dialect);
         Parsed parsed = Parser.get(clz);
         ResultSortUtil.sort(list, criteria, parsed);
@@ -330,15 +330,15 @@ public final class DaoImpl implements Dao {
     @Override
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
 
-        Class clz = resultMapped.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
+        Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, resultMapped, this.dialect);
+        List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, sqlParsed.getValueList(),resultMapped, clz, this.dialect);
 
-        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlParsed.getCountSql(), resultMapped.getValueList()));
+        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlParsed.getCountSql(), sqlParsed.getValueList()));
 
         return pagination;
     }
@@ -351,7 +351,7 @@ public final class DaoImpl implements Dao {
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
-        return this.jdbcWrapper.queryForResultMapList(sql, resultMapped, this.dialect);
+        return this.jdbcWrapper.queryForResultMapList(sql, sqlParsed.getValueList(),resultMapped, resultMapped.getClzz(), this.dialect);
     }
 
     @Override
@@ -362,7 +362,7 @@ public final class DaoImpl implements Dao {
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
-        List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,resultMapped.getValueList(),this.dialect);
+        List<K> list = this.jdbcWrapper.queryForPlainValueList(clzz,sql,sqlParsed.getValueList(),this.dialect);
         return list;
     }
 
@@ -395,12 +395,13 @@ public final class DaoImpl implements Dao {
     @Override
     public void findToHandle(Criteria.ResultMapCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
 
-        Class clz = resultMapped.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(resultMapped, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
+        Class clz = resultMapped.getClzz();
+
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = resultMapped.getValueList();
+        List<Object> valueList = sqlParsed.getValueList();
 
         this.jdbcWrapper.queryForMapToHandle(sql, valueList, dialect, resultMapped, null, handler);
     }
@@ -408,12 +409,13 @@ public final class DaoImpl implements Dao {
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
 
-        Class clz = criteria.getClzz();
         SqlParsed sqlParsed = SqlUtil.fromCriteria(criteria, criteriaToSql, dialect);
         String sql = sqlParsed.getSql().toString();
+        Class clz = criteria.getClzz();
+
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Object> valueList = criteria.getValueList();
+        List<Object> valueList = sqlParsed.getValueList();
 
         this.jdbcWrapper.queryForMapToHandle(sql, valueList, dialect,null, Parser.get(clz), handler);
     }

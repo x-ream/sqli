@@ -14,30 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.api;
 
-import io.xream.sqli.api.Alias;
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.repository.dao.SqlParsed;
-
-import java.util.List;
 import java.util.Map;
-
 
 /**
  * @Author Sim
  */
-public interface CriteriaToSql {
-
-    void setDialect(Dialect dialect);
-
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
-
-    SqlParsed toSql(boolean isSub, Criteria criteria) ;
-
-    String toSql(Parsed parsed, RefreshCondition refreshCondition);
+public interface Alias {
+    Map<String, String> getAliaMap();
 }

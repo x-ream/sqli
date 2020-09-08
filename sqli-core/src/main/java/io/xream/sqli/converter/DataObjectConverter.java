@@ -17,7 +17,7 @@
 package io.xream.sqli.converter;
 
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.api.ResultMapHelper;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
@@ -36,27 +36,27 @@ import java.util.Map;
  */
 public final class DataObjectConverter {
 
-    public static Map<String,Object> toMapWithKeyOfObjectProperty(Map<String,Object> dataMap, Class orClzz, Criteria.ResultMapCriteria resultMapped, Dialect dialect) {
+    public static Map<String,Object> toMapWithKeyOfObjectProperty(Map<String,Object> dataMap, Class orClzz, ResultMapHelper resultMapHelper, Dialect dialect) {
         Map<String, Object> propertyMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
             String mapper = entry.getKey();
             String property = null;
             BeanElement be = null;
-            if (resultMapped == null) {
+            if (resultMapHelper == null) {
                 Parsed parsed = Parser.get(orClzz);
                 property = parsed.getPropertyByLower(mapper);
                 be = parsed.getElement(property);
             } else {
 
                 if (mapper.contains(SqlScript.DOLLOR)) {
-                    property = dialect.transformAlia(mapper, resultMapped.getAliaMap(), resultMapped.getResultKeyAliaMap());
+                    property = dialect.transformAlia(mapper, resultMapHelper.getAliaMap(), resultMapHelper.getResultKeyAliaMap());
                 } else {
-                    mapper = dialect.transformAlia(mapper, resultMapped.getAliaMap(), resultMapped.getResultKeyAliaMap());
-                    property = resultMapped.getPropertyMapping().property(mapper);
+                    mapper = dialect.transformAlia(mapper, resultMapHelper.getAliaMap(), resultMapHelper.getResultKeyAliaMap());
+                    property = resultMapHelper.getPropertyMapping().property(mapper);
 
                     if (property.contains(".")) {
                         String[] arr = property.split("\\.");
-                        String clzName = resultMapped.getAliaMap().get(arr[0]);
+                        String clzName = resultMapHelper.getAliaMap().get(arr[0]);
                         Parsed parsed = Parser.get(clzName);
                         be = parsed.getElement(arr[1]);
                     } else {

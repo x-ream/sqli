@@ -267,7 +267,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
 
     @Override
-    public List<T> in(InCondition inCondition) {
+    public List<T> in(String property, List<? extends Object> inList) {
+        InCondition inCondition = InCondition.wrap(property,inList);
         inCondition.setClz(this.clzz);
         return repository.in(inCondition);
     }

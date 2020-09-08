@@ -28,9 +28,13 @@ import java.util.List;
 public interface SourceScriptBuilder {
     SourceScriptBuilder source(String source);
 
+    SourceScriptBuilder sub(Sub sub);
+
     SourceScriptBuilder alia(String alia);
 
     SourceScriptBuilder joinType(JoinType joinType);
+
+    SourceScriptBuilder join(String joinStr);
 
     SourceScriptBuilder on(String key, JoinFrom joinFrom);
 
@@ -136,8 +140,7 @@ public interface SourceScriptBuilder {
 
         return list;
     }
-
-
+    
     static List<String> split(String script) {
         String[] opArrTwo = {"!=", "<>", "<=", ">="};
         String[] opArrTwoTemp = {"&ne", "&ne", "&lte", "&gte"};
@@ -151,7 +154,6 @@ public interface SourceScriptBuilder {
                 sourceScript = sourceScript.replace(opArrTwo[i], opArrTwoTemp[i]);
             }
         }
-
 
         for (String op : opArrOne) {
             if (sourceScript.contains(op))

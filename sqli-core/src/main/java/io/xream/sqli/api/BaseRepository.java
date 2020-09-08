@@ -17,7 +17,6 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.page.Page;
@@ -91,7 +90,7 @@ public interface BaseRepository<T> extends Typed<T> {
      * in API
      *
      */
-    List<T> in(InCondition InCondition_wrap);
+    List<T> in(String property, List<? extends Object> inList);
 
     /**
      * Standard query pageable API

@@ -7,6 +7,8 @@ import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
+import java.util.Map;
+
 /**
  * @Author Sim
  */
@@ -22,7 +24,6 @@ public interface KeyMapper {
             String alia = arr[0];
             String property = arr[1];
 
-
             String clzName = ParserUtil.getClzName(alia, criteria);
 
             Parsed parsed = Parser.get(clzName);
@@ -34,10 +35,7 @@ public interface KeyMapper {
                 return ((Criteria.ResultMapCriteria) criteria).getResultKeyAliaMap().get(key);
             }
 
-            String value = parsed.getTableName(alia) + SqlScript.DOT + p;
-
-
-            return value;
+            return parsed.getTableName(alia) + SqlScript.DOT + p;
         }
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
