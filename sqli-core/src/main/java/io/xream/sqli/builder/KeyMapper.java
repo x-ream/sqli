@@ -1,14 +1,11 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.api.Alias;
-import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
-
-import java.util.Map;
 
 /**
  * @Author Sim

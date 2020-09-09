@@ -17,7 +17,6 @@
 package io.xream.sqli.filter;
 
 import io.xream.sqli.api.Alias;
-import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;

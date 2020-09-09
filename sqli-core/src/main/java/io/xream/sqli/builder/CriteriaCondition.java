@@ -19,7 +19,6 @@ package io.xream.sqli.builder;
 import io.xream.sqli.parser.Parsed;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**

@@ -27,7 +27,6 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author Sim

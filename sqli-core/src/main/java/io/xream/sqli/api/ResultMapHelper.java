@@ -17,6 +17,7 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.builder.PropertyMapping;
+
 import java.util.Map;
 
 /**
