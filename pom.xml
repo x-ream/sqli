@@ -22,7 +22,6 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
 		<maven.test.skip>true</maven.test.skip>
-		<springboot.version>2.3.2.RELEASE</springboot.version>
 		<sqli.version>1.0.0.RELEASE</sqli.version>
 		<fastjson.version>1.2.73</fastjson.version>
 	</properties>
