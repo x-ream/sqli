@@ -163,7 +163,7 @@ public class OracleDialect implements Dialect {
 
     @Override
     public String createOrReplaceSql(String sql) {
-        throw new NotSupportedException("x7/x7-repor/x7-jdbc-template-plus not support createOrReplace() for Oracle");
+        throw new NotSupportedException("sqli not support createOrReplace() for Oracle");
     }
 
     @Override
