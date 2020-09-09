@@ -140,22 +140,24 @@
            
         连表构建API  (ResultMapBuilder)
             25. sourceScript(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
-            26. sourceScript("order").alia("o") //连表里的主表
-            27. sourceScript().source("orderItem").alia("i").joinType(JoinType.LEFT_JOIN)
+            26. sourceBuilder().source("order").alia("o") //连表里的主表
+            27. sourceBuilder().source("orderItem").alia("i").joinType(JoinType.LEFT_JOIN)
                                               .on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             28.               .more().[1~18] // LEFT JOIN等, 更多条件
+            29. sourceBuilder().sub(....) // INNER JOIND (....) i  有限支持clickhouse等数据库
+                            .alia("i").join("ANY INNER JOIN").on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             
         分页及排序API  (ResultMapBuilder)
-            29. paged(PagedRo) //前端请求参数构建分页及排序; 或者服务端编程API[30]
             30. paged().ignoreTotalRows().page(1).rows(10).sort("o.id", Direction.DESC) 
                                            
         更新构建API  (RefreshCondition)
             31. refresh
             
         框架优化
-            sourceScript
+            sourceScript/sourceBuilder
                 如果条件和返回都不包括sourceScript里的连表，框架会优化移除连接（但目标连接表有用时，中间表不会
                 被移除）。
+                关闭优化: builder.withoutOptimization()
             in
                 每500个条件会切割出一次in查询
             
