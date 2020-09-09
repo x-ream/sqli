@@ -128,7 +128,7 @@ public interface ConditionCriteriaToSql extends KeyMapper{
 
         default void filter(List<BuildingBlock> buildingBlockList, CriteriaCondition criteria, Alias alias) {
 
-            if (buildingBlockList == null || buildingBlockList.isEmpty())
+            if (buildingBlockList == null || buildingBlockList.isEmpty() )
                 return;
 
             Iterator<BuildingBlock> ite = buildingBlockList.iterator();
@@ -155,26 +155,33 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         if (clzName == null)
                             clzName = alia;
                         Parsed parsed = Parser.get(clzName);
-                        if (BaseTypeFilter.isBaseType(arr[1], buildingBlock.getValue(),parsed)){
-                            ite.remove();
-                        }else{
-                            BeanElement be = parsed.getElement(arr[1]);
-                            TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                            if (buildingBlock.getValue() == null)
+                        if (parsed != null) {
+                            if (BaseTypeFilter.isBaseType(arr[1], buildingBlock.getValue(), parsed)) {
                                 ite.remove();
+                            } else {
+                                BeanElement be = parsed.getElement(arr[1]);
+                                TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
+                                if (buildingBlock.getValue() == null)
+                                    ite.remove();
+                            }
                         }
                     }else{
                         Parsed parsed = criteria.getParsed();
                         if (parsed == null) {
-                            parsed = Parser.get(((Criteria.ResultMapCriteria)criteria).sourceScript());
+                            String ss = ((Criteria.ResultMapCriteria)criteria).sourceScript();
+                            if (ss != null) {
+                                parsed = Parser.get(ss);
+                            }
                         }
-                        if (BaseTypeFilter.isBaseType(key, buildingBlock.getValue(),parsed)){
-                            ite.remove();
-                        }else{
-                            BeanElement be = parsed.getElement(key);
-                            TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                            if (buildingBlock.getValue() == null)
+                        if (parsed != null) {
+                            if (BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
                                 ite.remove();
+                            } else {
+                                BeanElement be = parsed.getElement(key);
+                                TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
+                                if (buildingBlock.getValue() == null)
+                                    ite.remove();
+                            }
                         }
                     }
                 }else if (p == PredicateAndOtherScript.IN
@@ -190,8 +197,8 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                         }
                     }else{
                         Parsed parsed = criteria.getParsed();
-                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),parsed)){
-                            ite.remove();
+                        if (parsed != null && BaseTypeFilter.isBaseType(key, valueList.get(0), parsed)) {
+                                ite.remove();
                         }
                     }
                 }

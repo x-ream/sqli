@@ -153,13 +153,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
                 ResultMapBuilder subBuilder = CriteriaBuilder.resultMapBuilder();
                 sub.buildBy(subBuilder);
                 Criteria.ResultMapCriteria resultMapCriteria = subBuilder.build();
-                String sourceScript = resultMapCriteria.sourceScript();
-                if (! sourceScript.contains(".")){
-                    String[] arr = sourceScript.split(" ");
-                    Parsed parsed = Parser.get(arr[0].trim());
-                    resultMapCriteria.setParsed(parsed);
-                    resultMapCriteria.setClzz(parsed.getClz());
-                }
                 sourceScriptTemp.setSubCriteria(resultMapCriteria);
                 subBuilder.clear();
                 return this;
@@ -168,14 +161,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             @Override
             public SourceScriptBuilder alia(String alia) {
                 sourceScriptTemp.setAlia(alia);
-                Criteria.ResultMapCriteria subCriteria = sourceScriptTemp.getSubCriteria();
-                if (subCriteria != null){
-                    String sourceScript = subCriteria.sourceScript();
-                    if (! sourceScript.contains(".")) {
-                        String[] arr = sourceScript.split(" ");
-                        get().getAliaMap().put(alia, arr[0].trim());
-                    }
-                }
                 return this;
             }
 

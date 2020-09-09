@@ -60,7 +60,7 @@ public class HealthChecker {
                     Runtime.getRuntime().exit(1);
                 }
 
-                if (DbType.value.equals(DbType.MYSQL) && SqliStringUtil.isNotNull(createSql)) {
+                if (DbType.value().equals(DbType.MYSQL) && SqliStringUtil.isNotNull(createSql)) {
                     ManuRepository.execute(clz.newInstance(), createSql);
                 }
 

@@ -50,22 +50,11 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 
 	@JsonIgnore
 	private transient Parsed parsed;
-//	@JsonIgnore
-//	private transient List<Object> valueList;
 	@JsonIgnore
 	private transient String countDistinct = "COUNT(*) count";
 	@JsonIgnore
 	private transient String customedResultKey = SqlScript.STAR;
 
-
-//	@Override
-//	public List<Object> getValueList() {
-//		return valueList;
-//	}
-
-//	public void setValueList(List<Object> valueList) {
-//		this.valueList = valueList;
-//	}
 	@Override
 	public Map<String,String> getAliaMap(){
 		return null;
@@ -185,9 +174,6 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 		return !this.fixedSortList.isEmpty();
 	}
 
-//	public Map<String, String> getAliaMap() {
-//		return null;
-//	}
 	public void paged(Paged paged) {
 
 		this.isTotalRowsIgnored = paged.isTotalRowsIgnored();
@@ -336,6 +322,8 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 		@Override
 		public String sourceScript() {
 			if (sourceScript == null) {
+				if (super.getClzz() == null)
+					return null;
 				return BeanUtil.getByFirstLower(super.getClzz().getSimpleName());
 			} else {
 				return sourceScript;

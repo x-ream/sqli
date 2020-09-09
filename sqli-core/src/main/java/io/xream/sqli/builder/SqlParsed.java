@@ -16,9 +16,6 @@
  */
 package io.xream.sqli.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @Author Sim
  */
@@ -26,8 +23,6 @@ public final class SqlParsed {
 
     private String countSql;
     private StringBuilder sql;
-
-    private List<SqlParsed> subList = new ArrayList<>();
 
     public String getCountSql() {
         return countSql;
@@ -45,12 +40,4 @@ public final class SqlParsed {
         this.sql = sql;
     }
 
-
-    public List<SqlParsed> getSubList() {
-        return subList;
-    }
-
-    public void setSubList(List<SqlParsed> subList) {
-        this.subList = subList;
-    }
 }

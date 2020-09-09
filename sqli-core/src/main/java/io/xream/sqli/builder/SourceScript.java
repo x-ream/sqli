@@ -17,6 +17,7 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.api.CriteriaToSql;
+import io.xream.sqli.api.SqlParsingAttached;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -115,14 +116,15 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
     }
 
 
-    public void pre(List<Object> valueList, CriteriaToSql criteriaToSql, SqlParsed sqlParsed) {
+    public void pre(SqlParsingAttached attached, CriteriaToSql criteriaToSql) {
 
         if (subCriteria != null) {
-            final SqlParsed subParsed = criteriaToSql.toSql(true, subCriteria,valueList);
-            sqlParsed.getSubList().add(subParsed);
+            final SqlParsed sqlParsed = new SqlParsed();
+            attached.getSubList().add(sqlParsed);
+            criteriaToSql.toSql(true, subCriteria, sqlParsed, attached);
         }
 
-        pre(valueList, buildingBlockList);
+        pre(attached.getValueList(), buildingBlockList);
     }
 
     public String sql() {
@@ -138,23 +140,21 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
             return source;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(joinStr == null ? joinType.sql() : joinStr).append(source);
+        sb.append(joinStr == null ? joinType.sql() : joinStr + SqlScript.SPACE).append(source);
 
         if (alia != null && !alia.equals(source))
             sb.append(SqlScript.SPACE).append(alia);
 
-        {
-            if (on != null) {
-                sb.append(SqlScript.ON);
-                String aliaName = alia == null ? source : alia;
-                String key = on.getKey();
-                if (SqliStringUtil.isNotNull(key)) {
-                    sb.append(on.getJoinFrom().getAlia()).append(".").append(on.getJoinFrom().getKey())
-                            .append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
-                            .append(aliaName)
-                            .append(".")
-                            .append(key);
-                }
+        if (on != null) {
+            sb.append(SqlScript.ON);
+            String aliaName = alia == null ? source : alia;
+            String key = on.getKey();
+            if (SqliStringUtil.isNotNull(key)) {
+                sb.append(on.getJoinFrom().getAlia()).append(".").append(on.getJoinFrom().getKey())
+                        .append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
+                        .append(aliaName)
+                        .append(".")
+                        .append(key);
             }
         }
 

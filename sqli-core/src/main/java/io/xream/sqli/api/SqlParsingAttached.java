@@ -14,29 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.api;
 
-import io.xream.sqli.api.Alias;
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.SqlParsed;
-import io.xream.sqli.parser.Parsed;
 
 import java.util.List;
-
 
 /**
  * @Author Sim
  */
-public interface CriteriaToSql {
+public interface SqlParsingAttached {
 
-    void setDialect(Dialect dialect);
-
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
-
-    SqlParsed toSql(boolean isSub, Criteria criteria, List<Object> valueList) ;
-
-    String toSql(Parsed parsed, RefreshCondition refreshCondition);
+    List<Object> getValueList();
+    List<SqlParsed> getSubList();
 }

@@ -19,6 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
+import io.xream.sqli.api.SqlParsingAttached;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.parser.BeanElement;
@@ -82,7 +83,7 @@ public final class SqlUtil {
         for (String key : refreshMap.keySet()) {
 
             BeanElement element = parsed.getElement(key);
-            if (element.isJson() && DbType.ORACLE.equals(DbType.value)){
+            if (element.isJson() && DbType.ORACLE.equals(DbType.value())){
                 Object obj = refreshMap.get(key);
                 Reader reader = new StringReader(obj.toString());
                 refreshMap.put(key,reader);
@@ -120,7 +121,21 @@ public final class SqlUtil {
     }
 
     protected static SqlParsed fromCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
-        SqlParsed sqlParsed = criteriaParser.toSql(false,criteria,valueList);
+
+        final SqlParsed sqlParsed = new SqlParsed();
+        final List<SqlParsed> subList = new ArrayList<>();
+
+        criteriaParser.toSql(false, criteria, sqlParsed, new SqlParsingAttached() {
+            @Override
+            public List<Object> getValueList() {
+                return valueList;
+            }
+
+            @Override
+            public List<SqlParsed> getSubList() {
+                return subList;
+            }
+        });
 
         String sql = sqlParsed.getSql().toString();
 

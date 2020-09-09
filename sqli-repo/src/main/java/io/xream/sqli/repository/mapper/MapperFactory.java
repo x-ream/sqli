@@ -76,7 +76,7 @@ public final class MapperFactory implements Mapper {
 	@SuppressWarnings({ "rawtypes" })
 	public static void parseBean(Class clz) {
 
-		String dbType = DbType.value;
+		String dbType = DbType.value();
 		switch (dbType) {
 		default:
 			StandardSql sql = new StandardSql();

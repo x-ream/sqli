@@ -34,7 +34,7 @@ public interface CriteriaToSql {
 
     String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
 
-    SqlParsed toSql(boolean isSub, Criteria criteria, List<Object> valueList) ;
+    void toSql(boolean isSub, Criteria criteria, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached) ;
 
     String toSql(Parsed parsed, RefreshCondition refreshCondition);
 

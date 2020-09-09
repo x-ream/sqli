@@ -19,6 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.api.Alias;
 import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
+import io.xream.sqli.api.SqlParsingAttached;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -89,13 +90,12 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
     }
 
     @Override
-    public SqlParsed toSql(boolean isSub, Criteria criteria, List<Object> valueList) {
+    public void toSql(boolean isSub, Criteria criteria, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached) {
 
-        final SqlParsed sqlParsed = new SqlParsed();
 
         SqlBuilder sqlBuilder = SqlBuilder.get();
 
-        parseAlia(criteria, sqlBuilder);
+        parseAlia(isSub, criteria, sqlBuilder);
 
         filter0(criteria);
 
@@ -111,11 +111,11 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
          */
         forceIndex(isSub,sqlBuilder, criteria);
 
-        sourceScriptPre(criteria,valueList,sqlParsed);
+        sourceScriptPre(criteria,sqlParsingAttached);
         /*
          * StringList
          */
-        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria,valueList);
+        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria,sqlParsingAttached.getValueList());
 
         SqlBuilder countSql = count(isSub, sqlBuilder.sbCondition, criteria);
         /*
@@ -133,9 +133,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
          */
         sourceScript(sqlBuilder, criteria);
 
-        sqlArr(isSub,sqlParsed, sqlBuilder, countSql);
+        sqlArr(isSub,sqlParsed, sqlParsingAttached, sqlBuilder, countSql);
 
-        return sqlParsed;
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
@@ -274,13 +273,13 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         }
     }
 
-    private void sqlArr(boolean isSub, SqlParsed sqlParsed,SqlBuilder sb, SqlBuilder countSb) {
+    private void sqlArr(boolean isSub, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached, SqlBuilder sb, SqlBuilder countSb) {
 
         if (! isSub){
-            for (SqlParsed sub : sqlParsed.getSubList()){
+            for (SqlParsed sub : sqlParsingAttached.getSubList()){
                 int start = sb.sbSource.indexOf(SqlScript.SUB);
                 sb.sbSource.replace(start, start + SqlScript.SUB.length(),
-                        SqlScript.LEFT_PARENTTHESIS + sub.getSql() + SqlScript.RIGHT_PARENTTHESIS
+                        SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
                 );
             }
 
@@ -552,14 +551,22 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
     }
 
 
-    private void parseAlia(Criteria criteria, SqlBuilder sqlBuilder) {
+    private void parseAlia(boolean isSub, Criteria criteria, SqlBuilder sqlBuilder) {
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
             Criteria.ResultMapCriteria rmc = (Criteria.ResultMapCriteria) criteria;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
-                String script = criteria.sourceScript();//string -> list<>
-                List<String> list = SourceScriptBuilder.split(script);
+                String sourceScript = rmc.sourceScript();//string -> list<>
+
+                if (isSub && ! sourceScript.contains(".")){
+                    String[] arr = sourceScript.split(" ");
+                    Parsed parsed = Parser.get(arr[0].trim());
+                    rmc.setParsed(parsed);
+                    rmc.setClzz(parsed.getClz());
+                }
+
+                List<String> list = SourceScriptBuilder.split(sourceScript);
                 List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
@@ -740,7 +747,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         List<BuildingBlock> buildingBlockList = criteria.getBuildingBlockList();
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;
+            Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;//FIXME 判断是虚表
             filter(buildingBlockList, criteria, resultMapCriteria);
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
                 filter(sourceScript.getBuildingBlockList(), criteria, resultMapCriteria);
@@ -750,10 +757,10 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         }
     }
 
-    private void sourceScriptPre(Criteria criteria, List<Object> valueList, SqlParsed sqlParsed) {
+    private void sourceScriptPre(Criteria criteria, SqlParsingAttached attached) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                sourceScript.pre(valueList, this, sqlParsed);
+                sourceScript.pre(attached, this);
             }
         }
     }

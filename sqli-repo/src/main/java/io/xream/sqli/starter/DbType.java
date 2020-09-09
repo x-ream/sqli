@@ -23,6 +23,13 @@ package io.xream.sqli.starter;
 public class DbType {
 
     public static final String MYSQL = "mysql";
+    public static final String CLICKHOUSE = "clickhouse";
     public static final String ORACLE = "oracle";
-    public static String value = "mysql";
+    private static String value = "mysql";
+    public static void setValue(String v){
+        value = v;
+    }
+    public static String value(){
+        return value;
+    }
 }
