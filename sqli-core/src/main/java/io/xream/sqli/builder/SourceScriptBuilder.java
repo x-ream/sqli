@@ -32,7 +32,7 @@ public interface SourceScriptBuilder {
 
     SourceScriptBuilder alia(String alia);
 
-    SourceScriptBuilder joinType(JoinType joinType);
+    SourceScriptBuilder join(JoinType joinType);
 
     SourceScriptBuilder join(String joinStr);
 

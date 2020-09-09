@@ -167,7 +167,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             }
 
             @Override
-            public SourceScriptBuilder joinType(JoinType joinType) {
+            public SourceScriptBuilder join(JoinType joinType) {
                 sourceScriptTemp.setJoinType(joinType);
                 return this;
             }
