@@ -144,7 +144,7 @@
             27. sourceBuilder().source("orderItem").alia("i").joinType(JoinType.LEFT_JOIN)
                                               .on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             28.               .more().[1~18] // LEFT JOIN等, 更多条件
-            29. sourceBuilder().sub(....) // INNER JOIND (....) i  有限支持clickhouse等数据库
+            29. sourceBuilder().sub(....) // INNER JOIN (....) i  有限支持clickhouse等数据库
                             .alia("i").join("ANY INNER JOIN").on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             
         分页及排序API  (ResultMapBuilder)
