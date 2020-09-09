@@ -19,7 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.api.SqlParsingAttached;
+import io.xream.sqli.api.SqlBuildingAttached;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.parser.BeanElement;
@@ -120,24 +120,24 @@ public final class SqlUtil {
         return sb.toString();
     }
 
-    protected static SqlParsed fromCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
+    protected static SqlBuilt fromCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
 
-        final SqlParsed sqlParsed = new SqlParsed();
-        final List<SqlParsed> subList = new ArrayList<>();
+        final SqlBuilt sqlBuilt = new SqlBuilt();
+        final List<SqlBuilt> subList = new ArrayList<>();
 
-        criteriaParser.toSql(false, criteria, sqlParsed, new SqlParsingAttached() {
+        criteriaParser.toSql(false, criteria, sqlBuilt, new SqlBuildingAttached() {
             @Override
             public List<Object> getValueList() {
                 return valueList;
             }
 
             @Override
-            public List<SqlParsed> getSubList() {
+            public List<SqlBuilt> getSubList() {
                 return subList;
             }
         });
 
-        String sql = sqlParsed.getSql().toString();
+        String sql = sqlBuilt.getSql().toString();
 
         int page = criteria.getPage();
         int rows = criteria.getRows();
@@ -148,10 +148,10 @@ public final class SqlUtil {
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
-        sqlParsed.setSql(sb);
+        sqlBuilt.setSql(sb);
         ObjectDataConverter.log(criteria.getClzz(), valueList);
 
-        return sqlParsed;
+        return sqlBuilt;
     }
 
     protected static String filter(String sql) {

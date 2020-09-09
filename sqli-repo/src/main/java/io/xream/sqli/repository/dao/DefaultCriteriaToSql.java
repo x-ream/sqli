@@ -19,7 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.api.Alias;
 import io.xream.sqli.api.CriteriaToSql;
 import io.xream.sqli.api.Dialect;
-import io.xream.sqli.api.SqlParsingAttached;
+import io.xream.sqli.api.SqlBuildingAttached;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -90,7 +90,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
     }
 
     @Override
-    public void toSql(boolean isSub, Criteria criteria, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached) {
+    public void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
 
 
         SqlBuilder sqlBuilder = SqlBuilder.get();
@@ -111,11 +111,11 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
          */
         forceIndex(isSub,sqlBuilder, criteria);
 
-        sourceScriptPre(criteria,sqlParsingAttached);
+        sourceScriptPre(criteria, sqlBuildingAttached);
         /*
          * StringList
          */
-        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria,sqlParsingAttached.getValueList());
+        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria, sqlBuildingAttached.getValueList());
 
         SqlBuilder countSql = count(isSub, sqlBuilder.sbCondition, criteria);
         /*
@@ -133,7 +133,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
          */
         sourceScript(sqlBuilder, criteria);
 
-        sqlArr(isSub,sqlParsed, sqlParsingAttached, sqlBuilder, countSql);
+        sqlArr(isSub, sqlBuilt, sqlBuildingAttached, sqlBuilder, countSql);
 
     }
 
@@ -273,10 +273,10 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         }
     }
 
-    private void sqlArr(boolean isSub, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached, SqlBuilder sb, SqlBuilder countSb) {
+    private void sqlArr(boolean isSub, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlBuilder sb, SqlBuilder countSb) {
 
         if (! isSub){
-            for (SqlParsed sub : sqlParsingAttached.getSubList()){
+            for (SqlBuilt sub : sqlBuildingAttached.getSubList()){
                 int start = sb.sbSource.indexOf(SqlScript.SUB);
                 sb.sbSource.replace(start, start + SqlScript.SUB.length(),
                         SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
@@ -286,7 +286,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
             if (countSb != null) {
                 StringBuilder sqlSb = new StringBuilder();
                 sqlSb.append(countSb.sbResult).append(sb.sbSource).append(countSb.sbCondition);
-                sqlParsed.setCountSql(sqlSb.toString());
+                sqlBuilt.setCountSql(sqlSb.toString());
             }
         }
 
@@ -294,7 +294,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         StringBuilder sqlSb = new StringBuilder();
         sqlSb.append(sb.sbResult).append(sb.sbSource).append(sb.sbCondition);
 
-        sqlParsed.setSql(sqlSb);
+        sqlBuilt.setSql(sqlSb);
     }
 
 
@@ -757,7 +757,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         }
     }
 
-    private void sourceScriptPre(Criteria criteria, SqlParsingAttached attached) {
+    private void sourceScriptPre(Criteria criteria, SqlBuildingAttached attached) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
                 sourceScript.pre(attached, this);

@@ -21,7 +21,7 @@ import io.xream.sqli.api.Dialect;
 import io.xream.sqli.api.JdbcWrapper;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.SqlParsed;
+import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -60,8 +60,8 @@ public final class TemporaryDaoImpl implements TemporaryDao{
     public boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
-        StringBuilder fromSqlSb = sqlParsed.getSql();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
+        StringBuilder fromSqlSb = sqlBuilt.getSql();
 
         Parsed parsed = Parser.get(clzz);
 

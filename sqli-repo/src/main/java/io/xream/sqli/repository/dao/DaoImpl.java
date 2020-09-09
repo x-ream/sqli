@@ -24,7 +24,7 @@ import io.xream.sqli.api.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlParsed;
+import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.sqli.page.Page;
@@ -210,8 +210,8 @@ public final class DaoImpl implements Dao {
 
         Class clz = criteria.getClzz();
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
         SqliLoggerProxy.debug(clz, sql);
 
         List<T> list = this.jdbcWrapper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
@@ -224,8 +224,8 @@ public final class DaoImpl implements Dao {
 
         Class clz = criteria.getClzz();
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
 
         SqliLoggerProxy.debug(clz, sql);
 
@@ -233,7 +233,7 @@ public final class DaoImpl implements Dao {
         Parsed parsed = Parser.get(clz);
         ResultSortUtil.sort(list, criteria, parsed);
 
-        Page<T> pagination = PageBuilder.build(criteria, list, () -> getCount(clz, sqlParsed.getCountSql(), valueList));
+        Page<T> pagination = PageBuilder.build(criteria, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
 
         return pagination;
     }
@@ -332,15 +332,15 @@ public final class DaoImpl implements Dao {
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
         Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
 
         List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, valueList,resultMapped, clz, this.dialect);
 
-        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlParsed.getCountSql(), valueList));
+        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
 
         return pagination;
     }
@@ -349,8 +349,8 @@ public final class DaoImpl implements Dao {
     public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
@@ -360,8 +360,8 @@ public final class DaoImpl implements Dao {
     @Override
     public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
@@ -399,8 +399,8 @@ public final class DaoImpl implements Dao {
     public void findToHandle(Criteria.ResultMapCriteria resultMapped, RowHandler<Map<String,Object>> handler) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,resultMapped, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
         Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
@@ -412,8 +412,8 @@ public final class DaoImpl implements Dao {
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlParsed sqlParsed = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
-        String sql = sqlParsed.getSql().toString();
+        SqlBuilt sqlBuilt = SqlUtil.fromCriteria(valueList,criteria, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
         Class clz = criteria.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);

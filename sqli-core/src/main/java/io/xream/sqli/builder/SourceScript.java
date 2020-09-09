@@ -17,7 +17,7 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.api.CriteriaToSql;
-import io.xream.sqli.api.SqlParsingAttached;
+import io.xream.sqli.api.SqlBuildingAttached;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -116,12 +116,12 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
     }
 
 
-    public void pre(SqlParsingAttached attached, CriteriaToSql criteriaToSql) {
+    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql) {
 
         if (subCriteria != null) {
-            final SqlParsed sqlParsed = new SqlParsed();
-            attached.getSubList().add(sqlParsed);
-            criteriaToSql.toSql(true, subCriteria, sqlParsed, attached);
+            final SqlBuilt sqlBuilt = new SqlBuilt();
+            attached.getSubList().add(sqlBuilt);
+            criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
         }
 
         pre(attached.getValueList(), buildingBlockList);

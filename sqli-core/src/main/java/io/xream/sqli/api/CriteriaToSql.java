@@ -19,7 +19,7 @@ package io.xream.sqli.api;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlParsed;
+import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.parser.Parsed;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public interface CriteriaToSql {
 
     String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
 
-    void toSql(boolean isSub, Criteria criteria, SqlParsed sqlParsed, SqlParsingAttached sqlParsingAttached) ;
+    void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
     String toSql(Parsed parsed, RefreshCondition refreshCondition);
 

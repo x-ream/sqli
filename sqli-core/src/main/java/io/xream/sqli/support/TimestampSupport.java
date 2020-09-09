@@ -33,7 +33,7 @@ public final class TimestampSupport {
                 if (Long.valueOf(v.toString()) == 0){
                     buildingBlock.setValue(null);
                 }else {
-                    buildingBlock.setValue(new Date(((Long)v).longValue()));
+                    buildingBlock.setValue(new Date(toLongValue(v)));
                 }
             }
             return true;
@@ -43,7 +43,7 @@ public final class TimestampSupport {
                 if (Long.valueOf(v.toString()) == 0){
                     buildingBlock.setValue(null);
                 }else {
-                    buildingBlock.setValue(new Timestamp(((Long) v).longValue()));
+                    buildingBlock.setValue(new Timestamp(toLongValue(v)));
                 }
             }
             return true;
@@ -51,6 +51,15 @@ public final class TimestampSupport {
 
         return false;
     }
+
+    private static long toLongValue(Object v){
+        if (v instanceof Integer){
+            return ((Integer) v).intValue();
+        }else{
+            return ((Long) v).longValue();
+        }
+    }
+
 
 
 }

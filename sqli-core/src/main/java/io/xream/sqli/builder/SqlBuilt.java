@@ -14,17 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
-
-import io.xream.sqli.builder.SqlParsed;
-
-import java.util.List;
+package io.xream.sqli.builder;
 
 /**
  * @Author Sim
  */
-public interface SqlParsingAttached {
+public final class SqlBuilt {
 
-    List<Object> getValueList();
-    List<SqlParsed> getSubList();
+    private String countSql;
+    private StringBuilder sql;
+
+    public String getCountSql() {
+        return countSql;
+    }
+
+    public void setCountSql(String countSql) {
+        this.countSql = countSql;
+    }
+
+    public StringBuilder getSql() {
+        return sql;
+    }
+
+    public void setSql(StringBuilder sql) {
+        this.sql = sql;
+    }
+
 }
