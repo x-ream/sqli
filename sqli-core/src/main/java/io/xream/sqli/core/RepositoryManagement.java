@@ -14,17 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
+package io.xream.sqli.core;
 
-import io.xream.sqli.builder.SqlBuilt;
+import io.xream.sqli.api.BaseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface SqlBuildingAttached {
+public interface RepositoryManagement {
 
-    List<Object> getValueList();
-    List<SqlBuilt> getSubList();
+    List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();
 }

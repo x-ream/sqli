@@ -14,15 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
+package io.xream.sqli.core;
 
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.SqlBuilt;
 
 import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface QueryForCache {
-    <T> List<T> in(InCondition inCondition);
+public interface SqlBuildingAttached {
+
+    List<Object> getValueList();
+    List<SqlBuilt> getSubList();
 }

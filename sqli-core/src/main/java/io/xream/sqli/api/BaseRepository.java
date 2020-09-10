@@ -19,6 +19,8 @@ package io.xream.sqli.api;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.RemoveRefreshCreate;
+import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.core.Typed;
 import io.xream.sqli.page.Page;
 
 import java.util.List;

@@ -230,13 +230,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             return (Criteria.ResultMapCriteria) super.get();
         }
 
-        private void init(Class<?> clz) {
-            Criteria.ResultMapCriteria f = (Criteria.ResultMapCriteria) super.criteria;
-            f.setClzz(clz);
-            Parsed parsed = Parser.get(clz);
-            f.setParsed(parsed);
-        }
-
         public ResultMapBuilder(Criteria criteria) {
             super(criteria);
         }
@@ -284,12 +277,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             get().getResultFunctionList().add(functionResultKey);
             return this;
         }
-
-//        @Override
-//        public void paged(Paged paged) {
-//            super.criteria.paged(paged);
-//        }
-
 
         public ResultMapBuilder sourceScript(String sourceScript) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))

@@ -14,11 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
+package io.xream.sqli.core;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface RepositoryInitializer {
-    <T> void register(BaseRepository<T> baseRepository);
+public interface JdbcWrapper extends Parseable, BaseFinder, ResultMapFinder {
+
+    <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
+
+    boolean create(boolean isAutoIncreaseId, String sql, List<Object> valueList);
+
+    boolean createOrReplace(String sql, List<Object> valueList);
+
+    boolean refresh(String sql, Object[] valueList);
+
+    boolean remove(String sql, Object id);
+
+    boolean execute(String sql);
+
+    <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
+
+    interface BatchObjectValues {
+        List<Collection<Object>> valuesList();
+    }
 }

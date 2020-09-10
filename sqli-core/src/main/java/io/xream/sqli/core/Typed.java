@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
+package io.xream.sqli.core;
 
 /**
  * @Author Sim
  */
-public interface RowHandler<T> {
-    void handle(T t);
+public interface Typed<T> {
+
+    Class<T> getClzz();
 }

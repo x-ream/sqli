@@ -17,6 +17,7 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 
 import java.util.List;

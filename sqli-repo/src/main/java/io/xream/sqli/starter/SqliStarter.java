@@ -16,7 +16,9 @@
  */
 package io.xream.sqli.starter;
 
-import io.xream.sqli.api.*;
+import io.xream.sqli.api.BaseRepository;
+import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.core.*;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.repository.api.Manuable;
 import io.xream.sqli.repository.api.Repository;

@@ -17,9 +17,9 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.xream.sqli.api.Alias;
-import io.xream.sqli.api.ResultMapHelper;
 import io.xream.sqli.api.Routeable;
+import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.ResultMapHelper;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;

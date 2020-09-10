@@ -14,12 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
+package io.xream.sqli.core;
+
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 
 /**
  * @Author Sim
  */
-public interface Typed<T> {
+public interface Parseable {
 
-    Class<T> getClzz();
+    default Parsed get(Class clzz){
+        return Parser.get(clzz);
+    }
 }

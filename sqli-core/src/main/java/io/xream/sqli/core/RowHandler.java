@@ -14,15 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
-
-import java.util.ArrayList;
-import java.util.List;
+package io.xream.sqli.core;
 
 /**
  * @Author Sim
  */
-public interface RepositoryManagement {
-
-    List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();
+public interface RowHandler<T> {
+    void handle(T t);
 }

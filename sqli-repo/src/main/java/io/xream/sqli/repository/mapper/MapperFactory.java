@@ -38,7 +38,7 @@ public final class MapperFactory implements Mapper {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
-	public static io.xream.sqli.api.Dialect Dialect;
+	public static io.xream.sqli.core.Dialect Dialect;
 
 	/**
 	 * 返回SQL

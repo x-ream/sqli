@@ -1,6 +1,6 @@
 package io.xream.sqli.builder;
 
-import io.xream.sqli.api.Alias;
+import io.xream.sqli.core.Alias;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;

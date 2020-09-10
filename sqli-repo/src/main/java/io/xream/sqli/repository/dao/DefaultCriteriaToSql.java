@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.api.Alias;
-import io.xream.sqli.api.CriteriaToSql;
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.api.SqlBuildingAttached;
+import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.CriteriaToSql;
+import io.xream.sqli.core.Dialect;
+import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -162,8 +162,6 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
         concatRefresh(sb, parsed, refreshCondition);
 
-//        filter(refreshCondition.getBuildingBlockList(), refreshCondition, refreshCondition.getAliaMap()); //FIXME
-
         String conditionSql = toSql(refreshCondition,refreshCondition.getValueList(),refreshCondition);
 
         conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
@@ -200,7 +198,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
                 Object key = buildingBlock.getKey();
                 String str = key.toString();
                 String sql = normalizeSql(str);
-                mapping(sql, (Alias) refreshCondition, sb);
+                mapping(sql, refreshCondition, sb);
 
             } else {
                 String key = buildingBlock.getKey();
@@ -213,7 +211,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
                     isNotFirst = true;
                     String sql = normalizeSql(key);
 
-                    mapping(sql, (Alias) refreshCondition, sb);
+                    mapping(sql, refreshCondition, sb);
                 } else {
 
                     String k = null;
@@ -247,7 +245,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
                     isNotFirst = true;
 
-                    String mapper = mapping(key,(Alias)refreshCondition);
+                    String mapper = mapping(key, refreshCondition);
                     sb.append(mapper);
                     sb.append(SqlScript.EQ_PLACE_HOLDER);
 
@@ -323,8 +321,6 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         PropertyMapping propertyMapping = resultMapped.getPropertyMapping();
 
         if (Objects.nonNull(resultMapped.getDistinct())) {
-
-//            if (!flag) resultMapped.getResultKeyList().clear();//去掉构造方法里设置的返回key
 
             column.append(SqlScript.DISTINCT);
             List<String> list = resultMapped.getDistinct().getList();

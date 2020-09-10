@@ -18,7 +18,9 @@ package io.xream.sqli.repository.internal;
 
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.api.*;
+import io.xream.sqli.api.BaseRepository;
+import io.xream.sqli.api.ResultMapRepository;
+import io.xream.sqli.core.*;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;

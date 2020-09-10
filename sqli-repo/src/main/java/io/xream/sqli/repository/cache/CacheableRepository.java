@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.cache;
 
 
-import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.KV;

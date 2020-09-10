@@ -17,10 +17,10 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.api.CriteriaToSql;
-import io.xream.sqli.api.Dialect;
-import io.xream.sqli.api.JdbcWrapper;
-import io.xream.sqli.api.RowHandler;
+import io.xream.sqli.core.CriteriaToSql;
+import io.xream.sqli.core.Dialect;
+import io.xream.sqli.core.JdbcWrapper;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;

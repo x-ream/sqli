@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.repository.mapper;
 
-import io.xream.sqli.api.Dialect;
+import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.util.BeanUtil;
 
