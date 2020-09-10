@@ -146,12 +146,13 @@
             28.               .more().[1~18] // LEFT JOIN等, 更多条件
             29. sourceBuilder().sub(....) // INNER JOIN (....) i  有限支持clickhouse等数据库
                             .alia("i").join("ANY INNER JOIN").on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
-            
-        分页及排序API  (ResultMapBuilder)
-            30. paged().ignoreTotalRows().page(1).rows(10).sort("o.id", Direction.DESC) 
+        
+        分页及排序API  (CriteriaBuilder | ResultMapBuilder)
+            30. sort("o.id", Direction.DESC)
+            31. paged().ignoreTotalRows().page(1).rows(10) 
                                            
         更新构建API  (RefreshCondition)
-            31. refresh
+            32. refresh
             
         框架优化
             sourceScript/sourceBuilder

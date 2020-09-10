@@ -20,7 +20,6 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-import io.xream.sqli.page.Direction;
 
 import java.util.List;
 
@@ -30,5 +29,4 @@ public interface PageBuilder {
     PageBuilder rows(int rows);
     PageBuilder page(int page);
     PageBuilder orderIn(String property, List<? extends Object> inList);
-    PageBuilder sort(String orderBy, Direction direction);
 }

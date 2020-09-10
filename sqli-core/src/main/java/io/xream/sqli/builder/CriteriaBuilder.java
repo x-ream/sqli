@@ -48,6 +48,19 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         criteria.paged(paged);
     }
 
+    public CriteriaBuilder sort(String orderBy, Direction direction) {
+        if (SqliStringUtil.isNullOrEmpty(orderBy))
+            return this;
+        List<Sort> sortList = criteria.getSortList();
+        if (sortList == null) {
+            sortList = new ArrayList<>();
+            criteria.setSortList(sortList);
+        }
+        Sort sort = new Sort(orderBy, direction);
+        sortList.add(sort);
+        return this;
+    }
+
     public CriteriaBuilder forceIndex(String indexName) {
         if (SqliStringUtil.isNullOrEmpty(indexName))
             return this;
@@ -84,19 +97,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             return this;
         }
 
-        @Override
-        public PageBuilder sort(String orderBy, Direction direction) {
-            if (SqliStringUtil.isNullOrEmpty(orderBy))
-                return this;
-            List<Sort> sortList = criteria.getSortList();
-            if (sortList == null) {
-                sortList = new ArrayList<>();
-                criteria.setSortList(sortList);
-            }
-            Sort sort = new Sort(orderBy, direction);
-            sortList.add(sort);
-            return this;
-        }
     };
 
 
@@ -285,10 +285,11 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             return this;
         }
 
-        @Override
-        public void paged(Paged paged) {
-            super.criteria.paged(paged);
-        }
+//        @Override
+//        public void paged(Paged paged) {
+//            super.criteria.paged(paged);
+//        }
+
 
         public ResultMapBuilder sourceScript(String sourceScript) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))
@@ -323,6 +324,11 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             reduce.setProperty(property);
             get().getReduceList().add(reduce);
             return this;
+        }
+
+        @Override
+        public ResultMapBuilder sort(String orderBy, Direction direction){
+            return (ResultMapBuilder) super.sort(orderBy,direction);
         }
 
         /**
