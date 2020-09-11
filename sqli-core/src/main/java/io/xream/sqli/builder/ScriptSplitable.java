@@ -14,28 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
-
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlBuilt;
-import io.xream.sqli.parser.Parsed;
-
-import java.util.List;
-
+package io.xream.sqli.builder;
 
 /**
  * @Author Sim
  */
-public interface CriteriaToSql {
+public interface ScriptSplitable {
 
-//    void setDialect(Dialect dialect);
-
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
-
-    void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
-
-    String toSql(Parsed parsed, RefreshCondition refreshCondition);
-
+    String[] split(String reg);
 }

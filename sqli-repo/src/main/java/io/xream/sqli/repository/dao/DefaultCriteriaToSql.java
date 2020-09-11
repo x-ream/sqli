@@ -16,11 +16,10 @@
  */
 package io.xream.sqli.repository.dao;
 
+import io.xream.sqli.builder.*;
 import io.xream.sqli.core.Alias;
 import io.xream.sqli.core.CriteriaToSql;
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.SqlBuildingAttached;
-import io.xream.sqli.builder.*;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.page.Direction;
@@ -30,7 +29,6 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.repository.exception.SqlBuildException;
-import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.support.TimestampSupport;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliStringUtil;
@@ -41,27 +39,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
-
-    private Dialect dialect;
-
-    public void setDialect(Dialect dialect) {
-        this.dialect = dialect;
-    }
-
-    private void mapping(String script, Alias criteria, StringBuilder sb) {
-
-        String[] keyArr = script.split(SqlScript.SPACE);//
-        int length = keyArr.length;
-        for (int i = 0; i < length; i++) {
-            String origin = keyArr[i].trim();
-
-            String target = mapping(origin, criteria);
-            sb.append(target).append(SqlScript.SPACE);
-        }
-    }
-
-
+public class DefaultCriteriaToSql implements ResultKeyGenerator, CriteriaToSql, ConditionCriteriaToSql, ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
 
     @Override
     public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Alias alias) {
@@ -81,12 +59,12 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
         buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
 
-        buildConditionSql(sb, buildingBlockList);
+        buildConditionSql(sb, buildingBlockList,alias);
 
-        String script = sb.toString();
-        StringBuilder sbb = new StringBuilder();
-        mapping(script, alias, sbb);
-        return sbb.toString();
+//        String script = sb.toString();
+//        StringBuilder sbb = new StringBuilder();
+//        mapping(script, alias, sbb);
+        return sb.toString();
     }
 
     @Override
@@ -144,10 +122,10 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
         parseAliaFromRefresh(refreshCondition);
 
-        sourceScript = normalizeSql(sourceScript);
+        final String str = normalizeSql(sourceScript);
 
         StringBuilder sb = new StringBuilder();
-        mapping(sourceScript, (Alias)refreshCondition, sb);
+        mapping(reg -> str.split(reg), refreshCondition, sb);
 
         return sb.toString();
     }
@@ -164,7 +142,7 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
         String conditionSql = toSql(refreshCondition,refreshCondition.getValueList(),refreshCondition);
 
-        conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
+//        conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
 
         sb.append(conditionSql);
 
@@ -197,8 +175,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
 
                 Object key = buildingBlock.getKey();
                 String str = key.toString();
-                String sql = normalizeSql(str);
-                mapping(sql, refreshCondition, sb);
+                final String sql = normalizeSql(str);
+                mapping((reg) -> sql.split(reg), refreshCondition, sb);
 
             } else {
                 String key = buildingBlock.getKey();
@@ -209,9 +187,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
                     }
 
                     isNotFirst = true;
-                    String sql = normalizeSql(key);
-
-                    mapping(sql, refreshCondition, sb);
+                    final String sql = normalizeSql(key);
+                    mapping((reg) -> sql.split(reg), refreshCondition, sb);
                 } else {
 
                     String k = null;
@@ -667,15 +644,21 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
             Criteria.ResultMapCriteria rmc = (Criteria.ResultMapCriteria) criteria;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
-                script = criteria.sourceScript();
+                String str = criteria.sourceScript();
+                Objects.requireNonNull(str,"Not set sourceScript of ResultMappedBuilder");
+                final String strd = normalizeSql(str);
+                StringBuilder sbs = new StringBuilder();
+                mapping((reg) -> strd.split(reg), rmc, sbs);
+                script = sbs.toString();
             } else {
                 if (!rmc.isWithoutOptimization() && !rmc.resultAllScript().trim().equals("*")) {
                     optimizeSourceScript(rmc.getSourceScripts(), sb.conditionSet);//FIXME  + ON AND
                 }
-                script = rmc.getSourceScripts().stream().map(SourceScript::sql).collect(Collectors.joining()).trim();
+                script = rmc.getSourceScripts().stream()
+                        .map(sourceScript -> sourceScript.sql(rmc))
+                        .collect(Collectors.joining()).trim();
             }
 
-            Objects.requireNonNull(script,"Not set sourceScript of ResultMappedBuilder");
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
 
         } else {
@@ -683,8 +666,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
             if (!script.startsWith(SqlScript.FROM) || !script.startsWith(SqlScript.FROM.toLowerCase()))
                 sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
         }
-
-        mapping(script, criteria, sb.sbSource);
+        sb.sbSource.append(script);
+//        mapping(...., criteria, sb.sbSource);
     }
 
     private void forceIndex(boolean isSub, SqlBuilder sqlBuilder, Criteria criteria) {
@@ -772,11 +755,8 @@ public class DefaultCriteriaToSql implements SqlNormalizer, ResultKeyGenerator, 
         if (buildingBlockList.isEmpty())
             return;
         buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
-        buildConditionSql(xsb, buildingBlockList);
-
-        String script = xsb.toString();
-
-        mapping(script, criteria, sqlBuilder.sbCondition);
+        buildConditionSql(xsb, buildingBlockList,criteria);
+        sqlBuilder.sbCondition.append(xsb);
 
     }
 

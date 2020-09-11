@@ -226,8 +226,8 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         return (RefreshCondition) super.x(sqlSegment);
     }
 
-    public RefreshCondition  x(String sql, List<? extends Object> valueList){
-        return (RefreshCondition) super.x(sql, valueList);
+    public RefreshCondition  x(String sqlSegment, Object...valueList){
+        return (RefreshCondition) super.x(sqlSegment, valueList);
     }
 
     public RefreshCondition  beginSub(){

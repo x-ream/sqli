@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.core.Alias;
 import io.xream.sqli.core.CriteriaToSql;
 import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.util.SqliStringUtil;
@@ -123,11 +124,11 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
             attached.getSubList().add(sqlBuilt);
             criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
         }
-
         pre(attached.getValueList(), buildingBlockList);
+
     }
 
-    public String sql() {
+    public String sql(Alias alias) {
         if (SqliStringUtil.isNullOrEmpty(source) && subCriteria == null)
             return "";
         if (subCriteria != null) {
@@ -135,30 +136,33 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
         }
         if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
             if (alia != null && !alia.equals(source)) {
-                return source + " " + alia;
+                return mapping(source,alias) + " " + alia;
             }
-            return source;
+            return mapping(source,alias);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(joinStr == null ? joinType.sql() : joinStr + SqlScript.SPACE).append(source);
+        sb.append(joinStr == null ? joinType.sql() : joinStr + SqlScript.SPACE);
+
+        sb.append(mapping(source,alias));
 
         if (alia != null && !alia.equals(source))
             sb.append(SqlScript.SPACE).append(alia);
 
         if (on != null) {
             sb.append(SqlScript.ON);
-            String aliaName = alia == null ? source : alia;
+            String aliaName = alia == null ? mapping(source,alias) : alia;
             String key = on.getKey();
             if (SqliStringUtil.isNotNull(key)) {
-                sb.append(on.getJoinFrom().getAlia()).append(".").append(on.getJoinFrom().getKey())
-                        .append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
-                        .append(aliaName)
-                        .append(".")
-                        .append(key);
+                sb.append(
+                        mapping(on.getJoinFrom().getAlia() + "." + on.getJoinFrom().getKey(), alias)
+                ).append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
+                        .append(
+                                mapping(aliaName + "." +key,alias)
+                        );
             }
         }
 
-        buildConditionSql(sb, buildingBlockList);
+        buildConditionSql(sb, buildingBlockList,alias);
 
         return sb.toString();
     }

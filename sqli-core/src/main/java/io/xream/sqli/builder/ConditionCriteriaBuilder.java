@@ -122,14 +122,14 @@ public class ConditionCriteriaBuilder implements SqlNormalizer{
     }
 
 
-    public ConditionCriteriaBuilder x(String sql, Object... values){
+    public ConditionCriteriaBuilder x(String sqlSegment, Object... values){
 
-        if (SqliStringUtil.isNullOrEmpty(sql)){
+        if (SqliStringUtil.isNullOrEmpty(sqlSegment)){
             isOr();
             return instance;
         }
 
-        sql = normalizeSql(sql);
+        String sql = normalizeSql(sqlSegment);
 
         BuildingBlock buildingBlock = new BuildingBlock(isOr());
         buildingBlock.setPredicate(PredicateAndOtherScript.X);

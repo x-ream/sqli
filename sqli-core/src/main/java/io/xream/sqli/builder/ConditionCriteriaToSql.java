@@ -31,9 +31,9 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface ConditionCriteriaToSql extends KeyMapper{
+public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer{
 
-    default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList) {
+    default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Alias alias) {
         if (buildingBlockList == null || buildingBlockList.isEmpty())
             return;
         for (BuildingBlock buildingBlock : buildingBlockList) {
@@ -45,12 +45,22 @@ public interface ConditionCriteriaToSql extends KeyMapper{
                 buildingBlock.getSubList().get(0).setConjunction(ConjunctionAndOtherScript.NONE);
                 sb.append(buildingBlock.getConjunction().sql());
                 sb.append(SqlScript.SPACE).append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);
-                buildConditionSql(sb, buildingBlock.getSubList());
+                buildConditionSql(sb, buildingBlock.getSubList(),alias);
                 sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
                 continue;
             }
 
-            sb.append(buildingBlock.getConjunction().sql()).append(buildingBlock.getKey()).append(buildingBlock.getPredicate().sql());
+            String mapper = null;
+            if (buildingBlock.getPredicate() == PredicateAndOtherScript.X){
+                final String str  = normalizeSql(buildingBlock.getKey());
+                StringBuilder sbx = new StringBuilder();
+                mapping((reg)->str.split(reg),alias,sbx);
+                mapper = sbx.toString();
+            }else {
+                mapper = mapping(buildingBlock.getKey(), alias);
+            }
+
+            sb.append(buildingBlock.getConjunction().sql()).append(mapper).append(buildingBlock.getPredicate().sql());
             if (buildingBlock.getValue() != null) {
                 if (buildingBlock.getPredicate() == PredicateAndOtherScript.IN || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN) {
                     List<Object> inList = (List<Object>) buildingBlock.getValue();

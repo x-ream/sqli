@@ -27,7 +27,7 @@ import java.util.concurrent.Callable;
  */
 public final class PageBuilder {
 
-    public static <T> Page<T> build(Criteria criteria, List<T> list, Callable<Long> callable) {
+    public static <T> Page<T> build(Criteria criteria, List<T> list, TotalRows totalRows) {
 
         long count = 0;
         int rows = criteria.getRows();
@@ -38,7 +38,7 @@ public final class PageBuilder {
                 count = size;
             } else if (size > 0) {
                 try {
-                    count = callable.call();
+                    count = totalRows.count();
                 }catch (Exception e){
 
                 }
@@ -58,4 +58,9 @@ public final class PageBuilder {
 
         return pagination;
     }
+
+    public interface TotalRows {
+        long count();
+    }
+
 }
