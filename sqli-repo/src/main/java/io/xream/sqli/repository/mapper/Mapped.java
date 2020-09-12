@@ -14,13 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.repository.mapper;
 
 /**
  * @Author Sim
  */
-public interface KeyOne<T> {
-
-    Object get();
-    Class<T> getClzz();
+public interface Mapped {
+	String TAG = "${TAG}";
 }

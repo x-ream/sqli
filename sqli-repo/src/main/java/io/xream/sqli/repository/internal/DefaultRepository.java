@@ -26,8 +26,8 @@ import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.KeyOne;
-import io.xream.sqli.repository.api.Repository;
+import io.xream.sqli.repository.core.KeyOne;
+import io.xream.sqli.repository.core.Repository;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.util.SqliStringUtil;
 

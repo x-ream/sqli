@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.dao;
+package io.xream.sqli.repository.builder;
 
 import io.xream.sqli.builder.*;
 import io.xream.sqli.core.Alias;
@@ -61,9 +61,6 @@ public class DefaultCriteriaToSql implements ResultKeyGenerator, CriteriaToSql, 
 
         buildConditionSql(sb, buildingBlockList,alias);
 
-//        String script = sb.toString();
-//        StringBuilder sbb = new StringBuilder();
-//        mapping(script, alias, sbb);
         return sb.toString();
     }
 
@@ -667,7 +664,7 @@ public class DefaultCriteriaToSql implements ResultKeyGenerator, CriteriaToSql, 
                 sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
         }
         sb.sbSource.append(script);
-//        mapping(...., criteria, sb.sbSource);
+
     }
 
     private void forceIndex(boolean isSub, SqlBuilder sqlBuilder, Criteria criteria) {

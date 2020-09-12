@@ -23,7 +23,7 @@ import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.repository.api.KeyOne;
+import io.xream.sqli.repository.core.KeyOne;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.util.SqliExceptionUtil;
 

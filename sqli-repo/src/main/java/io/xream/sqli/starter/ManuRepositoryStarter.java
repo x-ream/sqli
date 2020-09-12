@@ -17,7 +17,7 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.repository.api.ManuRepository;
-import io.xream.sqli.repository.api.Manuable;
+import io.xream.sqli.repository.core.Manuable;
 
 /**
  * @Author Sim

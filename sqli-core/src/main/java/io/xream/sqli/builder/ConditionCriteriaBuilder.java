@@ -16,6 +16,7 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Objects;
 /**
  * @Author Sim
  */
-public class ConditionCriteriaBuilder implements SqlNormalizer{
+public class ConditionCriteriaBuilder implements SqlNormalizer {
 
     private ConditionCriteriaBuilder instance;
 

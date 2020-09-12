@@ -17,6 +17,8 @@
 package io.xream.sqli.repository.api;
 
 
+import io.xream.sqli.repository.core.Manuable;
+
 import java.util.List;
 import java.util.Map;
 

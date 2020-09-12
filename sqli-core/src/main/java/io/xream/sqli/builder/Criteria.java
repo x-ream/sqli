@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routeable;
 import io.xream.sqli.core.Alias;
 import io.xream.sqli.core.ResultMapHelper;
+import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
@@ -216,7 +217,7 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 				'}';
 	}
 
-	public static final class ResultMapCriteria extends Criteria implements ResultMapHelper,SqlNormalizer,Serializable{
+	public static final class ResultMapCriteria extends Criteria implements ResultMapHelper, SqlNormalizer,Serializable{
 
 		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();

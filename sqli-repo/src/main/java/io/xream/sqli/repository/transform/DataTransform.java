@@ -16,8 +16,8 @@
  */
 package io.xream.sqli.repository.transform;
 
-import io.xream.sqli.repository.api.Manuable;
-import io.xream.sqli.repository.api.Repository;
+import io.xream.sqli.repository.core.Manuable;
+import io.xream.sqli.repository.core.Repository;
 
 /**
  * @Author Sim

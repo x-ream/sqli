@@ -14,11 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.repository.core;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface Mapped {
-	String TAG = "${TAG}";
+public interface Manuable {
+
+     <T> boolean execute(T obj, String sql);
+
+     List<Map<String,Object>> list(Class clz, String sql, List<Object> conditionSet);
 }

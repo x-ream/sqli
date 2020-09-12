@@ -20,7 +20,6 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.Mapped;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;

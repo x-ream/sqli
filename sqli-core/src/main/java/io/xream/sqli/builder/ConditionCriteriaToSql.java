@@ -17,6 +17,8 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.KeyMapper;
+import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -31,7 +33,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer{
+public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
 
     default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Alias alias) {
         if (buildingBlockList == null || buildingBlockList.isEmpty())
