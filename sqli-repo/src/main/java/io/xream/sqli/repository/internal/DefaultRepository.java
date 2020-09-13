@@ -20,8 +20,10 @@ package io.xream.sqli.repository.internal;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.ResultMapRepository;
-import io.xream.sqli.core.*;
 import io.xream.sqli.builder.*;
+import io.xream.sqli.core.IdGenerator;
+import io.xream.sqli.core.RepositoryManagement;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
@@ -47,25 +49,24 @@ import java.util.Objects;
 public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository {
 
     private Class<T> clzz;
+    private Class childClzz;
     private IdGenerator idGeneratorService;
     private Repository repository;
-    private Class childClzz;
-
-    public void setChildClzz(Class childClzz){
-        this.childClzz = childClzz;
-    }
 
     @Override
     public Class<T> getClzz() {
         return this.clzz;
     }
-
     /**
      *
      * Can not rename setClzz
      */
     public void setClz(Class<T> clz) {
         this.clzz = clz;
+    }
+
+    public void setChildClzz(Class childClzz){
+        this.childClzz = childClzz;
     }
 
     public void setIdGeneratorService(IdGenerator  idGeneratorService){

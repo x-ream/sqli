@@ -16,10 +16,10 @@
  */
 package io.xream.sqli.repository.transform;
 
-import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.page.Page;

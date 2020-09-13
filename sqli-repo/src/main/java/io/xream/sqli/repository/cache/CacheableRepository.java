@@ -17,12 +17,12 @@
 package io.xream.sqli.repository.cache;
 
 
-import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.cache.L2CacheResolver;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

@@ -17,6 +17,12 @@
 package io.xream.sqli.api;
 
 /**
+ * to find target unit,
+ * not for db sharding,
+ * not suggest having Criteria,RefreshCondition as the request object, the interface
+ * of Routeable maybe meaningless, of cource, your request object clzz can implements
+ * Routeable
+ *
  * @Author Sim
  */
 public interface Routeable {

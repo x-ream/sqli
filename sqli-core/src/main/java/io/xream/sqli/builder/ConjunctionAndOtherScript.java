@@ -28,10 +28,25 @@ public enum ConjunctionAndOtherScript implements SqlScript{
 	GROUP_BY(" GROUP BY "),
 	HAVING(" HAVING "),
 	WHERE(" WHERE "),
+
+	EQ(" = "),
+	LT(" < "),
+	GT(" > "),
+	LTE(" <= "),
+	GTE(" >= "),
+	NE(" <> "),
+	LIKE(" LIKE "),
+	NOT_LIKE(" NOT LIKE "),
+	IN(" IN "),
+	NOT_IN(" NOT IN "),
+	IS_NOT_NULL(" IS NOT NULL "),
+	IS_NULL(" IS NULL "),
+	SUB(" SUB "),
+	X(" ");
 	;
 	
 	private String sqlOper;
-	private ConjunctionAndOtherScript(String sqlOper){
+	ConjunctionAndOtherScript(String sqlOper){
 		this.sqlOper = sqlOper;
 	}
 	@Override
