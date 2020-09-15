@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.CriteriaToSql;
 import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.util.SqliStringUtil;
@@ -128,7 +128,7 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
 
     }
 
-    public String sql(Alias alias) {
+    public String sql(Mappable mappable) {
         if (SqliStringUtil.isNullOrEmpty(source) && subCriteria == null)
             return "";
         if (subCriteria != null) {
@@ -136,33 +136,33 @@ public final class SourceScript implements ConditionCriteriaToSql, ConditionCrit
         }
         if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
             if (alia != null && !alia.equals(source)) {
-                return mapping(source,alias) + " " + alia;
+                return mapping(source, mappable) + " " + alia;
             }
-            return mapping(source,alias);
+            return mapping(source, mappable);
         }
         StringBuilder sb = new StringBuilder();
         sb.append(joinStr == null ? joinType.sql() : joinStr + SqlScript.SPACE);
 
-        sb.append(mapping(source,alias));
+        sb.append(mapping(source, mappable));
 
         if (alia != null && !alia.equals(source))
             sb.append(SqlScript.SPACE).append(alia);
 
         if (on != null) {
             sb.append(SqlScript.ON);
-            String aliaName = alia == null ? mapping(source,alias) : alia;
+            String aliaName = alia == null ? mapping(source, mappable) : alia;
             String key = on.getKey();
             if (SqliStringUtil.isNotNull(key)) {
                 sb.append(
-                        mapping(on.getJoinFrom().getAlia() + "." + on.getJoinFrom().getKey(), alias)
+                        mapping(on.getJoinFrom().getAlia() + "." + on.getJoinFrom().getKey(), mappable)
                 ).append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
                         .append(
-                                mapping(aliaName + "." +key,alias)
+                                mapping(aliaName + "." +key, mappable)
                         );
             }
         }
 
-        buildConditionSql(sb, buildingBlockList,alias);
+        buildConditionSql(sb, buildingBlockList, mappable);
 
         return sb.toString();
     }

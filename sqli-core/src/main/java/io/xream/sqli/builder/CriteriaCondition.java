@@ -16,8 +16,6 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.parser.Parsed;
-
 import java.util.List;
 
 
@@ -26,5 +24,4 @@ import java.util.List;
  */
 public interface CriteriaCondition{
     List<BuildingBlock> getBuildingBlockList();
-    Parsed getParsed();
 }

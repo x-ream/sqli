@@ -17,7 +17,7 @@
 package io.xream.sqli.filter;
 
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -30,7 +30,7 @@ public final class BaseTypeFilter {
 
     public static boolean baseTypeSupported = false;
 
-    public static boolean isBaseType(String key, Object v, Alias criteria) {
+    public static boolean isBaseType(String key, Object v, Mappable criteria) {
         if (! baseTypeSupported)
             return false;
         String[] arr = key.split("\\.");

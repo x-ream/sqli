@@ -18,7 +18,7 @@ package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routeable;
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.ResultMapHelper;
 import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.page.Paged;
@@ -35,7 +35,7 @@ import java.util.*;
  * @author sim
  *
  */
-public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Serializable {
+public class Criteria implements Mappable,CriteriaCondition, Paged, Routeable,Serializable {
 
 	private static final long serialVersionUID = 7088698915888081349L;
 
@@ -51,7 +51,6 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 
 	@JsonIgnore
 	private transient Parsed parsed;
-
 
 	@Override
 	public Map<String,String> getAliaMap(){
@@ -309,28 +308,6 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 				return sourceScript;
 			}
 		}
-//
-//		public void adpterResultScript() {
-//			if (Objects.nonNull(super.customedResultKey)&&!super.customedResultKey.equals(SqlScript.STAR)){
-//				return;
-//			}else {
-//				int size = 0;
-//				String column = "";
-//				if (resultKeyList.isEmpty()) {
-//					column += (SqlScript.SPACE + SqlScript.STAR + SqlScript.SPACE);
-//				} else {
-//					size = resultKeyList.size();
-//					for (int i = 0; i < size; i++) {
-//						column = column + SqlScript.SPACE + resultKeyList.get(i);
-//						if (i < size - 1) {
-//							column += SqlScript.COMMA;
-//						}
-//					}
-//				}
-//				super.customedResultKey = column;
-//			}
-//
-//		}
 
 
 		@Override

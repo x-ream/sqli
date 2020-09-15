@@ -19,7 +19,7 @@ package io.xream.sqli.util;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.CriteriaCondition;
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -335,17 +335,17 @@ public final class ParserUtil {
 
 
     public static String getClzName(String alia, CriteriaCondition criteria) {
-        if (criteria instanceof Alias) {
-            String a = ((Alias) criteria).getAliaMap().get(alia);
+        if (criteria instanceof Mappable) {
+            String a = ((Mappable) criteria).getAliaMap().get(alia);
             if (SqliStringUtil.isNotNull(a))
                 return a;
         }
         return alia;
     }
 
-    public static String getClzName(String alia, Alias alias) {
+    public static String getClzName(String alia, Mappable mappable) {
 
-        String a = alias.getAliaMap().get(alia);
+        String a = mappable.getAliaMap().get(alia);
         if (SqliStringUtil.isNotNull(a))
             return a;
 

@@ -19,7 +19,7 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Routeable;
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * @Author Sim
  */
-public final class RefreshCondition<T> extends ConditionCriteriaBuilder implements Alias,CriteriaCondition, Routeable {
+public final class RefreshCondition<T> extends ConditionCriteriaBuilder implements Mappable,CriteriaCondition, Routeable {
 
     private List<BuildingBlock> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME

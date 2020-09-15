@@ -28,18 +28,18 @@ import io.xream.sqli.util.SqliStringUtil;
  */
 public interface KeyMapper {
 
-    default void mapping(ScriptSplitable scriptSplitable, Alias alias, StringBuilder sb) {
+    default void mapping(ScriptSplitable scriptSplitable, Mappable mappable, StringBuilder sb) {
         String[] keyArr = scriptSplitable.split(SqlScript.SPACE);
         int length = keyArr.length;
         for (int i = 0; i < length; i++) {
             String origin = keyArr[i].trim();
 
-            String target = mapping(origin, alias);
+            String target = mapping(origin, mappable);
             sb.append(target).append(SqlScript.SPACE);
         }
     }
 
-    default String mapping(String key, Alias criteria) {
+    default String mapping(String key, Mappable mappable) {
 
         if (SqliStringUtil.isNullOrEmpty(key))
             return key;
@@ -49,7 +49,7 @@ public interface KeyMapper {
             String alia = arr[0];
             String property = arr[1];
 
-            String clzName = ParserUtil.getClzName(alia, criteria);
+            String clzName = ParserUtil.getClzName(alia, mappable);
 
             Parsed parsed = Parser.get(clzName);
             if (parsed == null)
@@ -57,27 +57,27 @@ public interface KeyMapper {
 
             String p = parsed.getMapper(property);
             if (SqliStringUtil.isNullOrEmpty(p)) {
-                return ((Criteria.ResultMapCriteria) criteria).getResultKeyAliaMap().get(key);
+                return ((Criteria.ResultMapCriteria) mappable).getResultKeyAliaMap().get(key);
             }
 
             return parsed.getTableName(alia) + SqlScript.DOT + p;
         }
 
-        if (criteria instanceof Criteria.ResultMapCriteria) {
+        if (mappable instanceof Criteria.ResultMapCriteria) {
             Parsed parsed = Parser.get(key);
             if (parsed != null) {
                 return parsed.getTableName();
             }
         }
 
-        if (criteria instanceof RefreshCondition){
+        if (mappable instanceof RefreshCondition){
             Parsed parsed = Parser.get(key);
             if (parsed != null) {
                 return parsed.getTableName();
             }
         }
 
-        Parsed parsed = ((CriteriaCondition)criteria).getParsed();
+        Parsed parsed = mappable.getParsed();
         if (parsed == null)
             return key;
         if (key.equals(BeanUtil.getByFirstLower(parsed.getClz().getSimpleName())))

@@ -16,11 +16,14 @@
  */
 package io.xream.sqli.core;
 
+import io.xream.sqli.parser.Parsed;
+
 import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface Alias {
+public interface Mappable {
+    Parsed getParsed();
     Map<String, String> getAliaMap();
 }

@@ -16,7 +16,7 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.KeyMapper;
 import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -35,7 +35,7 @@ import java.util.List;
  */
 public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
 
-    default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Alias alias) {
+    default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Mappable mappable) {
         if (buildingBlockList == null || buildingBlockList.isEmpty())
             return;
         for (BuildingBlock buildingBlock : buildingBlockList) {
@@ -47,7 +47,7 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                 buildingBlock.getSubList().get(0).setConjunction(ConjunctionAndOtherScript.NONE);
                 sb.append(buildingBlock.getConjunction().sql());
                 sb.append(SqlScript.SPACE).append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);
-                buildConditionSql(sb, buildingBlock.getSubList(),alias);
+                buildConditionSql(sb, buildingBlock.getSubList(), mappable);
                 sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
                 continue;
             }
@@ -56,10 +56,10 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
             if (buildingBlock.getPredicate() == PredicateAndOtherScript.X){
                 final String str  = normalizeSql(buildingBlock.getKey());
                 StringBuilder sbx = new StringBuilder();
-                mapping((reg)->str.split(reg),alias,sbx);
+                mapping((reg)->str.split(reg), mappable,sbx);
                 mapper = sbx.toString();
             }else {
-                mapper = mapping(buildingBlock.getKey(), alias);
+                mapper = mapping(buildingBlock.getKey(), mappable);
             }
 
             sb.append(buildingBlock.getConjunction().sql()).append(mapper).append(buildingBlock.getPredicate().sql());
@@ -137,7 +137,7 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
 
     interface Filter {
 
-        default void filter(List<BuildingBlock> buildingBlockList, CriteriaCondition criteria, Alias alias) {
+        default void filter(List<BuildingBlock> buildingBlockList,  Mappable mappable) {
 
             if (buildingBlockList == null || buildingBlockList.isEmpty() )
                 return;
@@ -148,7 +148,7 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                 PredicateAndOtherScript p = buildingBlock.getPredicate();
                 String key = buildingBlock.getKey();
                 if (p == PredicateAndOtherScript.SUB){
-                    filter(buildingBlock.getSubList(),criteria,alias);
+                    filter(buildingBlock.getSubList(), mappable);
                     if (buildingBlock.getSubList().isEmpty()) {
                         ite.remove();
                     }
@@ -162,7 +162,7 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                     if (key.contains(".")){
                         String[] arr = key.split("\\.");
                         String alia = arr[0];
-                        String clzName = alias.getAliaMap().get(alia);
+                        String clzName = mappable.getAliaMap().get(alia);
                         if (clzName == null)
                             clzName = alia;
                         Parsed parsed = Parser.get(clzName);
@@ -177,9 +177,9 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                             }
                         }
                     }else{
-                        Parsed parsed = criteria.getParsed();
+                        Parsed parsed = mappable.getParsed();
                         if (parsed == null) {
-                            String ss = ((Criteria.ResultMapCriteria)criteria).sourceScript();
+                            String ss = ((Criteria.ResultMapCriteria)mappable).sourceScript();
                             if (ss != null) {
                                 parsed = Parser.get(ss);
                             }
@@ -203,11 +203,11 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                         continue;
 
                     if (key.contains(".")){
-                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),(Alias)criteria)){
+                        if (BaseTypeFilter.isBaseType(key,valueList.get(0),mappable)){
                             ite.remove();
                         }
                     }else{
-                        Parsed parsed = criteria.getParsed();
+                        Parsed parsed = mappable.getParsed();
                         if (parsed != null && BaseTypeFilter.isBaseType(key, valueList.get(0), parsed)) {
                                 ite.remove();
                         }
@@ -216,7 +216,7 @@ public interface ConditionCriteriaToSql extends KeyMapper, SqlNormalizer {
                 List<BuildingBlock> subList = buildingBlock.getSubList();
                 if (subList == null || subList.isEmpty())
                     continue;
-                filter(subList,criteria,alias);
+                filter(subList, mappable);
             }
         }
 

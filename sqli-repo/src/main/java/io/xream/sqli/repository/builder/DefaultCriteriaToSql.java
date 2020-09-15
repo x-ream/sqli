@@ -17,7 +17,7 @@
 package io.xream.sqli.repository.builder;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.core.Alias;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.CriteriaToSql;
 import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.exception.ParsingException;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
 
     @Override
-    public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Alias alias) {
+    public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Mappable mappable) {
         if (Objects.isNull(criteriaCondition))
             return "";
         StringBuilder sb = new StringBuilder();
@@ -51,7 +51,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         if (buildingBlockList.isEmpty())
             return "";
 
-        filter(buildingBlockList, criteriaCondition,alias);//过滤
+        filter(buildingBlockList, mappable);//过滤
         if (buildingBlockList.isEmpty())
             return "";
 
@@ -59,7 +59,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
 
         buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
 
-        buildConditionSql(sb, buildingBlockList,alias);
+        buildConditionSql(sb, buildingBlockList, mappable);
 
         return sb.toString();
     }
@@ -137,8 +137,6 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         concatRefresh(sb, parsed, refreshCondition);
 
         String conditionSql = toSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
-
-//        conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
 
         sb.append(conditionSql);
 
@@ -472,7 +470,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 groupBy = groupBy.trim();
                 sb.conditionSet.add(groupBy);
                 if (SqliStringUtil.isNotNull(groupBy)) {
-                    String mapper = mapping(groupBy, (Alias)rm);
+                    String mapper = mapping(groupBy, (Mappable)rm);
                     sb.sbCondition.append(mapper);
                     i++;
                     if (i < l) {
@@ -720,12 +718,12 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
             Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;//FIXME 判断是虚表
-            filter(buildingBlockList, criteria, resultMapCriteria);
+            filter(buildingBlockList, resultMapCriteria);
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                filter(sourceScript.getBuildingBlockList(), criteria, resultMapCriteria);
+                filter(sourceScript.getBuildingBlockList(), resultMapCriteria);
             }
         }else{
-            filter(buildingBlockList,criteria,null);
+            filter(buildingBlockList,criteria);
         }
     }
 
