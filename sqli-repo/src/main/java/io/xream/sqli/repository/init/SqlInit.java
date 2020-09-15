@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.mapper;
+package io.xream.sqli.repository.init;
 
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
@@ -26,7 +26,7 @@ import java.util.Date;
 /**
  * @Author Sim
  */
-public interface Mapper {
+public interface SqlInit {
 
     String CREATE = "CREATE";
     String REFRESH = "REFRESH";

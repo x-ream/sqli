@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.mapper;
+package io.xream.sqli.repository.init;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.exception.ParsingException;
@@ -48,6 +48,6 @@ public final class DefaultTemporaryTableParser implements TemporaryRepository.Pa
 
 
     protected String getTableSql(Class clz) {
-        return MapperFactory.StandardSql.buildTableSql(clz,true);
+        return SqlInitFactory.StandardSql.buildTableSql(clz,true);
     }
 }

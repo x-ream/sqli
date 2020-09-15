@@ -29,9 +29,9 @@ import java.util.Map;
  */
 public interface ResultMapFinder {
 
-    List<Map<String, Object>> queryForResultMapList(String sql, Collection<Object> list, ResultMapHelper resultMapHelper, Class orClzz, Dialect dialect);
+    List<Map<String, Object>> queryForResultMapList(String sql, Collection<Object> list, ResultMapHelpful resultMapHelpful, Class orClzz, Dialect dialect);
 
-    <T> void queryForMapToHandle(String sql, Collection<Object> valueList, Dialect dialect, ResultMapHelper resultMapHelper, Parsed orParsed, RowHandler<T> handler);
+    <T> void queryForMapToHandle(String sql, Collection<Object> valueList, Dialect dialect, ResultMapHelpful resultMapHelpful, Parsed orParsed, RowHandler<T> handler);
 
     default List<Map<String, Object>> toResultMapList(boolean isResultWithDottedKey, DataMapQuery dataMapQuery) {
 
@@ -45,9 +45,9 @@ public interface ResultMapFinder {
         return objectPropertyMapList;
     }
 
-    default Map<String,Object> toResultMap(ResultMapHelper resultMapHelper, Dialect dialect, Map<String,Object> dataMap) {
-        Map<String,Object> map = DataMapQuery.FIXED_ROW_MAPPER.mapRow(dataMap,null, resultMapHelper,dialect);
-        if (resultMapHelper.isResultWithDottedKey())
+    default Map<String,Object> toResultMap(ResultMapHelpful resultMapHelpful, Dialect dialect, Map<String,Object> dataMap) {
+        Map<String,Object> map = DataMapQuery.FIXED_ROW_MAPPER.mapRow(dataMap,null, resultMapHelpful,dialect);
+        if (resultMapHelpful.isResultWithDottedKey())
             return map;
         if (!map.isEmpty())
             return JsonStyleMapUtil.toJsonableMap(map);
@@ -55,12 +55,12 @@ public interface ResultMapFinder {
     }
 
     interface DataMapQuery {
-        FixedRowMapper FIXED_ROW_MAPPER = (dataMap, clzz, resultMapHelper, dialect) -> DataObjectConverter.toMapWithKeyOfObjectProperty(dataMap,clzz, resultMapHelper,dialect);
+        FixedRowMapper FIXED_ROW_MAPPER = (dataMap, clzz, resultMapHelpful, dialect) -> DataObjectConverter.toMapWithKeyOfObjectProperty(dataMap,clzz, resultMapHelpful,dialect);
         List<Map<String,Object>> query(FixedRowMapper fixedRowMapper);
     }
 
     interface FixedRowMapper{
-        Map<String,Object> mapRow(Map<String,Object> dataMap, Class clzz, ResultMapHelper resultMapHelper, Dialect dialect);
+        Map<String,Object> mapRow(Map<String,Object> dataMap, Class clzz, ResultMapHelpful resultMapHelpful, Dialect dialect);
     }
 
 }

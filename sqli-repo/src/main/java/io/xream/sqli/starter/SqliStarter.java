@@ -28,9 +28,9 @@ import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.repository.dao.DaoImpl;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.dao.TemporaryDaoImpl;
+import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
 import io.xream.sqli.repository.internal.DefaultRepository;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
-import io.xream.sqli.repository.mapper.DefaultTemporaryTableParser;
 import io.xream.sqli.repository.transform.DataTransform;
 
 import java.util.concurrent.Callable;

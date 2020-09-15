@@ -17,8 +17,8 @@
 package io.xream.sqli.repository.builder;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.CriteriaToSql;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;

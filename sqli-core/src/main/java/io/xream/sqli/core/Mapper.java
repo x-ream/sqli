@@ -16,7 +16,10 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.*;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.ScriptSplitable;
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
@@ -26,7 +29,7 @@ import io.xream.sqli.util.SqliStringUtil;
 /**
  * @Author Sim
  */
-public interface KeyMapper {
+public interface Mapper {
 
     default void mapping(ScriptSplitable scriptSplitable, Mappable mappable, StringBuilder sb) {
         String[] keyArr = scriptSplitable.split(SqlScript.SPACE);
@@ -88,4 +91,5 @@ public interface KeyMapper {
         return value;
 
     }
+
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface Mappable {
+public interface Mappable extends Mapper{
     Parsed getParsed();
     Map<String, String> getAliaMap();
 }

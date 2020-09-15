@@ -20,8 +20,8 @@ import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.api.ManuRepository;
-import io.xream.sqli.repository.mapper.Mapper;
-import io.xream.sqli.repository.mapper.MapperFactory;
+import io.xream.sqli.repository.init.SqlInit;
+import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +53,8 @@ public class HealthChecker {
                 Class clz = repository.getClzz();
                 if (repository.getClzz() == Void.class)
                     continue;
-                String createSql = MapperFactory.tryToCreate(clz);
-                String test = MapperFactory.getSql(clz, Mapper.CREATE);
+                String createSql = SqlInitFactory.tryToCreate(clz);
+                String test = SqlInitFactory.getSql(clz, SqlInit.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {
                     logger.info("Failed to start x7-jdbc-template-plus, check Bean: {}",clz);
                     Runtime.getRuntime().exit(1);

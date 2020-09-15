@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface ResultMapHelper extends Mappable {
+public interface ResultMapHelpful extends Mappable {
 
     PropertyMapping getPropertyMapping();
     Map<String, String> getResultKeyAliaMap();

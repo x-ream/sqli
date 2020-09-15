@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.mapper;
+package io.xream.sqli.repository.init;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.parser.BeanElement;
@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public final class MapperFactory implements Mapper {
+public final class SqlInitFactory implements SqlInit {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
@@ -313,7 +313,7 @@ public final class MapperFactory implements Mapper {
 			sb.append("   ").append(keyOne);
 
 			BeanElement be = map.get(keyOne);
-			String sqlType = Mapper.getSqlTypeRegX(be);
+			String sqlType = SqlInit.getSqlTypeRegX(be);
 
 			if (sqlType.equals(Dialect.INT)) {
 				sb.append(" ").append(Dialect.INT + " NOT NULL");
@@ -329,7 +329,7 @@ public final class MapperFactory implements Mapper {
 			map.remove(keyOne);
 
 			for (BeanElement bet : map.values()) {
-				sqlType = Mapper.getSqlTypeRegX(bet);
+				sqlType = SqlInit.getSqlTypeRegX(bet);
 				sb.append("   ").append(bet.getProperty()).append(" ");
 
 				sb.append(sqlType);
@@ -356,7 +356,7 @@ public final class MapperFactory implements Mapper {
 			}
 
 			for (BeanElement bet : list) {
-				sqlType = Mapper.getSqlTypeRegX(bet);
+				sqlType = SqlInit.getSqlTypeRegX(bet);
 				sb.append("   ").append(bet.getProperty()).append(" ").append(sqlType).append(",").append("\n");
 			}
 
@@ -379,7 +379,7 @@ public final class MapperFactory implements Mapper {
 			Parsed parsed = Parser.get(clz);
 			String space = " ";
 			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT " + Mapped.TAG + " FROM ");
+			sb.append("SELECT " + "${TAG}" + " FROM ");
 			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
 
 			String sql = sb.toString();

@@ -16,10 +16,6 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.InCondition;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.repository.core.KeyOne;
 

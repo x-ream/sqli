@@ -16,8 +16,8 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.CriteriaToSql;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.SqlBuildingAttached;
 import io.xream.sqli.util.SqliStringUtil;
 

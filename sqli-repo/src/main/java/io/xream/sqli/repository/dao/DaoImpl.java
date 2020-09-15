@@ -34,8 +34,8 @@ import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.builder.PageBuilder;
 import io.xream.sqli.repository.core.KeyOne;
 import io.xream.sqli.repository.exception.TooManyResultsException;
-import io.xream.sqli.repository.mapper.Mapper;
-import io.xream.sqli.repository.mapper.MapperFactory;
+import io.xream.sqli.repository.init.SqlInit;
+import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.repository.util.ResultSortUtil;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
@@ -77,7 +77,7 @@ public final class DaoImpl implements Dao {
             return false;
         Object obj = objList.get(0);
         Class clz = obj.getClass();
-        String sql = MapperFactory.getSql(clz, Mapper.CREATE);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.CREATE);
 
         SqliLoggerProxy.debug(clz, sql);
 
@@ -104,7 +104,7 @@ public final class DaoImpl implements Dao {
     public <T> boolean remove(KeyOne<T> keyOne) {
 
         Class clz = keyOne.getClzz();
-        String sql = MapperFactory.getSql(clz, Mapper.REMOVE);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.REMOVE);
 
         SqliLoggerProxy.debug(clz, keyOne.get());
         SqliLoggerProxy.debug(clz, sql);
@@ -118,7 +118,7 @@ public final class DaoImpl implements Dao {
         Class clz = obj.getClass();
 
         try {
-            String sql = MapperFactory.getSql(clz, Mapper.CREATE);
+            String sql = SqlInitFactory.getSql(clz, SqlInit.CREATE);
 
             Parsed parsed = Parser.get(clz);
 
@@ -144,7 +144,7 @@ public final class DaoImpl implements Dao {
         Class clz = obj.getClass();
 
         try {
-            String createSql = MapperFactory.getSql(clz, Mapper.CREATE);
+            String createSql = SqlInitFactory.getSql(clz, SqlInit.CREATE);
             final String sql = this.dialect.createOrReplaceSql(createSql);
 
             Parsed parsed = Parser.get(clz);
@@ -178,7 +178,7 @@ public final class DaoImpl implements Dao {
     public <T> T get(KeyOne<T> keyOne) {
 
         Class clz = keyOne.getClzz();
-        String sql = MapperFactory.getSql(clz, Mapper.GET_ONE);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.GET_ONE);
 
         SqliLoggerProxy.debug(clz, sql);
 
@@ -195,7 +195,7 @@ public final class DaoImpl implements Dao {
     public <T> List<T> list(Object conditionObj) {
 
         Class clz = conditionObj.getClass();
-        String sql = MapperFactory.getSql(clz, Mapper.LOAD);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.LOAD);
         Parsed parsed = Parser.get(clz);
 
         Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
@@ -318,7 +318,7 @@ public final class DaoImpl implements Dao {
 
         BeanElement be = parsed.getElementExisted(inProperty);
 
-        String sql = MapperFactory.getSql(clz, Mapper.LOAD);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.LOAD);
         String mapper = parsed.getMapper(inProperty);
         List<? extends Object> inList = inCondition.getInList();
 
@@ -375,7 +375,7 @@ public final class DaoImpl implements Dao {
     public <T> T getOne(T conditionObj) {
 
         Class clz = conditionObj.getClass();
-        String sql = MapperFactory.getSql(clz, Mapper.LOAD);
+        String sql = SqlInitFactory.getSql(clz, SqlInit.LOAD);
         Parsed parsed = Parser.get(clz);
 
         Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
