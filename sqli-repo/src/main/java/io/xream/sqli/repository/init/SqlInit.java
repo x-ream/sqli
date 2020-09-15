@@ -29,11 +29,8 @@ import java.util.Date;
 public interface SqlInit {
 
     String CREATE = "CREATE";
-    String REFRESH = "REFRESH";
     String REMOVE = "REMOVE";
-    String QUERY = "QUERY";
     String LOAD = "LOAD";
-    String TAG = "TAG";
     String CREATE_TABLE = "CREATE_TABLE";
     String GET_ONE = "GET_ONE";
 
@@ -42,15 +39,14 @@ public interface SqlInit {
 
         String getTableSql(Class clz);
 
-        String getRefreshSql(Class clz);
-
-        String getQuerySql(Class clz);
-
         String getLoadSql(Class clz);
 
         String getCreateSql(Class clz);
 
-        String getTagSql(Class clz);
+        String getOneSql(Class clz);
+
+        String getRemoveSql(Class clz);
+
     }
 
     static String getSqlTypeRegX(BeanElement be) {

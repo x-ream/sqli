@@ -80,67 +80,16 @@ public final class SqlInitFactory implements SqlInit {
 		default:
 			StandardSql sql = new StandardSql();
 			sql.getTableSql(clz);
-			sql.getRefreshSql(clz);
 			sql.getRemoveSql(clz);
 			sql.getOneSql(clz);
-			sql.getQuerySql(clz);
 			sql.getLoadSql(clz);
 			sql.getCreateSql(clz);
-			sql.getTagSql(clz);
 			return;
 		}
 
 	}
 
 	public static class StandardSql implements Interpreter {
-		public String getRefreshSql(Class clz) {
-
-			Parsed parsed = Parser.get(clz);
-
-			List<BeanElement> list = Parser.get(clz).getBeanElementList();
-
-			String space = " ";
-			StringBuilder sb = new StringBuilder();
-			sb.append("UPDATE ");
-			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
-			sb.append("SET ");
-
-			String keyOne = parsed.getKey(X.KEY_ONE);
-
-			List<BeanElement> tempList = new ArrayList<BeanElement>();
-			for (BeanElement p : list) {
-				String column = p.getProperty();
-				if (column.equals(keyOne))
-					continue;
-
-				tempList.add(p);
-			}
-
-			int size = tempList.size();
-			for (int i = 0; i < size; i++) {
-				String column = tempList.get(i).getProperty();
-
-				sb.append(column).append(" = ?");
-				if (i < size - 1) {
-					sb.append(", ");
-				}
-			}
-
-			sb.append(" WHERE ");
-
-			parseKey(sb, clz);
-
-			String sql = sb.toString();
-
-			sql = SqlParserUtil.mapper(sql, parsed);
-
-			sqlsMap.get(clz).put(REFRESH, sql);
-
-			SqliLoggerProxy.debug(clz, sb);
-
-			return sql;
-
-		}
 
 		public String getRemoveSql(Class clz) {
 			Parsed parsed = Parser.get(clz);
@@ -191,29 +140,6 @@ public final class SqlInitFactory implements SqlInit {
 
 			sb.append(parsed.getKey(X.KEY_ONE));
 			sb.append(" = ?");
-
-		}
-
-		public String getQuerySql(Class clz) {
-
-			Parsed parsed = Parser.get(clz);
-			String space = " ";
-			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT * FROM ");
-			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
-			sb.append("WHERE ");
-
-			sb.append(parsed.getKey(X.KEY_ONE));
-			sb.append(" = ?");
-
-			String sql = sb.toString();
-			sql = SqlParserUtil.mapper(sql, parsed);
-
-			sqlsMap.get(clz).put(QUERY, sql);
-
-			SqliLoggerProxy.debug(clz, sb);
-
-			return sql;
 
 		}
 
@@ -375,22 +301,6 @@ public final class SqlInitFactory implements SqlInit {
 			return buildTableSql(clz,false);
 		}
 
-		public String getTagSql(Class clz) {
-			Parsed parsed = Parser.get(clz);
-			String space = " ";
-			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT " + "${TAG}" + " FROM ");
-			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
-
-			String sql = sb.toString();
-
-			sql = SqlParserUtil.mapper(sql, parsed);
-			sqlsMap.get(clz).put(TAG, sql);
-
-			SqliLoggerProxy.debug(clz, sb);
-
-			return sql;
-		}
 	}
 
 }
