@@ -17,7 +17,7 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.xream.sqli.api.Routeable;
+import io.xream.sqli.api.Routable;
 import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.core.SqlNormalizer;
@@ -35,7 +35,7 @@ import java.util.*;
  * @author sim
  *
  */
-public class Criteria implements Mappable,CriteriaCondition, Paged, Routeable,Serializable {
+public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Serializable {
 
 	private static final long serialVersionUID = 7088698915888081349L;
 

@@ -25,6 +25,6 @@ package io.xream.sqli.api;
  *
  * @Author Sim
  */
-public interface Routeable {
+public interface Routable {
     Object getRouteKey();
 }

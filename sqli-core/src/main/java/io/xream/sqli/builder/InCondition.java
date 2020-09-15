@@ -17,7 +17,7 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.xream.sqli.api.Routeable;
+import io.xream.sqli.api.Routable;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public final class InCondition implements Routeable {
+public final class InCondition implements Routable {
 
     private String property;
     private List<? extends Object> inList;
