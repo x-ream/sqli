@@ -16,10 +16,7 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaCondition;
-import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.builder.SqlBuilt;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.parser.Parsed;
 
 import java.util.List;
@@ -28,9 +25,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface CriteriaToSql {
-
-//    void setDialect(Dialect dialect);
+public interface CriteriaToSql extends ConditionCriteriaToSql,ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
 
     String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Alias alias) ;
 
