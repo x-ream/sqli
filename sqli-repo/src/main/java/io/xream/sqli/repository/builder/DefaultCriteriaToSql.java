@@ -91,7 +91,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
          */
         condition(sqlBuilder, criteria.getBuildingBlockList(), criteria, sqlBuildingAttached.getValueList());
 
-        SqlBuilder countSql = count(isSub, sqlBuilder.sbCondition, criteria);
+        count(isSub, criteria.isTotalRowsIgnored(),sqlBuilder);
         /*
          * group by
          */
@@ -107,7 +107,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
          */
         sourceScript(sqlBuilder, criteria);
 
-        sqlArr(isSub, sqlBuilt, sqlBuildingAttached, sqlBuilder, countSql);
+        sqlArr(isSub, criteria.isTotalRowsIgnored(),sqlBuilt, sqlBuildingAttached, sqlBuilder);
 
     }
 
@@ -136,7 +136,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
 
         concatRefresh(sb, parsed, refreshCondition);
 
-        String conditionSql = toSql(refreshCondition,refreshCondition.getValueList(),refreshCondition);
+        String conditionSql = toSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
 
 //        conditionSql = SqlParserUtil.mapper(conditionSql, parsed);
 
@@ -244,7 +244,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         }
     }
 
-    private void sqlArr(boolean isSub, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlBuilder sb, SqlBuilder countSb) {
+    private void sqlArr(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlBuilder sb) {
 
         if (! isSub){
             for (SqlBuilt sub : sqlBuildingAttached.getSubList()){
@@ -254,9 +254,10 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 );
             }
 
-            if (countSb != null) {
+            if (! isTotalRowsIgnored) {
                 StringBuilder sqlSb = new StringBuilder();
-                sqlSb.append(countSb.sbResult).append(sb.sbSource).append(countSb.sbCondition);
+                sqlSb.append(SqlScript.SELECT).append(SqlScript.SPACE).append(sb.countSql).append(SqlScript.SPACE)
+                .append(sb.sbSource).append(sb.countCondition);
                 sqlBuilt.setCountSql(sqlSb.toString());
             }
         }
@@ -312,7 +313,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                     distinctColumn.append(SqlScript.COMMA);
                 }
             }
-            criteria.setCountDistinct("COUNT(" + distinctColumn.toString() + ") count");
+            sqlBuilder.countSql = "COUNT(" + distinctColumn.toString() + ") count";
             flag = true;
         }
 
@@ -647,7 +648,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 mapping((reg) -> strd.split(reg), rmc, sbs);
                 script = sbs.toString();
             } else {
-                if (!rmc.isWithoutOptimization() && !rmc.resultAllScript().trim().equals("*")) {
+                if (!rmc.isWithoutOptimization()) {
                     optimizeSourceScript(rmc.getSourceScripts(), sb.conditionSet);//FIXME  + ON AND
                 }
                 script = rmc.getSourceScripts().stream()
@@ -675,16 +676,12 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         sqlBuilder.conditionSet.add(criteria.getForceIndex());
     }
 
-    private SqlBuilder count(boolean isSub, StringBuilder sbCondition, Criteria criteria) {
-        if (isSub)
-            return null;
-        if (!criteria.isTotalRowsIgnored()) {
-            SqlBuilder sqlBuilder = SqlBuilder.get();
-            sqlBuilder.sbResult.append(SqlScript.SELECT).append(SqlScript.SPACE).append("COUNT(*) count").append(SqlScript.SPACE);
-            sqlBuilder.sbCondition.append(sbCondition.toString());
-            return sqlBuilder;
-        }
-        return null;
+    private void count(boolean isSub,  boolean isTotalRowsIgnored,  SqlBuilder sqlBuilder) {
+
+        if (isSub || isTotalRowsIgnored)
+            return;
+            sqlBuilder.countCondition = new StringBuilder();
+            sqlBuilder.countCondition.append(sqlBuilder.sbCondition);
     }
 
     private void sort(SqlBuilder sb, Criteria criteria) {
@@ -763,6 +760,8 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         private StringBuilder sbSource = new StringBuilder();
         private StringBuilder sbCondition = new StringBuilder();
         private Set<String> conditionSet = new HashSet<>();
+        private String countSql = "COUNT(*) count";
+        private StringBuilder countCondition;
 
         public static SqlBuilder get() {
             return new SqlBuilder();

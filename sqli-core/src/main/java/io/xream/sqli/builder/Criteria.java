@@ -51,10 +51,7 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 
 	@JsonIgnore
 	private transient Parsed parsed;
-	@JsonIgnore
-	private transient String countDistinct = "COUNT(*) count";
-	@JsonIgnore
-	private transient String customedResultKey = SqlScript.STAR;
+
 
 	@Override
 	public Map<String,String> getAliaMap(){
@@ -81,13 +78,6 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 		return BeanUtil.getByFirstLower(getClzz().getSimpleName());
 	}
 
-	public void setCountDistinct(String str){
-		this.countDistinct = str;
-	}
-	public String getCountDistinct(){
-		return this.countDistinct;
-	}
-
 	public List<Sort> getSortList() {
 		if (sortList == null || sortList.isEmpty())
 			return null;
@@ -103,17 +93,6 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 
 	public void setSortList(List<Sort> sortList) {
 		this.sortList = sortList;
-	}
-
-	public void setCustomedResultKey(String str){
-		if (SqliStringUtil.isNullOrEmpty(str))
-			this.customedResultKey = SqlScript.STAR;
-		else
-			this.customedResultKey = str;
-	}
-
-	public String resultAllScript() {
-		return customedResultKey;
 	}
 
 	public List<KV> getFixedSortList() {
@@ -330,28 +309,28 @@ public class Criteria implements Alias,CriteriaCondition, Paged, Routeable,Seria
 				return sourceScript;
 			}
 		}
-
-		public void adpterResultScript() {
-			if (Objects.nonNull(super.customedResultKey)&&!super.customedResultKey.equals(SqlScript.STAR)){
-				return;
-			}else {
-				int size = 0;
-				String column = "";
-				if (resultKeyList.isEmpty()) {
-					column += (SqlScript.SPACE + SqlScript.STAR + SqlScript.SPACE);
-				} else {
-					size = resultKeyList.size();
-					for (int i = 0; i < size; i++) {
-						column = column + SqlScript.SPACE + resultKeyList.get(i);
-						if (i < size - 1) {
-							column += SqlScript.COMMA;
-						}
-					}
-				}
-				super.customedResultKey = column;
-			}
-
-		}
+//
+//		public void adpterResultScript() {
+//			if (Objects.nonNull(super.customedResultKey)&&!super.customedResultKey.equals(SqlScript.STAR)){
+//				return;
+//			}else {
+//				int size = 0;
+//				String column = "";
+//				if (resultKeyList.isEmpty()) {
+//					column += (SqlScript.SPACE + SqlScript.STAR + SqlScript.SPACE);
+//				} else {
+//					size = resultKeyList.size();
+//					for (int i = 0; i < size; i++) {
+//						column = column + SqlScript.SPACE + resultKeyList.get(i);
+//						if (i < size - 1) {
+//							column += SqlScript.COMMA;
+//						}
+//					}
+//				}
+//				super.customedResultKey = column;
+//			}
+//
+//		}
 
 
 		@Override
