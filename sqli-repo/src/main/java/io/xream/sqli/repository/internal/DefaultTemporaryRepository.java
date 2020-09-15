@@ -36,16 +36,14 @@ import java.util.concurrent.Callable;
 public final class DefaultTemporaryRepository implements TemporaryRepository {
 
     private static Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
+    private TemporaryDao temporaryDao;
+    private Parser temporaryRepositoryParser;
+    private DataTransform dataTransform;
 
     public DefaultTemporaryRepository(){
         SqliLoggerProxy.put(TemporaryRepository.class,logger);
     }
 
-    private TemporaryDao temporaryDao;
-
-    private Parser temporaryRepositoryParser;
-
-    private DataTransform dataTransform;
     public void setDataTransform(DataTransform dataTransform) {
         this.dataTransform = dataTransform;
     }
