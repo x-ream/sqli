@@ -64,9 +64,6 @@ public final class Parsed {
 		this.clzz = clzz;
 	}
 
-	public String getId(){
-		return String.valueOf(keyMap.get(X.KEY_ONE));
-	}
 	
 	public BeanElement getElement(String property){
 		return elementMap.get(property);
@@ -88,10 +85,6 @@ public final class Parsed {
 
 	public Map<Integer, String> getKeyMap() {
 		return keyMap;
-	}
-	
-	public boolean contains(String property) {
-		return this.elementMap.containsKey(property);
 	}
 
 	public Map<Integer, Field> getKeyFieldMap() {
