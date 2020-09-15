@@ -531,7 +531,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                     String[] arr = sourceScript.split(" ");
                     Parsed parsed = Parser.get(arr[0].trim());
                     rmc.setParsed(parsed);
-                    rmc.setClzz(parsed.getClz());
+                    rmc.setClzz(parsed.getClzz());
                 }
 
                 List<String> list = SourceScriptBuilder.split(sourceScript);

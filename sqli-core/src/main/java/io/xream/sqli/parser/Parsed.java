@@ -36,7 +36,7 @@ public final class Parsed {
 
 	private boolean isChecked = false;
 
-	private Class clz;
+	private Class clzz;
 	private String tableName;
 	private String originTable;
 	private boolean isNoSpec = true;
@@ -52,16 +52,16 @@ public final class Parsed {
 	
 	private boolean isNoCache;
 
-	public Class getClz() {
-		return clz;
+	public Class getClzz() {
+		return clzz;
 	}
 
-	public void setClz(Class clz) {
-		this.clz = clz;
+	public void setClzz(Class clzz) {
+		this.clzz = clzz;
 	}
 	
-	public Parsed(Class clz){
-		this.clz = clz;
+	public Parsed(Class clzz){
+		this.clzz = clzz;
 	}
 
 	public String getId(){
@@ -178,7 +178,7 @@ public final class Parsed {
 	}
 	
 	public String getClzName() {
-		return this.clz.getSimpleName();
+		return this.clzz.getSimpleName();
 	}
 
 	public boolean isNoCache() {
@@ -214,7 +214,7 @@ public final class Parsed {
 	public String toString() {
 		return "Parsed{" +
 				", isChecked=" + isChecked +
-				", clz=" + clz +
+				", clz=" + clzz +
 				", tableName='" + tableName + '\'' +
 				", originTable='" + originTable + '\'' +
 				", isNoSpec=" + isNoSpec +

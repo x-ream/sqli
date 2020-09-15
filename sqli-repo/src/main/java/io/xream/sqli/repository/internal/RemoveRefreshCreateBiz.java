@@ -97,7 +97,7 @@ public final class RemoveRefreshCreateBiz {
 
                 @Override
                 public Class<Object> getClzz() {
-                    return parsed.getClz();
+                    return parsed.getClzz();
                 }
             });
         }

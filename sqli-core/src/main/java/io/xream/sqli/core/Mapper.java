@@ -83,7 +83,7 @@ public interface Mapper {
         Parsed parsed = mappable.getParsed();
         if (parsed == null)
             return key;
-        if (key.equals(BeanUtil.getByFirstLower(parsed.getClz().getSimpleName())))
+        if (key.equals(BeanUtil.getByFirstLower(parsed.getClzz().getSimpleName())))
             return parsed.getTableName();
         String value = parsed.getMapper(key);
         if (value == null)
