@@ -15,7 +15,7 @@
         <dependency>
             <groupId>io.xream.sqli</groupId>
             <artifactId>sqli-core</artifactId>
-            <version>1.1.0</version>
+            <version>${sqli.version}</version>
         </dependency>
 
         <dependency>
