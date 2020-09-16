@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
+public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable {
 
     @Override
     public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Mappable mappable) {
@@ -299,7 +299,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
             StringBuilder distinctColumn = new StringBuilder();
             distinctColumn.append(column);
             for (String resultKey : list) {
-                sqlBuilder.conditionSet.add(resultKey);
+                addConditonBeforeOptimization(resultKey,sqlBuilder.conditionSet);
                 String mapper = mapping(resultKey, resultMapped);
                 propertyMapping.put(resultKey, mapper);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
@@ -323,7 +323,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 if (flag) {
                     column.append(SqlScript.COMMA);
                 }
-                sqlBuilder.conditionSet.add(reduce.getProperty());
+                addConditonBeforeOptimization(reduce.getProperty(),sqlBuilder.conditionSet);
                 String alianProperty = reduce.getProperty() + SqlScript.UNDER_LINE + reduce.getType().toString().toLowerCase();//property_count
                 String alianName = alianProperty.replace(SqlScript.DOT, SqlScript.DOLLOR);
                 resultMapped.getResultKeyAliaMap().put(alianName, alianProperty);
@@ -371,7 +371,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
             int size = resultList.size();
             for (int i = 0; i < size; i++) {
                 String key = resultList.get(i);
-                sqlBuilder.conditionSet.add(key);
+                addConditonBeforeOptimization(key,sqlBuilder.conditionSet);
                 String mapper = mapping(key, criteria);
                 propertyMapping.put(key, mapper);
                 mapper = generate(mapper, resultMapped);
@@ -393,7 +393,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
             int size = resultListAssignedAliaList.size();
             for (int i = 0; i < size; i++) {
                 KV kv = resultListAssignedAliaList.get(i);
-                sqlBuilder.conditionSet.add(kv.getK());
+                addConditonBeforeOptimization(kv.getK(),sqlBuilder.conditionSet);
                 String mapper = mapping(kv.getK(), criteria);
                 propertyMapping.put(kv.getK(), mapper);
                 String alian = kv.getV().toString();
@@ -422,7 +422,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 String function = functionResultKey.getScript();
 
                 for (String key : functionResultKey.getKeys()) {
-                    sqlBuilder.conditionSet.add(key);
+                    addConditonBeforeOptimization(key,sqlBuilder.conditionSet);
                     String mapper = mapping(key, criteria);
                     function = function.replaceFirst("\\?", mapper);
                 }
@@ -468,7 +468,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
             int l = arr.length;
             for (String groupBy : arr) {
                 groupBy = groupBy.trim();
-                sb.conditionSet.add(groupBy);
+                addConditonBeforeOptimization(groupBy,sb.conditionSet);
                 if (SqliStringUtil.isNotNull(groupBy)) {
                     String mapper = mapping(groupBy, (Mappable)rm);
                     sb.sbCondition.append(mapper);
@@ -548,86 +548,10 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
 
 
             for (SourceScript sourceScript : rmc.getSourceScripts()) {
-                preOptimizeListX(sourceScript.getBuildingBlockList(), sqlBuilder.conditionSet);
+                addConditionBeforeOptimization(sourceScript.getBuildingBlockList(), sqlBuilder.conditionSet);
             }
         }
 
-    }
-
-    private void preOptimizeListX(List<BuildingBlock> buildingBlockList, Set<String> conditionSet) {
-        for (BuildingBlock buildingBlock : buildingBlockList) {
-            conditionSet.add(buildingBlock.getKey());
-            List<BuildingBlock> subList = buildingBlock.getSubList();
-            if (subList != null && !subList.isEmpty()) {
-                preOptimizeListX(subList, conditionSet);
-            }
-        }
-    }
-
-    private void optimizeSourceScript(List<SourceScript> sourceScripts, Set<String> conditionSet) {
-        if (sourceScripts.size() <= 1)
-            return;
-        if (conditionSet.size() > 0) {
-            for (String test : conditionSet) {
-                if (test != null) {
-                    if (test.contains("."))
-                        break;
-                    return;
-                }
-            }
-        }
-        for (SourceScript sourceScript : sourceScripts) {
-            if (sourceScript.getSubCriteria() != null) {
-                sourceScript.used();
-                continue;
-            }
-            for (String key : conditionSet) {
-                if (key == null)
-                    continue;
-                if (SqliStringUtil.isNullOrEmpty(sourceScript.getAlia())) {
-                    if (key.contains(sourceScript.getSource() + ".")) {
-                        sourceScript.used();
-                        break;
-                    }
-                } else {
-                    if (key.contains(sourceScript.getAlia() + ".")) {
-                        sourceScript.used();
-                        break;
-                    }
-                }
-            }
-        }
-
-        int size = sourceScripts.size();
-        for (int i = size - 1; i >= 0; i--) {
-            SourceScript sourceScript = sourceScripts.get(i);
-            if (sourceScript.getSubCriteria() != null) {
-                sourceScript.targeted();
-                continue;
-            }
-            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
-                continue;
-            for (int j = i - 1; j >= 0; j--) {
-                SourceScript sc = sourceScripts.get(j);
-                if (sourceScript.getSource().equals(sc.getSource()))
-                    continue;
-                //FIXME
-                On on = sourceScript.getOn();
-                if (on == null || on.getJoinFrom() == null)
-                    continue;
-                if (sc.alia().equals(on.getJoinFrom().getAlia())) {
-                    sc.targeted();
-                    break;
-                }
-            }
-        }
-
-        Iterator<SourceScript> ite = sourceScripts.iterator();
-        while (ite.hasNext()) {
-            SourceScript sourceScript = ite.next();
-            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
-                ite.remove();
-        }
     }
 
     private void sourceScript(SqlBuilder sb, Criteria criteria) {
@@ -647,7 +571,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 script = sbs.toString();
             } else {
                 if (!rmc.isWithoutOptimization()) {
-                    optimizeSourceScript(rmc.getSourceScripts(), sb.conditionSet);//FIXME  + ON AND
+                    optimizeSourceScript(sb.conditionSet, rmc.getSourceScripts());//FIXME  + ON AND
                 }
                 script = rmc.getSourceScripts().stream()
                         .map(sourceScript -> sourceScript.sql(rmc))
@@ -671,7 +595,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
         if (SqliStringUtil.isNullOrEmpty(criteria.getForceIndex()))
             return;
         sqlBuilder.sbCondition.append(" FORCE INDEX(" + criteria.getForceIndex() + ")");
-        sqlBuilder.conditionSet.add(criteria.getForceIndex());
+        addConditonBeforeOptimization(criteria.getForceIndex(),sqlBuilder.conditionSet);
     }
 
     private void count(boolean isSub,  boolean isTotalRowsIgnored,  SqlBuilder sqlBuilder) {
@@ -697,7 +621,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
                 String orderBy = sort.getOrderBy();
                 String mapper = mapping(orderBy, criteria);
                 sb.sbCondition.append(mapper).append(SqlScript.SPACE);
-                sb.conditionSet.add(orderBy);
+                addConditonBeforeOptimization(orderBy,sb.conditionSet);
                 Direction direction = sort.getDirection();
                 if (direction == null) {
                     sb.sbCondition.append(Direction.DESC);
@@ -738,7 +662,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator {
     private void condition(SqlBuilder sqlBuilder, List<BuildingBlock> buildingBlockList, Criteria criteria,List<Object> valueList) {
         if (buildingBlockList.isEmpty())
             return;
-        preOptimizeListX(buildingBlockList, sqlBuilder.conditionSet);//优化连表查询前的准备
+        addConditionBeforeOptimization(buildingBlockList, sqlBuilder.conditionSet);//优化连表查询前的准备
 
         StringBuilder xsb = new StringBuilder();
 
