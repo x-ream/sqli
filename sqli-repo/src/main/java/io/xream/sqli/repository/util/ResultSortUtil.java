@@ -70,6 +70,7 @@ public final class ResultSortUtil {
                 }
             }
         }catch (Exception e) {
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 

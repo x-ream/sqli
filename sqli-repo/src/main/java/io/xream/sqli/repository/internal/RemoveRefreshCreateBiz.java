@@ -76,6 +76,7 @@ public final class RemoveRefreshCreateBiz {
                 map.put(String.valueOf(id), t);
             }
         }catch (Exception e){
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 

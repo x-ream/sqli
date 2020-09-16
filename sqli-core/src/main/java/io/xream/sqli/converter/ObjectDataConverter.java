@@ -68,6 +68,7 @@ public final class ObjectDataConverter {
                 }
             }
         } catch (Exception e) {
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
@@ -144,6 +145,7 @@ public final class ObjectDataConverter {
                 }
             }
         } catch (Exception e) {
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 

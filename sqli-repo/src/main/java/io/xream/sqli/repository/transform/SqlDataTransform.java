@@ -154,6 +154,7 @@ public final class SqlDataTransform implements DataTransform {
         try{
             obj = clzz.newInstance();
         }catch (Exception e){
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
         return this.dao.list(obj);

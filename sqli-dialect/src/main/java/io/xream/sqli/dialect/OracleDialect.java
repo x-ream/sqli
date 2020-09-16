@@ -88,6 +88,7 @@ public class OracleDialect implements Dialect {
                     reader.read(charArr);
                     str = new String(charArr);//FIXME UIF-8 ?
                 } catch (Exception e) {
+                    SqliExceptionUtil.throwRuntimeExceptionFirst(e);
                     throw new PersistenceException(SqliExceptionUtil.getMessage(e));
                 }finally{
                     if (reader !=null) {

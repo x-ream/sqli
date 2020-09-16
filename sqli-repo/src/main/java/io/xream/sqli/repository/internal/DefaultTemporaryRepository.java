@@ -63,6 +63,7 @@ public final class DefaultTemporaryRepository implements TemporaryRepository {
             flag = callable.call();
         }catch (Exception e){
             logger.warn("{} exception: {}" , logTag, SqliExceptionUtil.getMessage(e));
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ProxyException(SqliExceptionUtil.getMessage(e));
         }finally {
             long endTime = System.currentTimeMillis();

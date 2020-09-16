@@ -11,6 +11,12 @@ public class SqliExceptionUtil {
 
     private SqliExceptionUtil(){}
 
+    public static void throwRuntimeExceptionFirst(Throwable e) {
+        if (e instanceof RuntimeException){
+            throw (RuntimeException) e;
+        }
+    }
+
     public static String getMessage(Throwable e){
         String msg = e.getMessage();
         msg += "\n";
