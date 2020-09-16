@@ -78,11 +78,11 @@ public final class InCondition implements Routable {
         this.inList = inList;
     }
 
-    public static InCondition wrap(String property,List<? extends Object> inList ){
-        return wrap(null,property,inList);
+    public static InCondition of(String property, List<? extends Object> inList ){
+        return of(null,property,inList);
     }
 
-    public static InCondition wrap(Object routeKey,String property,List<? extends Object> inList ){
+    public static InCondition of(Object routeKey, String property, List<? extends Object> inList ){
         InCondition inCondition = new InCondition();
         inCondition.setRouteKey(routeKey);
         inCondition.setProperty(property);

@@ -36,11 +36,11 @@ public final class RemoveRefreshCreate<T> implements Routable {
 
     @Deprecated
     public RemoveRefreshCreate(){}
-    public static <T> RemoveRefreshCreate wrap(List<T> list, Object[] ins){
-        return wrap(null,list,ins);
+    public static <T> RemoveRefreshCreate of(List<T> list, Object[] ins){
+        return of(null,list,ins);
     }
 
-    public static <T> RemoveRefreshCreate wrap(Object routeKey, List<T> list, Object[] ins){
+    public static <T> RemoveRefreshCreate of(Object routeKey, List<T> list, Object[] ins){
         RemoveRefreshCreate rrc =  new RemoveRefreshCreate();
         rrc.routeKey = routeKey;
         rrc.list = list;

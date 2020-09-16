@@ -42,7 +42,7 @@
     
 ### BaseRepository API
     
-            1. in(InCondition) //in查询, 例如: 页面上需要的主表ID或记录已经查出后，补充查询其他表的文本说明数据时使用
+            1. in(property, inList) //in查询, 例如: 页面上需要的主表ID或记录已经查出后，补充查询其他表的文本说明数据时使用
             2. list(Object) //对象查列表
             3. find(Criteria) //标准拼接查询，返回对象形式记录，返回分页对象
             4. list(Criteria) //标准拼接查询，返回对象形式记录，不返回分页对象
@@ -180,7 +180,7 @@
     如果需要开启二级缓存，所有对数据库的写操作项目都需要开启二级缓存。
     
     支持二级缓存的BaseRepository的API：
-            1. in(InCondition)
+            1. in(property, inList)
             2. list(Object)
             3. find(Criteria)
             4. list(Criteria)
