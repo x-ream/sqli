@@ -22,8 +22,6 @@ import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.filter.BaseTypeFilter;
-import io.xream.sqli.builder.Direction;
-import io.xream.sqli.builder.Sort;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
