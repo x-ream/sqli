@@ -14,24 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
-
-import io.xream.sqli.parser.ParserListener;
+package io.xream.sqli.parser;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+final public class ParserListener {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+    private static ParserListener instance;
+
+    private ParserListener(){}
 
     public static void onStarted(){
-        if (instance != null)
-            return;
-        instance = new SqliListener();
-
-        HealthChecker.onStarted();
-        ParserListener.onStarted();
+        if (instance == null) {
+            instance = new ParserListener();
+            Parser.onStarted();
+        }
     }
 }

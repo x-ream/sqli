@@ -18,6 +18,7 @@ package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.ParserUtil;
@@ -176,6 +177,20 @@ public final class Parser {
 
         put(clz, parsed);
 
+    }
+
+    protected static void onStarted(){
+        for (Map.Entry<String,Parsed> entry : simpleNameMap.entrySet()) {
+            Parsed parsed = entry.getValue();
+            for (Map.Entry<String,String> pmEntry : parsed.getPropertyMapperMap().entrySet()) {
+                String property = pmEntry.getKey();
+                String mapper = pmEntry.getValue();
+                Parsed same = simpleNameMap.get(property);
+                if (same != null && !same.getTableName().equals(mapper)) {
+                    throw new NotSupportedException("not support the spell of property: " + parsed.getClzz().getName()+"."+property +", modify " + property + " or try @X.Mapping(\"" + same.getTableName() +"\")");
+                }
+            }
+        }
     }
 
 }

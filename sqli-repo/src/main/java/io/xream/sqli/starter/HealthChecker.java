@@ -33,8 +33,14 @@ public class HealthChecker {
 
     private final static Logger logger = LoggerFactory.getLogger(HealthChecker.class);
 
+    private static HealthChecker instance;
+    private HealthChecker(){}
 
     public static void onStarted() {
+
+        if (instance != null)
+            return;
+        instance = new HealthChecker();
 
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
             if (repository.getClzz() == Void.class)
