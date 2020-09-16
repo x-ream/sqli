@@ -23,7 +23,6 @@ import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.page.Paged;
-import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliStringUtil;

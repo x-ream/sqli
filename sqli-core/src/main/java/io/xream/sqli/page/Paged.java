@@ -17,6 +17,8 @@
 package io.xream.sqli.page;
 
 
+import io.xream.sqli.builder.Sort;
+
 import java.util.List;
 
 /**

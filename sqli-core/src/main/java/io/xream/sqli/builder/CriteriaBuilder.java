@@ -16,9 +16,7 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.page.Direction;
 import io.xream.sqli.page.Paged;
-import io.xream.sqli.page.Sort;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;

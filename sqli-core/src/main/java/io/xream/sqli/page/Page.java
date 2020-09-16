@@ -18,6 +18,7 @@ package io.xream.sqli.page;
 
 
 import com.alibaba.fastjson.JSONObject;
+import io.xream.sqli.builder.Sort;
 import io.xream.sqli.util.JsonWrapper;
 
 import java.io.Serializable;
