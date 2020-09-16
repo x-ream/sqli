@@ -46,6 +46,8 @@ public final class Parser {
     public static String mappingPrefix;
     public static String mappingSpec;
 
+    private Parser(){}
+
     @SuppressWarnings("rawtypes")
     public static void put(Class clz, Parsed parsed) {
         map.put(clz, parsed);

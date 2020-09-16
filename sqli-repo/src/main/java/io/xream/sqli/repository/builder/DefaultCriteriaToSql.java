@@ -27,6 +27,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.exception.CriteriaSyntaxException;
 import io.xream.sqli.repository.exception.SqlBuildException;
+import io.xream.sqli.support.ResultMapSingleSourceSupport;
 import io.xream.sqli.support.TimestampSupport;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliStringUtil;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable {
+public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
 
     @Override
     public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Mappable mappable) {
@@ -536,6 +537,8 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
                 List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
+
+            supportSingleSource(rmc);
 
             Map<String, String> aliaMap = rmc.getAliaMap();
             for (SourceScript sc : rmc.getSourceScripts()) {
