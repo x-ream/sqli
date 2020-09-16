@@ -440,9 +440,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
         if (SqliStringUtil.isNullOrEmpty(script)) {
             throw new CriteriaSyntaxException("Suggest API: find(Criteria criteria), no any resultKey for ResultMapCriteria");
         }
-//        criteria.setCustomedResultKey(column.toString());
 
-//        ((Criteria.ResultMapCriteria) criteria).adpterResultScript();
         return script;
 
     }
@@ -510,7 +508,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
         String script = refreshCondition.getSourceScript();//string -> list<>
         List<String> list = SourceScriptBuilder.split(script);
         List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
-
+        SourceScriptBuilder.checkAlia(sourceScripts);
         for (SourceScript sc : sourceScripts) {
             refreshCondition.getAliaMap().put(sc.alia(), sc.getSource());
         }
@@ -526,18 +524,12 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String sourceScript = rmc.sourceScript();//string -> list<>
 
-                if (isSub && ! sourceScript.contains(".")){
-                    String[] arr = sourceScript.split(" ");
-                    Parsed parsed = Parser.get(arr[0].trim());
-                    rmc.setParsed(parsed);
-                    rmc.setClzz(parsed.getClzz());
-                }
-
                 List<String> list = SourceScriptBuilder.split(sourceScript);
                 List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
 
+            SourceScriptBuilder.checkAlia(rmc.getSourceScripts());
             supportSingleSource(rmc);
 
             Map<String, String> aliaMap = rmc.getAliaMap();
@@ -546,7 +538,6 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
                     aliaMap.put(sc.alia(), sc.getSource());
                 }
             }
-
 
             for (SourceScript sourceScript : rmc.getSourceScripts()) {
                 addConditionBeforeOptimization(sourceScript.getBuildingBlockList(), sqlBuilder.conditionSet);

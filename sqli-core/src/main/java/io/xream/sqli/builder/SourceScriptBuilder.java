@@ -18,6 +18,8 @@ package io.xream.sqli.builder;
 
 
 import io.xream.sqli.core.SqlScript;
+import io.xream.sqli.exception.NotSupportedException;
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -43,8 +45,19 @@ public interface SourceScriptBuilder {
 
     ConditionCriteriaBuilder more();
 
+    static void checkAlia(List<SourceScript> list) {
+        for (SourceScript sourceScript : list) {
+            String source = sourceScript.getSource();
+            String alia = sourceScript.getAlia();
+            if (source !=null && alia !=null && !alia.equals(source)) {
+                if (Parser.contains(alia)){
+                    throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
+                }
+            }
+        }
+    }
+
     /**
-     * NOT SUPPORT CONDITION(AND|OR) OF lEFT JOIN | RIGHT JOIN
      *
      * @param sourceScriptsSplittedList
      * @return

@@ -143,7 +143,7 @@
         连表构建API  (ResultMapBuilder)
             25. sourceScript(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
             26. sourceBuilder().source("order").alia("o") //连表里的主表
-            27. sourceBuilder().source("orderItem").alia("i").joinType(JoinType.LEFT_JOIN)
+            27. sourceBuilder().source("orderItem").alia("i").join(JoinType.LEFT_JOIN)
                                               .on("orderId", JoinFrom.of("o","id")) //fluent构建连表sql
             28.               .more().[1~18] // LEFT JOIN等, 更多条件
             29. sourceBuilder().sub(....) // INNER JOIN (....) i  有限支持clickhouse等数据库

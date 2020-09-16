@@ -72,6 +72,10 @@ public final class Parser {
         return simpleNameMap.get(simpleName);
     }
 
+    public static boolean contains(String simpleName) {
+        return simpleNameMap.containsKey(simpleName);
+    }
+
     private static void parseElement(Class clz, Parsed parsed,List<BeanElement> elementList) {
 
         for (BeanElement element : elementList) {
