@@ -16,8 +16,6 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.SqlScript;
-
 import java.util.HashSet;
 import java.util.Set;
 

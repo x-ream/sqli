@@ -16,6 +16,8 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.core.SqlScript;
+
 import java.util.Map;
 
 /**

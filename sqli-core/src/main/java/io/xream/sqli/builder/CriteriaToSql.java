@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.builder;
 
-import io.xream.sqli.builder.*;
+import io.xream.sqli.core.Mappable;
 import io.xream.sqli.parser.Parsed;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface CriteriaToSql extends ConditionCriteriaToSql,ConditionCriteriaToSql.Filter, ConditionCriteriaToSql.Pre {
+public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
 
     String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
 

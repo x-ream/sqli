@@ -16,9 +16,8 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.CriteriaToSql;
 import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.SqlBuildingAttached;
+import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public final class SourceScript implements ConditionCriteriaToSql, ConditionCriteriaToSql.Pre {
+public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
 
     private String source;
     private Criteria.ResultMapCriteria subCriteria;

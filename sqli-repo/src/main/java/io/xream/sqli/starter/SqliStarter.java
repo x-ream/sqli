@@ -18,6 +18,7 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.core.*;
 import io.xream.sqli.repository.builder.DefaultCriteriaToSql;

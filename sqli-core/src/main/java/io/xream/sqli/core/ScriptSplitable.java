@@ -16,15 +16,10 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.SqlBuilt;
-
-import java.util.List;
-
 /**
  * @Author Sim
  */
-public interface SqlBuildingAttached {
+public interface ScriptSplitable {
 
-    List<Object> getValueList();
-    List<SqlBuilt> getSubList();
+    String[] split(String reg);
 }

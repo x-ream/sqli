@@ -19,6 +19,7 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
 import io.xream.sqli.core.Mappable;
+import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.page.Paged;
@@ -56,6 +57,9 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	public Map<String,String> getAliaMap(){
 		return null;
 	}
+
+	@Override
+	public Map<String,String> getResultKeyAliaMap() {return null;}
 
 	public Class<?> getClzz() {
 		return clzz;

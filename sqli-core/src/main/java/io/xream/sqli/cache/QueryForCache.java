@@ -14,12 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.cache;
+
+import io.xream.sqli.builder.InCondition;
+
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface ScriptSplitable {
-
-    String[] split(String reg);
+public interface QueryForCache {
+    <T> List<T> in(InCondition inCondition);
 }

@@ -16,16 +16,11 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.PropertyMapping;
-
-import java.util.Map;
-
 /**
  * @Author Sim
  */
 public interface ResultMapHelpful extends Mappable {
 
     PropertyMapping getPropertyMapping();
-    Map<String, String> getResultKeyAliaMap();
     boolean isResultWithDottedKey();
 }

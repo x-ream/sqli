@@ -19,9 +19,8 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
-import io.xream.sqli.core.CriteriaToSql;
 import io.xream.sqli.core.Dialect;
-import io.xream.sqli.core.SqlBuildingAttached;
+import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -115,7 +114,7 @@ public final class SqlUtil {
 
         Class<?> keyType = be.getClz();
 
-        ConditionCriteriaToSql.buildIn(sb,keyType,inList);
+        ConditionToSql.buildIn(sb,keyType,inList);
 
         return sb.toString();
     }

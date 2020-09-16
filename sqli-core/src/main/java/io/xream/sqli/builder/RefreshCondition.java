@@ -65,19 +65,21 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         this.sourceScript = sourceScript;
     }
 
+    public List<Object> getValueList() {
+        return this.valueList;
+    }
+
     @Override
     public List<BuildingBlock> getBuildingBlockList() {
         return buildingBlockList;
-    }
-
-    public List<Object> getValueList() {
-        return this.valueList;
     }
 
     @Override
     public Map<String, String> getAliaMap() {
         return this.aliaMap;
     }
+    @Override
+    public Map<String,String> getResultKeyAliaMap() {return null;}
 
     @Override
     public Parsed getParsed() {

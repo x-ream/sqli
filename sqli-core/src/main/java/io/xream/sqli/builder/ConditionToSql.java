@@ -19,6 +19,7 @@ package io.xream.sqli.builder;
 import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.Mapper;
 import io.xream.sqli.core.SqlNormalizer;
+import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface ConditionCriteriaToSql extends Mapper, SqlNormalizer {
+public interface ConditionToSql extends Mapper, SqlNormalizer {
 
     default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Mappable mappable) {
         if (buildingBlockList == null || buildingBlockList.isEmpty())

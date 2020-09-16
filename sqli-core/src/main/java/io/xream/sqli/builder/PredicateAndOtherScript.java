@@ -16,10 +16,12 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.core.SqlScript;
+
 /**
  * @Author Sim
  */
-public enum PredicateAndOtherScript implements SqlScript{
+public enum PredicateAndOtherScript implements SqlScript {
 
 	EQ(" = "),
 	LT(" < "),
