@@ -190,7 +190,6 @@ public final class ParserUtil {
                         Field field = null;
                         try {
                             field = clz.getDeclaredField(element.getProperty());
-                            System.out.println("___________"+element.getProperty());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -331,16 +330,6 @@ public final class ParserUtil {
             }
         }
         return mapper;
-    }
-
-
-    public static String getClzName(String alia, CriteriaCondition criteria) {
-        if (criteria instanceof Mappable) {
-            String a = ((Mappable) criteria).getAliaMap().get(alia);
-            if (SqliStringUtil.isNotNull(a))
-                return a;
-        }
-        return alia;
     }
 
     public static String getClzName(String alia, Map<String,String> aliaMap) {

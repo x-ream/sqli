@@ -197,7 +197,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
                         p = parsed;
                     }
 
-                    BeanElement be = p.getElementMap().get(k);
+                    BeanElement be = p.getElement(k);
                     if (be == null) {
                         throw new ParsingException("can not find the property " + key + " of " + parsed.getClzName());
                     }

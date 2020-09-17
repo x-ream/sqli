@@ -41,7 +41,7 @@ public final class JsonStyleMapUtil {
 				Object obj = jsonableMap.get(jsonKey);
 				Map<String,Object> objMap = null;
 				if (Objects.isNull(obj)){
-					objMap = new HashMap<String,Object>();
+					objMap = new HashMap<>();
 					jsonableMap.put(jsonKey, objMap);
 				}else {
 					objMap = (Map<String,Object>) obj;

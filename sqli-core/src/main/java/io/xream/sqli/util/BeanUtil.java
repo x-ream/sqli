@@ -46,17 +46,6 @@ public final class BeanUtil {
 
     }
 
-    public static String getByFirstUpper(String str) {
-        if (SqliStringUtil.isNullOrEmpty(str))
-            return str;
-
-        String a = str.substring(0, 1);
-        String rest = str.substring(1);
-        String result = a.toUpperCase() + rest;
-        return result;
-
-    }
-
     public static String getProperty(String methodName) {
         if (methodName.startsWith("is"))
             return methodName;

@@ -172,9 +172,11 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                                 ite.remove();
                             } else {
                                 BeanElement be = parsed.getElement(arr[1]);
-                                TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                                if (buildingBlock.getValue() == null)
-                                    ite.remove();
+                                if (be != null) {
+                                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
+                                    if (buildingBlock.getValue() == null)
+                                        ite.remove();
+                                }
                             }
                         }
                     }else{
@@ -190,9 +192,11 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                                 ite.remove();
                             } else {
                                 BeanElement be = parsed.getElement(key);
-                                TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                                if (buildingBlock.getValue() == null)
-                                    ite.remove();
+                                if (be != null) {
+                                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
+                                    if (buildingBlock.getValue() == null)
+                                        ite.remove();
+                                }
                             }
                         }
                     }
