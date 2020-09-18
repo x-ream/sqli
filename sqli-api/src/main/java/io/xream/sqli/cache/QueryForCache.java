@@ -16,22 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.cache;
+package io.xream.sqli.cache;
 
+import io.xream.sqli.builder.InCondition;
+
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public class L2CacheFilter {
-
-    protected static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
-
-    protected static Object get() {
-        return threadLocal.get();
-    }
-
-    protected static void close() {
-        threadLocal.remove();
-    }
-
+public interface QueryForCache {
+    <T> List<T> in(InCondition inCondition);
 }

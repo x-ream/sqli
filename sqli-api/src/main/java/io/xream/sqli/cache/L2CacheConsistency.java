@@ -16,11 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.core;
+package io.xream.sqli.cache;
 
 /**
+ *  Suggest send message to MQ to refresh again <br>
  * @Author Sim
  */
-public interface RowHandler<T> {
-    void handle(T t);
+public interface L2CacheConsistency {
+
+    boolean markForRefresh(Class clz);
+    boolean remove(Class clz, String key);
+    boolean remove(Class clz);
 }

@@ -19,8 +19,8 @@
 package io.xream.sqli.repository.internal;
 
 
-import io.xream.sqli.repository.api.NativeRepository;
-import io.xream.sqli.repository.api.NativeSupport;
+import io.xream.sqli.api.NativeRepository;
+import io.xream.sqli.api.NativeSupport;
 
 import java.util.List;
 import java.util.Map;

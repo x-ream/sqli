@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.api;
 
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.RemoveRefreshCreate;
+import io.xream.sqli.internal.RowHandler;
+import io.xream.sqli.internal.Typed;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.repository.core.RowHandler;
-import io.xream.sqli.repository.core.Typed;
 
 import java.util.List;
 

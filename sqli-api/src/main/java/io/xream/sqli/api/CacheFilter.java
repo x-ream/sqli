@@ -16,10 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.api;
 
 
-import io.xream.sqli.repository.cache.L2CacheFilter;
+import io.xream.sqli.cache.L2CacheFilter;
 import io.xream.sqli.util.SqliStringUtil;
 
 /**
@@ -34,7 +34,7 @@ public final class CacheFilter extends L2CacheFilter {
     public static void filter(Object partialKey) {
         if (SqliStringUtil.isNullOrEmpty(partialKey))
             return;
-        threadLocal.set(partialKey);
+        L2CacheFilter.threadLocal.set(partialKey);
     }
 
 

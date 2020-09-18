@@ -39,7 +39,7 @@ public final class SqlInitFactory implements SqlInit {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
-	public static io.xream.sqli.repository.core.Dialect Dialect;
+	public static io.xream.sqli.internal.Dialect Dialect;
 
 	/**
 	 * 返回SQL

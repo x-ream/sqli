@@ -16,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.internal;
 
 /**
  * @Author Sim
  */
-public interface NativeRepository extends NativeSupport {
+public interface RowHandler<T> {
+    void handle(T t);
 }

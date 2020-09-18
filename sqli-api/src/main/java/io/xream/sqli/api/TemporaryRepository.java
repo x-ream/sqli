@@ -16,17 +16,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.api;
+
+import io.xream.sqli.builder.Criteria;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * @Author Sim
+ * How to update with TemporaryRepository?
+ * suggest:
+ *      .findToHandle(ResultMapCriteria, map -> {
+ *
+ *             refresh(
+ *                  RefreshCondition.build()....
+ *             )
+ *
+ *         });
+ *
+ * @Author  Sim
  */
-public interface NativeSupport {
+public interface TemporaryRepository {
 
-     <T> boolean execute(Class<T> clzz, String sql);
+    boolean create(Object obj);
+    boolean createBatch(List objList);
+    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
 
-     List<Map<String,Object>> list(String sql, List<Object> conditionList);
+    boolean createRepository(Class clzz);
+    boolean dropRepository(Class clzz);
+
+    interface Parser {
+        String parseAndGetSql(Class clzz);
+    }
 }

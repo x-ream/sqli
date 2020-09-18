@@ -16,17 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.core;
-
-import io.xream.sqli.repository.api.BaseRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+package io.xream.sqli.api;
 
 /**
  * @Author Sim
  */
-public interface RepositoryManagement {
-
-    List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();
+public interface NativeRepository extends NativeSupport {
 }

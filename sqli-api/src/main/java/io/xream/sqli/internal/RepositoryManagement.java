@@ -16,12 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.core;
+package io.xream.sqli.internal;
+
+import io.xream.sqli.api.BaseRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface Typed<T> {
+public interface RepositoryManagement {
 
-    Class<T> getClzz();
+    List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();
 }

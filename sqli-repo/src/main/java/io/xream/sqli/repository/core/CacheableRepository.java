@@ -19,16 +19,19 @@
 package io.xream.sqli.repository.core;
 
 
+import io.xream.sqli.api.NativeSupport;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.exception.QueryException;
+import io.xream.sqli.internal.KeyOne;
+import io.xream.sqli.internal.Repository;
+import io.xream.sqli.internal.RowHandler;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.NativeSupport;
-import io.xream.sqli.repository.cache.L2CacheResolver;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;

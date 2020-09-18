@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.starter;
 
+import io.xream.sqli.api.NativeSupport;
 import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.repository.api.NativeSupport;
 import io.xream.sqli.repository.exception.BeanUninitializedException;
 
 /**

@@ -16,12 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.core;
+package io.xream.sqli.internal;
 
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.repository.cache.QueryForCache;
 
 import java.util.List;
 import java.util.Map;

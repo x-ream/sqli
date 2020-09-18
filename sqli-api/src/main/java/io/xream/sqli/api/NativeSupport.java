@@ -16,26 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.cache;
+package io.xream.sqli.api;
 
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface L2CacheStorage {
-    boolean set(String key, String time);
+public interface NativeSupport {
 
-    boolean delete(String key);
+     <T> boolean execute(Class<T> clzz, String sql);
 
-    Set<String> keys(String key);
-
-    String get(String nsKey);
-
-    boolean set(String key, String toJson, int validSecond, TimeUnit timeUnit);
-
-    List<String> multiGet(List<String> keyArr);
-
+     List<Map<String,Object>> list(String sql, List<Object> conditionList);
 }

@@ -18,15 +18,16 @@
  */
 package io.xream.sqli.starter;
 
+import io.xream.sqli.api.NativeRepository;
+import io.xream.sqli.api.NativeSupport;
+import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.CriteriaToSql;
-import io.xream.sqli.repository.api.NativeRepository;
-import io.xream.sqli.repository.api.NativeSupport;
-import io.xream.sqli.repository.api.TemporaryRepository;
-import io.xream.sqli.repository.cache.L2CacheResolver;
+import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
+import io.xream.sqli.cache.L2CacheResolver;
+import io.xream.sqli.internal.Dialect;
+import io.xream.sqli.internal.JdbcWrapper;
+import io.xream.sqli.internal.Repository;
 import io.xream.sqli.repository.core.CacheableRepository;
-import io.xream.sqli.repository.core.Dialect;
-import io.xream.sqli.repository.core.JdbcWrapper;
-import io.xream.sqli.repository.core.Repository;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.repository.dao.DaoImpl;
 import io.xream.sqli.repository.dao.TemporaryDao;
@@ -51,7 +52,11 @@ public class SqliStarter {
 
     }
 
-    public Repository repository(CriteriaToSql criteriaParser, JdbcWrapper jdbcWrapper,
+    public CriteriaToSql criteriaToSql(){
+        return DefaultCriteriaToSql.newInstance();
+    }
+
+    public Repository repository(CriteriaToSql criteriaToSql, JdbcWrapper jdbcWrapper,
                                          Dialect dialect,
                                          L2CacheResolver l2CacheResolver
                                          ){
@@ -60,7 +65,7 @@ public class SqliStarter {
         CacheableRepository repository = CacheableRepository.newInstance();
 
         repository.setDao(dao);
-        ((DaoImpl)dao).setCriteriaToSql(criteriaParser);
+        ((DaoImpl)dao).setCriteriaToSql(criteriaToSql);
         ((DaoImpl)dao).setJdbcWrapper(jdbcWrapper);
         ((DaoImpl)dao).setDialect(dialect);
 
@@ -70,11 +75,11 @@ public class SqliStarter {
     }
 
 
-    public TemporaryRepository temporaryRepository(CriteriaToSql criteriaParser, JdbcWrapper jdbcWrapper,Dialect dialect,Repository repository){
+    public TemporaryRepository temporaryRepository(CriteriaToSql criteriaToSql, JdbcWrapper jdbcWrapper,Dialect dialect,Repository repository){
         TemporaryRepository.Parser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
         ((TemporaryDaoImpl)temporaryDao).setJdbcWrapper(jdbcWrapper);
-        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(criteriaParser);
+        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(criteriaToSql);
         ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
 
         TemporaryRepository tr = DefaultTemporaryRepository.newInstance();

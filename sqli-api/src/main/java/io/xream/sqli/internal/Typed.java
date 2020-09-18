@@ -16,18 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.cache;
-
-import io.xream.sqli.repository.api.CacheFilter;
+package io.xream.sqli.internal;
 
 /**
  * @Author Sim
  */
-public interface Protection {
-    String DEFAULT_VALUE = "NULL";
-    int DEFAULT_NUM = Integer.MIN_VALUE;
+public interface Typed<T> {
 
-    default void close(){
-        CacheFilter.close();
-    }
+    Class<T> getClzz();
 }

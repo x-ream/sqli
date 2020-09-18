@@ -16,35 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.api;
+package io.xream.sqli.cache;
 
-import io.xream.sqli.builder.Criteria;
-
-import java.util.List;
 
 /**
- * How to update with TemporaryRepository?
- * suggest:
- *      .findToHandle(ResultMapCriteria, map -> {
- *
- *             refresh(
- *                  RefreshCondition.build()....
- *             )
- *
- *         });
- *
- * @Author  Sim
+ * @Author Sim
  */
-public interface TemporaryRepository {
+public class L2CacheFilter {
 
-    boolean create(Object obj);
-    boolean createBatch(List objList);
-    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
+    protected static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
 
-    boolean createRepository(Class clzz);
-    boolean dropRepository(Class clzz);
-
-    interface Parser {
-        String parseAndGetSql(Class clzz);
+    protected static Object get() {
+        return threadLocal.get();
     }
+
+    protected static void close() {
+        threadLocal.remove();
+    }
+
 }

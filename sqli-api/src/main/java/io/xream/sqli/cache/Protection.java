@@ -16,13 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.core;
+package io.xream.sqli.cache;
 
 /**
  * @Author Sim
  */
-public interface KeyOne<T> {
+public interface Protection {
+    String DEFAULT_VALUE = "NULL";
+    int DEFAULT_NUM = Integer.MIN_VALUE;
 
-    Object get();
-    Class<T> getClzz();
+    default void close(){
+        L2CacheFilter.close();
+    }
 }
