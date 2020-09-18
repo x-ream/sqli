@@ -20,11 +20,11 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.repository.converter.ObjectDataConverter;
 import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.converter.ObjectDataConverter;
 import io.xream.sqli.repository.core.Dialect;
 import io.xream.sqli.starter.DbType;
 

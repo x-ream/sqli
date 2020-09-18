@@ -18,9 +18,9 @@
  */
 package io.xream.sqli.repository.core;
 
-import io.xream.sqli.repository.converter.DataObjectConverter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.repository.converter.DataObjectConverter;
 
 import java.util.Collection;
 import java.util.List;

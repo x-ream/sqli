@@ -20,19 +20,15 @@ package io.xream.sqli.repository.internal;
 
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.repository.api.BaseRepository;
-import io.xream.sqli.repository.api.ResultMapRepository;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.repository.core.IdGenerator;
-import io.xream.sqli.repository.core.RowHandler;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.core.KeyOne;
-import io.xream.sqli.repository.core.Repository;
-import io.xream.sqli.repository.core.RepositoryManagement;
+import io.xream.sqli.repository.api.BaseRepository;
+import io.xream.sqli.repository.api.ResultMapRepository;
+import io.xream.sqli.repository.core.*;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;

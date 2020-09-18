@@ -19,6 +19,7 @@
 package io.xream.sqli.repository.core;
 
 import io.xream.sqli.core.Parseable;
+
 import java.util.Collection;
 import java.util.List;
 

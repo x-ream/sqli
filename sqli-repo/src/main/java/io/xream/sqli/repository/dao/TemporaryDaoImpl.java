@@ -18,15 +18,15 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.repository.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.builder.SqlBuilt;
-import io.xream.sqli.repository.core.Dialect;
-import io.xream.sqli.repository.core.JdbcWrapper;
 import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.api.TemporaryRepository;
+import io.xream.sqli.repository.core.Dialect;
+import io.xream.sqli.repository.core.JdbcWrapper;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 

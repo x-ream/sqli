@@ -22,7 +22,6 @@ import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.core.CacheableRepository;
 
 import java.util.ArrayList;
 import java.util.List;

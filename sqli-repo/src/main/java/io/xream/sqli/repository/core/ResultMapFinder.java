@@ -18,9 +18,9 @@
  */
 package io.xream.sqli.repository.core;
 
-import io.xream.sqli.repository.converter.DataObjectConverter;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.repository.converter.DataObjectConverter;
 import io.xream.sqli.util.JsonStyleMapUtil;
 
 import java.util.Collection;
