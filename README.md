@@ -36,11 +36,21 @@
         @X.Mapping("full_name") //默认是fullName
         private String fullName;
     }
+
+    @Service
+    public class FooServiceImpl implements FooService {
     
-    {
+        @Autowired
+        private FooRepository fooRepository;
+        @Autowired
+        private FooFindRepository fooFindRepository;
+        
+        // 临时表, 原生SQL, 则直接注入, 不支持代理
         @Autowired
         private TemporaryRepository temporaryRepository;
-    }
+        @Autowired
+        private NativeRepository nativeRepository;
+    
     
 ### BaseRepository API
     
