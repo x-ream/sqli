@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.core;
 
-import io.xream.sqli.converter.DataObjectConverter;
+import io.xream.sqli.repository.converter.DataObjectConverter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 
@@ -37,7 +37,7 @@ public interface BaseFinder {
         return dataObjectQuery.query(DataObjectQuery.FIXED_ROW_MAPPER);
     }
 
-    default <T> void toObject(T t, Map<String,Object> dataMap, List<BeanElement> list, Dialect dialect) throws Exception{
+    default <T> void toObject(T t, Map<String, Object> dataMap, List<BeanElement> list, Dialect dialect) throws Exception{
         DataObjectConverter.initObj(t,dataMap,list,dialect);
     }
 
@@ -47,6 +47,6 @@ public interface BaseFinder {
     }
 
     interface FixedRowMapper<T> {
-        void mapRow(T t,Map<String,Object> dataMap, List<BeanElement> beanElementList, Dialect dialect) throws Exception ;
+        void mapRow(T t, Map<String, Object> dataMap, List<BeanElement> beanElementList, Dialect dialect) throws Exception ;
     }
 }

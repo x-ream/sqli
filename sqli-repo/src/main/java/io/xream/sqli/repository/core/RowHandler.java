@@ -16,15 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.cache;
-
-import io.xream.sqli.builder.InCondition;
-
-import java.util.List;
+package io.xream.sqli.repository.core;
 
 /**
  * @Author Sim
  */
-public interface QueryForCache {
-    <T> List<T> in(InCondition inCondition);
+public interface RowHandler<T> {
+    void handle(T t);
 }

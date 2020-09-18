@@ -16,19 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.builder;
+package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.*;
 import io.xream.sqli.core.Mappable;
 import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.SqlScript;
+import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.exception.CriteriaSyntaxException;
-import io.xream.sqli.repository.exception.SqlBuildException;
 import io.xream.sqli.support.ResultMapSingleSourceSupport;
 import io.xream.sqli.support.TimestampSupport;
 import io.xream.sqli.util.JsonWrapper;
@@ -40,7 +40,18 @@ import java.util.stream.Collectors;
 /**
  * @Author Sim
  */
-public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
+public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
+
+    private static CriteriaToSql instance;
+    private DefaultCriteriaToSql(){}
+
+    public static CriteriaToSql newInstance(){
+        if(instance == null){
+            instance = new DefaultCriteriaToSql();
+            return instance;
+        }
+        return null;
+    }
 
     @Override
     public String toSql(CriteriaCondition criteriaCondition,List<Object> valueList, Mappable mappable) {
@@ -670,7 +681,7 @@ public class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, 
     }
 
 
-    public static class SqlBuilder {
+    public static final class SqlBuilder {
 
         private StringBuilder sbResult = new StringBuilder();
         private StringBuilder sbSource = new StringBuilder();

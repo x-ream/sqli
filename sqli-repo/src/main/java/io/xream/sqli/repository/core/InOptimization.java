@@ -16,12 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.cache;
+package io.xream.sqli.repository.core;
 
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.core.CacheableRepository;
 
 import java.util.ArrayList;
 import java.util.List;

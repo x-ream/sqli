@@ -20,16 +20,16 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.converter.ObjectDataConverter;
-import io.xream.sqli.core.Dialect;
-import io.xream.sqli.core.JdbcWrapper;
-import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.builder.internal.PageBuilderHelper;
+import io.xream.sqli.repository.converter.ObjectDataConverter;
+import io.xream.sqli.repository.core.Dialect;
+import io.xream.sqli.repository.core.JdbcWrapper;
+import io.xream.sqli.repository.core.RowHandler;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.builder.PageBuilder;
 import io.xream.sqli.repository.core.KeyOne;
 import io.xream.sqli.repository.exception.TooManyResultsException;
 import io.xream.sqli.repository.init.SqlInit;
@@ -237,7 +237,7 @@ public final class DaoImpl implements Dao {
         Parsed parsed = Parser.get(clz);
         ResultSortUtil.sort(list, criteria, parsed);
 
-        Page<T> pagination = PageBuilder.build(criteria, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
+        Page<T> pagination = PageBuilderHelper.build(criteria, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
 
         return pagination;
     }
@@ -342,7 +342,7 @@ public final class DaoImpl implements Dao {
 
         List<Map<String, Object>> list = this.jdbcWrapper.queryForResultMapList(sql, valueList,resultMapped, clz, this.dialect);
 
-        Page<Map<String, Object>> pagination = PageBuilder.build(resultMapped, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
+        Page<Map<String, Object>> pagination = PageBuilderHelper.build(resultMapped, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
 
         return pagination;
     }

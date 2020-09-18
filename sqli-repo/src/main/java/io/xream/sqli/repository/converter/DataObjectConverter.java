@@ -16,15 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.converter;
+package io.xream.sqli.repository.converter;
 
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.core.Dialect;
 import io.xream.sqli.util.BeanUtil;
 
 import java.lang.reflect.Method;

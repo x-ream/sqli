@@ -18,8 +18,6 @@
  */
 package io.xream.sqli.repository.api;
 
-import io.xream.sqli.repository.core.NativeSupport;
-
 /**
  * @Author Sim
  */

@@ -16,36 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.repository.cache;
 
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.repository.api.NativeSupport;
-import io.xream.sqli.repository.exception.BeanUninitializedException;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public class L2CacheFilter {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+    protected static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
 
-    private static boolean initialized = false;
-
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
+    protected static Object get() {
+        return threadLocal.get();
     }
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
+    protected static void close() {
+        threadLocal.remove();
     }
+
 }

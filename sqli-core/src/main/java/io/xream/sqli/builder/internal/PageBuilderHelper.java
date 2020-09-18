@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.builder;
+package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.page.Page;
@@ -26,7 +26,9 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public final class PageBuilder {
+public final class PageBuilderHelper {
+
+    private PageBuilderHelper(){}
 
     public static <T> Page<T> build(Criteria criteria, List<T> list, TotalRows totalRows) {
 

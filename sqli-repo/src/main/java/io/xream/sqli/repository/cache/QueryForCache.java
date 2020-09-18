@@ -16,12 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.cache;
+
+import io.xream.sqli.builder.InCondition;
+
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface IdGenerator {
-
-    long createId(String clzName);
+public interface QueryForCache {
+    <T> List<T> in(InCondition inCondition);
 }

@@ -16,17 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.exception;
+package io.xream.sqli.repository.api;
+
+
+import io.xream.sqli.repository.cache.L2CacheFilter;
+import io.xream.sqli.util.SqliStringUtil;
 
 /**
  * @Author Sim
  */
-public class CriteriaSyntaxException extends RuntimeException{
+public final class CacheFilter extends L2CacheFilter {
 
-    private static final long serialVersionUID = 5749142995547236081L;
-
-    public CriteriaSyntaxException(String message){
-        super(message);
+    /**
+     * partialKey maybe is userId
+     * @param partialKey
+     */
+    public static void filter(Object partialKey) {
+        if (SqliStringUtil.isNullOrEmpty(partialKey))
+            return;
+        threadLocal.set(partialKey);
     }
+
 
 }

@@ -16,22 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.cache;
-
-import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.util.ParserUtil;
-import io.xream.sqli.util.SqliStringUtil;
+package io.xream.sqli.exception;
 
 /**
  * @Author Sim
  */
-public interface CreateOrReplaceOptimization {
+public class CriteriaSyntaxException extends RuntimeException{
 
-    static Object tryToGetId(Object obj, Parsed parsed){
-        Object id = ParserUtil.tryToGetId(obj, parsed);
-        String idStr = String.valueOf(id);
-        if (SqliStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
-            throw new IllegalArgumentException("createOrReplace(obj),  obj keyOne = " + id);
-        return id;
+    private static final long serialVersionUID = 5749142995547236081L;
+
+    public CriteriaSyntaxException(String message){
+        super(message);
     }
+
 }

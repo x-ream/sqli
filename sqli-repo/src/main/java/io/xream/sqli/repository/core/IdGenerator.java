@@ -16,12 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.core;
 
 /**
  * @Author Sim
  */
-public interface Typed<T> {
+public interface IdGenerator {
 
-    Class<T> getClzz();
+    long createId(String clzName);
 }

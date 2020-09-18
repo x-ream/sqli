@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.repository.internal;
 
-import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.repository.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.parser.Parsed;

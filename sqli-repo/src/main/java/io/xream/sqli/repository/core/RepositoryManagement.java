@@ -16,16 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.cache;
+package io.xream.sqli.repository.core;
+
+import io.xream.sqli.repository.api.BaseRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface Protection {
-    String DEFAULT_VALUE = "NULL";
-    int DEFAULT_NUM = Integer.MIN_VALUE;
+public interface RepositoryManagement {
 
-    default void close(){
-        L2CacheFilter.close();
-    }
+    List<BaseRepository> REPOSITORY_LIST = new ArrayList<BaseRepository>();
 }

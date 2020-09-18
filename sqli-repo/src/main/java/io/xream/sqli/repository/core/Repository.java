@@ -20,8 +20,7 @@ package io.xream.sqli.repository.core;
 
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.RefreshCondition;
-import io.xream.sqli.cache.QueryForCache;
-import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.repository.cache.QueryForCache;
 import io.xream.sqli.page.Page;
 
 import java.util.List;

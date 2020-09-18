@@ -214,12 +214,12 @@
         
     用户级的过滤
     {
-        L2CacheFilter.filter(userId);
+        CacheFilter.filter(userId);
         this.orderRepository.create(order); // refresh and remove
     }
     
     {
-        L2CacheFilter.filter(userId);
+        CacheFilter.filter(userId);
         this.orderRepository.find(criteria);
     }               
     

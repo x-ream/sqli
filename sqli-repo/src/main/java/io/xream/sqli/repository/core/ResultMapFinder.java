@@ -16,9 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.core;
 
-import io.xream.sqli.converter.DataObjectConverter;
+import io.xream.sqli.repository.converter.DataObjectConverter;
+import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.JsonStyleMapUtil;
 
@@ -47,7 +48,7 @@ public interface ResultMapFinder {
         return objectPropertyMapList;
     }
 
-    default Map<String,Object> toResultMap(ResultMapHelpful resultMapHelpful, Dialect dialect, Map<String,Object> dataMap) {
+    default Map<String,Object> toResultMap(ResultMapHelpful resultMapHelpful, Dialect dialect, Map<String, Object> dataMap) {
         Map<String,Object> map = DataMapQuery.FIXED_ROW_MAPPER.mapRow(dataMap,null, resultMapHelpful,dialect);
         if (resultMapHelpful.isResultWithDottedKey())
             return map;
@@ -62,7 +63,7 @@ public interface ResultMapFinder {
     }
 
     interface FixedRowMapper{
-        Map<String,Object> mapRow(Map<String,Object> dataMap, Class clzz, ResultMapHelpful resultMapHelpful, Dialect dialect);
+        Map<String,Object> mapRow(Map<String, Object> dataMap, Class clzz, ResultMapHelpful resultMapHelpful, Dialect dialect);
     }
 
 }

@@ -16,31 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.api;
-
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.core.RowHandler;
-import io.xream.sqli.page.Page;
+package io.xream.sqli.repository.cache;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
- * ResultMap API
  * @Author Sim
  */
-public interface ResultMapRepository {
+public interface L2CacheStorage {
+    boolean set(String key, String time);
 
-    Page<Map<String, Object>> find(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    boolean delete(String key);
 
-    List<Map<String, Object>> list(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    Set<String> keys(String key);
 
-    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    String get(String nsKey);
 
-    /**
-     * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param resultMapCriteria
-     * @param handler
-     */
-    void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler);
+    boolean set(String key, String toJson, int validSecond, TimeUnit timeUnit);
+
+    List<String> multiGet(List<String> keyArr);
+
 }

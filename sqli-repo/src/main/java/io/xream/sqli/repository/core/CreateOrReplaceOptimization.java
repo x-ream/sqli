@@ -16,15 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.cache;
+package io.xream.sqli.repository.core;
+
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.ParserUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 /**
- *  Suggest send message to MQ to refresh again <br>
  * @Author Sim
  */
-public interface L2CacheConsistency {
+public interface CreateOrReplaceOptimization {
 
-    boolean markForRefresh(Class clz);
-    boolean remove(Class clz, String key);
-    boolean remove(Class clz);
+    static Object tryToGetId(Object obj, Parsed parsed){
+        Object id = ParserUtil.tryToGetId(obj, parsed);
+        String idStr = String.valueOf(id);
+        if (SqliStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
+            throw new IllegalArgumentException("createOrReplace(obj),  obj keyOne = " + id);
+        return id;
+    }
 }

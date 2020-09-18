@@ -18,10 +18,10 @@
  */
 package io.xream.sqli.starter;
 
-import io.xream.sqli.api.BaseRepository;
-import io.xream.sqli.core.RepositoryManagement;
+import io.xream.sqli.repository.api.BaseRepository;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.core.NativeSupport;
+import io.xream.sqli.repository.api.NativeSupport;
+import io.xream.sqli.repository.core.RepositoryManagement;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.util.SqliStringUtil;

@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.repository.init;
 
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.repository.core.Dialect;
 import io.xream.sqli.util.BeanUtil;
 
 import java.math.BigDecimal;
