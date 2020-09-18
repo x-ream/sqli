@@ -1,4 +1,6 @@
 /*
+ * Copyright 2020 io.xream.sqli
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -23,57 +25,50 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
- * 
  * @author Sim
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE}) 
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 public @interface X {
-	
-	int KEY_ONE = 1;
 
-	/**
-	 * 
-	 * only effect on getter<br>
-	 */
-	int length() default 60;
-	
-	
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ElementType.FIELD, ElementType.TYPE}) 
-	@interface Mapping {
-		String value() default "";
-	}
+    int KEY_ONE = 1;
+
+    /**
+     * only effect on getter<br>
+     */
+    int length() default 60;
 
 
-	/**
-	 * 
-	 * not cached two
-	 *
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ElementType.TYPE})
-	@interface NoCache{
-	}
-	
-	/**
-	 * 
-	 * only effect on property<br>
-	 * will not save the property in relation DB, like MySql<br>
-	 * but will save the property int cache, or K-V DB,like mc or redis<br>
-	 * instead of "transient", while transport the stream of object
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ElementType.FIELD})
-	@interface Ignore{
-	}
-	
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.TYPE})
+    @interface Mapping {
+        String value() default "";
+    }
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ElementType.FIELD})
-	@interface Key{
-	}
+
+    /**
+     * not cached two
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE})
+    @interface NoCache {
+    }
+
+    /**
+     * only effect on property<br>
+     * will not save the property in relation DB, like MySql<br>
+     * but will save the property int cache, or K-V DB,like mc or redis<br>
+     * instead of "transient", while transport the stream of object
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD})
+    @interface Ignore {
+    }
+
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD})
+    @interface Key {
+    }
 
 }
