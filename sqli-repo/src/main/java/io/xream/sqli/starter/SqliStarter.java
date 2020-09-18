@@ -16,39 +16,27 @@
  */
 package io.xream.sqli.starter;
 
-import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.cache.L2CacheResolver;
-import io.xream.sqli.core.*;
-import io.xream.sqli.repository.builder.DefaultCriteriaToSql;
+import io.xream.sqli.core.Dialect;
+import io.xream.sqli.core.JdbcWrapper;
+import io.xream.sqli.repository.api.NativeRepository;
 import io.xream.sqli.repository.cache.CacheableRepository;
-import io.xream.sqli.repository.core.Manuable;
+import io.xream.sqli.repository.core.NativeSupport;
 import io.xream.sqli.repository.core.Repository;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.repository.dao.DaoImpl;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.dao.TemporaryDaoImpl;
 import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
-import io.xream.sqli.repository.internal.DefaultRepository;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
-import io.xream.sqli.repository.transform.DataTransform;
-
-import java.util.concurrent.Callable;
+import io.xream.sqli.repository.internal.NativeRepositoryImpl;
 
 /**
  * @Author Sim
  */
-public class SqliStarter implements RepositoryInitializer {
-
-    private IdGenerator idGenerator;
-    private CriteriaToSql criteriaParser;
-    private Dao dao;
-    private Repository dataRepository;
-    private TemporaryRepository.Parser temporaryTableParser;
-    private TemporaryDao temporaryDao;
-    private TemporaryRepository temporaryRepository;
-
+public class SqliStarter {
 
     private static SqliStarter instance;
     public static SqliStarter getInstance(){
@@ -58,62 +46,47 @@ public class SqliStarter implements RepositoryInitializer {
         return instance;
     }
     private SqliStarter(){
-        init();
-    }
-    private void init(){
-        criteriaParser =  new DefaultCriteriaToSql();
-
-        dao = new DaoImpl();
-
-        dataRepository = new CacheableRepository();
-        ManuRepositoryStarter.init((Manuable) dataRepository);
-
-        temporaryTableParser = new DefaultTemporaryTableParser();
-        temporaryDao = new TemporaryDaoImpl();
-        temporaryRepository = new DefaultTemporaryRepository();
-        ((DefaultTemporaryRepository)temporaryRepository).setTemporaryDao(temporaryDao);
-        ((DefaultTemporaryRepository)temporaryRepository).setTemporaryRepositoryParser(temporaryTableParser);
 
     }
 
-    public Dao getDao(){
-        return this.dao;
-    }
+    public Repository repository(CriteriaToSql criteriaParser, JdbcWrapper jdbcWrapper,
+                                         Dialect dialect,
+                                         L2CacheResolver l2CacheResolver
+                                         ){
+        Dao dao = DaoImpl.newInstance();
 
-    public void setDataTransformAfterInit(Callable<DataTransform> callable){
-        DataTransform dataTransform = null;
-        try{
-            dataTransform = callable.call();
-        }catch (Exception e){
-        }
-        ((CacheableRepository)dataRepository).setDataTransform(dataTransform);
-        ((DefaultTemporaryRepository)temporaryRepository).setDataTransform(dataTransform);
-    }
+        CacheableRepository repository = CacheableRepository.newInstance();
 
-    public void setJdbcWrapper(JdbcWrapper jdbcWrapper){
+        repository.setDao(dao);
+        ((DaoImpl)dao).setCriteriaToSql(criteriaParser);
         ((DaoImpl)dao).setJdbcWrapper(jdbcWrapper);
-        ((TemporaryDaoImpl)temporaryDao).setJdbcWrapper(jdbcWrapper);
-    }
-
-    public void setIdGenerator(IdGenerator idGenerator) {
-        this.idGenerator = idGenerator;
-    }
-
-    public void setL2CacheResolver(L2CacheResolver l2CacheResolver) {
-        ((CacheableRepository)dataRepository).setCacheResolver(l2CacheResolver);
-    }
-
-    public void setDialect(Dialect dialect) {
-
-//        criteriaParser.setDialect(dialect);
         ((DaoImpl)dao).setDialect(dialect);
-        ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
+
+        repository.setCacheResolver(l2CacheResolver);
+
+        return repository;
     }
 
-    @Override
-    public <T> void register(BaseRepository<T> baseRepository){
-        ((DefaultRepository<T>)baseRepository).setIdGeneratorService(idGenerator);
-        ((DefaultRepository<T>)baseRepository).setRepository(dataRepository);
-        RepositoryManagement.REPOSITORY_LIST.add(baseRepository);
+
+    public TemporaryRepository temporaryRepository(CriteriaToSql criteriaParser, JdbcWrapper jdbcWrapper,Dialect dialect,Repository repository){
+        TemporaryRepository.Parser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
+        TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
+        ((TemporaryDaoImpl)temporaryDao).setJdbcWrapper(jdbcWrapper);
+        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(criteriaParser);
+        ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
+
+        TemporaryRepository tr = DefaultTemporaryRepository.newInstance();
+        ((DefaultTemporaryRepository)tr).setTemporaryDao(temporaryDao);
+        ((DefaultTemporaryRepository)tr).setTemporaryRepositoryParser(temporaryTableParser);
+        ((DefaultTemporaryRepository)tr).setRepository(repository);
+        return tr;
     }
+
+
+    public NativeRepository nativeRepository(Repository repository){
+        NativeRepository nativeRepository = NativeRepositoryImpl.newInstance();
+        ((NativeRepositoryImpl) nativeRepository).setNativeSupport((NativeSupport) repository);
+        return nativeRepository;
+    }
+
 }

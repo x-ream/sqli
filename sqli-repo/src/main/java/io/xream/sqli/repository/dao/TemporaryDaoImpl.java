@@ -38,11 +38,23 @@ import java.util.List;
  */
 public final class TemporaryDaoImpl implements TemporaryDao{
 
+    private static TemporaryDao instance;
+
     private CriteriaToSql criteriaToSql;
 
     private Dialect dialect;
 
     private JdbcWrapper jdbcWrapper;
+
+    private TemporaryDaoImpl(){}
+
+    public static TemporaryDao newInstance(){
+        if(instance == null){
+            instance = new TemporaryDaoImpl();
+            return instance;
+        }
+        return null;
+    }
 
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;

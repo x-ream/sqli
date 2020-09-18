@@ -20,8 +20,8 @@ import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.repository.core.Repository;
 import io.xream.sqli.repository.dao.TemporaryDao;
-import io.xream.sqli.repository.transform.DataTransform;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 import org.slf4j.Logger;
@@ -36,16 +36,25 @@ import java.util.concurrent.Callable;
 public final class DefaultTemporaryRepository implements TemporaryRepository {
 
     private static Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
+    private static TemporaryRepository instance;
     private TemporaryDao temporaryDao;
     private Parser temporaryRepositoryParser;
-    private DataTransform dataTransform;
+    private Repository repository;
 
-    public DefaultTemporaryRepository(){
+    private DefaultTemporaryRepository(){
         SqliLoggerProxy.put(TemporaryRepository.class,logger);
     }
 
-    public void setDataTransform(DataTransform dataTransform) {
-        this.dataTransform = dataTransform;
+    public static TemporaryRepository newInstance(){
+        if (instance == null){
+            instance = new DefaultTemporaryRepository();
+            return instance;
+        }
+        return null;
+    }
+
+    public void setRepository(Repository repository) {
+        this.repository = repository;
     }
 
     public void setTemporaryDao(TemporaryDao temporaryDao) {
@@ -76,12 +85,12 @@ public final class DefaultTemporaryRepository implements TemporaryRepository {
 
     @Override
     public boolean create(Object obj) {
-        return doProxy("create(Object)", () -> dataTransform.create(obj));
+        return doProxy("create(Object)", () -> repository.create(obj));
     }
 
     @Override
     public boolean createBatch(List objList) {
-        return doProxy("createBatch(List)", () -> dataTransform.createBatch(objList) );
+        return doProxy("createBatch(List)", () -> repository.createBatch(objList) );
     }
 
     @Override

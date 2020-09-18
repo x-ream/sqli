@@ -22,18 +22,9 @@ package io.xream.sqli.repository.exception;
 public class CriteriaSyntaxException extends RuntimeException{
 
     private static final long serialVersionUID = 5749142995547236081L;
-    private String message;
-
-    public CriteriaSyntaxException(){
-
-    }
 
     public CriteriaSyntaxException(String message){
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+        super(message);
     }
 
 }

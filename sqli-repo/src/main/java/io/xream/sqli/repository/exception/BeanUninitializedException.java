@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.transform.customizer;
-
-import io.xream.sqli.repository.transform.DataTransform;
+package io.xream.sqli.repository.exception;
 
 /**
  * @Author Sim
  */
-public interface DataTransformCustomizer {
+public class BeanUninitializedException extends RuntimeException {
 
-    DataTransform customize();
+    public BeanUninitializedException(String message){
+        super(message);
+    }
+
 }

@@ -19,6 +19,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.repository.core.KeyOne;
@@ -32,7 +33,7 @@ import java.util.Map;
  * @author Sim
  *
  */
-public interface Dao {
+public interface Dao extends QueryForCache {
 
 	boolean create(Object obj);
 
@@ -46,7 +47,7 @@ public interface Dao {
 	
 	<T> List<T> list(Object conditionObj);
 	
-	List<Map<String,Object>>  list(Class clz, String sql,
+	List<Map<String,Object>>  list(String sql,
                                    List<Object> conditionSet);
 
 	<T> T get(KeyOne<T> keyOne);
@@ -64,7 +65,7 @@ public interface Dao {
 	<T> List<T> list(Criteria criteria);
 
 	@Deprecated
-	<T>boolean execute(T obj, String sql);
+	<T> boolean execute(Class<T> clzz, String sql);
 
 	<T> T getOne(T conditionObj);
 

@@ -14,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.api;
 
-import io.xream.sqli.api.BaseRepository;
+import io.xream.sqli.repository.core.NativeSupport;
 
 /**
  * @Author Sim
  */
-public interface RepositoryInitializer {
-    <T> void register(BaseRepository<T> baseRepository);
+public interface NativeRepository extends NativeSupport {
 }

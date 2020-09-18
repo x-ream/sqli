@@ -23,17 +23,17 @@ import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.exception.QueryException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.core.KeyOne;
-import io.xream.sqli.repository.core.Manuable;
+import io.xream.sqli.repository.core.NativeSupport;
 import io.xream.sqli.repository.core.Repository;
-import io.xream.sqli.repository.transform.DataTransform;
+import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.util.ParserUtil;
+import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -43,16 +43,23 @@ import java.util.concurrent.Callable;
 /**
  * @author Sim
  */
-public final class CacheableRepository implements Repository, Manuable {
+public final class CacheableRepository implements Repository, NativeSupport {
 
-    private final static Logger logger = LoggerFactory.getLogger(Repository.class);
-
-    private DataTransform dataTransform;
+    private static CacheableRepository instance;
+    private Dao dao;
     private L2CacheResolver cacheResolver;
 
-    public void setDataTransform(DataTransform dataTransform) {
-        logger.info("x7-repo/x7-jdbc-template-plus on starting....");
-        this.dataTransform = dataTransform;
+    private CacheableRepository(){};
+    public static CacheableRepository newInstance(){
+        if (instance == null){
+            instance = new CacheableRepository();
+            return instance;
+        }
+        return null;
+    }
+
+    public void setDao(Dao dao) {
+        this.dao = dao;
     }
 
     public void setCacheResolver(L2CacheResolver cacheResolver) {
@@ -75,7 +82,7 @@ public final class CacheableRepository implements Repository, Manuable {
 
         Class clz = obj.getClass();
         Parsed parsed = Parser.get(clz);
-        boolean flag = dataTransform.create(obj);
+        boolean flag = dao.create(obj);
 
         if (isCacheEnabled(parsed))
             cacheResolver.markForRefresh(clz);
@@ -89,7 +96,7 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
         Object id = CreateOrReplaceOptimization.tryToGetId(obj,parsed);
 
-        boolean flag = dataTransform.createOrReplace(obj);
+        boolean flag = dao.createOrReplace(obj);
 
         if (!flag) return flag;
 
@@ -103,7 +110,7 @@ public final class CacheableRepository implements Repository, Manuable {
     public <T> boolean refresh(T t) {
         if (t == null)
             return false;
-        boolean flag = dataTransform.refresh(t);
+        boolean flag = dao.refresh(t);
         if (!flag) return flag;
 
         Class clz = t.getClass();
@@ -119,7 +126,7 @@ public final class CacheableRepository implements Repository, Manuable {
     @Override
     public <T> boolean refresh(RefreshCondition<T> refreshCondition) {
 
-        boolean flag = dataTransform.refresh(refreshCondition);
+        boolean flag = dao.refreshByCondition(refreshCondition);
 
         if (!flag) return flag;
 
@@ -151,7 +158,7 @@ public final class CacheableRepository implements Repository, Manuable {
 
         Class clz = keyOne.getClzz();
         Parsed parsed = Parser.get(clz);
-        boolean flag = dataTransform.remove(keyOne);
+        boolean flag = dao.remove(keyOne);
 
         if (!flag) return flag;
 
@@ -164,7 +171,14 @@ public final class CacheableRepository implements Repository, Manuable {
 
     @Override
     public <T> List<T> listByClzz(Class<T> clzz) {
-        return this.dataTransform.listByClzz(clzz);
+        try {
+            return this.dao.list(clzz.newInstance());
+        }catch (Exception e){
+            if (e instanceof RuntimeException){
+                throw (RuntimeException) e;
+            }
+            throw new QueryException(SqliExceptionUtil.getMessage(e));
+        }
     }
 
     @Override
@@ -174,12 +188,12 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.list(conditionObj);
+            return dao.list(conditionObj);
 
         return cacheResolver.listUnderProtection(clz,
                 conditionObj,
-                dataTransform,
-                (Callable<List<T>>) () -> dataTransform.list(conditionObj));
+                dao,
+                (Callable<List<T>>) () -> dao.list(conditionObj));
     }
 
     @Override
@@ -189,12 +203,12 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.find(criteria);
+            return dao.find(criteria);
 
         return cacheResolver.findUnderProtection(criteria,
-                dataTransform,
-                () -> dataTransform.find(criteria),
-                () -> dataTransform.list(criteria));
+                dao,
+                () -> dao.find(criteria),
+                () -> dao.list(criteria));
     }
 
 
@@ -205,27 +219,26 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.list(criteria);
+            return dao.list(criteria);
 
         return cacheResolver.listUnderProtection(
                 criteria,
-                dataTransform,
-                () -> dataTransform.list(criteria));
+                dao,
+                () -> dao.list(criteria));
 
     }
 
 
-    public <T> boolean execute(T obj, String sql) {
+    public <T> boolean execute(Class<T> clzz, String sql) {
 
-        Class clz = obj.getClass();
-        Parsed parsed = Parser.get(clz);
-        boolean b = dataTransform.execute(obj, sql);
+        Parsed parsed = Parser.get(clzz);
+        boolean b = dao.execute(clzz, sql);
 
         if (!b)
             return b;
         if (isCacheEnabled(parsed)) {
-            String key = ParserUtil.getCacheKey(obj, parsed);
-            cacheResolver.refresh(clz, key);
+            String key = ParserUtil.getCacheKey(clzz, parsed);
+            cacheResolver.refresh(clzz, key);
         }
 
         return b;
@@ -238,14 +251,14 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.in(inCondition);
+            return dao.in(inCondition);
 
         String condition = InOptimization.keyCondition(inCondition);
 
         return cacheResolver.listUnderProtection(clz,
                 condition,
-                dataTransform,
-                (Callable<List<T>>) () -> dataTransform.in(inCondition));
+                dao,
+                (Callable<List<T>>) () -> dao.in(inCondition));
 
     }
 
@@ -263,7 +276,7 @@ public final class CacheableRepository implements Repository, Manuable {
 
         Class clz = objList.get(0).getClass();
         Parsed parsed = Parser.get(clz);
-        boolean flag = this.dataTransform.createBatch(objList);
+        boolean flag = this.dao.createBatch(objList);
         if (isCacheEnabled(parsed))
             cacheResolver.markForRefresh(clz);
 
@@ -278,11 +291,11 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.get(keyOne);
+            return dao.get(keyOne);
 
         String condition = String.valueOf(keyOne.get());//IMPORTANT
 
-        return cacheResolver.getUnderProtection(clz, condition, () -> dataTransform.get(keyOne));
+        return cacheResolver.getUnderProtection(clz, condition, () -> dao.get(keyOne));
 
     }
 
@@ -293,40 +306,40 @@ public final class CacheableRepository implements Repository, Manuable {
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dataTransform.getOne(condition);
+            return dao.getOne(condition);
 
-        return cacheResolver.getOneUnderProtection(clz, condition, () -> dataTransform.getOne(condition));
+        return cacheResolver.getOneUnderProtection(clz, condition, () -> dao.getOne(condition));
     }
 
     @Override
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
-        return dataTransform.find(resultMapped);
+        return dao.find(resultMapped);
     }
 
     @Override
     public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
-        return dataTransform.list(resultMapped);
+        return dao.list(resultMapped);
     }
 
     @Override
     public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
-        return dataTransform.listPlainValue(clzz,resultMapped);
+        return dao.listPlainValue(clzz,resultMapped);
     }
 
 
     @Override
-    public List<Map<String, Object>> list(Class clz, String sql, List<Object> conditionSet) {
-        return dataTransform.list(clz, sql, conditionSet);
+    public List<Map<String, Object>> list(String sql, List<Object> conditionSet) {
+        return dao.list(sql, conditionSet);
     }
 
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
-        this.dataTransform.findToHandle(criteria,handler);
+        this.dao.findToHandle(criteria,handler);
     }
 
     @Override
     public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler) {
-        this.dataTransform.findToHandle(ResultMapCriteria,handler);
+        this.dao.findToHandle(ResultMapCriteria,handler);
     }
 
 }

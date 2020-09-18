@@ -19,7 +19,7 @@ package io.xream.sqli.starter;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.api.ManuRepository;
+import io.xream.sqli.repository.core.NativeSupport;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.util.SqliStringUtil;
@@ -36,7 +36,7 @@ public class HealthChecker {
     private static HealthChecker instance;
     private HealthChecker(){}
 
-    public static void onStarted() {
+    public static void onStarted(NativeSupport nativeSupport) {
 
         if (instance != null)
             return;
@@ -49,7 +49,6 @@ public class HealthChecker {
             Parser.get(repository.getClzz());
         }
 
-        logger.info("-------------------------------------------------");
 
         boolean flag = false;
 
@@ -62,21 +61,20 @@ public class HealthChecker {
                 String createSql = SqlInitFactory.tryToCreate(clz);
                 String test = SqlInitFactory.getSql(clz, SqlInit.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {
-                    logger.info("Failed to start x7-jdbc-template-plus, check Bean: {}",clz);
+                    logger.info("Failed to start sqli-repo, check Bean: {}",clz);
                     Runtime.getRuntime().exit(1);
                 }
 
                 if (DbType.value().equals(DbType.MYSQL) && SqliStringUtil.isNotNull(createSql)) {
-                    ManuRepository.execute(clz.newInstance(), createSql);
+                    nativeSupport.execute(clz, createSql);
                 }
-
 
             } catch (Exception e) {
                 flag |= true;
             }
         }
 
-        logger.info("x7-repo/x7-jdbc-template-plus " + (flag ? "still " : "") + "started" + (flag ? " OK, wtih some problem" : "" ) + "\n");
+        logger.info("sqli-repo " + (flag ? "still " : "") + "started" + (flag ? " OK, wtih some problem" : "" ) + "\n");
 
     }
 }

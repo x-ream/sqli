@@ -14,13 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.transform;
+package io.xream.sqli.repository.core;
 
-import io.xream.sqli.repository.core.Manuable;
-import io.xream.sqli.repository.core.Repository;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface DataTransform extends Repository, Manuable {
+public interface NativeSupport {
+
+     <T> boolean execute(Class<T> clzz, String sql);
+
+     List<Map<String,Object>> list(String sql, List<Object> conditionList);
 }

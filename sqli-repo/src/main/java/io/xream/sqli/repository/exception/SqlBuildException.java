@@ -22,16 +22,9 @@ package io.xream.sqli.repository.exception;
 public class SqlBuildException extends RuntimeException {
 
     private static final long serialVersionUID = 5741842995896266081L;
-    private String message;
-
-    public SqlBuildException(){
-    }
 
     public SqlBuildException(String message){
-        this.message = message;
+        super(message);
     }
 
-    public String getMessage() {
-        return message;
-    }
 }

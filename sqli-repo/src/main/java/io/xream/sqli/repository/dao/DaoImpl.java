@@ -48,11 +48,20 @@ public final class DaoImpl implements Dao {
 
     private Logger logger = LoggerFactory.getLogger(Dao.class);
 
+    private static Dao instance;
     private CriteriaToSql criteriaToSql;
-
     private Dialect dialect;
-
     private JdbcWrapper jdbcWrapper;
+
+    private DaoImpl(){}
+
+    public static Dao newInstance(){
+        if (instance == null){
+            instance = new DaoImpl();
+            return instance;
+        }
+        return null;
+    }
 
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
@@ -158,15 +167,11 @@ public final class DaoImpl implements Dao {
 
 
     @Override
-    public List<Map<String, Object>> list(Class clz, String sql, List<Object> conditionList) {
+    public List<Map<String, Object>> list(String sql, List<Object> conditionList) {
 
         sql = DaoHelper.filter(sql);
-        Parsed parsed = Parser.get(clz);
-        sql = SqlParserUtil.mapperForManu(sql, parsed);
 
-        SqliLoggerProxy.debug(clz, sql);
-
-        return this.jdbcWrapper.queryForList(sql, conditionList,parsed, this.dialect);
+        return this.jdbcWrapper.queryForResultMapList(sql, conditionList,null, null,this.dialect);
     }
 
 
@@ -250,22 +255,20 @@ public final class DaoImpl implements Dao {
 
 
     /**
-     * 没有特殊需求，请不要调用此代码
      *
-     * @param obj
+     * @param clzz
      * @param sql
      */
     @Deprecated
     @Override
-    public boolean execute(Object obj, String sql) {
+    public boolean execute(Class clzz, String sql) {
 
-        Class clz = obj.getClass();
-        Parsed parsed = Parser.get(obj.getClass());
+        Parsed parsed = Parser.get(clzz);
 
         sql = DaoHelper.filter(sql);
-        sql = SqlParserUtil.mapperForManu(sql, parsed);
+        sql = SqlParserUtil.mapperForNative(sql, parsed);
 
-        SqliLoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(clzz, sql);
 
         return this.jdbcWrapper.execute(sql);
 

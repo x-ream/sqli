@@ -29,7 +29,7 @@ public final class SqlParserUtil {
     public final static String SQL_KEYWORD_MARK = "`";
 
 
-    public static String mapperForManu(String sqlSegment, Parsed parsed) {
+    public static String mapperForNative(String sqlSegment, Parsed parsed) {
 
         sqlSegment = mapper(sqlSegment,parsed);
 

@@ -37,6 +37,8 @@ import java.util.Map;
 public final class DataObjectConverter {
 
     public static Map<String,Object> toMapWithKeyOfObjectProperty(Map<String,Object> dataMap, Class orClzz, ResultMapHelpful resultMapHelpful, Dialect dialect) {
+        if (resultMapHelpful == null && orClzz == null)
+            return dataMap;
         Map<String, Object> propertyMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
             String mapper = entry.getKey();

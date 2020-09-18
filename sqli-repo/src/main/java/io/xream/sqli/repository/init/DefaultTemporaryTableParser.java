@@ -29,7 +29,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
 
+    private static TemporaryRepository.Parser instance;
+
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
+
+    private DefaultTemporaryTableParser(){}
+
+    public static TemporaryRepository.Parser newInstance(){
+        if (instance == null){
+            instance = new DefaultTemporaryTableParser();
+            return instance;
+        }
+        return null;
+    }
 
     @Override
     public String parseAndGetSql(Class clzz){
