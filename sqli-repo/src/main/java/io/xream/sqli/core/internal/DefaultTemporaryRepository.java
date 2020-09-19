@@ -20,10 +20,10 @@ package io.xream.sqli.core.internal;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.core.Repository;
-import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.core.dao.TemporaryDao;
+import io.xream.sqli.exception.ProxyException;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 import org.slf4j.Logger;

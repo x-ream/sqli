@@ -19,10 +19,10 @@
 package io.xream.sqli.core.init;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.core.util.SqlParserUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.core.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;

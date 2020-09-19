@@ -19,8 +19,8 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.core.exception.BeanUninitializedException;
+import io.xream.sqli.parser.ParserListener;
 
 /**
  * @Author Sim
