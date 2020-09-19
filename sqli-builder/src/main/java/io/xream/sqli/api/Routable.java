@@ -16,12 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.api;
 
 /**
+ * to find target unit,
+ * not for db sharding,
+ * not suggest having Criteria,RefreshCondition as the request object, the interface
+ * of Routeable maybe meaningless, of cource, your request object clzz can implements
+ * Routeable
+ *
  * @Author Sim
  */
-public interface ScriptSplitable {
-
-    String[] split(String reg);
+public interface Routable {
+    Object getRouteKey();
 }

@@ -87,4 +87,9 @@ public interface Mapper {
 
     }
 
+    interface ScriptSplitable {
+        String[] split(String reg);
+    }
+
+
 }
