@@ -20,7 +20,6 @@ package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.*;
 import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.ParsingException;
@@ -85,8 +84,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         parseAlia(isSub, criteria, sqlBuilder);
 
         filter0(criteria);
-
-        env(criteria);
 
         /*
          * select column
@@ -280,17 +277,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
 
-    private void env(Criteria criteria) {
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
-            PropertyMapping propertyMapping = resultMapped.getPropertyMapping();//
-            if (Objects.isNull(propertyMapping)) {
-                propertyMapping = new PropertyMapping();
-                resultMapped.setPropertyMapping(propertyMapping);
-            }
-        }
-    }
-
     private String resultKey(SqlBuilder sqlBuilder, Criteria criteria) {
         if (!(criteria instanceof Criteria.ResultMapCriteria))
             return SqlScript.STAR;
@@ -300,7 +286,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
         StringBuilder column = new StringBuilder();
 
-        PropertyMapping propertyMapping = resultMapped.getPropertyMapping();
+        Map<String,String> mapperPropertyMap = resultMapped.getMapperPropertyMap();
 
         if (Objects.nonNull(resultMapped.getDistinct())) {
 
@@ -313,7 +299,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             for (String resultKey : list) {
                 addConditonBeforeOptimization(resultKey,sqlBuilder.conditionSet);
                 String mapper = mapping(resultKey, resultMapped);
-                propertyMapping.put(resultKey, mapper);//REDUCE ALIAN NAME
+                mapperPropertyMap.put(mapper, resultKey);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
                 mapper = generate(mapper, resultMapped);
                 column.append(SqlScript.SPACE).append(mapper);
@@ -382,10 +368,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             }
             int size = resultList.size();
             for (int i = 0; i < size; i++) {
-                String key = resultList.get(i);
-                addConditonBeforeOptimization(key,sqlBuilder.conditionSet);
-                String mapper = mapping(key, criteria);
-                propertyMapping.put(key, mapper);
+                String resultKey = resultList.get(i);
+                addConditonBeforeOptimization(resultKey,sqlBuilder.conditionSet);
+                String mapper = mapping(resultKey, criteria);
+                mapperPropertyMap.put(mapper, resultKey);
                 mapper = generate(mapper, resultMapped);
                 column.append(SqlScript.SPACE).append(mapper);
                 if (i < size - 1) {
@@ -405,9 +391,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             int size = resultListAssignedAliaList.size();
             for (int i = 0; i < size; i++) {
                 KV kv = resultListAssignedAliaList.get(i);
-                addConditonBeforeOptimization(kv.getK(),sqlBuilder.conditionSet);
-                String mapper = mapping(kv.getK(), criteria);
-                propertyMapping.put(kv.getK(), mapper);
+                String key = kv.getK();
+                addConditonBeforeOptimization(key,sqlBuilder.conditionSet);
+                String mapper = mapping(key, criteria);
+                mapperPropertyMap.put(mapper, key);
                 String alian = kv.getV().toString();
                 resultMapped.getResultKeyAliaMap().put(alian, mapper);
                 column.append(SqlScript.SPACE).append(mapper).append(SqlScript.AS).append(alian);
@@ -441,7 +428,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String aliaKey = functionResultKey.getAlia();
                 String alian = aliaKey.replace(".","_");
                 resultKeyAliaMap.put(aliaKey, alian);
-                propertyMapping.put(aliaKey, alian);
+                mapperPropertyMap.put(alian, aliaKey);
                 column.append(SqlScript.SPACE).append(function).append(SqlScript.AS).append(alian);
                 if (i < size - 1) {
                     column.append(SqlScript.COMMA);

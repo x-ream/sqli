@@ -56,7 +56,7 @@ public final class DataObjectConverter {
                     property = dialect.transformAlia(mapper, resultMapHelpful.getAliaMap(), resultMapHelpful.getResultKeyAliaMap());
                 } else {
                     mapper = dialect.transformAlia(mapper, resultMapHelpful.getAliaMap(), resultMapHelpful.getResultKeyAliaMap());
-                    property = resultMapHelpful.getPropertyMapping().property(mapper);
+                    property = resultMapHelpful.getMapperPropertyMap().get(mapper);
 
                     if (property.contains(".")) {
                         String[] arr = property.split("\\.");

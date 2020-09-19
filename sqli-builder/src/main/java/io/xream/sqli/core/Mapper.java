@@ -66,12 +66,12 @@ public interface Mapper {
         /*
          * if (anyCloumn != anyTableName) {
          *     if (anyProperty.equals(firstLetterLower(anyClzz.getSimpleName))) {
-         *         throw new RuntimeException();
+         *         throw new NotSupportedException();
          *     }
          * }
          *
          * if (anyTableAlia.equals(firstLetterLower(anyClzz.getSimpleName))) {
-         *    throw new RuntimeException();
+         *    throw new NotSupportedException();
          * }
          */
         Parsed parsed = Parser.get(key);

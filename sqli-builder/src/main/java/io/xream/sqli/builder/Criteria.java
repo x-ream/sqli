@@ -21,7 +21,6 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.core.Routable;
 import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.PropertyMapping;
 import io.xream.sqli.core.ResultMapHelpful;
 import io.xream.sqli.core.SqlNormalizer;
 import io.xream.sqli.page.Paged;
@@ -214,7 +213,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		private boolean isResultWithDottedKey;
 		private boolean isWithoutOptimization;
 		@JsonIgnore
-		private transient PropertyMapping propertyMapping;
+		private transient Map<String,String> mapperPropertyMap = new HashMap<>();
 		@JsonIgnore
 		private transient Map<String,String> aliaMap = new HashMap<>();
 		@JsonIgnore
@@ -250,12 +249,9 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 			this.distinct = distinct;
 		}
 
-		public PropertyMapping getPropertyMapping() {
-			return this.propertyMapping;
-		}
-
-		public void setPropertyMapping(PropertyMapping propertyMapping) {
-			this.propertyMapping = propertyMapping;
+		@Override
+		public Map<String, String> getMapperPropertyMap() {
+			return mapperPropertyMap;
 		}
 
 		public Map<String, String> getResultKeyAliaMap() {
