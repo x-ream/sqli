@@ -9,15 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sqli-core</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.xream.sqli</groupId>
-            <artifactId>sqli-builder</artifactId>
-            <version>${sqli.version}</version>
-        </dependency>
-    </dependencies>
+    <artifactId>sqli-builder</artifactId>
 
 
 </project>

@@ -16,36 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
-
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+package io.xream.sqli.core.exception;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public class TooManyResultsException extends RuntimeException {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+    private static final long serialVersionUID = 5741842995845366081L;
 
-    private static boolean initialized = false;
-
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
+    public TooManyResultsException(String message){
+        super(message);
     }
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
-    }
 }

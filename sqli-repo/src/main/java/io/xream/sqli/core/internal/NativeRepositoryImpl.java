@@ -16,36 +16,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.core.internal;
 
+
+import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public final class NativeRepositoryImpl implements NativeRepository {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+	private static NativeRepository instance;
+	private NativeRepositoryImpl(){}
+	public static NativeRepository newInstance(){
+		if (instance == null){
+			instance = new NativeRepositoryImpl();
+			return instance;
+		}
+		return null;
+	}
 
-    private static boolean initialized = false;
+	private NativeSupport cacheableRepository;
+	public void setNativeSupport(NativeSupport nativeSupport){
+		if (this.cacheableRepository == null){
+			this.cacheableRepository = nativeSupport;
+		}
+	}
 
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
-    }
+	@Override
+	public <T> boolean execute(Class<T> clzz, String sql){
+		return cacheableRepository.execute(clzz, sql);
+	}
+	@Override
+	public  List<Map<String,Object>> list(String sql, List<Object> conditionList){
+		return cacheableRepository.list(sql, conditionList);
+	}
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
-    }
 }

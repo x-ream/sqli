@@ -16,36 +16,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.api;
 
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.page.Page;
+
+import java.util.List;
+import java.util.Map;
 
 /**
+ * ResultMap API
  * @Author Sim
  */
-public class SqliListener {
+public interface ResultMapRepository {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+    Page<Map<String, Object>> find(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
 
-    private static boolean initialized = false;
+    List<Map<String, Object>> list(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
 
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
-    }
+    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
-    }
+    /**
+     * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
+     * @param resultMapCriteria
+     * @param handler
+     */
+    void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler);
 }

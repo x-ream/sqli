@@ -19,22 +19,22 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.api.NativeRepository;
-import io.xream.sqli.api.NativeSupport;
+import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
 import io.xream.sqli.cache.L2CacheResolver;
-import io.xream.sqli.internal.Dialect;
-import io.xream.sqli.internal.JdbcWrapper;
-import io.xream.sqli.internal.Repository;
-import io.xream.sqli.repository.core.CacheableRepository;
-import io.xream.sqli.repository.dao.Dao;
-import io.xream.sqli.repository.dao.DaoImpl;
-import io.xream.sqli.repository.dao.TemporaryDao;
-import io.xream.sqli.repository.dao.TemporaryDaoImpl;
-import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
-import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
-import io.xream.sqli.repository.internal.NativeRepositoryImpl;
+import io.xream.sqli.core.Dialect;
+import io.xream.sqli.core.JdbcWrapper;
+import io.xream.sqli.core.Repository;
+import io.xream.sqli.core.core.CacheableRepository;
+import io.xream.sqli.core.dao.Dao;
+import io.xream.sqli.core.dao.DaoImpl;
+import io.xream.sqli.core.dao.TemporaryDao;
+import io.xream.sqli.core.dao.TemporaryDaoImpl;
+import io.xream.sqli.core.init.DefaultTemporaryTableParser;
+import io.xream.sqli.core.internal.DefaultTemporaryRepository;
+import io.xream.sqli.core.internal.NativeRepositoryImpl;
 
 /**
  * @Author Sim

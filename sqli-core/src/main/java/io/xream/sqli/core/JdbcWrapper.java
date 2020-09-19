@@ -16,36 +16,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.core;
 
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public interface JdbcWrapper extends Parseable, BaseFinder, ResultMapFinder {
 
-    private static SqliListener instance;
-    private SqliListener(){}
+    <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
 
-    private static boolean initialized = false;
+    boolean create(boolean isAutoIncreaseId, String sql, List<Object> valueList);
 
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
-    }
+    boolean createOrReplace(String sql, List<Object> valueList);
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
+    boolean refresh(String sql, Object[] valueList);
 
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
+    boolean remove(String sql, Object id);
 
-        instance = new SqliListener();
+    boolean execute(String sql);
 
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
+    <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
+
+    interface BatchObjectValues {
+        List<Collection<Object>> valuesList();
     }
 }

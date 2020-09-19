@@ -16,36 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.api;
 
 import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
-
-    private static SqliListener instance;
-    private SqliListener(){}
-
-    private static boolean initialized = false;
-
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
-    }
-
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
-    }
+public interface NativeRepository extends NativeSupport {
 }

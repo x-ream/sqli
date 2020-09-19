@@ -16,36 +16,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.core;
 
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public final class PropertyMapping {
+//    private Map<String, String> propertyMappingMap = new HashMap<String, String>();
+    private Map<String, String> columnPropertyMap = new HashMap<String, String>();
 
-    private static SqliListener instance;
-    private SqliListener(){}
-
-    private static boolean initialized = false;
-
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
+    public void put(String property, String mapper) {
+//        this.propertyMappingMap.put(property, mapper);
+        this.columnPropertyMap.put(mapper, property);
     }
 
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
+//    public String mapper(String property) {
+//        return this.propertyMappingMap.get(property);
+//    }
 
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
+    public String property(String mapper) {
+        String property = this.columnPropertyMap.get(mapper);
+        if (property == null)
+            return mapper;
+        return property;
     }
+
 }

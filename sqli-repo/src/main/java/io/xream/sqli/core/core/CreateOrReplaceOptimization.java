@@ -16,36 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.starter;
+package io.xream.sqli.core.core;
 
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.core.exception.BeanUninitializedException;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.ParserUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 /**
  * @Author Sim
  */
-public class SqliListener {
+public interface CreateOrReplaceOptimization {
 
-    private static SqliListener instance;
-    private SqliListener(){}
-
-    private static boolean initialized = false;
-
-    public static void onBeanCreated(InitPhaseable initPhaseable){
-        initialized |= initPhaseable.init();
-    }
-
-    public static void onStarted(NativeSupport nativeSupport){
-        if (instance != null)
-            return;
-
-        if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
-
-        instance = new SqliListener();
-
-        HealthChecker.onStarted(nativeSupport);
-        ParserListener.onStarted();
+    static Object tryToGetId(Object obj, Parsed parsed){
+        Object id = ParserUtil.tryToGetId(obj, parsed);
+        String idStr = String.valueOf(id);
+        if (SqliStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
+            throw new IllegalArgumentException("createOrReplace(obj),  obj keyOne = " + id);
+        return id;
     }
 }

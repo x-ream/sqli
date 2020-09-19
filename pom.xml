@@ -11,11 +11,10 @@
 	<description>http://sqli.xream.io</description>
 	<url>http://sqli.xream.io</url>
 	<modules>
-		<module>sqli-core</module>
-		<module>sqli-dialect</module>
-		<module>sqli-repo</module>
 		<module>sqli-builder</module>
-		<module>sqli-api</module>
+		<module>sqli-core</module>
+		<module>sqli-repo</module>
+		<module>sqli-dialect</module>
 	</modules>
 
 	<properties>
