@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.dao;
+package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
@@ -26,16 +26,16 @@ import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.JdbcWrapper;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.RowHandler;
-import io.xream.sqli.core.exception.TooManyResultsException;
-import io.xream.sqli.core.init.SqlInit;
-import io.xream.sqli.core.init.SqlInitFactory;
-import io.xream.sqli.core.util.ResultSortUtil;
-import io.xream.sqli.core.util.SqlParserUtil;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.exception.TooManyResultsException;
+import io.xream.sqli.repository.init.SqlInit;
+import io.xream.sqli.repository.init.SqlInitFactory;
+import io.xream.sqli.repository.util.ResultSortUtil;
+import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;

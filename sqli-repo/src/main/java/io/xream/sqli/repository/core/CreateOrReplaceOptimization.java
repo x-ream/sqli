@@ -16,16 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.dao;
+package io.xream.sqli.repository.core;
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.ParserUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 /**
  * @Author Sim
  */
-public interface TemporaryDao {
+public interface CreateOrReplaceOptimization {
 
-    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
-
-    boolean execute(String sql);
+    static Object tryToGetId(Object obj, Parsed parsed){
+        Object id = ParserUtil.tryToGetId(obj, parsed);
+        String idStr = String.valueOf(id);
+        if (SqliStringUtil.isNullOrEmpty(idStr) || idStr.equals("0"))
+            throw new IllegalArgumentException("createOrReplace(obj),  obj keyOne = " + id);
+        return id;
+    }
 }

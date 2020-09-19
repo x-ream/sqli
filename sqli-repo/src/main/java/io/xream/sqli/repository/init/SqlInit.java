@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.init;
+package io.xream.sqli.repository.init;
 
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;

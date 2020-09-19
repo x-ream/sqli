@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.init;
+package io.xream.sqli.repository.init;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.core.util.SqlParserUtil;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;

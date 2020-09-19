@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.core;
+package io.xream.sqli.repository.core;
 
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.filter.BaseTypeFilter;

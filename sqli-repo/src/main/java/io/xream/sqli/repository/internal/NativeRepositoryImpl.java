@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.internal;
+package io.xream.sqli.repository.internal;
 
 
 import io.xream.sqli.api.NativeRepository;

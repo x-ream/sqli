@@ -16,17 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.exception;
+package io.xream.sqli.repository.dao;
+
+import io.xream.sqli.builder.Criteria;
 
 /**
  * @Author Sim
  */
-public class TooManyResultsException extends RuntimeException {
+public interface TemporaryDao {
 
-    private static final long serialVersionUID = 5741842995845366081L;
+    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
 
-    public TooManyResultsException(String message){
-        super(message);
-    }
-
+    boolean execute(String sql);
 }

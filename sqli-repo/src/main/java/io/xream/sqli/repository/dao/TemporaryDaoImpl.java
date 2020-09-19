@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.dao;
+package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;

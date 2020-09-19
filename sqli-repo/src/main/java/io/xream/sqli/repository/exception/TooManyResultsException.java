@@ -16,14 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.exception;
+package io.xream.sqli.repository.exception;
 
 /**
  * @Author Sim
  */
-public class BeanUninitializedException extends RuntimeException {
+public class TooManyResultsException extends RuntimeException {
 
-    public BeanUninitializedException(String message){
+    private static final long serialVersionUID = 5741842995845366081L;
+
+    public TooManyResultsException(String message){
         super(message);
     }
 

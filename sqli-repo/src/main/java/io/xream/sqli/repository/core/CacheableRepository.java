@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core.core;
+package io.xream.sqli.repository.core;
 
 
 import io.xream.sqli.builder.Criteria;
@@ -28,11 +28,11 @@ import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.core.RowHandler;
-import io.xream.sqli.core.dao.Dao;
 import io.xream.sqli.exception.QueryException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
