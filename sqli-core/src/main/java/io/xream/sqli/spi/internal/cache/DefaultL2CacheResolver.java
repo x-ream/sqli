@@ -21,6 +21,7 @@ package io.xream.sqli.spi.internal.cache;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.cache.CriteriaCacheKeyBuildable;
 import io.xream.sqli.cache.L2CacheConsistency;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.cache.QueryForCache;
@@ -51,7 +52,7 @@ import java.util.concurrent.TimeUnit;
  * @author sim
  *
  */
-public final class DefaultL2CacheResolver implements L2CacheResolver {
+public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implements L2CacheResolver {
 
 	private final static Logger logger = LoggerFactory.getLogger(DefaultL2CacheResolver.class);
 	private static L2CacheResolver instance;
@@ -489,7 +490,7 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 
 	@Override
 	public <T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
-		final String criteriaKey = criteria.getCacheKey();
+		final String criteriaKey = buildCacheKey(criteria);
 		final Class clz = criteria.getClzz();
 		List<String> keyList = null;
 		try {
@@ -594,15 +595,13 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 	public <T> Page<T> findUnderProtection(Criteria criteria,QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
 		Class clz = criteria.getClzz();
 		Parsed parsed = Parser.get(clz);
-		final String criteriaKey = criteria.getCacheKey();
+		final String criteriaKey = buildCacheKey(criteria);
 		Page p = getResultKeyListPaginated(clz, criteriaKey);// FIXME
 
 		if (p == null) {
 
-			final String totalRowsString = criteria.getCacheKeyOfTotalRows();
-
 			if (!criteria.isTotalRowsIgnored()) {
-				// totalRows from cache
+				final String totalRowsString = buildCacheKeyOfTotalRows(criteria);
 				long totalRows = getTotalRows(clz, totalRowsString);
 				if (totalRows == DEFAULT_NUM) {
 					try {

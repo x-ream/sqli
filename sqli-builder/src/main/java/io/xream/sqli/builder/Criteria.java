@@ -165,35 +165,6 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		this.sortList = paged.getSortList();
 	}
 
-	public String getCacheKey(){
-		return getCacheKey(false);
-	}
-
-	public String getCacheKeyOfTotalRows(){
-		return getCacheKey(true);
-	}
-
-	private String getCacheKey(boolean isOfTotalRows){
-		StringBuilder sb = new StringBuilder();
-		sb.append(routeKey);
-		for (BuildingBlock buildingBlock : buildingBlockList){
-			sb.append(buildingBlock.getConjunction()).append(buildingBlock.getPredicate()).append(buildingBlock.getKey()).append(buildingBlock.getValue());
-		}
-
-		if (! isOfTotalRows) {
-			sb.append(page).append(rows);
-			if (sortList != null) {
-				for (Sort sort : sortList) {
-					sb.append(sort.getOrderBy()).append(sort.getDirection());
-				}
-			}
-			for (KV kv : fixedSortList){
-				sb.append(kv.k).append(kv.v);
-			}
-		}
-
-		return sb.toString();
-	}
 
 	@Override
 	public String toString() {

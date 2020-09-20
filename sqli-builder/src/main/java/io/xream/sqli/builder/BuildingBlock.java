@@ -20,6 +20,7 @@ package io.xream.sqli.builder;
 
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Sim
@@ -32,7 +33,6 @@ public final class BuildingBlock {
     private Object value;
     private List<BuildingBlock> subList;
     private BuildingBlock parent;
-    private transient String script;
     public BuildingBlock(){}
     public BuildingBlock(boolean isOr){
         if (isOr)
@@ -76,11 +76,21 @@ public final class BuildingBlock {
     public void setParent(BuildingBlock parent) {
         this.parent = parent;
     }
-    public String getScript() {
-        return script;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        BuildingBlock that = (BuildingBlock) object;
+        return conjunction == that.conjunction &&
+                predicate == that.predicate &&
+                Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value) ;
     }
-    public void setScript(String script) {
-        this.script = script;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(conjunction, predicate, key, value);
     }
 
     @Override
@@ -91,7 +101,6 @@ public final class BuildingBlock {
                 ", key=" + key +
                 ", value=" + value +
                 ", subList=" + subList +
-                ", script=" + script +
                 '}';
     }
 }
