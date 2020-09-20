@@ -19,12 +19,11 @@
 package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
+import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

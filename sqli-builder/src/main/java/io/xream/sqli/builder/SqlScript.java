@@ -16,7 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.builder;
+
+import io.xream.sqli.mapping.Script;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface SqlScript {
+public interface SqlScript extends Script {
 
 	List<String> SOURCE_SCRIPT = Arrays.asList("INNER","LEFT","RIGHT","OUTER","JOIN",",","FULL","ON", "AND","OR","LIKE", "!=", "<=", ">=", "<>", "=", "<",">", "(",")");
 
@@ -131,11 +133,9 @@ public interface SqlScript {
 
 	String AS = " AS ";
 
-	String SPACE = " ";
 	String PLACE_HOLDER = "?";
 	String EQ_PLACE_HOLDER = " = ?";
 	String LIKE_HOLDER = "%";
-	String DOT = ".";
 	String COMMA = ",";
 	String STAR = "*";
 	String UNDER_LINE = "_";

@@ -18,11 +18,10 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.Mapper;
-import io.xream.sqli.core.SqlNormalizer;
-import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.filter.BaseTypeFilter;
+import io.xream.sqli.mapping.Mappable;
+import io.xream.sqli.mapping.Mapper;
+import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

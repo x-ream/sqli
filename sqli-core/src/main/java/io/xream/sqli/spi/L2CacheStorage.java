@@ -16,24 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.spi;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author Sim
  */
-public interface ResultKeyGenerator {
+public interface L2CacheStorage {
+    boolean set(String key, String time);
 
-    default String generate(String mapper, Criteria.ResultMapCriteria criteria) {
+    boolean delete(String key);
 
-        if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
-            Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();
-            String alian = "c" + resultKeyAliaMap.size();
-            resultKeyAliaMap.put(alian, mapper);
-            String target = mapper + SqlScript.AS + alian;
-            return target;
-        }
-        return mapper;
-    }
+    Set<String> keys(String key);
+
+    String get(String nsKey);
+
+    boolean set(String key, String toJson, int validSecond, TimeUnit timeUnit);
+
+    List<String> multiGet(List<String> keyArr);
+
 }

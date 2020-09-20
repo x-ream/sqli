@@ -18,8 +18,6 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.SqlScript;
-
 /**
  * @Author Sim
  */

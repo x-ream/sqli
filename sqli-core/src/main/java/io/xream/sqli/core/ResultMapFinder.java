@@ -19,6 +19,7 @@
 package io.xream.sqli.core;
 
 import io.xream.sqli.converter.DataObjectConverter;
+import io.xream.sqli.mapping.ResultMapHelpful;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.JsonStyleMapUtil;
 

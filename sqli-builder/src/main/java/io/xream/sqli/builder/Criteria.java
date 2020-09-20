@@ -20,9 +20,9 @@ package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
-import io.xream.sqli.core.Mappable;
-import io.xream.sqli.core.ResultMapHelpful;
-import io.xream.sqli.core.SqlNormalizer;
+import io.xream.sqli.mapping.Mappable;
+import io.xream.sqli.mapping.ResultMapHelpful;
+import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
@@ -166,22 +166,31 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	}
 
 	public String getCacheKey(){
+		return getCacheKey(false);
+	}
+
+	public String getCacheKeyOfTotalRows(){
+		return getCacheKey(true);
+	}
+
+	private String getCacheKey(boolean isOfTotalRows){
 		StringBuilder sb = new StringBuilder();
-		sb.append(isTotalRowsIgnored).append(page).append(rows);
-		if (sortList != null) {
-			for (Sort sort : sortList) {
-				sb.append(sort.getOrderBy()).append(sort.getDirection());
-			}
-		}
-		for (KV kv : fixedSortList){
-			sb.append(kv.k).append(kv.v);
-		}
+		sb.append(routeKey);
 		for (BuildingBlock buildingBlock : buildingBlockList){
 			sb.append(buildingBlock.getConjunction()).append(buildingBlock.getPredicate()).append(buildingBlock.getKey()).append(buildingBlock.getValue());
 		}
-		sb.append(forceIndex);
-		sb.append(clzz);
-		sb.append(routeKey);
+
+		if (! isOfTotalRows) {
+			sb.append(page).append(rows);
+			if (sortList != null) {
+				for (Sort sort : sortList) {
+					sb.append(sort.getOrderBy()).append(sort.getDirection());
+				}
+			}
+			for (KV kv : fixedSortList){
+				sb.append(kv.k).append(kv.v);
+			}
+		}
 
 		return sb.toString();
 	}

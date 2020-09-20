@@ -16,24 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
-
-import java.util.Map;
+package io.xream.sqli.mapping;
 
 /**
  * @Author Sim
  */
-public interface ResultKeyGenerator {
-
-    default String generate(String mapper, Criteria.ResultMapCriteria criteria) {
-
-        if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
-            Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();
-            String alian = "c" + resultKeyAliaMap.size();
-            resultKeyAliaMap.put(alian, mapper);
-            String target = mapper + SqlScript.AS + alian;
-            return target;
-        }
-        return mapper;
-    }
+public interface Script {
+    String SPACE = " ";
+    String DOT = ".";
 }

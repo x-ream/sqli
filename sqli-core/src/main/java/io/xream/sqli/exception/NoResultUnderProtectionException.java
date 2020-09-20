@@ -16,17 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.exception;
 
-import io.xream.sqli.parser.Parsed;
-
-import java.util.Map;
-
-/**
- * @Author Sim
- */
-public interface Mappable {
-    Parsed getParsed();
-    Map<String, String> getAliaMap();
-    Map<String, String> getResultKeyAliaMap();
+public class NoResultUnderProtectionException extends Exception{
 }

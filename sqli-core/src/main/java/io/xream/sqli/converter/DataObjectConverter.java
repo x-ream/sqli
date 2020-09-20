@@ -18,10 +18,10 @@
  */
 package io.xream.sqli.converter;
 
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.core.Dialect;
-import io.xream.sqli.core.ResultMapHelpful;
-import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.mapping.ResultMapHelpful;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

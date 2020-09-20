@@ -16,31 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.mapping;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
  */
-public interface JdbcWrapper extends BaseFinder, ResultMapFinder {
+public interface ResultMapHelpful extends Mappable {
 
-    <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
-
-    boolean create(boolean isAutoIncreaseId, String sql, List<Object> valueList);
-
-    boolean createOrReplace(String sql, List<Object> valueList);
-
-    boolean refresh(String sql, Object[] valueList);
-
-    boolean remove(String sql, Object id);
-
-    boolean execute(String sql);
-
-    <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
-
-    interface BatchObjectValues {
-        List<Collection<Object>> valuesList();
-    }
+    Map<String,String> getMapperPropertyMap();
+    boolean isResultWithDottedKey();
 }

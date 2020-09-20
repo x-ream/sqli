@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.mapping;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,13 +50,13 @@ public interface SqlNormalizer {
         int length = handwritten.length();
         for (int j = 0; j < length; j++) {
             String strEle = String.valueOf(handwritten.charAt(j));
-            if (SqlScript.SPACE.equals(strEle)) {
+            if (Script.SPACE.equals(strEle)) {
                 ignore = true;
                 continue;
             }
             if (OP_SET.contains(strEle)) {
 
-                valueSb.append(SqlScript.SPACE);
+                valueSb.append(Script.SPACE);
 
                 valueSb.append(strEle);
                 if (j + 1 < length) {
@@ -66,10 +66,10 @@ public interface SqlNormalizer {
                         j++;
                     }
                 }
-                valueSb.append(SqlScript.SPACE);
+                valueSb.append(Script.SPACE);
             } else {
                 if (ignore)
-                    valueSb.append(SqlScript.SPACE);
+                    valueSb.append(Script.SPACE);
                 valueSb.append(strEle);
             }
             ignore = false;

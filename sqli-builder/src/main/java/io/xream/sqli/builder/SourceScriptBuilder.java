@@ -19,7 +19,6 @@
 package io.xream.sqli.builder;
 
 
-import io.xream.sqli.core.SqlScript;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;

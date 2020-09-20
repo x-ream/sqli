@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.mapping;
 
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -29,13 +29,13 @@ import io.xream.sqli.util.SqliStringUtil;
 public interface Mapper {
 
     default void mapping(ScriptSplitable scriptSplitable, Mappable mappable, StringBuilder sb) {
-        String[] keyArr = scriptSplitable.split(SqlScript.SPACE);
+        String[] keyArr = scriptSplitable.split(Script.SPACE);
         int length = keyArr.length;
         for (int i = 0; i < length; i++) {
             String origin = keyArr[i].trim();
 
             String target = mapping(origin, mappable);
-            sb.append(target).append(SqlScript.SPACE);
+            sb.append(target).append(Script.SPACE);
         }
     }
 
@@ -43,7 +43,7 @@ public interface Mapper {
 
         if (SqliStringUtil.isNullOrEmpty(key))
             return key;
-        if (key.contains(SqlScript.DOT)) {
+        if (key.contains(Script.DOT)) {
 
             String[] arr = key.split("\\.");
             String alia = arr[0];
@@ -60,7 +60,7 @@ public interface Mapper {
                 return mappable.getResultKeyAliaMap().get(key);
             }
 
-            return parsed.getTableName(alia) + SqlScript.DOT + p;
+            return parsed.getTableName(alia) + Script.DOT + p;
         }
 
         /*

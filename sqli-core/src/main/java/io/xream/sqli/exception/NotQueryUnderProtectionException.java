@@ -16,15 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.exception;
 
-import java.util.Map;
-
-/**
- * @Author Sim
- */
-public interface ResultMapHelpful extends Mappable {
-
-    Map<String,String> getMapperPropertyMap();
-    boolean isResultWithDottedKey();
+public class NotQueryUnderProtectionException extends Exception{
 }

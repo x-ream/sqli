@@ -20,9 +20,9 @@ package io.xream.sqli.cache;
 
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.page.Page;
+import io.xream.sqli.spi.L2CacheStorage;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * 
@@ -30,7 +30,7 @@ import java.util.concurrent.Callable;
  * @author sim
  *
  */
-public interface L2CacheResolver extends Protection{
+public interface L2CacheResolver extends Protection {
 
 	void setL2CacheConsistency(L2CacheConsistency l2CacheConsistency);
 	void setCacheStorage(L2CacheStorage cacheStorage);
@@ -48,14 +48,17 @@ public interface L2CacheResolver extends Protection{
 	boolean refresh(Class clz);
 
 
-	<T> List<T> listUnderProtection(Class<T> clz, Object conditionObj, QueryForCache queryForCache, Callable<List<T>> callable);
-	<T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, Callable<List<T>> callable);
-	<T> T getUnderProtection(Class<T> clz, Object conditonObj, Callable<T> callable);
-	<T> T getOneUnderProtection(Class<T> clz, Object conditonObj, Callable<T> callable);
-	<T> Page<T> findUnderProtection(Criteria criteria, QueryForCache queryForCache, Callable<Page<T>> findCallable, Callable<List<T>> listCallable);
+	<T> List<T> listUnderProtection(Class<T> clz, Object conditionObj, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
+	<T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
+	<T> T getUnderProtection(Class<T> clz, Object conditonObj, QueryFromDb<T> queryObject);
+	<T> T getOneUnderProtection(Class<T> clz, Object conditonObj, QueryFromDb<T> queryObject);
+	<T> Page<T> findUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<Page<T>> queryPage, QueryFromDb<List<T>> queryList);
 
 	default Object getFilterFactor(){
 		return L2CacheFilter.get();
 	}
 
+	interface QueryFromDb<V> {
+		V query();
+	}
 }

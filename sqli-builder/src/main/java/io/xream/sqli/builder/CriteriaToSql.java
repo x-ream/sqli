@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.core.Mappable;
+import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
 
 import java.util.List;

@@ -23,12 +23,16 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.ResultMapRepository;
 import io.xream.sqli.builder.*;
-import io.xream.sqli.core.*;
+import io.xream.sqli.core.KeyOne;
+import io.xream.sqli.core.Repository;
+import io.xream.sqli.core.RepositoryManagement;
+import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.spi.IdGenerator;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;

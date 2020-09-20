@@ -40,7 +40,6 @@ import io.xream.sqli.util.SqliLoggerProxy;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 /**
  * @author Sim
@@ -195,7 +194,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
         return cacheResolver.listUnderProtection(clz,
                 conditionObj,
                 dao,
-                (Callable<List<T>>) () -> dao.list(conditionObj));
+                () -> dao.list(conditionObj));
     }
 
     @Override
@@ -260,7 +259,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
         return cacheResolver.listUnderProtection(clz,
                 condition,
                 dao,
-                (Callable<List<T>>) () -> dao.in(inCondition));
+                () -> dao.in(inCondition));
 
     }
 
