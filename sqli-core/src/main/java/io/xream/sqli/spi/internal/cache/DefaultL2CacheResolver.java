@@ -260,18 +260,6 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 		return getPrefixForOneObject(clz) +"."+MD5Helper.toMD5(""+condition);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	private String getKey(Class clz, Object conditionObj){
-		String condition;
-		if (conditionObj == null){
-			condition = DEFAULT_VALUE;
-		}else {
-			condition = JsonWrapper.toJson(conditionObj);
-		}
-		return  getPrefix(clz) +"."+MD5Helper.toMD5(condition);
-	}
-
-	
 	/**
 	 * 获取缓存KEY前缀
 	 * @param clz
@@ -424,13 +412,13 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 
 	private  <T> T getOne(Class<T> clz, Object condition) throws NoResultUnderProtectionException{
 		String key = getKeyForOneObject(clz,condition);
-		String keyOne = doGetKeyOne(clz,key);
+		String keyOne = doGetKeyOne(key);
 		if (keyOne == null)
 			return null;
 		return get(clz, keyOne);
 	}
 
-	private <T> String doGetKeyOne(Class<T> clz, String key) throws NoResultUnderProtectionException{
+	private <T> String doGetKeyOne(String key) throws NoResultUnderProtectionException{
 		String str = getCachestorage().get(key);
 		if (SqliStringUtil.isNullOrEmpty(str))
 			return null;

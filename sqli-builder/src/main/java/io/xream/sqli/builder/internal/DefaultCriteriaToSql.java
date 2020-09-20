@@ -80,7 +80,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         SqlBuilder sqlBuilder = SqlBuilder.get();
 
-        parseAlia(isSub, criteria, sqlBuilder);
+        parseAlia(criteria, sqlBuilder);
 
         filter0(criteria);
 
@@ -515,7 +515,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
 
-    private void parseAlia(boolean isSub, Criteria criteria, SqlBuilder sqlBuilder) {
+    private void parseAlia(Criteria criteria, SqlBuilder sqlBuilder) {
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
             Criteria.ResultMapCriteria rmc = (Criteria.ResultMapCriteria) criteria;
