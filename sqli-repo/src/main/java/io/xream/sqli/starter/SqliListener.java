@@ -28,9 +28,9 @@ import io.xream.sqli.repository.exception.UninitializedException;
 public class SqliListener {
 
     private static SqliListener instance;
-    private SqliListener(){}
-
     private static boolean initialized = false;
+
+    private SqliListener(){}
 
     public static void onBeanCreated(InitPhaseable initPhaseable){
         initialized |= initPhaseable.init();

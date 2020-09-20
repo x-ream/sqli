@@ -32,6 +32,8 @@ import java.util.Map;
 public final class NativeRepositoryImpl implements NativeRepository {
 
 	private static NativeRepository instance;
+	private NativeSupport cacheableRepository;
+
 	private NativeRepositoryImpl(){}
 	public static NativeRepository newInstance(){
 		if (instance == null){
@@ -41,7 +43,6 @@ public final class NativeRepositoryImpl implements NativeRepository {
 		return null;
 	}
 
-	private NativeSupport cacheableRepository;
 	public void setNativeSupport(NativeSupport nativeSupport){
 		if (this.cacheableRepository == null){
 			this.cacheableRepository = nativeSupport;

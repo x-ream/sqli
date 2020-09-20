@@ -48,9 +48,7 @@ public class SqliStarter {
         }
         return instance;
     }
-    private SqliStarter(){
-
-    }
+    private SqliStarter(){}
 
     public CriteriaToSql criteriaToSql(){
         return DefaultCriteriaToSql.newInstance();
@@ -74,7 +72,6 @@ public class SqliStarter {
         return repository;
     }
 
-
     public TemporaryRepository temporaryRepository(CriteriaToSql criteriaToSql, JdbcWrapper jdbcWrapper,Dialect dialect,Repository repository){
         TemporaryRepository.Parser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
@@ -88,7 +85,6 @@ public class SqliStarter {
         ((DefaultTemporaryRepository)tr).setRepository(repository);
         return tr;
     }
-
 
     public NativeRepository nativeRepository(Repository repository){
         NativeRepository nativeRepository = NativeRepositoryImpl.newInstance();

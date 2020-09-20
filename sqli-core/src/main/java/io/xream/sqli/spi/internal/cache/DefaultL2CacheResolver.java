@@ -21,7 +21,6 @@ package io.xream.sqli.spi.internal.cache;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
-import io.xream.sqli.cache.CriteriaCacheKeyBuildable;
 import io.xream.sqli.cache.L2CacheConsistency;
 import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.cache.QueryForCache;

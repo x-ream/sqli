@@ -18,16 +18,7 @@
  */
 package io.xream.sqli.cache;
 
-import io.xream.sqli.builder.BuildingBlock;
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.KV;
-import io.xream.sqli.builder.Sort;
-import io.xream.sqli.util.SqliStringUtil;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @Author Sim
