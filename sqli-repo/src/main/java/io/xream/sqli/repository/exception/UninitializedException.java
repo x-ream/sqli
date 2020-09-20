@@ -21,9 +21,9 @@ package io.xream.sqli.repository.exception;
 /**
  * @Author Sim
  */
-public class BeanUninitializedException extends RuntimeException {
+public class UninitializedException extends RuntimeException {
 
-    public BeanUninitializedException(String message){
+    public UninitializedException(String message){
         super(message);
     }
 

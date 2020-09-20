@@ -20,7 +20,7 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.parser.ParserListener;
-import io.xream.sqli.repository.exception.BeanUninitializedException;
+import io.xream.sqli.repository.exception.UninitializedException;
 
 /**
  * @Author Sim
@@ -41,7 +41,7 @@ public class SqliListener {
             return;
 
         if (! initialized)
-            throw new BeanUninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
+            throw new UninitializedException("to confirm all bean initialized, please call SqliListener.onBeanCreated(...) at leaset one time");
 
         instance = new SqliListener();
 

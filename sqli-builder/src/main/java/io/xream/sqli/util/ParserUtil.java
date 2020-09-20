@@ -325,7 +325,7 @@ public final class ParserUtil {
 
     public static String filterSQLKeyword(String mapper) {
         for (String keyWord : SqlScript.KEYWORDS) {
-            if (keyWord.equals(mapper.toLowerCase())) {
+            if (keyWord.equalsIgnoreCase(mapper)) {
                 return SQL_KEYWORD_MARK + mapper + SQL_KEYWORD_MARK;
             }
         }

@@ -18,20 +18,12 @@
  */
 package io.xream.sqli.exception;
 
-import java.io.Serializable;
-
 /**
  * @Author Sim
  */
-public class ProxyException extends RuntimeException implements Serializable {
-
-    private String message;
+public class ProxyException extends RuntimeException {
 
     public ProxyException(String message){
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+        super(message);
     }
 }

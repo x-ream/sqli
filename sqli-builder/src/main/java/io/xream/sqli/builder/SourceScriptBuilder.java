@@ -50,10 +50,8 @@ public interface SourceScriptBuilder {
         for (SourceScript sourceScript : list) {
             String source = sourceScript.getSource();
             String alia = sourceScript.getAlia();
-            if (source !=null && alia !=null && !alia.equals(source)) {
-                if (Parser.contains(alia)){
-                    throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
-                }
+            if (source !=null && alia !=null && !alia.equals(source) && Parser.contains(alia)) {
+                throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
             }
         }
     }
@@ -75,7 +73,7 @@ public interface SourceScriptBuilder {
             if (strUpper.equals("AND") || strUpper.equals("OR"))
                 throw new IllegalArgumentException("SourceScript String does not support ON AND | OR, try to call builder.sourceScript()");
 
-            if ("from".equals(str.toLowerCase()))
+            if ("FROM".equals(strUpper))
                 continue;
 
             switch (strUpper) {

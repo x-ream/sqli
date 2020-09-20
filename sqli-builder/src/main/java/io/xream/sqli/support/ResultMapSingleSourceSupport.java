@@ -29,14 +29,12 @@ import io.xream.sqli.parser.Parser;
 public interface ResultMapSingleSourceSupport {
 
     default void supportSingleSource(Criteria.ResultMapCriteria resultMapCriteria) {
-        if (resultMapCriteria.getSourceScripts().size() == 1) {
-            if (resultMapCriteria.getParsed() == null) {
-                SourceScript sourceScript = resultMapCriteria.getSourceScripts().get(0);
-                String source = sourceScript.getSource();
-                if (source != null) {
-                    Parsed parsed = Parser.get(source);
-                    resultMapCriteria.setParsed(parsed);
-                }
+        if (resultMapCriteria.getSourceScripts().size() == 1 && resultMapCriteria.getParsed() == null) {
+            SourceScript sourceScript = resultMapCriteria.getSourceScripts().get(0);
+            String source = sourceScript.getSource();
+            if (source != null) {
+                Parsed parsed = Parser.get(source);
+                resultMapCriteria.setParsed(parsed);
             }
         }
     }

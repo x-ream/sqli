@@ -24,14 +24,9 @@ package io.xream.sqli.exception;
 public class QueryException extends RuntimeException{
 
 	private static final long serialVersionUID = 5749142995896266081L;
-	private String message;
 
 	public QueryException(String message){
-		this.message = message;
-	}
-
-	public String getMessage() {
-		return message;
+		super(message);
 	}
 
 }

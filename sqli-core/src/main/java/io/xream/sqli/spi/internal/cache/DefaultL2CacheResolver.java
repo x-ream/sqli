@@ -98,7 +98,7 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 
 	protected L2CacheStorage getCachestorage(){
 		if (this.cacheStorage == null)
-			throw new RuntimeException("No implements of L2CacheStorage, like the project x7-repo/x7-redis-integration");
+			throw new L2CacheException("No implements of L2CacheStorage, like the project x7-repo/x7-redis-integration");
 		return this.cacheStorage;
 	}
 
@@ -256,7 +256,7 @@ public final class DefaultL2CacheResolver implements L2CacheResolver {
 
 	private String getKeyForOneObject(Class clz, Object condition){
 		if (condition == null)
-			throw new RuntimeException("getKeyForOneObject, id = " + condition);
+			throw new L2CacheException("getKeyForOneObject, id = " + condition);
 		return getPrefixForOneObject(clz) +"."+MD5Helper.toMD5(""+condition);
 	}
 	

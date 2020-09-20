@@ -22,6 +22,7 @@ import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.util.SqliStringUtil;
@@ -64,7 +65,7 @@ public class HealthChecker {
                 String test = SqlInitFactory.getSql(clz, SqlInit.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {
                     logger.info("Failed to start sqli-repo, check Bean: {}",clz);
-                    Runtime.getRuntime().exit(1);
+                    throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
                 }
 
                 if (DbType.value().equals(DbType.MYSQL) && SqliStringUtil.isNotNull(createSql)) {

@@ -25,13 +25,7 @@ import java.io.Serializable;
  */
 public class ParsingException extends RuntimeException implements Serializable {
 
-    private String message;
-
     public ParsingException(String message){
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
+        super(message);
     }
 }
