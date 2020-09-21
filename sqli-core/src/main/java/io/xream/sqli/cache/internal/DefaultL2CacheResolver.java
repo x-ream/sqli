@@ -59,7 +59,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 	private static int validSecond;
 	private static boolean isEnabled;
-
+	private L2CacheStorage cacheStorage;
     private L2CacheConsistency l2CacheConsistency;
 
     private DefaultL2CacheResolver(){}
@@ -91,7 +91,6 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		return  this.validSecond;
 	}
 
-	private L2CacheStorage cacheStorage;
 	public void setCacheStorage(L2CacheStorage cacheStorage){
 		this.cacheStorage = cacheStorage;
 	}
@@ -137,11 +136,11 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	}
 
 	@Override
-	public boolean refresh(Class clz, String key) {
-		if (key == null){
+	public boolean refresh(Class clz, String cacheKey) {
+		if (cacheKey == null){
 			remove(clz);
 		}else{
-			remove(clz, key);
+			remove(clz, cacheKey);
 		}
 		markForRefresh0(clz);
 		close();
@@ -158,13 +157,13 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	 * FIXME {hash tag}
 	 */
 	@SuppressWarnings("rawtypes")
-	public void remove(Class clz, String key){
+	public void remove(Class clz, String cacheKey){
 
         if (this.l2CacheConsistency != null){
-            this.l2CacheConsistency.remove(clz,key);
+            this.l2CacheConsistency.remove(clz,cacheKey);
         }
 
-		key = getSimpleKey(clz, key);
+		String key = getSimpleKey(clz, cacheKey);
 		getCachestorage().delete(key);
 	}
 
@@ -184,7 +183,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 	}
 
-	private String _getNSKeyReadable(Class clz){
+	private String getNSKeyReadable(Class clz){
 		if (getFilterFactor() == null)
 			return clz.getName()+ NANO_SECOND;
 		String str = clz.getName() + NANO_SECOND + getFilterFactor();
@@ -195,14 +194,9 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	private String getNSKey(Class clz){
 		return clz.getName()+ NANO_SECOND;
 	}
-	
-	@SuppressWarnings("unused")
-	private String getNS(String nsKey){
-		return getCachestorage().get(nsKey);
-	}
 
 	private String getNSReadable(Class clzz){
-		final String nsKey = _getNSKeyReadable(clzz);
+		final String nsKey = getNSKeyReadable(clzz);
 		String ns = getCachestorage().get(nsKey);
 		if (SqliStringUtil.isNullOrEmpty(ns)){
 			ns = String.valueOf(System.nanoTime());
@@ -259,22 +253,6 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 			throw new L2CacheException("getKeyForOneObject, id = " + condition);
 		return getPrefixForOneObject(clz) +"."+MD5Helper.toMD5(""+condition);
 	}
-	
-	/**
-	 * 获取缓存KEY前缀
-	 * @param clz
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	private String getPrefix(Class clz){
-		String key = _getNSKeyReadable(clz);
-		String nsStr = getCachestorage().get(key);
-		if (nsStr == null){
-			String str = markForRefresh0(clz);
-			return "{"+clz.getName()+"}." + str;
-		}
-		return "{"+clz.getName()+"}."  + nsStr;
-	}
 
 	private String getPrefixForOneObject(Class clz){
 		String nsStr = getNSReadable(clz);
@@ -285,13 +263,11 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		return "{"+clz.getName()+"}."  + nsStr;
 	}
 
-	private void setTotalRows(Class clz, String key, long obj) {
-		key = getTotalRowsKey(clz, key);
+	private void setTotalRows(Class clz, String cacheKey, long obj) {
+		String key = getTotalRowsKey(clz, cacheKey);
 		int validSecond =  getValidSecondAdjusted();
 		getCachestorage().set(key, String.valueOf(obj), validSecond,TimeUnit.SECONDS);
 	}
-
-
 
 	private void setResultKeyList(Class clz, Object condition, List<String> keyList) {
 		String key = getConditionedKey(clz, condition.toString());
@@ -302,7 +278,6 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 			throwException(e);
 		}
 	}
-
 	
 	private  <T> void setResultKeyListPaginated(Class<T> clz, Object condition, Page<T> pagination) {
 		String key = getConditionedKey(clz,condition.toString());
@@ -359,8 +334,8 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		return list;
 	}
 
-	private <T> T get(Class<T> clz, Object key) throws NoResultUnderProtectionException {
-		String k = getSimpleKey(clz, key.toString());
+	private <T> T get(Class<T> clz, Object cacheKey) throws NoResultUnderProtectionException {
+		String k = getSimpleKey(clz, cacheKey.toString());
 		String str = getCachestorage().get(k);
 		if (SqliStringUtil.isNullOrEmpty(str))
 			return null;
@@ -372,10 +347,10 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	/**
 	 * FIXME {hash tag}
 	 */
-	private void set(Class clz, Object key, Object obj) {
-		if (key == null )
+	private void set(Class clz, Object cacheKey, Object obj) {
+		if (cacheKey == null )
 			return;
-		String k = getSimpleKey(clz, key.toString());
+		String k = getSimpleKey(clz, cacheKey.toString());
 		String v = JsonWrapper.toJson(obj == null ? DEFAULT_VALUE : obj);
 		getCachestorage().set(k, v, validSecond,TimeUnit.SECONDS);
 	}
@@ -401,11 +376,11 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		doSetKeyOne(clz,key,objKey,obj);
 	}
 
-	private void doSetKeyOne(Class clz,String key, Object objKey,Object obj) {
+	private void doSetKeyOne(Class clz,String cacheKey, Object objKey,Object obj) {
 
 		int validSecond =  getValidSecondAdjusted();
 
-		getCachestorage().set(key, objKey == null ? DEFAULT_VALUE : objKey.toString(), validSecond,TimeUnit.SECONDS);
+		getCachestorage().set(cacheKey, objKey == null ? DEFAULT_VALUE : objKey.toString(), validSecond,TimeUnit.SECONDS);
 		set(clz,objKey,obj);
 	}
 
@@ -418,8 +393,8 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		return get(clz, keyOne);
 	}
 
-	private <T> String doGetKeyOne(String key) throws NoResultUnderProtectionException{
-		String str = getCachestorage().get(key);
+	private <T> String doGetKeyOne(String cacheKey) throws NoResultUnderProtectionException{
+		String str = getCachestorage().get(cacheKey);
 		if (SqliStringUtil.isNullOrEmpty(str))
 			return null;
 		if (str.trim().equals(DEFAULT_VALUE))
@@ -427,8 +402,8 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		return str;
 	}
 
-	private  <T> long getTotalRows(Class<T> clz, String key) {
-		key = getTotalRowsKey(clz,key);
+	private  <T> long getTotalRows(Class<T> clz, String cacheKey) {
+		String key = getTotalRowsKey(clz,cacheKey);
 		String str = getCachestorage().get(key);
 		if (SqliStringUtil.isNullOrEmpty(str))
 			return DEFAULT_NUM;
