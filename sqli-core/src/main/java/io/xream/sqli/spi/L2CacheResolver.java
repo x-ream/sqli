@@ -19,7 +19,6 @@
 package io.xream.sqli.spi;
 
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.cache.L2CacheConsistency;
 import io.xream.sqli.cache.Protection;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;

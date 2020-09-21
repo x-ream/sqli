@@ -21,7 +21,6 @@ package io.xream.sqli.cache.internal;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
-import io.xream.sqli.cache.L2CacheConsistency;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.exception.L2CacheException;
 import io.xream.sqli.exception.NoResultUnderProtectionException;
@@ -29,6 +28,7 @@ import io.xream.sqli.exception.NotQueryUnderProtectionException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.spi.L2CacheConsistency;
 import io.xream.sqli.spi.L2CacheResolver;
 import io.xream.sqli.spi.L2CacheStorage;
 import io.xream.sqli.util.JsonWrapper;
@@ -119,16 +119,18 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 	public String markForRefresh0(Class clz){
 
-		if (this.l2CacheConsistency != null){
-			this.l2CacheConsistency.markForRefresh(clz);
-		}
-
 		String key = getNSKey(clz);
 		String time = String.valueOf(System.nanoTime());
+		if (this.l2CacheConsistency != null){
+			this.l2CacheConsistency.markForRefresh(key);
+		}
 		getCachestorage().set(key, time);
 
 		if (getFilterFactor() != null) {
 			String groupedKey = getGroupedKey(key);
+			if (this.l2CacheConsistency != null){
+				this.l2CacheConsistency.markForRefresh(groupedKey);
+			}
 			getCachestorage().set(groupedKey, time);
 		}
 
@@ -159,23 +161,22 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	@SuppressWarnings("rawtypes")
 	public void remove(Class clz, String cacheKey){
 
-        if (this.l2CacheConsistency != null){
-            this.l2CacheConsistency.remove(clz,cacheKey);
-        }
-
 		String key = getSimpleKey(clz, cacheKey);
+		if (this.l2CacheConsistency != null){
+			this.l2CacheConsistency.remove(key);
+		}
 		getCachestorage().delete(key);
 	}
 
 	public void remove(Class clz) {
 
-        if (this.l2CacheConsistency != null){
-            this.l2CacheConsistency.remove(clz);
-        }
-
 		String key = getSimpleKeyLike(clz);
 
 		Set<String> keySet = getCachestorage().keys(key);
+
+		if (this.l2CacheConsistency != null){
+			this.l2CacheConsistency.remove(keySet);
+		}
 
 		for (String k : keySet) {
 			getCachestorage().delete(k);
