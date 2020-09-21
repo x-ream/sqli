@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface JdbcWrapper extends BaseFinder, ResultMapFinder {
+public interface JdbcHelper extends BaseFinder, ResultMapFinder {
 
     <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
 

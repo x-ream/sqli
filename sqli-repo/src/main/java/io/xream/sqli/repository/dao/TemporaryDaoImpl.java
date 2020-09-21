@@ -26,7 +26,7 @@ import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.spi.JdbcWrapper;
+import io.xream.sqli.spi.JdbcHelper;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
@@ -46,7 +46,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
     private Dialect dialect;
 
-    private JdbcWrapper jdbcWrapper;
+    private JdbcHelper jdbcHelper;
 
     private TemporaryDaoImpl(){}
 
@@ -66,8 +66,8 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         this.criteriaToSql = criteriaToSql;
     }
 
-    public void setJdbcWrapper(JdbcWrapper jdbcWrapper) {
-        this.jdbcWrapper = jdbcWrapper;
+    public void setJdbcHelper(JdbcHelper jdbcHelper) {
+        this.jdbcHelper = jdbcHelper;
     }
 
     @Override
@@ -111,7 +111,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
             sb.append(fromSql);
             sql = sb.toString();
         }
-        this.jdbcWrapper.execute(sql);
+        this.jdbcHelper.execute(sql);
         SqliLoggerProxy.debug(TemporaryRepository.class,sql);
 
         return true;
@@ -119,7 +119,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
     @Override
     public boolean execute(String sql) {
-        this.jdbcWrapper.execute(sql);
+        this.jdbcHelper.execute(sql);
         return true;
     }
 }
