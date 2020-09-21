@@ -21,11 +21,11 @@ package io.xream.sqli.cache;
 /**
  * @Author Sim
  */
-public interface Protection {
+public interface Protection extends L2CacheFilter{
     String DEFAULT_VALUE = "NULL";
     int DEFAULT_NUM = Integer.MIN_VALUE;
 
     default void close(){
-        L2CacheFilter.close();
+        remove();
     }
 }

@@ -16,13 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.spi.internal.cache;
+package io.xream.sqli.cache.internal;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.cache.L2CacheConsistency;
-import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.exception.L2CacheException;
 import io.xream.sqli.exception.NoResultUnderProtectionException;
@@ -30,6 +29,7 @@ import io.xream.sqli.exception.NotQueryUnderProtectionException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.spi.L2CacheResolver;
 import io.xream.sqli.spi.L2CacheStorage;
 import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.ParserUtil;

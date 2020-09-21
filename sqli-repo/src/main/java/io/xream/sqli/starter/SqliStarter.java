@@ -22,7 +22,6 @@ import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
-import io.xream.sqli.cache.L2CacheResolver;
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
@@ -35,6 +34,7 @@ import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.repository.internal.NativeRepositoryImpl;
 import io.xream.sqli.spi.JdbcWrapper;
+import io.xream.sqli.spi.L2CacheResolver;
 
 /**
  * @Author Sim

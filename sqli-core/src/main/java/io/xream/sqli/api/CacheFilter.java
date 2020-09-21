@@ -25,7 +25,7 @@ import io.xream.sqli.util.SqliStringUtil;
 /**
  * @Author Sim
  */
-public final class CacheFilter extends L2CacheFilter {
+public final class CacheFilter implements L2CacheFilter {
 
     /**
      * partialKey maybe is userId
@@ -34,7 +34,7 @@ public final class CacheFilter extends L2CacheFilter {
     public static void filter(Object partialKey) {
         if (SqliStringUtil.isNullOrEmpty(partialKey))
             return;
-        L2CacheFilter.threadLocal.set(partialKey);
+        threadLocal.set(partialKey);
     }
 
 

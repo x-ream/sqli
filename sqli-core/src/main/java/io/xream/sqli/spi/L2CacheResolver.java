@@ -16,11 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.cache;
+package io.xream.sqli.spi;
 
 import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.cache.L2CacheConsistency;
+import io.xream.sqli.cache.Protection;
+import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.spi.L2CacheStorage;
 
 import java.util.List;
 
@@ -47,7 +49,6 @@ public interface L2CacheResolver extends Protection {
 	boolean refresh(Class clz, String key);
 	boolean refresh(Class clz);
 
-
 	<T> List<T> listUnderProtection(Class<T> clz, Object conditionObj, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
 	<T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
 	<T> T getUnderProtection(Class<T> clz, Object conditonObj, QueryFromDb<T> queryObject);
@@ -55,7 +56,7 @@ public interface L2CacheResolver extends Protection {
 	<T> Page<T> findUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<Page<T>> queryPage, QueryFromDb<List<T>> queryList);
 
 	default Object getFilterFactor(){
-		return L2CacheFilter.get();
+		return get();
 	}
 
 	interface QueryFromDb<V> {

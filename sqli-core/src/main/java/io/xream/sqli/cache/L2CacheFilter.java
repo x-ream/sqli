@@ -22,15 +22,15 @@ package io.xream.sqli.cache;
 /**
  * @Author Sim
  */
-public class L2CacheFilter {
+public interface L2CacheFilter {
 
-    protected static final ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+    ThreadLocal<Object> threadLocal = new ThreadLocal<>();
 
-    protected static Object get() {
+    default Object get() {
         return threadLocal.get();
     }
 
-    protected static void close() {
+    default void remove() {
         threadLocal.remove();
     }
 
