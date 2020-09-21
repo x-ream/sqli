@@ -28,7 +28,7 @@ import java.util.Set;
 public interface L2CacheConsistency {
 
     /**
-     * set(key,timeNs), implements it async
+     * set(key,timeNs), get nsString async at kafka listener
      * @param key
      */
     void markForRefresh(final String key);

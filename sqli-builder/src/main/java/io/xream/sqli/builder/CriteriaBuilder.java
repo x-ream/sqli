@@ -33,6 +33,7 @@ import java.util.Objects;
 public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
     private Criteria criteria;
+    private PageBuilder pageBuilder;
     protected SourceScript sourceScriptTemp;
 
     public CriteriaBuilder routeKey(Object routeKey) {
@@ -41,6 +42,43 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     }
 
     public PageBuilder paged() {
+        if ( this.pageBuilder != null)
+            return this.pageBuilder;
+        this.pageBuilder  = new PageBuilder() {
+
+            @Override
+            public PageBuilder ignoreTotalRows() {
+                criteria.setTotalRowsIgnored(true);
+                return this;
+            }
+
+            @Override
+            public PageBuilder rows(int rows) {
+                criteria.setRows(rows);
+                return this;
+            }
+
+            @Override
+            public PageBuilder page(int page) {
+                criteria.setPage(page);
+                return this;
+            }
+
+            @Override
+            public PageBuilder orderIn(String porperty, List<? extends Object> inList) {
+                if (Objects.nonNull(inList) && inList.size() > 0) {
+                    KV kv = new KV(porperty, inList);
+                    List<KV> fixedSortList = criteria.getFixedSortList();
+                    if (fixedSortList == null){
+                        fixedSortList = new ArrayList<>();
+                        criteria.setFixedSortList(fixedSortList);
+                    }
+                    fixedSortList.add(kv);
+                }
+                return this;
+            }
+
+        };
         return this.pageBuilder;
     }
 
@@ -67,38 +105,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         this.criteria.setForceIndex(indexName);
         return this;
     }
-
-    private PageBuilder pageBuilder = new PageBuilder() {
-
-        @Override
-        public PageBuilder ignoreTotalRows() {
-            criteria.setTotalRowsIgnored(true);
-            return this;
-        }
-
-        @Override
-        public PageBuilder rows(int rows) {
-            criteria.setRows(rows);
-            return this;
-        }
-
-        @Override
-        public PageBuilder page(int page) {
-            criteria.setPage(page);
-            return this;
-        }
-
-        @Override
-        public PageBuilder orderIn(String porperty, List<? extends Object> inList) {
-            if (Objects.nonNull(inList) && inList.size() > 0) {
-                KV kv = new KV(porperty, inList);
-                criteria.getFixedSortList().add(kv);
-            }
-            return this;
-        }
-
-    };
-
 
     private CriteriaBuilder(Criteria criteria) {
         super(criteria.getBuildingBlockList());

@@ -49,7 +49,7 @@ public final class ResultSortUtil {
 
         List<KV> fixedSortList = criteria.getFixedSortList();
 
-        if (fixedSortList.isEmpty())
+        if (fixedSortList == null || fixedSortList.isEmpty())
             return;
 
         KV kv0 = fixedSortList.get(0);

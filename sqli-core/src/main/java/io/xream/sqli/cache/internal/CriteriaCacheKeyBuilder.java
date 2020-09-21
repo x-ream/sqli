@@ -48,8 +48,10 @@ public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
                     sb.append(sort.getOrderBy()).append(sort.getDirection());
                 }
             }
-            for (KV kv : criteria.getFixedSortList()){
-                sb.append(kv.k).append(kv.v);
+            if (criteria.getFixedSortList() != null) {
+                for (KV kv : criteria.getFixedSortList()) {
+                    sb.append(kv.k).append(kv.v);
+                }
             }
         }
         return sb.toString();

@@ -46,7 +46,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	private int rows;
 	private Object routeKey;
 	private List<Sort> sortList;
-	private List<KV> fixedSortList = new ArrayList<>();
+	private List<KV> fixedSortList;
 	private List<BuildingBlock> buildingBlockList = new ArrayList<>();
 	private String forceIndex;
 
@@ -102,6 +102,10 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		return fixedSortList;
 	}
 
+	public void setFixedSortList(List<KV> fixedSortList) {
+		this.fixedSortList = fixedSortList;
+	}
+
 	public void setTotalRowsIgnored(boolean totalRowsIgnored) {
 		isTotalRowsIgnored = totalRowsIgnored;
 	}
@@ -154,7 +158,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	}
 
 	public boolean isFixedSort() {
-		return !this.fixedSortList.isEmpty();
+		return this.fixedSortList != null && !this.fixedSortList.isEmpty();
 	}
 
 	public void paged(Paged paged) {
@@ -162,7 +166,11 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		this.isTotalRowsIgnored = paged.isTotalRowsIgnored();
 		this.page = paged.getPage();
 		this.rows = paged.getRows();
-		this.sortList = paged.getSortList();
+		if (this.sortList == null){
+			this.sortList = paged.getSortList();
+		}else{
+			this.sortList.addAll(paged.getSortList());
+		}
 	}
 
 
