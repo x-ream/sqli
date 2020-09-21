@@ -22,8 +22,8 @@
     CacheFilter
     
 ### SPI
-    JdbcHelper          //io.xream.x7/x7/x7-repo/x7-jdbc-template-plus
-    IdGenerator         //io.xream.x7/x7/x7-repo/x7-id-generator
-    L2CacheStorage      //io.xream.x7/x7/x7-repo/x7-redis-integration
-    L2CacheResolver     //io.xream.sqli/sqli/sqli-core
-    L2CacheConsistency  //Optional SPI, do it by deleyed queue, or kafka
+    JdbcHelper                  //io.xream.x7/x7/x7-repo/x7-jdbc-template-plus
+    IdGenerator                 //io.xream.x7/x7/x7-repo/x7-id-generator
+    L2CacheStorage              //io.xream.x7/x7/x7-repo/x7-redis-integration
+    L2CacheResolver             //io.xream.sqli/sqli/sqli-core
+    L2CacheConsistency          //Optional SPI, do it by deleyed queue, or kafka

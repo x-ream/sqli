@@ -16,7 +16,7 @@
 ## sqli-repo 
 
 ### 使用方法
-    在x7项目里实现，spring boot的注解实现或使用的模板如下:
+    在x7项目里实现了springBoot的Enable
     
     @EnableX7Repostory  // code at x7/x7-repo/x7-spring-boot-starter
     public class App{
@@ -181,10 +181,11 @@
             
 ## 二级缓存 
 
-    在x7项目里实现，spring boot的注解实现或使用的模板如下:
-        @EnableX7L2Caching
-        public class App{
-            main()
+    在x7项目里实现了springBoot的Enable
+        
+    @EnableX7L2Caching
+    public class App{
+        main()
 
     二级缓存是基于redis.multiGet的高速缓存实现。
 
