@@ -191,13 +191,13 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();
-		private List<FunctionResultKey> resultFunctionList = new ArrayList<>();
-		private List<KV> resultKeyAssignedAliaList = new ArrayList<>();
+		private List<FunctionResultKey> resultFunctionList;
+		private List<KV> resultKeyAssignedAliaList;
 		private String groupBy;
 		private Distinct distinct;
 		private String sourceScript;
-		private List<SourceScript> sourceScripts = new ArrayList<>();
-		private List<Reduce> reduceList = new ArrayList<>();
+		private List<SourceScript> sourceScripts;
+		private List<Reduce> reduceList;
 		private boolean isResultWithDottedKey;
 		private boolean isWithoutOptimization;
 		@JsonIgnore
@@ -212,11 +212,17 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		}
 
 		public List<Reduce> getReduceList() {
+			if (this.reduceList == null) {
+				this.reduceList = new ArrayList<>();
+			}
 			return reduceList;
 		}
 
 		public List<SourceScript> getSourceScripts() {
-			return sourceScripts;
+			if (this.sourceScripts == null){
+				this.sourceScripts = new ArrayList<>();
+			}
+			return this.sourceScripts;
 		}
 
 		public String getGroupBy() {
@@ -259,11 +265,17 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		}
 
 		public List<KV> getResultKeyAssignedAliaList() {
-			return resultKeyAssignedAliaList;
+			if (this.resultKeyAssignedAliaList == null){
+				this.resultKeyAssignedAliaList = new ArrayList<>();
+			}
+			return this.resultKeyAssignedAliaList;
 		}
 
 		public List<FunctionResultKey> getResultFunctionList() {
-			return resultFunctionList;
+			if (this.resultFunctionList == null) {
+				this.resultFunctionList = new ArrayList<>();
+			}
+			return this.resultFunctionList;
 		}
 
 		public boolean isResultWithDottedKey() {
@@ -280,6 +292,22 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		public void setWithoutOptimization(boolean withoutOptimization) {
 			isWithoutOptimization = withoutOptimization;
+		}
+
+		public void setResultFunctionList(List<FunctionResultKey> resultFunctionList) {
+			this.resultFunctionList = resultFunctionList;
+		}
+
+		public void setResultKeyAssignedAliaList(List<KV> resultKeyAssignedAliaList) {
+			this.resultKeyAssignedAliaList = resultKeyAssignedAliaList;
+		}
+
+		public void setSourceScripts(List<SourceScript> sourceScripts) {
+			this.sourceScripts = sourceScripts;
+		}
+
+		public void setReduceList(List<Reduce> reduceList) {
+			this.reduceList = reduceList;
 		}
 
 		@Override

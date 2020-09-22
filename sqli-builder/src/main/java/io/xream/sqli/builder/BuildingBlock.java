@@ -95,7 +95,7 @@ public final class BuildingBlock {
 
     @Override
     public String toString() {
-        return "X{" +
+        return "BuildingBlock{" +
                 "conjunction=" + conjunction +
                 ", predicate=" + predicate +
                 ", key=" + key +

@@ -30,6 +30,8 @@ public class ExceptionTranslator {
 
     public static  PersistenceException onRollback(Object obj, Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
+        if (t instanceof RuntimeException)
+            throw (RuntimeException)t;
         String msg = SqliExceptionUtil.getMessage(t);
         String objStr = obj == null ? "": obj.toString();
         String logStr =  objStr + ", Exception: " + msg;
@@ -40,6 +42,8 @@ public class ExceptionTranslator {
 
     public static QueryException onQuery(Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
+        if (t instanceof RuntimeException)
+            throw (RuntimeException)t;
         String msg = SqliExceptionUtil.getMessage(t);
         logger.error(msg);
         return new QueryException(msg);

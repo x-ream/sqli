@@ -36,7 +36,7 @@ public @interface X {
     /**
      * only effect on getter<br>
      */
-    int length() default 60;
+    int length() default 20;
 
 
     @Retention(RetentionPolicy.RUNTIME)
