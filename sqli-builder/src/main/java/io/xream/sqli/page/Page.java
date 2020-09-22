@@ -44,8 +44,8 @@ public final class Page<T> implements Paged, Serializable{
 	private int rows = 20;
 	private int page = 1;
 	private long totalRows = -1;
-	private List<T> list = new ArrayList<T>();
-	private List<String> keyList = new ArrayList<String>();
+	private List<T> list;
+	private List<String> keyList;
 	private boolean totalRowsIgnored;
 	private List<Sort> sortList;
 
@@ -137,7 +137,10 @@ public final class Page<T> implements Paged, Serializable{
 	}
 
 	public List<String> getKeyList() {
-		return keyList;
+		if (this.keyList == null) {
+			this.keyList = new ArrayList<>();
+		}
+		return this.keyList;
 	}
 
 	public void setKeyList(List<String> keyList) {
