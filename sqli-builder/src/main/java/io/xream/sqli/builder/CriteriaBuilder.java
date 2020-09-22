@@ -210,7 +210,9 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
             @Override
             public ConditionCriteriaBuilder more() {
-                return build(sourceScriptTemp.getBbList());
+                List<Bb> bbList = new ArrayList<>();
+                sourceScriptTemp.setBbList(bbList);
+                return build(bbList);
             }
 
         };

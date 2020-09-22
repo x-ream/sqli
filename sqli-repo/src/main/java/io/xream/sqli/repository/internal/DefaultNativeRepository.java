@@ -29,33 +29,33 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public final class NativeRepositoryImpl implements NativeRepository {
+public final class DefaultNativeRepository implements NativeRepository {
 
 	private static NativeRepository instance;
-	private NativeSupport cacheableRepository;
+	private NativeSupport nativeSupport;
 
-	private NativeRepositoryImpl(){}
+	private DefaultNativeRepository(){}
 	public static NativeRepository newInstance(){
 		if (instance == null){
-			instance = new NativeRepositoryImpl();
+			instance = new DefaultNativeRepository();
 			return instance;
 		}
 		return null;
 	}
 
 	public void setNativeSupport(NativeSupport nativeSupport){
-		if (this.cacheableRepository == null){
-			this.cacheableRepository = nativeSupport;
+		if (this.nativeSupport == null){
+			this.nativeSupport = nativeSupport;
 		}
 	}
 
 	@Override
 	public <T> boolean execute(Class<T> clzz, String sql){
-		return cacheableRepository.execute(clzz, sql);
+		return nativeSupport.execute(clzz, sql);
 	}
 	@Override
 	public  List<Map<String,Object>> list(String sql, List<Object> conditionList){
-		return cacheableRepository.list(sql, conditionList);
+		return nativeSupport.list(sql, conditionList);
 	}
 
 }

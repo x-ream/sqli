@@ -37,7 +37,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
     private transient boolean isOr;
 
     private transient List<Bb> tempList;
-    private transient List<List<Bb>> subsList = new LinkedList<>();
+    private transient List<List<Bb>> subsList;
 
     protected ConditionCriteriaBuilder(){
         this.instance = this;
@@ -48,9 +48,15 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         this.instance.bbList = bbList;
     }
 
-
     protected void init(List<Bb> bbList){
         this.bbList = bbList;
+    }
+
+    private List<List<Bb>> getSubsList(){
+        if (this.subsList == null) {
+            this.subsList = new LinkedList<>();
+        }
+        return this.subsList;
     }
 
     public static ConditionCriteriaBuilder build(List<Bb> bbList){
@@ -162,17 +168,17 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         this.add(bb);
 
         this.tempList = subList;
-        this.subsList.add(subList);
+        this.getSubsList().add(subList);
 
         return instance;
     }
     public ConditionCriteriaBuilder endSub(){
         isOr();
-        int size = subsList.size();
+        int size = getSubsList().size();
         if (--size >= 0)
-        subsList.remove(size);
+            getSubsList().remove(size);
         if (--size >= 0){
-            this.tempList = subsList.get(size);
+            this.tempList = getSubsList().get(size);
         }else {
             this.tempList = null;
         }

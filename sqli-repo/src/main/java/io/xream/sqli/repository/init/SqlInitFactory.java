@@ -19,6 +19,7 @@
 package io.xream.sqli.repository.init;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -39,7 +40,7 @@ public final class SqlInitFactory implements SqlInit {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
-	public static io.xream.sqli.core.Dialect Dialect;
+	public static Dialect Dialect;
 
 	/**
 	 * 返回SQL

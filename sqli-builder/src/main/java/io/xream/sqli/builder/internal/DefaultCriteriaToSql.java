@@ -633,7 +633,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;//FIXME 判断是虚表
             filter(bbList, resultMapCriteria);
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                filter(sourceScript.getBbList(), resultMapCriteria);
+                List<Bb> bbs = sourceScript.getBbList();
+                if (bbs == null || bbs.isEmpty())
+                    continue;
+                filter(bbs, resultMapCriteria);
             }
         }else{
             filter(bbList,criteria);

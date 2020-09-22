@@ -32,7 +32,7 @@ import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.dao.TemporaryDaoImpl;
 import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
-import io.xream.sqli.repository.internal.NativeRepositoryImpl;
+import io.xream.sqli.repository.internal.DefaultNativeRepository;
 import io.xream.sqli.spi.JdbcHelper;
 import io.xream.sqli.spi.L2CacheResolver;
 
@@ -87,8 +87,8 @@ public class SqliStarter {
     }
 
     public NativeRepository nativeRepository(Repository repository){
-        NativeRepository nativeRepository = NativeRepositoryImpl.newInstance();
-        ((NativeRepositoryImpl) nativeRepository).setNativeSupport((NativeSupport) repository);
+        NativeRepository nativeRepository = DefaultNativeRepository.newInstance();
+        ((DefaultNativeRepository) nativeRepository).setNativeSupport((NativeSupport) repository);
         return nativeRepository;
     }
 

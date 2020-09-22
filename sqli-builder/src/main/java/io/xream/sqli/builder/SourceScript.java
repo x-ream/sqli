@@ -35,7 +35,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     private String joinStr;
     private On on;
     private String alia;
-    private List<Bb> bbList = new ArrayList<>();
+    private List<Bb> bbList;
 
     private transient boolean used;
     private transient boolean targeted;
@@ -124,6 +124,8 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
             attached.getSubList().add(sqlBuilt);
             criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
         }
+        if (bbList == null || bbList.isEmpty())
+            return;
         pre(attached.getValueList(), bbList);
 
     }

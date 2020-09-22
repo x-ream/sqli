@@ -50,7 +50,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     private Dao dao;
     private L2CacheResolver cacheResolver;
 
-    private CacheableRepository(){};
+    private CacheableRepository(){}
     public static CacheableRepository newInstance(){
         if (instance == null){
             instance = new CacheableRepository();
