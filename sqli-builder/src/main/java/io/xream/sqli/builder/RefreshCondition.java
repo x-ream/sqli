@@ -33,10 +33,10 @@ import java.util.*;
  */
 public final class RefreshCondition<T> extends ConditionCriteriaBuilder implements Mappable,CriteriaCondition, Routable {
 
-    private List<BuildingBlock> refreshList = new ArrayList<>();
+    private List<Bb> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME
 
-    private List<BuildingBlock> buildingBlockList = new ArrayList<>();
+    private List<Bb> bbList = new ArrayList<>();
     private Object routeKey;
     @JsonIgnore
     private transient Class clz;
@@ -54,7 +54,7 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         this.clz = clz;
     }
 
-    public List<BuildingBlock> getRefreshList() {
+    public List<Bb> getRefreshList() {
         return refreshList;
     }
 
@@ -72,8 +72,8 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
     }
 
     @Override
-    public List<BuildingBlock> getBuildingBlockList() {
-        return buildingBlockList;
+    public List<Bb> getBbList() {
+        return bbList;
     }
 
     @Override
@@ -103,7 +103,7 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
     @Deprecated
     public RefreshCondition(){
         super();
-        init(this.buildingBlockList);
+        init(this.bbList);
     }
 
 
@@ -131,10 +131,10 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         if (Objects.isNull(sqlX))
             return this;
 
-        BuildingBlock buildingBlock = new BuildingBlock();
-        buildingBlock.setPredicate(PredicateAndOtherScript.X);
-        buildingBlock.setKey(sqlX);
-        this.refreshList.add(buildingBlock);
+        Bb bb = new Bb();
+        bb.setP(Op.X);
+        bb.setKey(sqlX);
+        this.refreshList.add(bb);
 
         return this;
     }
@@ -144,11 +144,11 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         if (Objects.isNull(value))
             return this;
 
-        BuildingBlock buildingBlock = new BuildingBlock();
-        buildingBlock.setPredicate(PredicateAndOtherScript.EQ);
-        buildingBlock.setKey(property);
-        buildingBlock.setValue(value);
-        this.refreshList.add(buildingBlock);
+        Bb bb = new Bb();
+        bb.setP(Op.EQ);
+        bb.setKey(property);
+        bb.setValue(value);
+        this.refreshList.add(bb);
 
         return this;
     }
@@ -158,10 +158,10 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
             return null;
         Parsed parsed = Parser.get(clz);
         String keyOne = parsed.getKey(X.KEY_ONE);
-        for (BuildingBlock buildingBlock : buildingBlockList) {
-            String key = buildingBlock.getKey();
+        for (Bb bb : bbList) {
+            String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
-                return new KV(key, buildingBlock.getValue());
+                return new KV(key, bb.getValue());
             }
         }
         return null;

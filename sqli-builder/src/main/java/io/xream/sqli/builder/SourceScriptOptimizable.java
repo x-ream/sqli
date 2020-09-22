@@ -33,10 +33,10 @@ public interface SourceScriptOptimizable {
         conditionSet.add(key);
     }
 
-    default void addConditionBeforeOptimization(List<BuildingBlock> buildingBlockList, Set<String> conditionSet) {
-        for (BuildingBlock buildingBlock : buildingBlockList) {
-            conditionSet.add(buildingBlock.getKey());
-            List<BuildingBlock> subList = buildingBlock.getSubList();
+    default void addConditionBeforeOptimization(List<Bb> bbList, Set<String> conditionSet) {
+        for (Bb bb : bbList) {
+            conditionSet.add(bb.getKey());
+            List<Bb> subList = bb.getSubList();
             if (subList != null && !subList.isEmpty()) {
                 addConditionBeforeOptimization(subList, conditionSet);
             }

@@ -25,5 +25,5 @@ import java.util.List;
  * @Author Sim
  */
 public interface CriteriaCondition{
-    List<BuildingBlock> getBuildingBlockList();
+    List<Bb> getBbList();
 }

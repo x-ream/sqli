@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.builder.BuildingBlock;
+import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.Sort;
@@ -39,7 +39,7 @@ public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
     public String buildCacheKey(Criteria criteria, boolean isOfTotalRows){
         StringBuilder sb = new StringBuilder();
         sb.append(criteria.getRouteKey());
-        buildCacheKeyByBuildingBlockList(criteria.getBuildingBlockList(), sb);
+        buildCacheKeyByBbList(criteria.getBbList(), sb);
 
         if (! isOfTotalRows) {
             sb.append(criteria.getPage()).append(criteria.getRows());
@@ -57,31 +57,31 @@ public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
         return sb.toString();
     }
 
-    private void buildCacheKeyByBuildingBlock(BuildingBlock buildingBlock, StringBuilder sb) {
-        sb.append(buildingBlock.getConjunction()).append(buildingBlock.getPredicate());
-        if (SqliStringUtil.isNotNull(buildingBlock.getKey()) || Objects.nonNull(buildingBlock.getValue())) {
-            sb.append(buildingBlock.getKey()).append(buildingBlock.getValue());
+    private void buildCacheKeyByBbBlock(Bb bb, StringBuilder sb) {
+        sb.append(bb.getC()).append(bb.getP());
+        if (SqliStringUtil.isNotNull(bb.getKey()) || Objects.nonNull(bb.getValue())) {
+            sb.append(bb.getKey()).append(bb.getValue());
         }
-        List<BuildingBlock> subList = buildingBlock.getSubList();
+        List<Bb> subList = bb.getSubList();
         if (subList != null && !subList.isEmpty()){
-            buildCacheKeyByBuildingBlockList(subList,sb);
+            buildCacheKeyByBbList(subList,sb);
         }
     }
 
-    private void buildCacheKeyByBuildingBlockList(List<BuildingBlock> buildingBlockList, StringBuilder sb){
-        int size = buildingBlockList.size();
+    private void buildCacheKeyByBbList(List<Bb> bbList, StringBuilder sb){
+        int size = bbList.size();
         if (size == 0)
             return;
         if (size == 1){
-            BuildingBlock buildingBlock = buildingBlockList.get(0);
-            buildCacheKeyByBuildingBlock(buildingBlock,sb);
+            Bb bb = bbList.get(0);
+            buildCacheKeyByBbBlock(bb,sb);
         }else{
-            Set<BuildingBlock> set = new HashSet<>();
-            for (BuildingBlock buildingBlock : buildingBlockList) {
-                set.add(buildingBlock);
+            Set<Bb> set = new HashSet<>();
+            for (Bb bb : bbList) {
+                set.add(bb);
             }
-            for (BuildingBlock buildingBlock : set){
-                buildCacheKeyByBuildingBlock(buildingBlock,sb);
+            for (Bb bb : set){
+                buildCacheKeyByBbBlock(bb,sb);
             }
         }
 

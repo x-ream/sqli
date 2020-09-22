@@ -21,6 +21,7 @@ package io.xream.sqli.builder;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.mapping.Mapper;
+import io.xream.sqli.mapping.Script;
 import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -37,43 +38,44 @@ import java.util.List;
  */
 public interface ConditionToSql extends Mapper, SqlNormalizer {
 
-    default void buildConditionSql(StringBuilder sb, List<BuildingBlock> buildingBlockList, Mappable mappable) {
-        if (buildingBlockList == null || buildingBlockList.isEmpty())
+    default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
+        if (bbList == null || bbList.isEmpty())
             return;
-        for (BuildingBlock buildingBlock : buildingBlockList) {
+        for (Bb bb : bbList) {
 
-            if (buildingBlock.getPredicate() == PredicateAndOtherScript.SUB) {
+            if (bb.getP() == Op.SUB) {
 
-                if (buildingBlock.getSubList().isEmpty())
+                if (bb.getSubList().isEmpty())
                     continue;
-                buildingBlock.getSubList().get(0).setConjunction(ConjunctionAndOtherScript.NONE);
-                sb.append(buildingBlock.getConjunction().sql());
+                bb.getSubList().get(0).setC(Op.NONE);
+                sb.append(bb.getC().sql());
                 sb.append(SqlScript.SPACE).append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);
-                buildConditionSql(sb, buildingBlock.getSubList(), mappable);
+                buildConditionSql(sb, bb.getSubList(), mappable);
                 sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
                 continue;
             }
 
             String mapper = null;
-            if (buildingBlock.getPredicate() == PredicateAndOtherScript.X){
-                final String str  = normalizeSql(buildingBlock.getKey());
+            if (bb.getP() == Op.X){
+                final String str  = normalizeSql(bb.getKey());
                 StringBuilder sbx = new StringBuilder();
                 mapping((reg)->str.split(reg), mappable,sbx);
                 mapper = sbx.toString();
+                sb.append(bb.getC().sql()).append(mapper);
             }else {
-                mapper = mapping(buildingBlock.getKey(), mappable);
+                mapper = mapping(bb.getKey(), mappable);
+                sb.append(bb.getC().sql()).append(mapper).append(Script.SPACE).append(bb.getP().sql()).append(Script.SPACE);
             }
 
-            sb.append(buildingBlock.getConjunction().sql()).append(mapper).append(buildingBlock.getPredicate().sql());
-            if (buildingBlock.getValue() != null) {
-                if (buildingBlock.getPredicate() == PredicateAndOtherScript.IN || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN) {
-                    List<Object> inList = (List<Object>) buildingBlock.getValue();
+            if (bb.getValue() != null) {
+                if (bb.getP() == Op.IN || bb.getP() == Op.NOT_IN) {
+                    List<Object> inList = (List<Object>) bb.getValue();
                     Object v = inList.get(0);
                     Class<?> vType = v.getClass();
                     buildIn(sb, vType, inList);
-                } else if (!(buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.X)) {
+                } else if (!(bb.getP() == Op.IS_NULL
+                        || bb.getP() == Op.IS_NOT_NULL
+                        || bb.getP() == Op.X)) {
                     sb.append(SqlScript.PLACE_HOLDER).append(SqlScript.SPACE);
                 }
             }
@@ -139,27 +141,27 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
 
     interface Filter {
 
-        default void filter(List<BuildingBlock> buildingBlockList,  Mappable mappable) {
+        default void filter(List<Bb> bbList, Mappable mappable) {
 
-            if (buildingBlockList == null || buildingBlockList.isEmpty() )
+            if (bbList == null || bbList.isEmpty() )
                 return;
 
-            Iterator<BuildingBlock> ite = buildingBlockList.iterator();
+            Iterator<Bb> ite = bbList.iterator();
             while (ite.hasNext()) {
-                BuildingBlock buildingBlock = ite.next();
-                PredicateAndOtherScript p = buildingBlock.getPredicate();
-                String key = buildingBlock.getKey();
-                if (p == PredicateAndOtherScript.SUB){
-                    filter(buildingBlock.getSubList(), mappable);
-                    if (buildingBlock.getSubList().isEmpty()) {
+                Bb bb = ite.next();
+                Op p = bb.getP();
+                String key = bb.getKey();
+                if (p == Op.SUB){
+                    filter(bb.getSubList(), mappable);
+                    if (bb.getSubList().isEmpty()) {
                         ite.remove();
                     }
-                }else if (p == PredicateAndOtherScript.EQ
-                        || p == PredicateAndOtherScript.NE
-                        || p == PredicateAndOtherScript.GT
-                        || p == PredicateAndOtherScript.GTE
-                        || p == PredicateAndOtherScript.LT
-                        || p == PredicateAndOtherScript.LTE) {
+                }else if (p == Op.EQ
+                        || p == Op.NE
+                        || p == Op.GT
+                        || p == Op.GTE
+                        || p == Op.LT
+                        || p == Op.LTE) {
 
                     if (key.contains(".")){
                         String[] arr = key.split("\\.");
@@ -169,13 +171,13 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                             clzName = alia;
                         Parsed parsed = Parser.get(clzName);
                         if (parsed != null) {
-                            if (BaseTypeFilter.isBaseType(arr[1], buildingBlock.getValue(), parsed)) {
+                            if (BaseTypeFilter.isBaseType(arr[1], bb.getValue(), parsed)) {
                                 ite.remove();
                             } else {
                                 BeanElement be = parsed.getElement(arr[1]);
                                 if (be != null) {
-                                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                                    if (buildingBlock.getValue() == null)
+                                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
+                                    if (bb.getValue() == null)
                                         ite.remove();
                                 }
                             }
@@ -189,22 +191,22 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                             }
                         }
                         if (parsed != null) {
-                            if (BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
+                            if (BaseTypeFilter.isBaseType(key, bb.getValue(), parsed)) {
                                 ite.remove();
                             } else {
                                 BeanElement be = parsed.getElement(key);
                                 if (be != null) {
-                                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
-                                    if (buildingBlock.getValue() == null)
+                                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
+                                    if (bb.getValue() == null)
                                         ite.remove();
                                 }
                             }
                         }
                     }
-                }else if (p == PredicateAndOtherScript.IN
-                        || p == PredicateAndOtherScript.NOT_IN) {
+                }else if (p == Op.IN
+                        || p == Op.NOT_IN) {
 
-                    List valueList = (List) buildingBlock.getValue();
+                    List valueList = (List) bb.getValue();
                     if (valueList.size() > 1)
                         continue;
 
@@ -219,7 +221,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                         }
                     }
                 }
-                List<BuildingBlock> subList = buildingBlock.getSubList();
+                List<Bb> subList = bb.getSubList();
                 if (subList == null || subList.isEmpty())
                     continue;
                 filter(subList, mappable);
@@ -229,13 +231,13 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
     }
 
     interface Pre {
-        default void pre(List<Object> valueList, List<BuildingBlock> buildingBlockList) {
-            for (BuildingBlock buildingBlock : buildingBlockList) {
-                if (buildingBlock.getPredicate() == PredicateAndOtherScript.SUB){
-                    pre(valueList, buildingBlock.getSubList());
+        default void pre(List<Object> valueList, List<Bb> bbList) {
+            for (Bb bb : bbList) {
+                if (bb.getP() == Op.SUB){
+                    pre(valueList, bb.getSubList());
                     continue;
-                }else if (buildingBlock.getPredicate() == PredicateAndOtherScript.X) {
-                    Object value = buildingBlock.getValue();
+                }else if (bb.getP() == Op.X) {
+                    Object value = bb.getValue();
                     if (value == null)
                         continue;
                     if (value instanceof Object[]) {
@@ -243,11 +245,11 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
                             add(valueList,v);
                         }
                     }
-                }else if (!(buildingBlock.getPredicate() == PredicateAndOtherScript.IN
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.NOT_IN
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NULL
-                        || buildingBlock.getPredicate() == PredicateAndOtherScript.IS_NOT_NULL)) {
-                    Object v = buildingBlock.getValue();
+                }else if (!(bb.getP() == Op.IN
+                        || bb.getP() == Op.NOT_IN
+                        || bb.getP() == Op.IS_NULL
+                        || bb.getP() == Op.IS_NOT_NULL)) {
+                    Object v = bb.getValue();
                     add(valueList, v);
                 }
             }

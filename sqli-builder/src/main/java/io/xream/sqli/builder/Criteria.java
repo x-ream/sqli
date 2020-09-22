@@ -47,7 +47,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	private Object routeKey;
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
-	private List<BuildingBlock> buildingBlockList = new ArrayList<>();
+	private List<Bb> bbList = new ArrayList<>();
 	private String forceIndex;
 
 	@JsonIgnore
@@ -149,12 +149,12 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	}
 
 	@Override
-	public List<BuildingBlock> getBuildingBlockList() {
-		return this.buildingBlockList;
+	public List<Bb> getBbList() {
+		return this.bbList;
 	}
 	
-	protected void add(BuildingBlock buildingBlock) {
-		this.buildingBlockList.add(buildingBlock);
+	protected void add(Bb bb) {
+		this.bbList.add(bb);
 	}
 
 	public boolean isFixedSort() {
@@ -181,7 +181,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 				", page=" + page +
 				", rows=" + rows +
 				", sortList='" + sortList + '\'' +
-				", buildingBlockList=" + buildingBlockList +
+				", bbList=" + bbList +
 				", forceIndex=" + forceIndex +
 				", clz=" + clzz +
 				'}';

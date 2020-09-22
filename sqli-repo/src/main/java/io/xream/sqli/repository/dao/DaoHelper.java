@@ -57,7 +57,7 @@ public final class DaoHelper {
 
             String mapper = parsed.getMapper(key);
             if (flag) {
-                sb.append(ConjunctionAndOtherScript.AND.sql()).append(mapper).append(SqlScript.EQ_PLACE_HOLDER);
+                sb.append(Op.AND.sql()).append(mapper).append(SqlScript.EQ_PLACE_HOLDER);
             } else {
                 sb.append(SqlScript.WHERE).append(mapper).append(SqlScript.EQ_PLACE_HOLDER);
                 flag = true;

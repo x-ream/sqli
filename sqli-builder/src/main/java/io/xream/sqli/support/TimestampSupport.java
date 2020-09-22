@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.support;
 
-import io.xream.sqli.builder.BuildingBlock;
+import io.xream.sqli.builder.Bb;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -28,24 +28,24 @@ import java.util.Date;
  */
 public final class TimestampSupport {
 
-    public static boolean testNumberValueToDate(Class clzz, BuildingBlock buildingBlock){
+    public static boolean testNumberValueToDate(Class clzz, Bb bb){
         if (clzz == Date.class) {
-            Object v = buildingBlock.getValue();
+            Object v = bb.getValue();
             if (v instanceof Long || v instanceof Integer) {
                 if (Long.valueOf(v.toString()) == 0){
-                    buildingBlock.setValue(null);
+                    bb.setValue(null);
                 }else {
-                    buildingBlock.setValue(new Date(toLongValue(v)));
+                    bb.setValue(new Date(toLongValue(v)));
                 }
             }
             return true;
         } else if (clzz == Timestamp.class) {
-            Object v = buildingBlock.getValue();
+            Object v = bb.getValue();
             if (v instanceof Long || v instanceof Integer) {
                 if (Long.valueOf(v.toString()) == 0){
-                    buildingBlock.setValue(null);
+                    bb.setValue(null);
                 }else {
-                    buildingBlock.setValue(new Timestamp(toLongValue(v)));
+                    bb.setValue(new Timestamp(toLongValue(v)));
                 }
             }
             return true;

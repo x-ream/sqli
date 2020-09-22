@@ -145,12 +145,12 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
         if (unSafe) {
             String key = parsed.getKey(X.KEY_ONE);
-            List<BuildingBlock> buildingBlockList = refreshCondition.getBuildingBlockList();
-            for (BuildingBlock buildingBlock : buildingBlockList) {
-                String k = buildingBlock.getKey();
+            List<Bb> bbList = refreshCondition.getBbList();
+            for (Bb bb : bbList) {
+                String k = bb.getKey();
                 boolean b = k.contains(".") ? k.endsWith("."+key) : key.equals(k);
                 if (b) {
-                    Object value = buildingBlock.getValue();
+                    Object value = bb.getValue();
                     if (Objects.nonNull(value) && !value.toString().equals("0")) {
                         unSafe = false;//Safe
                         break;

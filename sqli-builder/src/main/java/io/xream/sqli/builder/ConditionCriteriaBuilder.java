@@ -33,52 +33,52 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
 
     private ConditionCriteriaBuilder instance;
 
-    private transient List<BuildingBlock> buildingBlockList;
+    private transient List<Bb> bbList;
     private transient boolean isOr;
 
-    private transient List<BuildingBlock> tempList;
-    private transient List<List<BuildingBlock>> subsList = new LinkedList<>();
+    private transient List<Bb> tempList;
+    private transient List<List<Bb>> subsList = new LinkedList<>();
 
     protected ConditionCriteriaBuilder(){
         this.instance = this;
     }
 
-    protected ConditionCriteriaBuilder(List<BuildingBlock> buildingBlockList){
+    protected ConditionCriteriaBuilder(List<Bb> bbList){
         this.instance = this;
-        this.instance.buildingBlockList = buildingBlockList;
+        this.instance.bbList = bbList;
     }
 
 
-    protected void init(List<BuildingBlock> buildingBlockList){
-        this.buildingBlockList = buildingBlockList;
+    protected void init(List<Bb> bbList){
+        this.bbList = bbList;
     }
 
-    public static ConditionCriteriaBuilder build(List<BuildingBlock> buildingBlockList){
-        return new ConditionCriteriaBuilder(buildingBlockList);
+    public static ConditionCriteriaBuilder build(List<Bb> bbList){
+        return new ConditionCriteriaBuilder(bbList);
     }
 
     public ConditionCriteriaBuilder eq(String property, Object value){
-        return doGle(PredicateAndOtherScript.EQ, property, value);
+        return doGle(Op.EQ, property, value);
     }
 
     public ConditionCriteriaBuilder lt(String property, Object value){
-        return doGle(PredicateAndOtherScript.LT, property, value);
+        return doGle(Op.LT, property, value);
     }
 
     public ConditionCriteriaBuilder lte(String property, Object value){
-        return doGle(PredicateAndOtherScript.LTE, property, value);
+        return doGle(Op.LTE, property, value);
     }
 
     public ConditionCriteriaBuilder gt(String property, Object value){
-        return doGle(PredicateAndOtherScript.GT, property, value);
+        return doGle(Op.GT, property, value);
     }
 
     public ConditionCriteriaBuilder gte(String property, Object value){
-        return doGle(PredicateAndOtherScript.GTE, property, value);
+        return doGle(Op.GTE, property, value);
     }
 
     public ConditionCriteriaBuilder ne(String property, Object value){
-        return doGle(PredicateAndOtherScript.NE, property, value);
+        return doGle(Op.NE, property, value);
     }
 
     public ConditionCriteriaBuilder like(String property, String value){
@@ -87,7 +87,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             return instance;
         }
         String likeValue = SqlScript.LIKE_HOLDER + value + SqlScript.LIKE_HOLDER;
-        return doLike(PredicateAndOtherScript.LIKE,property,likeValue);
+        return doLike(Op.LIKE,property,likeValue);
     }
 
     public ConditionCriteriaBuilder likeRight(String property, String value){
@@ -96,7 +96,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             return instance;
         }
         String likeValue = value + SqlScript.LIKE_HOLDER;
-        return doLike(PredicateAndOtherScript.LIKE,property,likeValue);
+        return doLike(Op.LIKE,property,likeValue);
     }
 
     public ConditionCriteriaBuilder notLike(String property, String value){
@@ -105,23 +105,23 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             return instance;
         }
         String likeValue = SqlScript.LIKE_HOLDER + value + SqlScript.LIKE_HOLDER;
-        return doLike(PredicateAndOtherScript.NOT_LIKE,property,likeValue);
+        return doLike(Op.NOT_LIKE,property,likeValue);
     }
 
     public ConditionCriteriaBuilder in(String property, List<? extends Object> list){
-        return doIn(PredicateAndOtherScript.IN,property,list);
+        return doIn(Op.IN,property,list);
     }
 
     public ConditionCriteriaBuilder nin(String property, List<? extends Object> list){
-        return doIn(PredicateAndOtherScript.NOT_IN,property,list);
+        return doIn(Op.NOT_IN,property,list);
     }
 
     public ConditionCriteriaBuilder nonNull(String property){
-        return doNull(PredicateAndOtherScript.IS_NOT_NULL,property);
+        return doNull(Op.IS_NOT_NULL,property);
     }
 
     public ConditionCriteriaBuilder isNull(String property){
-        return doNull(PredicateAndOtherScript.IS_NULL,property);
+        return doNull(Op.IS_NULL,property);
     }
 
 
@@ -134,11 +134,11 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
 
         String sql = normalizeSql(sqlSegment);
 
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(PredicateAndOtherScript.X);
-        buildingBlock.setKey(sql);
-        buildingBlock.setValue(values);
-        this.add(buildingBlock);
+        Bb bb = new Bb(isOr());
+        bb.setP(Op.X);
+        bb.setKey(sql);
+        bb.setValue(values);
+        this.add(bb);
 
         return instance;
     }
@@ -154,12 +154,12 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
     }
 
     public ConditionCriteriaBuilder beginSub(){
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(PredicateAndOtherScript.SUB);
+        Bb bb = new Bb(isOr());
+        bb.setP(Op.SUB);
 
-        List<BuildingBlock> subList = new ArrayList<>();
-        buildingBlock.setSubList(subList);
-        this.add(buildingBlock);
+        List<Bb> subList = new ArrayList<>();
+        bb.setSubList(subList);
+        this.add(bb);
 
         this.tempList = subList;
         this.subsList.add(subList);
@@ -181,7 +181,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
     }
 
 
-    private ConditionCriteriaBuilder doGle(PredicateAndOtherScript p, String property, Object value) {
+    private ConditionCriteriaBuilder doGle(Op p, String property, Object value) {
         if (value == null){
             isOr();
             return instance;
@@ -190,27 +190,27 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             isOr();
             return instance;
         }
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(p);
-        buildingBlock.setKey(property);
-        buildingBlock.setValue(value);
-        this.add(buildingBlock);
+        Bb bb = new Bb(isOr());
+        bb.setP(p);
+        bb.setKey(property);
+        bb.setValue(value);
+        this.add(bb);
 
         return instance;
     }
 
-    private ConditionCriteriaBuilder doLike(PredicateAndOtherScript p,String property, String likeWalue){
+    private ConditionCriteriaBuilder doLike(Op p,String property, String likeWalue){
 
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(p);
-        buildingBlock.setKey(property);
-        buildingBlock.setValue(likeWalue);
-        this.add(buildingBlock);
+        Bb bb = new Bb(isOr());
+        bb.setP(p);
+        bb.setKey(property);
+        bb.setValue(likeWalue);
+        this.add(bb);
         return instance;
     }
 
 
-    private ConditionCriteriaBuilder doIn(PredicateAndOtherScript p, String property,List<? extends Object> list){
+    private ConditionCriteriaBuilder doIn(Op p, String property,List<? extends Object> list){
 
         if (list == null || list.isEmpty()){
             isOr();
@@ -231,26 +231,26 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             return instance;
         }
 
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(p);
-        buildingBlock.setKey(property);
-        buildingBlock.setValue(tempList);
-        this.add(buildingBlock);
+        Bb bb = new Bb(isOr());
+        bb.setP(p);
+        bb.setKey(property);
+        bb.setValue(tempList);
+        this.add(bb);
 
         return instance;
     }
 
-    private ConditionCriteriaBuilder doNull(PredicateAndOtherScript p, String property){
+    private ConditionCriteriaBuilder doNull(Op p, String property){
         if (SqliStringUtil.isNullOrEmpty(property)){
             isOr();
             return instance;
         }
 
-        BuildingBlock buildingBlock = new BuildingBlock(isOr());
-        buildingBlock.setPredicate(p);
-        buildingBlock.setKey(property);
-        buildingBlock.setValue(p);
-        this.add(buildingBlock);
+        Bb bb = new Bb(isOr());
+        bb.setP(p);
+        bb.setKey(property);
+        bb.setValue(p);
+        this.add(bb);
 
         return instance;
     }
@@ -264,11 +264,11 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         }
     }
 
-    private void add(BuildingBlock buildingBlock){
+    private void add(Bb bb){
         if (this.tempList == null)
-            this.buildingBlockList.add(buildingBlock);
+            this.bbList.add(bb);
         else
-            this.tempList.add(buildingBlock);
+            this.tempList.add(bb);
     }
 
 }

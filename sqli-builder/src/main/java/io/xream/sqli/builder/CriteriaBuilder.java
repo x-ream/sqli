@@ -107,7 +107,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
     }
 
     private CriteriaBuilder(Criteria criteria) {
-        super(criteria.getBuildingBlockList());
+        super(criteria.getBbList());
         this.criteria = criteria;
     }
 
@@ -210,7 +210,7 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
             @Override
             public ConditionCriteriaBuilder more() {
-                return build(sourceScriptTemp.getBuildingBlockList());
+                return build(sourceScriptTemp.getBbList());
             }
 
         };

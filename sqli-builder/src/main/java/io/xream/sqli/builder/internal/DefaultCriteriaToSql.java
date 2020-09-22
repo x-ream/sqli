@@ -56,20 +56,20 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         if (Objects.isNull(criteriaCondition))
             return "";
         StringBuilder sb = new StringBuilder();
-        List<BuildingBlock> buildingBlockList = criteriaCondition.getBuildingBlockList();
+        List<Bb> bbList = criteriaCondition.getBbList();
 
-        if (buildingBlockList.isEmpty())
+        if (bbList.isEmpty())
             return "";
 
-        filter(buildingBlockList, mappable);//过滤
-        if (buildingBlockList.isEmpty())
+        filter(bbList, mappable);//过滤
+        if (bbList.isEmpty())
             return "";
 
-        pre(valueList, buildingBlockList);
+        pre(valueList, bbList);
 
-        buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
+        bbList.get(0).setC(Op.WHERE);
 
-        buildConditionSql(sb, buildingBlockList, mappable);
+        buildConditionSql(sb, bbList, mappable);
 
         return sb.toString();
     }
@@ -77,13 +77,11 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     @Override
     public void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
 
-
         SqlBuilder sqlBuilder = SqlBuilder.get();
 
         parseAlia(criteria, sqlBuilder);
 
         filter0(criteria);
-
         /*
          * select column
          */
@@ -97,7 +95,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         /*
          * StringList
          */
-        condition(sqlBuilder, criteria.getBuildingBlockList(), criteria, sqlBuildingAttached.getValueList());
+        condition(sqlBuilder, criteria.getBbList(), criteria, sqlBuildingAttached.getValueList());
 
         count(isSub, criteria.isTotalRowsIgnored(),sqlBuilder);
         /*
@@ -160,14 +158,14 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         sb.append(SqlScript.SET);
 
-        List<BuildingBlock> refreshList = refreshCondition.getRefreshList();
+        List<Bb> refreshList = refreshCondition.getRefreshList();
 
         List<Object> refreshValueList = new ArrayList<>();
 
         boolean isNotFirst = false;
-        for (BuildingBlock buildingBlock : refreshList) {
+        for (Bb bb : refreshList) {
 
-            if (buildingBlock.getPredicate() == PredicateAndOtherScript.X) {
+            if (bb.getP() == Op.X) {
 
                 if (isNotFirst) {
                     sb.append(SqlScript.COMMA).append(SqlScript.SPACE);
@@ -175,13 +173,13 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
                 isNotFirst = true;
 
-                Object key = buildingBlock.getKey();
+                Object key = bb.getKey();
                 String str = key.toString();
                 final String sql = normalizeSql(str);
                 mapping((reg) -> sql.split(reg), refreshCondition, sb);
 
             } else {
-                String key = buildingBlock.getKey();
+                String key = bb.getKey();
                 if (key.contains("?")) {
 
                     if (isNotFirst) {
@@ -211,10 +209,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                         throw new ParsingException("can not find the property " + key + " of " + parsed.getClzName());
                     }
 
-                    TimestampSupport.testNumberValueToDate(be.getClz(), buildingBlock);
+                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
 
-                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(buildingBlock.getValue()))
-                            || BaseTypeFilter.isBaseType(key, buildingBlock.getValue(), parsed)) {
+                    if (SqliStringUtil.isNullOrEmpty(String.valueOf(bb.getValue()))
+                            || BaseTypeFilter.isBaseType(key, bb.getValue(), parsed)) {
                         continue;
                     }
 
@@ -229,18 +227,18 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                     sb.append(SqlScript.EQ_PLACE_HOLDER);
 
                     if (be.isJson()) {
-                        Object v = buildingBlock.getValue();
+                        Object v = bb.getValue();
                         if (v != null) {
                             String str = JsonWrapper.toJson(v);
-                            buildingBlock.setValue(str);
+                            bb.setValue(str);
                         }
                     }
-//                    else if (BeanUtil.testEnumConstant(be.clz, buildingBlock.getValue())) {
+//                    else if (BeanUtil.testEnumConstant(be.clz, bb.getValue())) {
 //                        //FIXME
 //                    }
                 }
 
-                refreshValueList.add(buildingBlock.getValue());
+                refreshValueList.add(bb.getValue());
             }
 
         }
@@ -456,7 +454,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (SqliStringUtil.isNullOrEmpty(groupByS))
                 return;
 
-            sb.sbCondition.append(ConjunctionAndOtherScript.GROUP_BY.sql());
+            sb.sbCondition.append(Op.GROUP_BY.sql());
 
             String[] arr = groupByS.split(SqlScript.COMMA);
 
@@ -492,10 +490,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (h == null)
                 continue;
             if (flag) {
-                sb.sbCondition.append(ConjunctionAndOtherScript.HAVING.sql());
+                sb.sbCondition.append(Op.HAVING.sql());
                 flag = false;
             } else {
-                sb.sbCondition.append(ConjunctionAndOtherScript.AND.sql());
+                sb.sbCondition.append(Op.AND.sql());
             }
             sb.sbCondition.append(h.getKey()).append(h.getOp().sql()).append(h.getValue());
         }
@@ -539,7 +537,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             }
 
             for (SourceScript sourceScript : rmc.getSourceScripts()) {
-                addConditionBeforeOptimization(sourceScript.getBuildingBlockList(), sqlBuilder.conditionSet);
+                addConditionBeforeOptimization(sourceScript.getBbList(), sqlBuilder.conditionSet);
             }
         }
 
@@ -605,7 +603,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         List<Sort> sortList = criteria.getSortList();
         if (sortList != null && !sortList.isEmpty()) {
 
-            sb.sbCondition.append(ConjunctionAndOtherScript.ORDER_BY.sql());
+            sb.sbCondition.append(Op.ORDER_BY.sql());
             int size = sortList.size();
             int i = 0;
             for (Sort sort : sortList) {
@@ -629,16 +627,16 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     private void filter0(Criteria criteria) {
-        List<BuildingBlock> buildingBlockList = criteria.getBuildingBlockList();
+        List<Bb> bbList = criteria.getBbList();
 
         if (criteria instanceof Criteria.ResultMapCriteria) {
             Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria)criteria;//FIXME 判断是虚表
-            filter(buildingBlockList, resultMapCriteria);
+            filter(bbList, resultMapCriteria);
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                filter(sourceScript.getBuildingBlockList(), resultMapCriteria);
+                filter(sourceScript.getBbList(), resultMapCriteria);
             }
         }else{
-            filter(buildingBlockList,criteria);
+            filter(bbList,criteria);
         }
     }
 
@@ -650,18 +648,18 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void condition(SqlBuilder sqlBuilder, List<BuildingBlock> buildingBlockList, Criteria criteria,List<Object> valueList) {
-        if (buildingBlockList.isEmpty())
+    private void condition(SqlBuilder sqlBuilder, List<Bb> bbList, Criteria criteria, List<Object> valueList) {
+        if (bbList.isEmpty())
             return;
-        addConditionBeforeOptimization(buildingBlockList, sqlBuilder.conditionSet);//优化连表查询前的准备
+        addConditionBeforeOptimization(bbList, sqlBuilder.conditionSet);//优化连表查询前的准备
 
         StringBuilder xsb = new StringBuilder();
 
-        pre(valueList, buildingBlockList);//提取占位符对应的值
-        if (buildingBlockList.isEmpty())
+        pre(valueList, bbList);//提取占位符对应的值
+        if (bbList.isEmpty())
             return;
-        buildingBlockList.get(0).setConjunction(ConjunctionAndOtherScript.WHERE);
-        buildConditionSql(xsb, buildingBlockList,criteria);
+        bbList.get(0).setC(Op.WHERE);
+        buildConditionSql(xsb, bbList,criteria);
         sqlBuilder.sbCondition.append(xsb);
 
     }

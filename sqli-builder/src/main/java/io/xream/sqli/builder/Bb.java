@@ -25,32 +25,32 @@ import java.util.Objects;
 /**
  * @Author Sim
  */
-public final class BuildingBlock {
+public final class Bb {
 
-    private ConjunctionAndOtherScript conjunction;
-    private PredicateAndOtherScript predicate;
+    private Op c;
+    private Op p;
     private String key;
     private Object value;
-    private List<BuildingBlock> subList;
-    private BuildingBlock parent;
-    public BuildingBlock(){}
-    public BuildingBlock(boolean isOr){
+    private List<Bb> subList;
+    private Bb parent;
+    public Bb(){}
+    public Bb(boolean isOr){
         if (isOr)
-            conjunction = ConjunctionAndOtherScript.OR;
+            c = Op.OR;
         else
-            conjunction = ConjunctionAndOtherScript.AND;
+            c = Op.AND;
     }
-    public ConjunctionAndOtherScript getConjunction() {
-        return conjunction;
+    public Op getC() {
+        return c;
     }
-    public void setConjunction(ConjunctionAndOtherScript conjunction) {
-        this.conjunction = conjunction;
+    public void setC(Op c) {
+        this.c = c;
     }
-    public PredicateAndOtherScript getPredicate() {
-        return predicate;
+    public Op getP() {
+        return p;
     }
-    public void setPredicate(PredicateAndOtherScript predicate) {
-        this.predicate = predicate;
+    public void setP(Op p) {
+        this.p = p;
     }
     public String getKey() {
         return key;
@@ -64,16 +64,16 @@ public final class BuildingBlock {
     public void setValue(Object value) {
         this.value = value;
     }
-    public List<BuildingBlock> getSubList() {
+    public List<Bb> getSubList() {
         return subList;
     }
-    public void setSubList(List<BuildingBlock> subList) {
+    public void setSubList(List<Bb> subList) {
         this.subList = subList;
     }
-    public BuildingBlock getParent() {
+    public Bb getParent() {
         return parent;
     }
-    public void setParent(BuildingBlock parent) {
+    public void setParent(Bb parent) {
         this.parent = parent;
     }
 
@@ -81,23 +81,23 @@ public final class BuildingBlock {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        BuildingBlock that = (BuildingBlock) object;
-        return conjunction == that.conjunction &&
-                predicate == that.predicate &&
+        Bb that = (Bb) object;
+        return c == that.c &&
+                p == that.p &&
                 Objects.equals(key, that.key) &&
                 Objects.equals(value, that.value) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(conjunction, predicate, key, value);
+        return Objects.hash(c, p, key, value);
     }
 
     @Override
     public String toString() {
-        return "BuildingBlock{" +
-                "conjunction=" + conjunction +
-                ", predicate=" + predicate +
+        return "Bb{" +
+                "c=" + c +
+                ", p=" + p +
                 ", key=" + key +
                 ", value=" + value +
                 ", subList=" + subList +

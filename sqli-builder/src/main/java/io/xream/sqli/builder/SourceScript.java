@@ -35,7 +35,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     private String joinStr;
     private On on;
     private String alia;
-    private List<BuildingBlock> buildingBlockList = new ArrayList<>();
+    private List<Bb> bbList = new ArrayList<>();
 
     private transient boolean used;
     private transient boolean targeted;
@@ -72,12 +72,12 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
         this.joinStr = joinStr;
     }
 
-    public List<BuildingBlock> getBuildingBlockList() {
-        return buildingBlockList;
+    public List<Bb> getBbList() {
+        return bbList;
     }
 
-    public void setBuildingBlockList(List<BuildingBlock> buildingBlocks) {
-        this.buildingBlockList = buildingBlocks;
+    public void setBbList(List<Bb> bbs) {
+        this.bbList = bbs;
     }
 
     public On getOn() {
@@ -124,7 +124,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
             attached.getSubList().add(sqlBuilt);
             criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
         }
-        pre(attached.getValueList(), buildingBlockList);
+        pre(attached.getValueList(), bbList);
 
     }
 
@@ -162,7 +162,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
             }
         }
 
-        buildConditionSql(sb, buildingBlockList, mappable);
+        buildConditionSql(sb, bbList, mappable);
 
         return sb.toString();
     }
@@ -176,7 +176,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
                 ", joinStr='" + joinStr + '\'' +
                 ", on=" + on +
                 ", alia='" + alia + '\'' +
-                ", buildingBlockList=" + buildingBlockList +
+                ", bbList=" + bbList +
                 ", used=" + used +
                 ", targeted=" + targeted +
                 '}';
