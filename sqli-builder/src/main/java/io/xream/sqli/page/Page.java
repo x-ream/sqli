@@ -137,9 +137,6 @@ public final class Page<T> implements Paged, Serializable{
 	}
 
 	public List<String> getKeyList() {
-		if (this.keyList == null) {
-			this.keyList = new ArrayList<>();
-		}
 		return this.keyList;
 	}
 

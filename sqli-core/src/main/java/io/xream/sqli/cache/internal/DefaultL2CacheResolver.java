@@ -616,13 +616,12 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 			List<T> list = p.getList(); // 结果
 
-			List<String> keyList = p.getKeyList();
-
+			List<String> keyList = new ArrayList<>();
 			for (T t : list) {
 				String key = ParserUtil.getCacheKey(t, parsed);
 				keyList.add(key);
 			}
-
+			p.setKeyList(keyList);
 			p.reSetList(null);
 
 			setResultKeyListPaginated(clz, criteriaKey, p);
