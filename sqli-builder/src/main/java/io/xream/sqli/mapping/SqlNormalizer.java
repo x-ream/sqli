@@ -26,7 +26,6 @@ import java.util.Set;
  */
 public interface SqlNormalizer {
 
-
     Set<String> OP_SET = new HashSet() {
         {
             add("=");
@@ -45,7 +44,6 @@ public interface SqlNormalizer {
 
     default String normalizeSql(final String handwritten) {
         StringBuilder valueSb = new StringBuilder();
-
         boolean ignore = false;
         int length = handwritten.length();
         for (int j = 0; j < length; j++) {
@@ -55,9 +53,7 @@ public interface SqlNormalizer {
                 continue;
             }
             if (OP_SET.contains(strEle)) {
-
                 valueSb.append(Script.SPACE);
-
                 valueSb.append(strEle);
                 if (j + 1 < length) {
                     String nextOp = String.valueOf(handwritten.charAt(j + 1));
@@ -74,10 +70,7 @@ public interface SqlNormalizer {
             }
             ignore = false;
         }
-
         return valueSb.toString();
-
     }
-
 
 }

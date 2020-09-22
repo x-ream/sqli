@@ -84,12 +84,10 @@ public interface Mapper {
             return key;
         String value = parsed.getMapper(key);
         return value == null ? key : value;
-
     }
 
     interface ScriptSplitable {
         String[] split(String reg);
     }
-
 
 }

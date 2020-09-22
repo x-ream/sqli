@@ -24,7 +24,6 @@ import java.util.Map;
  * @Author Sim
  */
 public interface ResultMapHelpful extends Mappable {
-
     Map<String,String> getMapperPropertyMap();
     boolean isResultWithDottedKey();
 }

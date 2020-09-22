@@ -35,7 +35,6 @@ import java.util.Objects;
  */
 public final class Parsed {
 
-
 	private boolean isChecked = false;
 
 	private Class clzz;

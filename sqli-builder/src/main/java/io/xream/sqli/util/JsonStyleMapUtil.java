@@ -36,8 +36,7 @@ public final class JsonStyleMapUtil {
 		for (Entry<String, Object> es : stringKeyMap.entrySet()){
 			String stringKey = es.getKey();
 			if (stringKey.contains(".")){
-				stringKey = stringKey.replace(".", "->");
-				String[] arr = stringKey.split("->");
+				String[] arr = stringKey.split("\\.");
 				String jsonKey = arr[0];
 				String propKey = arr[1];
 				Object obj = jsonableMap.get(jsonKey);
