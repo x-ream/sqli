@@ -62,7 +62,7 @@
             5. get(Id) //根据主键查询记录
             6. getOne(Object) //数据库只有一条记录时，就返回那条记录
             7. list() //无条件查全表, 几乎没使用场景
-            8. creaet(Object) //插入一条
+            8. creaet(Object) //插入一条, 不支持返回自增键, 建议用外部机制生成ID
             9. createBatch(List<Object>) //批量插入
             10. refresh(RefreshCondition) //根据主键更新
             11. refreshUnSafe(RefreshCondition)//不根据主键更新
