@@ -143,7 +143,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
             return mapping(source, mappable);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(joinStr == null ? joinType.sql() : joinStr + SqlScript.SPACE);
+        sb.append(joinStr == null ? joinType.sql() : SqlScript.SPACE + joinStr + SqlScript.SPACE);
 
         sb.append(mapping(source, mappable));
 

@@ -68,10 +68,10 @@ public final class SqlInitFactory implements SqlInit {
 	@SuppressWarnings({ "rawtypes" })
 	public static String tryToCreate(Class clz) {
 
-		getSql(clz,CREATE_TABLE);
+		String createTable = getSql(clz,CREATE_TABLE);
 		sqlsMap.get(clz).remove(CREATE_TABLE);
 
-		return "";
+		return createTable;
 	}
 
 
