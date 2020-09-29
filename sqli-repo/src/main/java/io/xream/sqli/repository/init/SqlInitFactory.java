@@ -19,6 +19,7 @@
 package io.xream.sqli.repository.init;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -40,7 +41,7 @@ public final class SqlInitFactory implements SqlInit {
 
 	private static Map<Class, Map<String, String>> sqlsMap = new HashMap<>();
 
-	public static Dialect Dialect;
+	public static Dialect DIALECT;
 
 	/**
 	 * 返回SQL
@@ -98,8 +99,8 @@ public final class SqlInitFactory implements SqlInit {
 			Parsed parsed = Parser.get(clz);
 			String space = " ";
 			StringBuilder sb = new StringBuilder();
-			sb.append("DELETE FROM ");
-			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
+			sb.append(DIALECT.getAlterTableDelete()).append(SqlScript.SPACE);
+			sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(DIALECT.getCommandDelete());
 			sb.append("WHERE ");
 
 			parseKey(sb, clz);
@@ -294,7 +295,7 @@ public final class SqlInitFactory implements SqlInit {
 			sb.append("\n");
 			sb.append(") ").append(" ").append(Dialect.ENGINE).append(";");
 			String sql = sb.toString();
-			sql = Dialect.replaceAll(sql);
+			sql = DIALECT.replaceAll(sql);
 			sql = SqlParserUtil.mapper(sql, Parser.get(clz));
 			sqlsMap.get(clz).put(CREATE_TABLE, sql);
 			return sql;

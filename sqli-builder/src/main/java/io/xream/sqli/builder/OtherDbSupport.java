@@ -18,21 +18,13 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.parser.Parsed;
-
-import java.util.List;
-
-
 /**
  * @Author Sim
  */
-public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
+public interface OtherDbSupport {
 
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
-
-    void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
-
-    String toSql(Parsed parsed, RefreshCondition refreshCondition, OtherDbSupport otherDbSupport);
-
+    String getAlterTableUpdate();
+    String getAlterTableDelete();
+    String getCommandUpdate();
+    String getCommandDelete();
 }

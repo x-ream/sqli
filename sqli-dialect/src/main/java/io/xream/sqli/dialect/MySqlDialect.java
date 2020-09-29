@@ -133,4 +133,23 @@ public class MySqlDialect implements Dialect {
     }
 
 
+    @Override
+    public String getAlterTableUpdate() {
+        return SqlScript.UPDATE;
+    }
+
+    @Override
+    public String getAlterTableDelete() {
+        return SqlScript.DELETE_FROM ;
+    }
+
+    @Override
+    public String getCommandUpdate() {
+        return SqlScript.SET;
+    }
+
+    @Override
+    public String getCommandDelete() {
+        return SqlScript.SPACE;
+    }
 }

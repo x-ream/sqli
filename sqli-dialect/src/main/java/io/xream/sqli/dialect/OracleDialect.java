@@ -18,6 +18,7 @@
  */
 package io.xream.sqli.dialect;
 
+import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.core.Dialect;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
@@ -223,4 +224,23 @@ public class OracleDialect implements Dialect {
         return arr;
     }
 
+    @Override
+    public String getAlterTableUpdate() {
+        return SqlScript.UPDATE;
+    }
+
+    @Override
+    public String getAlterTableDelete() {
+        return SqlScript.DELETE_FROM ;
+    }
+
+    @Override
+    public String getCommandUpdate() {
+        return SqlScript.SET;
+    }
+
+    @Override
+    public String getCommandDelete() {
+        return SqlScript.SPACE;
+    }
 }

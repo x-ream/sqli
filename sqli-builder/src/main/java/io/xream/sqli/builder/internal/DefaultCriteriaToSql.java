@@ -133,12 +133,13 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public String toSql(Parsed parsed, RefreshCondition refreshCondition) {
+    public String toSql(Parsed parsed, RefreshCondition refreshCondition, OtherDbSupport otherDbSupport) {
 
         String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(SqlScript.UPDATE).append(SqlScript.SPACE).append(sourceScript).append(SqlScript.SPACE);
+        sb.append(otherDbSupport.getAlterTableUpdate()).append(SqlScript.SPACE).append(sourceScript)
+                .append(SqlScript.SPACE).append(otherDbSupport.getCommandUpdate()).append(SqlScript.SPACE);
 
         concatRefresh(sb, parsed, refreshCondition);
 
@@ -155,8 +156,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCondition refreshCondition) {
-
-        sb.append(SqlScript.SET);
 
         List<Bb> refreshList = refreshCondition.getRefreshList();
 

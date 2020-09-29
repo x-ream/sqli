@@ -119,15 +119,16 @@ public interface SqlScript extends Script {
 			"trigger"
 	};
 
-
-
+	String ALTER_TABLE = "ALTER TABLE";
 	String SELECT = "SELECT";
 	String DISTINCT = "DISTINCT";
 	String WHERE = " WHERE ";
 	String FROM = "FROM";
 	String LIMIT = " LIMIT ";
-	String SET = " SET ";
+	String SET = "SET";
 	String UPDATE = "UPDATE";
+	String DELETE = " DELETE ";
+	String DELETE_FROM = "DELETE FROM";
 	String IN = " IN ";
 	String ON = " ON ";
 

@@ -282,7 +282,7 @@ public final class DaoImpl implements Dao {
 
         Class clz = refreshCondition.getClz();
         Parsed parsed = Parser.get(clz);
-        String sql = DaoHelper.buildRefresh(parsed, refreshCondition, this.criteriaToSql);
+        String sql = DaoHelper.buildRefresh(parsed, refreshCondition, this.criteriaToSql,this.dialect);
         List<Object> valueList = refreshCondition.getValueList();
 
         SqliLoggerProxy.debug(clz, valueList);

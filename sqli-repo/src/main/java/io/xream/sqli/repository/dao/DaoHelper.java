@@ -71,8 +71,8 @@ public final class DaoHelper {
     }
 
 
-    protected static String buildRefresh(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser) {
-        return criteriaParser.toSql(parsed,refreshCondition);
+    protected static String buildRefresh(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser,OtherDbSupport otherDbSupport) {
+        return criteriaParser.toSql(parsed,refreshCondition,otherDbSupport);
     }
 
     protected static String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap) {

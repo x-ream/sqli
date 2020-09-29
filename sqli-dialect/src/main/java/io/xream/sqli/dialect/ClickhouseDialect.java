@@ -16,23 +16,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.dialect;
 
-import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.parser.Parsed;
-
-import java.util.List;
-
+import io.xream.sqli.builder.SqlScript;
 
 /**
  * @Author Sim
  */
-public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
+public class ClickhouseDialect extends MySqlDialect{
 
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
+    @Override
+    public String getAlterTableUpdate() {
+        return SqlScript.ALTER_TABLE;
+    }
 
-    void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
+    @Override
+    public String getAlterTableDelete() {
+        return SqlScript.ALTER_TABLE ;
+    }
 
-    String toSql(Parsed parsed, RefreshCondition refreshCondition, OtherDbSupport otherDbSupport);
+    @Override
+    public String getCommandUpdate() {
+        return SqlScript.UPDATE;
+    }
 
+    @Override
+    public String getCommandDelete() {
+        return SqlScript.DELETE;
+    }
 }
