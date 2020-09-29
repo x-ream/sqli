@@ -16,7 +16,8 @@
 ## sqli-repo 
 
 ### 使用方法
-    sqli仅仅是SQL的编程接口,需要整合到已有的框架或项目中,在io.xream.x7项目里实现了和Spring-Boot/Spring-JdbcTemplate的整合
+    sqli仅仅是SQL的编程接口,需要整合到已有的框架或项目中,
+    在io.xream.x7项目里实现了和Spring-Boot/Spring-JdbcTemplate的整合
     
     @EnableX7Repostory  // code at x7/x7-spring-boot-starter
     public class App{
