@@ -83,7 +83,7 @@ public final class DaoHelper {
         for (String key : refreshMap.keySet()) {
 
             BeanElement element = parsed.getElement(key);
-            if (element.isJson() && DbType.ORACLE.equals(DbType.value())){
+            if (element.isJson() && "oracle".equals(DbType.value())){
                 Object obj = refreshMap.get(key);
                 Reader reader = new StringReader(obj.toString());
                 refreshMap.put(key,reader);

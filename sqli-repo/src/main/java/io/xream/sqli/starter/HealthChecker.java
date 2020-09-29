@@ -68,7 +68,7 @@ public class HealthChecker {
                     throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
                 }
 
-                if (DbType.value().equals(DbType.MYSQL) && SqliStringUtil.isNotNull(createSql)) {
+                if (DbType.value().contains("mysql") && SqliStringUtil.isNotNull(createSql)) {
                     nativeSupport.execute(clz, createSql);
                 }
 
