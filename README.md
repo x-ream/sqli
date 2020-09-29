@@ -16,12 +16,20 @@
 ## sqli-repo 
 
 ### 使用方法
-    在x7项目里实现了springBoot的Enable
+    sqli仅仅是SQL的编程接口,需要整合到已有的框架或项目中,在io.xream.x7项目里实现了和Spring-Boot/Spring-JdbcTemplate的整合
     
-    @EnableX7Repostory  // code at x7/x7-repo/x7-spring-boot-starter
+    @EnableX7Repostory  // code at x7/x7-spring-boot-starter
     public class App{
-        main()
-    
+        main() 
+        ....
+    }
+```xml        
+    <dependency>
+         <groupId>io.xream.x7</groupId>
+         <artifactId>x7-spring-boot-starter</artifactId>
+         ....
+    </dependency>
+```     
     更多代码片段:
     
     @Repository
