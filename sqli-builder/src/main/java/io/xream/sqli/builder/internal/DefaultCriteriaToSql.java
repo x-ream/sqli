@@ -133,13 +133,13 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public String toSql(Parsed parsed, RefreshCondition refreshCondition, OtherDbSupport otherDbSupport) {
+    public String toSql(Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport) {
 
         String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(otherDbSupport.getAlterTableUpdate()).append(SqlScript.SPACE).append(sourceScript)
-                .append(SqlScript.SPACE).append(otherDbSupport.getCommandUpdate()).append(SqlScript.SPACE);
+        sb.append(dialectSupport.getAlterTableUpdate()).append(SqlScript.SPACE).append(sourceScript)
+                .append(SqlScript.SPACE).append(dialectSupport.getCommandUpdate()).append(SqlScript.SPACE);
 
         concatRefresh(sb, parsed, refreshCondition);
 

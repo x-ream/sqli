@@ -33,6 +33,6 @@ public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, Co
 
     void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
-    String toSql(Parsed parsed, RefreshCondition refreshCondition, OtherDbSupport otherDbSupport);
+    String toSql(Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport);
 
 }

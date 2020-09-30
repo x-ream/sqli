@@ -243,4 +243,9 @@ public class OracleDialect implements Dialect {
     public String getCommandDelete() {
         return SqlScript.SPACE;
     }
+
+    @Override
+    public String getTemporaryTableCreate() {
+        return "CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS ";
+    }
 }

@@ -71,7 +71,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
     }
 
     @Override
-    public boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
+    public boolean   findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = DaoHelper.fromCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
@@ -80,7 +80,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         Parsed parsed = Parser.get(clzz);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("CREATE TEMPORARY TABLE IF NOT EXISTS ").append(parsed.getTableName())
+        sb.append(dialect.getTemporaryTableCreate()).append(parsed.getTableName())
                 .append(SqlScript.AS);
 
         String sql = null;

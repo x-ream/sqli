@@ -152,4 +152,9 @@ public class MySqlDialect implements Dialect {
     public String getCommandDelete() {
         return SqlScript.SPACE;
     }
+
+    @Override
+    public String getTemporaryTableCreate() {
+        return "CREATE TEMPORARY TABLE IF NOT EXISTS ";
+    }
 }

@@ -21,10 +21,12 @@ package io.xream.sqli.builder;
 /**
  * @Author Sim
  */
-public interface OtherDbSupport {
+public interface DialectSupport {
 
     String getAlterTableUpdate();
     String getAlterTableDelete();
     String getCommandUpdate();
     String getCommandDelete();
+
+    String getTemporaryTableCreate();
 }

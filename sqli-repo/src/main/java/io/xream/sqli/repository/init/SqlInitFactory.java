@@ -233,7 +233,7 @@ public final class SqlInitFactory implements SqlInit {
 
 			StringBuilder sb = new StringBuilder();
 			if (isTemporary){
-				sb.append("\"CREATE TEMPORARY TABLE IF NOT EXISTS \"");
+				sb.append(DIALECT.getTemporaryTableCreate());
 			}else{
 				sb.append("CREATE TABLE IF NOT EXISTS ");
 			}

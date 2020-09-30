@@ -19,7 +19,7 @@
 package io.xream.sqli.core;
 
 
-import io.xream.sqli.builder.OtherDbSupport;
+import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.parser.BeanElement;
 
 import java.util.Collection;
@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface Dialect extends OtherDbSupport, ValuePost {
+public interface Dialect extends DialectSupport, ValuePost {
 
     String DATE = "${DATE}";
     String BYTE = "${BYTE}";
