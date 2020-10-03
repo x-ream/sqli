@@ -21,7 +21,6 @@ package io.xream.sqli.builder;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.util.SqliStringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

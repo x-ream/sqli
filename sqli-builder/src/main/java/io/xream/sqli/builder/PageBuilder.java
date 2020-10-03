@@ -23,8 +23,6 @@ package io.xream.sqli.builder;
  * @Author Sim
  */
 
-import java.util.List;
-
 public interface PageBuilder {
 
     PageBuilder ignoreTotalRows();

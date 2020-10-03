@@ -31,8 +31,8 @@ import io.xream.sqli.repository.dao.DaoImpl;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.dao.TemporaryDaoImpl;
 import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
-import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.repository.internal.DefaultNativeRepository;
+import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.spi.JdbcHelper;
 import io.xream.sqli.spi.L2CacheResolver;
 
