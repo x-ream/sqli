@@ -28,6 +28,7 @@ import io.xream.sqli.util.SqliExceptionUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
@@ -69,6 +70,55 @@ public final class ResultSortUtil {
                     if (String.valueOf(para).equals(String.valueOf(o))) {
                         list.add(result);
                     }
+                }
+            }
+        }catch (Exception e) {
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
+        }
+
+    }
+
+    public  static <T> void sort(List<Map<String,Object>> list, Criteria.ResultMapCriteria criteria) {
+
+        if (list.isEmpty())
+            return;
+
+        List<KV> fixedSortList = criteria.getFixedSortList();
+
+        if (fixedSortList == null || fixedSortList.isEmpty())
+            return;
+
+        KV kv0 = fixedSortList.get(0);
+
+        List<Map<String,Object>> tempList = new ArrayList<>();
+        tempList.addAll(list);
+
+        list.clear();
+
+        String key = kv0.k;
+        boolean  isSimpleKey = criteria.isResultWithDottedKey() || !key.contains(".");
+        String firstKey = null;
+        String secondKey = null;
+        if (!isSimpleKey){
+            String[] arr = key.split("\\.");
+            firstKey = arr[0];
+            secondKey = arr[1];
+        }
+        try {
+            for (Object para : (List<Object>) kv0.v) {
+                for (Map<String,Object> map : tempList) {
+                    if (isSimpleKey) {
+                        if (String.valueOf(para).equals(String.valueOf(map.get(key)))) {
+                            list.add(map);
+                        }
+                    }else{
+                        Object o = ((Map)map.get(firstKey)).get(secondKey);
+                        if (String.valueOf(para).equals(String.valueOf(o))) {
+                            list.add(map);
+                        }
+                    }
+
                 }
             }
         }catch (Exception e) {

@@ -341,7 +341,7 @@ public final class DaoImpl implements Dao {
         SqliLoggerProxy.debug(clz, sql);
 
         List<Map<String, Object>> list = this.jdbcHelper.queryForResultMapList(sql, valueList,resultMapped, clz, this.dialect);
-
+        ResultSortUtil.sort(list,resultMapped);
         Page<Map<String, Object>> pagination = PageBuilderHelper.build(resultMapped, list, () -> getCount(clz, sqlBuilt.getCountSql(), valueList));
 
         return pagination;
@@ -356,7 +356,9 @@ public final class DaoImpl implements Dao {
 
         SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
 
-        return this.jdbcHelper.queryForResultMapList(sql, valueList,resultMapped, resultMapped.getClzz(), this.dialect);
+        List<Map<String,Object>> list = this.jdbcHelper.queryForResultMapList(sql, valueList,resultMapped, resultMapped.getClzz(), this.dialect);
+        ResultSortUtil.sort(list,resultMapped);
+        return list;
     }
 
     @Override

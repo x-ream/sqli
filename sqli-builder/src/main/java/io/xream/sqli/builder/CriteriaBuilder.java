@@ -64,19 +64,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
                 return this;
             }
 
-            @Override
-            public PageBuilder orderIn(String porperty, List<? extends Object> inList) {
-                if (Objects.nonNull(inList) && inList.size() > 0) {
-                    KV kv = new KV(porperty, inList);
-                    List<KV> fixedSortList = criteria.getFixedSortList();
-                    if (fixedSortList == null){
-                        fixedSortList = new ArrayList<>();
-                        criteria.setFixedSortList(fixedSortList);
-                    }
-                    fixedSortList.add(kv);
-                }
-                return this;
-            }
 
         };
         return this.pageBuilder;
@@ -84,6 +71,19 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
     public void paged(Paged paged) {
         criteria.paged(paged);
+    }
+
+    public CriteriaBuilder sortIn(String porperty, List<? extends Object> inList) {
+        if (Objects.nonNull(inList) && inList.size() > 0) {
+            KV kv = new KV(porperty, inList);
+            List<KV> fixedSortList = criteria.getFixedSortList();
+            if (fixedSortList == null){
+                fixedSortList = new ArrayList<>();
+                criteria.setFixedSortList(fixedSortList);
+            }
+            fixedSortList.add(kv);
+        }
+        return this;
     }
 
     public CriteriaBuilder sort(String orderBy, Direction direction) {

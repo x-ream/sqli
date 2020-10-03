@@ -30,5 +30,4 @@ public interface PageBuilder {
     PageBuilder ignoreTotalRows();
     PageBuilder rows(int rows);
     PageBuilder page(int page);
-    PageBuilder orderIn(String property, List<? extends Object> inList);
 }
