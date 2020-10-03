@@ -21,7 +21,7 @@ package io.xream.sqli.repository.dao;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
-import io.xream.sqli.core.Dialect;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

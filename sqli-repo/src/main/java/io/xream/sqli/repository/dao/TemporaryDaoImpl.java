@@ -23,7 +23,7 @@ import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.CriteriaToSql;
 import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.core.Dialect;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.spi.JdbcHelper;

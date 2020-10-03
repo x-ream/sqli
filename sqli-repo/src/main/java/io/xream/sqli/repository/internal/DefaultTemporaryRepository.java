@@ -21,6 +21,7 @@ package io.xream.sqli.repository.internal;
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.core.Repository;
+import io.xream.sqli.dialect.DynamicDialectKeyRemovable;
 import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.TemporaryDao;
@@ -35,7 +36,7 @@ import java.util.concurrent.Callable;
 /**
  * @Author Sim
  */
-public final class DefaultTemporaryRepository implements TemporaryRepository {
+public final class DefaultTemporaryRepository implements TemporaryRepository, DynamicDialectKeyRemovable {
 
     private static Logger logger = LoggerFactory.getLogger(TemporaryRepository.class);
     private static TemporaryRepository instance;
@@ -77,6 +78,7 @@ public final class DefaultTemporaryRepository implements TemporaryRepository {
             SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new ProxyException(SqliExceptionUtil.getMessage(e));
         }finally {
+            removeDialectKey();
             long endTime = System.currentTimeMillis();
             logger.info("{} result: {}, cost time: {}ms" , logTag, flag, (endTime - startTime));
         }

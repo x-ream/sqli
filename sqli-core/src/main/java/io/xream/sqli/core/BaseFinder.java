@@ -19,6 +19,7 @@
 package io.xream.sqli.core;
 
 import io.xream.sqli.converter.DataObjectConverter;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 

@@ -22,9 +22,9 @@ import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
 import io.xream.sqli.converter.ObjectDataConverter;
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ExceptionTranslator;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
@@ -104,7 +104,6 @@ public final class DaoImpl implements Dao {
         } catch (Exception e) {
             throw ExceptionTranslator.onRollback(obj, e, logger);
         }
-
     }
 
     @Override

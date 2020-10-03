@@ -21,6 +21,10 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.core.NativeSupport;
+import io.xream.sqli.dialect.DynamicDialectKeyRemovable;
+import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.exception.QueryException;
+import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +33,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public final class DefaultNativeRepository implements NativeRepository {
+public final class DefaultNativeRepository implements NativeRepository, DynamicDialectKeyRemovable {
 
 	private static NativeRepository instance;
 	private NativeSupport nativeSupport;
@@ -51,11 +55,29 @@ public final class DefaultNativeRepository implements NativeRepository {
 
 	@Override
 	public <T> boolean execute(Class<T> clzz, String sql){
-		return nativeSupport.execute(clzz, sql);
+		try {
+			return nativeSupport.execute(clzz, sql);
+		}catch (Exception e) {
+			if (e instanceof RuntimeException){
+				throw e;
+			}
+			throw new PersistenceException(SqliExceptionUtil.getMessage(e));
+		}finally {
+			removeDialectKey();
+		}
 	}
 	@Override
 	public  List<Map<String,Object>> list(String sql, List<Object> conditionList){
-		return nativeSupport.list(sql, conditionList);
+		try {
+			return nativeSupport.list(sql, conditionList);
+		}catch (Exception e) {
+			if (e instanceof RuntimeException){
+				throw e;
+			}
+			throw new QueryException(SqliExceptionUtil.getMessage(e));
+		}finally {
+			removeDialectKey();
+		}
 	}
 
 }

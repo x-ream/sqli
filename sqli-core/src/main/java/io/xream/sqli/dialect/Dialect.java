@@ -16,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.dialect;
 
 
 import io.xream.sqli.builder.DialectSupport;
+import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
 
 import java.util.Collection;
@@ -41,6 +42,7 @@ public interface Dialect extends DialectSupport, ValuePost {
     String INCREAMENT = "${INCREAMENT}";
     String ENGINE = "${ENGINE}";
 
+    String getKey();
 
     String buildPage(String sql, long start, long rows);
 

@@ -18,35 +18,17 @@
  */
 package io.xream.sqli.dialect;
 
-import io.xream.sqli.builder.SqlScript;
-
 /**
  * @Author Sim
  */
-public class ClickhouseDialect extends MySqlDialect{
+public final class DynamicDialectHolder implements DynamicDialectKeyRemovable {
 
-    @Override
-    public String getKey(){
-        return "clickhouse";
+    protected static String getDialectKey(){
+        return THREAD_DIALECT.get();
     }
 
-    @Override
-    public String getAlterTableUpdate() {
-        return SqlScript.ALTER_TABLE;
+    public static void dialetKey(String dialetKey) {
+        THREAD_DIALECT.set(dialetKey);
     }
 
-    @Override
-    public String getAlterTableDelete() {
-        return SqlScript.ALTER_TABLE ;
-    }
-
-    @Override
-    public String getCommandUpdate() {
-        return SqlScript.UPDATE;
-    }
-
-    @Override
-    public String getCommandDelete() {
-        return SqlScript.DELETE;
-    }
 }

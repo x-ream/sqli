@@ -19,7 +19,6 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.JsonWrapper;
@@ -54,7 +53,12 @@ public class MySqlDialect implements Dialect {
 
     };
 
+    @Override
+    public String getKey(){
+        return "mysql";
+    }
 
+    @Override
     public String buildPage(String origin, long start, long rows) {
 
         if (rows == 0)
@@ -65,7 +69,7 @@ public class MySqlDialect implements Dialect {
         return sb.toString();
 
     }
-
+    @Override
     public String replaceAll(String origin) {
         return replace(origin,map);
     }
@@ -111,7 +115,7 @@ public class MySqlDialect implements Dialect {
         return mapper;
 
     }
-
+    @Override
     public Object filterValue(Object object) {
         return filter(object,null);
     }

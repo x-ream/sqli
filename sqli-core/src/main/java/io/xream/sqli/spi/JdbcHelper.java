@@ -19,8 +19,8 @@
 package io.xream.sqli.spi;
 
 import io.xream.sqli.core.BaseFinder;
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.core.ResultMapFinder;
+import io.xream.sqli.dialect.Dialect;
 
 import java.util.Collection;
 import java.util.List;

@@ -19,7 +19,6 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.core.Dialect;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
@@ -56,7 +55,11 @@ public class OracleDialect implements Dialect {
     private final static String ORACLE_PAGINATION_REGX_BEGIN = "${BEGIN}";
     private final static String ORACLE_PAGINATION_REGX_END = "${END}";
 
-
+    @Override
+    public String getKey(){
+        return "oracle";
+    }
+    @Override
     public String buildPage(String origin, long start, long rows) {
 
         if (rows > 0)
@@ -65,11 +68,11 @@ public class OracleDialect implements Dialect {
         return origin;
 
     }
-
+    @Override
     public String replaceAll(String origin) {
         return replace(origin,map);
     }
-
+    @Override
     public Object mappingToObject(Object obj, BeanElement element) {
         if (obj == null)
             return null;
@@ -193,7 +196,7 @@ public class OracleDialect implements Dialect {
         return mapper;
 
     }
-
+    @Override
     public Object filterValue(Object object) {
         return filter(object, (obj) -> {
             if (obj instanceof Date) {
