@@ -18,6 +18,7 @@
  */
 package io.xream.sqli.starter;
 
+import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.repository.exception.UninitializedException;
@@ -44,7 +45,7 @@ public class SqliListener {
         }
     }
 
-    public static void onStarted(NativeSupport nativeSupport){
+    public static void onStarted(NativeSupport nativeSupport, DialectSupport dialectSupport){
         if (instance != null)
             return;
 
@@ -53,7 +54,7 @@ public class SqliListener {
 
         instance = new SqliListener();
 
-        HealthChecker.onStarted(nativeSupport);
+        HealthChecker.onStarted(nativeSupport,dialectSupport);
         ParserListener.onStarted();
     }
 }

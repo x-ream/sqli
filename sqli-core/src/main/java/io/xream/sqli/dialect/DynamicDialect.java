@@ -46,7 +46,12 @@ public final class DynamicDialect implements Dialect{
 
     @Override
     public String getKey(){
-        return null;
+        String key = DynamicDialectHolder.getDialectKey();
+        if (key == null){
+            return defaultDialect.getKey();
+        }
+        Dialect currentDialect = map.get(key);
+        return currentDialect.getKey();
     }
 
     @Override
@@ -117,6 +122,16 @@ public final class DynamicDialect implements Dialect{
         }
         Dialect currentDialect = map.get(key);
         return currentDialect.createOrReplaceSql(sql);
+    }
+
+    @Override
+    public Object convertJsonToPersist(Object json) {
+        String key = DynamicDialectHolder.getDialectKey();
+        if (key == null){
+            return defaultDialect.convertJsonToPersist(json);
+        }
+        Dialect currentDialect = map.get(key);
+        return currentDialect.convertJsonToPersist(json);
     }
 
     @Override

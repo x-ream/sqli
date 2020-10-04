@@ -141,7 +141,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         sb.append(dialectSupport.getAlterTableUpdate()).append(SqlScript.SPACE).append(sourceScript)
                 .append(SqlScript.SPACE).append(dialectSupport.getCommandUpdate()).append(SqlScript.SPACE);
 
-        concatRefresh(sb, parsed, refreshCondition);
+        concatRefresh(sb, parsed, refreshCondition,dialectSupport);
 
         String conditionSql = toSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
 
@@ -155,7 +155,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         return sql;
     }
 
-    private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCondition refreshCondition) {
+    private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport) {
 
         List<Bb> refreshList = refreshCondition.getRefreshList();
 
@@ -229,7 +229,8 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                         Object v = bb.getValue();
                         if (v != null) {
                             String str = JsonWrapper.toJson(v);
-                            bb.setValue(str);
+                            Object jsonStr = dialectSupport.convertJsonToPersist(str);
+                            bb.setValue(jsonStr);
                         }
                     }
 //                    else if (BeanUtil.testEnumConstant(be.clz, bb.getValue())) {

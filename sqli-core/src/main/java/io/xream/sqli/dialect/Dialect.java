@@ -42,8 +42,6 @@ public interface Dialect extends DialectSupport, ValuePost {
     String INCREAMENT = "${INCREAMENT}";
     String ENGINE = "${ENGINE}";
 
-    String getKey();
-
     String buildPage(String sql, long start, long rows);
 
     String replaceAll(String sql);

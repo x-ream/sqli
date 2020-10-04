@@ -59,7 +59,8 @@ public final class ObjectDataConverter {
                 } else {
                     if (ele.isJson()) {
                         String str = JsonWrapper.toJson(value);
-                        list.add(str);
+                        Object jsonStr = dialect.convertJsonToPersist(str);
+                        list.add(jsonStr);
                     } else if (BeanUtil.isEnum(clz)) {
                         String str = ((Enum) value).name();
                         list.add(str);

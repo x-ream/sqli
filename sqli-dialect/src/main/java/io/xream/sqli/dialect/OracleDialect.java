@@ -28,6 +28,7 @@ import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
@@ -171,6 +172,13 @@ public class OracleDialect implements Dialect {
     @Override
     public String createOrReplaceSql(String sql) {
         throw new NotSupportedException("sqli not support createOrReplace() for Oracle");
+    }
+
+    @Override
+    public Object convertJsonToPersist(Object json) {
+        if (json == null)
+            return null;
+        return new StringReader(json.toString());
     }
 
     @Override

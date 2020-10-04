@@ -25,7 +25,6 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.util.SqlParserUtil;
-import io.xream.sqli.starter.DbType;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
@@ -79,8 +78,7 @@ public final class SqlInitFactory implements SqlInit {
 	@SuppressWarnings({ "rawtypes" })
 	public static void parseBean(Class clz) {
 
-		String dbType = DbType.value();
-		switch (dbType) {
+		switch (DIALECT.getKey()) {
 		default:
 			StandardSql sql = new StandardSql();
 			sql.getTableSql(clz);

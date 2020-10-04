@@ -106,6 +106,11 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
+    public Object convertJsonToPersist(Object json) {
+        return json;
+    }
+
+    @Override
     public String transformAlia(String mapper,Map<String, String> aliaMap,  Map<String, String> resultKeyAliaMap) {
 
         if (resultKeyAliaMap.containsKey(mapper)) {

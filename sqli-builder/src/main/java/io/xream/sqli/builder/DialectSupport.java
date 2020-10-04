@@ -23,6 +23,10 @@ package io.xream.sqli.builder;
  */
 public interface DialectSupport {
 
+    String getKey();
+
+    Object convertJsonToPersist(Object json);
+
     String getAlterTableUpdate();
     String getAlterTableDelete();
     String getCommandUpdate();

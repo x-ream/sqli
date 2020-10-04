@@ -25,10 +25,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.starter.DbType;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +72,7 @@ public final class DaoHelper {
         return criteriaParser.toSql(parsed,refreshCondition, dialectSupport);
     }
 
-    protected static String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap) {
+    protected static String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap, Dialect dialect) {
 
         sb.append(SqlScript.SET);
         int size = refreshMap.size();
@@ -83,10 +80,10 @@ public final class DaoHelper {
         for (String key : refreshMap.keySet()) {
 
             BeanElement element = parsed.getElement(key);
-            if (element.isJson() && "oracle".equals(DbType.value())){
-                Object obj = refreshMap.get(key);
-                Reader reader = new StringReader(obj.toString());
-                refreshMap.put(key,reader);
+            if (element.isJson() ){
+                Object json = refreshMap.get(key);
+                Object o = dialect.convertJsonToPersist(json);
+                refreshMap.put(key,o);
             }
 
             String mapper = parsed.getMapper(key);
@@ -161,7 +158,7 @@ public final class DaoHelper {
     }
 
 
-    public static <T> Object[] refresh(T t, Class<T> clz) {
+    public static <T> Object[] toRefreshSqlAndValueList(T t, Class<T> clz,Dialect dialect) {
 
         Parsed parsed = Parser.get(clz);
         String tableName = parsed.getTableName();
@@ -174,7 +171,7 @@ public final class DaoHelper {
         String keyOne = parsed.getKey(X.KEY_ONE);
         Object keyOneValue = refreshMap.remove(keyOne);
 
-        String sql = concatRefresh(sb, parsed, refreshMap);
+        String sql = concatRefresh(sb, parsed, refreshMap,dialect);
 
         List<Object> valueList = new ArrayList<>();
         valueList.addAll(refreshMap.values());

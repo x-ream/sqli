@@ -19,6 +19,7 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.api.BaseRepository;
+import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.parser.Parser;
@@ -39,7 +40,7 @@ public class HealthChecker {
     private static HealthChecker instance;
     private HealthChecker(){}
 
-    public static void onStarted(NativeSupport nativeSupport) {
+    public static void onStarted(NativeSupport nativeSupport, DialectSupport dialect) {
 
         if (instance != null)
             return;
@@ -68,7 +69,7 @@ public class HealthChecker {
                     throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
                 }
 
-                if (DbType.value().contains("mysql") && SqliStringUtil.isNotNull(createSql)) {
+                if (dialect.getKey().contains("mysql") && SqliStringUtil.isNotNull(createSql)) {
                     nativeSupport.execute(clz, createSql);
                 }
 

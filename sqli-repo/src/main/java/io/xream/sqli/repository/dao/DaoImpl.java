@@ -294,7 +294,7 @@ public final class DaoImpl implements Dao {
     public <T> boolean refresh(T t) {
 
         Class clz = t.getClass();
-        Object[] arr = DaoHelper.refresh(t,clz);
+        Object[] arr = DaoHelper.toRefreshSqlAndValueList(t,clz,dialect);
 
         String sql = (String)arr[0];
         Collection<Object> valueList = (Collection<Object>)arr[1];
