@@ -21,6 +21,8 @@ package io.xream.sqli.starter;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.repository.exception.UninitializedException;
+import io.xream.sqli.spi.L2CacheConsistency;
+import io.xream.sqli.spi.L2CacheResolver;
 
 /**
  * @Author Sim
@@ -34,6 +36,12 @@ public class SqliListener {
 
     public static void onBeanCreated(InitPhaseable initPhaseable){
         initialized |= initPhaseable.init();
+    }
+
+    public static void onL2CacheEnabled(L2CacheResolver l2CacheResolver, L2CacheConsistency l2CacheConsistency) {
+        if (l2CacheResolver != null && l2CacheConsistency != null) {
+            l2CacheResolver.setL2CacheConsistency(l2CacheConsistency);
+        }
     }
 
     public static void onStarted(NativeSupport nativeSupport){
