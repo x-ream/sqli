@@ -85,7 +85,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         /*
          * select column
          */
-        select(sqlBuilder, resultKey(sqlBuilder,criteria));
+        select(sqlBuilder, resultKey(sqlBuilder,criteria,sqlBuildingAttached));
         /*
          * force index
          */
@@ -274,35 +274,35 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
 
-    private String resultKey(SqlBuilder sqlBuilder, Criteria criteria) {
+    private String resultKey(SqlBuilder sqlBuilder, Criteria criteria, SqlBuildingAttached sqlBuildingAttached) {
         if (!(criteria instanceof Criteria.ResultMapCriteria))
             return SqlScript.STAR;
 
         boolean flag = false;
 
         Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
-        StringBuilder column = new StringBuilder();
+        StringBuilder columnBuilder = new StringBuilder();
 
         Map<String,String> mapperPropertyMap = resultMapped.getMapperPropertyMap();
 
         if (Objects.nonNull(resultMapped.getDistinct())) {
 
-            column.append(SqlScript.DISTINCT);
+            columnBuilder.append(SqlScript.DISTINCT);
             List<String> list = resultMapped.getDistinct().getList();
             int size = list.size();
             int i = 0;
             StringBuilder distinctColumn = new StringBuilder();
-            distinctColumn.append(column);
+            distinctColumn.append(columnBuilder);
             for (String resultKey : list) {
                 addConditonBeforeOptimization(resultKey,sqlBuilder.conditionSet);
                 String mapper = mapping(resultKey, resultMapped);
                 mapperPropertyMap.put(mapper, resultKey);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
                 mapper = generate(mapper, resultMapped);
-                column.append(SqlScript.SPACE).append(mapper);
+                columnBuilder.append(SqlScript.SPACE).append(mapper);
                 i++;
                 if (i < size) {
-                    column.append(SqlScript.COMMA);
+                    columnBuilder.append(SqlScript.COMMA);
                     distinctColumn.append(SqlScript.COMMA);
                 }
             }
@@ -316,7 +316,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
             for (Reduce reduce : reduceList) {
                 if (flag) {
-                    column.append(SqlScript.COMMA);
+                    columnBuilder.append(SqlScript.COMMA);
                 }
                 addConditonBeforeOptimization(reduce.getProperty(),sqlBuilder.conditionSet);
                 String alianProperty = reduce.getProperty() + SqlScript.UNDER_LINE + reduce.getType().toString().toLowerCase();//property_count
@@ -340,7 +340,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                     value = "DISTINCT " + value;
                 }
 
-                column.append(SqlScript.SPACE)
+                columnBuilder.append(SqlScript.SPACE)
                         .append(reduceType)
                         .append(SqlScript.LEFT_PARENTTHESIS)//" ( "
                         .append(value)
@@ -349,10 +349,8 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
                 Having h = reduce.getHaving();
                 if (h != null) {
-                    h.setKey(alianName);
-                    if (!criteria.isTotalRowsIgnored()) {
-                        throw new CriteriaSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
-                    }
+                    h.setAliaOrFunction(alianName);
+                    resultMapped.getHavingList().add(h);
                 }
                 flag = true;
             }
@@ -361,7 +359,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         List<String> resultList = resultMapped.getResultKeyList();
         if (!resultList.isEmpty()) {
             if (flag) {
-                column.append(SqlScript.COMMA);
+                columnBuilder.append(SqlScript.COMMA);
             }
             int size = resultList.size();
             for (int i = 0; i < size; i++) {
@@ -370,20 +368,19 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String mapper = mapping(resultKey, criteria);
                 mapperPropertyMap.put(mapper, resultKey);
                 mapper = generate(mapper, resultMapped);
-                column.append(SqlScript.SPACE).append(mapper);
+                columnBuilder.append(SqlScript.SPACE).append(mapper);
                 if (i < size - 1) {
-                    column.append(SqlScript.COMMA);
+                    columnBuilder.append(SqlScript.COMMA);
                 }
                 flag = true;
             }
 
         }
 
-
         List<KV> resultListAssignedAliaList = resultMapped.getResultKeyAssignedAliaList();
         if (!resultListAssignedAliaList.isEmpty()) {
             if (flag) {
-                column.append(SqlScript.COMMA);
+                columnBuilder.append(SqlScript.COMMA);
             }
             int size = resultListAssignedAliaList.size();
             for (int i = 0; i < size; i++) {
@@ -394,9 +391,9 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 mapperPropertyMap.put(mapper, key);
                 String alian = kv.getV().toString();
                 resultMapped.getResultKeyAliaMap().put(alian, mapper);
-                column.append(SqlScript.SPACE).append(mapper).append(SqlScript.AS).append(alian);
+                columnBuilder.append(SqlScript.SPACE).append(mapper).append(SqlScript.AS).append(alian);
                 if (i < size - 1) {
-                    column.append(SqlScript.COMMA);
+                    columnBuilder.append(SqlScript.COMMA);
                 }
                 flag = true;
             }
@@ -406,7 +403,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         List<FunctionResultKey> functionList = resultMapped.getResultFunctionList();
         if (!functionList.isEmpty()) {//
             if (flag) {
-                column.append(SqlScript.COMMA);
+                columnBuilder.append(SqlScript.COMMA);
             }
 
             Map<String, String> resultKeyAliaMap = resultMapped.getResultKeyAliaMap();
@@ -417,23 +414,29 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
                 String function = functionResultKey.getScript();
 
-                for (String key : functionResultKey.getKeys()) {
-                    addConditonBeforeOptimization(key,sqlBuilder.conditionSet);
-                    String mapper = mapping(key, criteria);
-                    function = function.replaceFirst("\\?", mapper);
+                columnBuilder.append(SqlScript.SPACE);
+                final String functionStr = normalizeSql(function);
+                List<String> originList = mapping((reg) -> functionStr.split(reg), criteria, columnBuilder);
+                for (String origin : originList){
+                    addConditonBeforeOptimization(origin,sqlBuilder.conditionSet);
                 }
+
+                for (Object obj : functionResultKey.getValues()) {
+                    sqlBuildingAttached.getValueList().add(obj);
+                }
+
                 String aliaKey = functionResultKey.getAlia();
                 String alian = aliaKey.replace(".","_");
                 resultKeyAliaMap.put(aliaKey, alian);
                 mapperPropertyMap.put(alian, aliaKey);
-                column.append(SqlScript.SPACE).append(function).append(SqlScript.AS).append(alian);
+                columnBuilder.append(SqlScript.AS).append(alian);
                 if (i < size - 1) {
-                    column.append(SqlScript.COMMA);
+                    columnBuilder.append(SqlScript.COMMA);
                 }
             }
         }
 
-        String script = column.toString();
+        String script = columnBuilder.toString();
         if (SqliStringUtil.isNullOrEmpty(script)) {
             throw new CriteriaSyntaxException("Suggest API: find(Criteria criteria), no any resultKey for ResultMapCriteria");
         }
@@ -461,13 +464,17 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             int i = 0;
             int l = arr.length;
             for (String groupBy : arr) {
-                final String groupByStr = groupBy.trim();
-                addConditonBeforeOptimization(groupBy,sb.conditionSet);
+                String groupByStr = groupBy.trim();
                 if (SqliStringUtil.isNotNull(groupBy)) {
-                    if (groupBy.contains(SqlScript.SPACE)){
-                        mapping((reg) -> groupByStr.split(reg), criteria, sb.sbCondition);
+                    if (groupBy.contains(SqlScript.LEFT_PARENTTHESIS)){
+                        final String groupByStrFinal = normalizeSql(groupByStr);
+                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), criteria, sb.sbCondition);
+                        for (String origin : originList){
+                            addConditonBeforeOptimization(origin,sb.conditionSet);
+                        }
                     }else {
                         String mapper = mapping(groupByStr, rm);
+                        addConditonBeforeOptimization(groupByStr,sb.conditionSet);
                         sb.sbCondition.append(mapper);
                     }
                     i++;
@@ -484,13 +491,17 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             return;
 
         Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
-        List<Reduce> reduceList = resultMapped.getReduceList();
+        List<Having> havingList = resultMapped.getHavingList();
 
-        if (reduceList.isEmpty())
+        if (havingList.isEmpty())
             return;
+
+        if (!criteria.isTotalRowsIgnored()) {
+            throw new CriteriaSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
+        }
+
         boolean flag = true;
-        for (Reduce reduce : reduceList) {
-            Having h = reduce.getHaving();
+        for (Having h : havingList) {
             if (h == null)
                 continue;
             if (flag) {
@@ -500,13 +511,19 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 sb.sbCondition.append(Op.AND.sql());
             }
 
-            final String key = h.getKey();
-            if (key.contains(SqlScript.SPACE)) {
-                mapping((reg) -> key.split(reg), criteria, sb.sbCondition);
+            String alia = h.getAliaOrFunction();
+            if (alia.contains(SqlScript.LEFT_PARENTTHESIS)) {
+                alia = normalizeSql(alia);
+                final String finalKey = alia;
+                List<String> originList = mapping((reg) -> finalKey.split(reg), criteria, sb.sbCondition);
+                for (String origin : originList){
+                    addConditonBeforeOptimization(origin,sb.conditionSet);
+                }
             }else {
-                sb.sbCondition.append(key);
+                sb.sbCondition.append(alia);
+                addConditonBeforeOptimization(alia,sb.conditionSet);
             }
-            sb.sbCondition.append(h.getOp().sql()).append(h.getValue());
+            sb.sbCondition.append(SqlScript.SPACE).append(h.getOp().sql()).append(SqlScript.SPACE).append(h.getValue());
         }
     }
 

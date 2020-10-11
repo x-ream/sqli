@@ -23,20 +23,25 @@ import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author Sim
  */
 public interface Mapper {
 
-    default void mapping(ScriptSplitable scriptSplitable, Mappable mappable, StringBuilder sb) {
+    default List<String> mapping(ScriptSplitable scriptSplitable, Mappable mappable, StringBuilder sb) {
         String[] keyArr = scriptSplitable.split(Script.SPACE);
         int length = keyArr.length;
+        List<String> originList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             String origin = keyArr[i].trim();
-
+            originList.add(origin);
             String target = mapping(origin, mappable);
             sb.append(target).append(Script.SPACE);
         }
+        return originList;
     }
 
     default String mapping(String key, Mappable mappable) {

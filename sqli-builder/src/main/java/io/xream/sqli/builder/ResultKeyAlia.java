@@ -56,6 +56,12 @@ public final class ResultKeyAlia {
         return objectOrAlia + "." + propertyOrAlia;
     }
 
+    public String getKey(){
+        if (SqliStringUtil.isNullOrEmpty(objectOrAlia))
+            return propertyOrAlia;
+        return objectOrAlia + "_" + propertyOrAlia;
+    }
+
     @Override
     public String toString() {
         return "FunctionAlia{" +

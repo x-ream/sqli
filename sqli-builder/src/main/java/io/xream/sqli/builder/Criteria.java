@@ -198,6 +198,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		private String sourceScript;
 		private List<SourceScript> sourceScripts;
 		private List<Reduce> reduceList;
+		private List<Having> havingList;
 		private boolean isResultWithDottedKey;
 		private boolean isWithoutOptimization;
 		@JsonIgnore
@@ -216,6 +217,13 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 				this.reduceList = new ArrayList<>();
 			}
 			return reduceList;
+		}
+
+		public List<Having> getHavingList() {
+			if (this.havingList == null) {
+				this.havingList = new ArrayList<>();
+			}
+			return havingList;
 		}
 
 		public List<SourceScript> getSourceScripts() {
@@ -308,6 +316,10 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		public void setReduceList(List<Reduce> reduceList) {
 			this.reduceList = reduceList;
+		}
+
+		public void setHavingList(List<Having> havingList) {
+			this.havingList = havingList;
 		}
 
 		@Override

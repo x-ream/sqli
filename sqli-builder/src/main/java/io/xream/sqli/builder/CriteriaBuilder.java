@@ -271,17 +271,17 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         /**
          * @param functionScript FUNCTION(?,?)
-         * @param keys           test.createAt, test.endAt
+         * @param values           "test", 1000
          */
-        public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_wrap, String functionScript, String... keys) {
-            if (SqliStringUtil.isNullOrEmpty(functionScript) || keys == null)
+        public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_wrap, String functionScript, String... values) {
+            if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
                 return this;
             Objects.requireNonNull(functionAlia_wrap, "function no alia");
             Objects.requireNonNull(functionAlia_wrap.getAlia());
             FunctionResultKey functionResultKey = new FunctionResultKey();
             functionResultKey.setScript(functionScript);
             functionResultKey.setAlia(functionAlia_wrap.getAlia());
-            functionResultKey.setKeys(keys);
+            functionResultKey.setValues(values);
             get().getResultFunctionList().add(functionResultKey);
             return this;
         }
@@ -310,6 +310,20 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         public ResultMapBuilder groupBy(String property) {
             get().setGroupBy(property);
+            return this;
+        }
+
+        public ResultMapBuilder having(ResultKeyAlia resultKeyAlia, Op op, Object value) {
+            Having having = Having.of(op,value);
+            having.setAliaOrFunction(resultKeyAlia.getKey());
+            get().getHavingList().add(having);
+            return this;
+        }
+
+        public ResultMapBuilder having(String functionScript, Op op, Object value) {
+            Having having = Having.of(op,value);
+            having.setAliaOrFunction(functionScript);
+            get().getHavingList().add(having);
             return this;
         }
 

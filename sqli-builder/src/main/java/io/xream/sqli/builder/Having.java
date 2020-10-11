@@ -23,7 +23,7 @@ package io.xream.sqli.builder;
  */
 public final class Having {
 
-    private String key;
+    private String aliaOrFunction;
     private Op op;
     private Object value;
 
@@ -37,12 +37,12 @@ public final class Having {
         return having;
     }
 
-    public String getKey() {
-        return key;
+    public String getAliaOrFunction() {
+        return aliaOrFunction;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setAliaOrFunction(String aliaOrFunction) {
+        this.aliaOrFunction = aliaOrFunction;
     }
 
     public Op getOp() {
@@ -60,4 +60,5 @@ public final class Having {
     public void setValue(Object value) {
         this.value = value;
     }
+
 }

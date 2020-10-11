@@ -18,6 +18,8 @@
  */
 package io.xream.sqli.mapping;
 
+import io.xream.sqli.builder.SqlScript;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,7 +55,17 @@ public interface SqlNormalizer {
                 continue;
             }
             if (OP_SET.contains(strEle)) {
-                valueSb.append(Script.SPACE);
+                if (strEle.equals(SqlScript.LEFT_PARENTTHESIS)) {//support function
+                    int index = j - 1;
+                    if (index > -1) {
+                        String pre = String.valueOf(handwritten.charAt(j - 1));
+                        if (pre.equals(SqlScript.SPACE)) {
+                            valueSb.append(Script.SPACE);
+                        }
+                    }
+                }else {
+                    valueSb.append(Script.SPACE);
+                }
                 valueSb.append(strEle);
                 if (j + 1 < length) {
                     String nextOp = String.valueOf(handwritten.charAt(j + 1));

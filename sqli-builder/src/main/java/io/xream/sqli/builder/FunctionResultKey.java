@@ -25,7 +25,7 @@ public final class FunctionResultKey {
 
     private String script;
     private String alia;
-    private String[] keys;
+    private Object[] values;
 
     public String getScript() {
         return script;
@@ -43,12 +43,12 @@ public final class FunctionResultKey {
         this.alia = alia;
     }
 
-    public String[] getKeys() {
-        return keys;
+    public Object[] getValues() {
+        return values;
     }
 
-    public void setKeys(String[] keys) {
-        this.keys = keys;
+    public void setValues(Object[] values) {
+        this.values = values;
     }
 
     @Override
@@ -56,7 +56,7 @@ public final class FunctionResultKey {
         return "FunctionResultKey{" +
                 "script='" + script + '\'' +
                 ", alia='" + alia + '\'' +
-                ", keys=" + keys +
+                ", values=" + values +
                 '}';
     }
 }
