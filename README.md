@@ -157,7 +157,7 @@
             21. groupBy //分组
             22. resultKey //指定返回列
             23. resultKeyFunction //返回列函数支持
-                    // .resultKeyFunction(ResultKeyAlia.of("o","at"),"YEAR(?)","o.createAt")
+                    // .resultKeyFunction(ResultKeyAlia.of("o","at"),"FFF(o.createAt, ?)", 100000) 
             24. resultWithDottedKey //连表查询返回非JSON格式数据,map的key包含"."  (结果优化2)
            
         连表构建API  (ResultMapBuilder)
