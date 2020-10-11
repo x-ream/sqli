@@ -125,6 +125,7 @@ public interface SqlScript extends Script {
 	String WHERE = " WHERE ";
 	String FROM = "FROM";
 	String LIMIT = " LIMIT ";
+	String OFFSET = " OFFSET ";
 	String SET = "SET";
 	String UPDATE = "UPDATE";
 	String DELETE = " DELETE ";

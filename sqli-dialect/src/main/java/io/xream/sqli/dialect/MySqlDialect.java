@@ -65,7 +65,10 @@ public class MySqlDialect implements Dialect {
             return origin;
         StringBuilder sb = new StringBuilder();
         sb.append(origin);
-        sb.append(SqlScript.LIMIT).append(start).append(",").append(rows);
+        sb.append(SqlScript.LIMIT).append(rows);
+        if (start > 0){
+            sb.append(SqlScript.OFFSET).append(rows);
+        }
         return sb.toString();
 
     }

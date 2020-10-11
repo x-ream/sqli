@@ -461,11 +461,15 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             int i = 0;
             int l = arr.length;
             for (String groupBy : arr) {
-                groupBy = groupBy.trim();
+                final String groupByStr = groupBy.trim();
                 addConditonBeforeOptimization(groupBy,sb.conditionSet);
                 if (SqliStringUtil.isNotNull(groupBy)) {
-                    String mapper = mapping(groupBy, (Mappable)rm);
-                    sb.sbCondition.append(mapper);
+                    if (groupBy.contains(SqlScript.SPACE)){
+                        mapping((reg) -> groupByStr.split(reg), criteria, sb.sbCondition);
+                    }else {
+                        String mapper = mapping(groupByStr, rm);
+                        sb.sbCondition.append(mapper);
+                    }
                     i++;
                     if (i < l) {
                         sb.sbCondition.append(SqlScript.COMMA);
@@ -495,10 +499,16 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             } else {
                 sb.sbCondition.append(Op.AND.sql());
             }
-            sb.sbCondition.append(h.getKey()).append(h.getOp().sql()).append(h.getValue());
+
+            final String key = h.getKey();
+            if (key.contains(SqlScript.SPACE)) {
+                mapping((reg) -> key.split(reg), criteria, sb.sbCondition);
+            }else {
+                sb.sbCondition.append(key);
+            }
+            sb.sbCondition.append(h.getOp().sql()).append(h.getValue());
         }
     }
-
 
     private void parseAliaFromRefresh(RefreshCondition refreshCondition) {
 
