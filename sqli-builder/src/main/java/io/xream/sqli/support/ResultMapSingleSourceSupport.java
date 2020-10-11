@@ -35,6 +35,7 @@ public interface ResultMapSingleSourceSupport {
             if (source != null) {
                 Parsed parsed = Parser.get(source);
                 resultMapCriteria.setParsed(parsed);
+                resultMapCriteria.setClzz(parsed.getClzz());
             }
         }
     }
