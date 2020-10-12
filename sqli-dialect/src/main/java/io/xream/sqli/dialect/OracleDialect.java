@@ -61,7 +61,7 @@ public class OracleDialect implements Dialect {
         return "oracle";
     }
     @Override
-    public String buildPage(String origin, long start, long rows) {
+    public String buildPageSql(String origin, long start, long rows) {
 
         if (rows > 0)
             return ORACLE_PAGINATION.replace(ORACLE_PAGINATION_REGX_END, String.valueOf(start + rows))

@@ -55,13 +55,13 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
-    public String buildPage(String sql, long start, long rows) {
+    public String buildPageSql(String sql, long start, long rows) {
         String key = DynamicDialectHolder.getDialectKey();
         if (key == null){
-            return defaultDialect.buildPage(sql,start,rows);
+            return defaultDialect.buildPageSql(sql,start,rows);
         }
         Dialect currentDialect = map.get(key);
-        return currentDialect.buildPage(sql,start,rows);
+        return currentDialect.buildPageSql(sql,start,rows);
     }
 
     @Override

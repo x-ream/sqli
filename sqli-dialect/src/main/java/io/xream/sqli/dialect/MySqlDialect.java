@@ -59,7 +59,7 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
-    public String buildPage(String origin, long start, long rows) {
+    public String buildPageSql(String origin, long start, long rows) {
 
         if (rows == 0)
             return origin;

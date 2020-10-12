@@ -20,6 +20,7 @@ package io.xream.sqli.dialect;
 
 
 import io.xream.sqli.builder.DialectSupport;
+import io.xream.sqli.builder.PageSqlSupport;
 import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
 
@@ -29,7 +30,7 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public interface Dialect extends DialectSupport, ValuePost {
+public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
 
     String DATE = "${DATE}";
     String BYTE = "${BYTE}";
@@ -41,8 +42,6 @@ public interface Dialect extends DialectSupport, ValuePost {
     String LONG_TEXT = "${LONG_TEXT}";
     String INCREAMENT = "${INCREAMENT}";
     String ENGINE = "${ENGINE}";
-
-    String buildPage(String sql, long start, long rows);
 
     String replaceAll(String sql);
 

@@ -38,7 +38,7 @@ public final class DaoHelper {
 
     protected static String paged(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;
-        return dialect.buildPage(sql, start, rows);
+        return dialect.buildPageSql(sql, start, rows);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class DaoHelper {
 
         int start = (page - 1) * rows;
 
-        sql = dialect.buildPage(sql, start, rows);
+        sql = dialect.buildPageSql(sql, start, rows);
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
