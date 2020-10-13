@@ -32,18 +32,18 @@ import org.slf4j.LoggerFactory;
 /**
  * @Author Sim
  */
-public class HealthChecker {
+public class InitializerListener {
 
-    private final static Logger logger = LoggerFactory.getLogger(HealthChecker.class);
+    private final static Logger logger = LoggerFactory.getLogger(InitializerListener.class);
 
-    private static HealthChecker instance;
-    private HealthChecker(){}
+    private static InitializerListener instance;
+    private InitializerListener(){}
 
     public static void onStarted(NativeSupport nativeSupport, DialectSupport dialect, SqlInit sqlInit) {
 
         if (instance != null)
             return;
-        instance = new HealthChecker();
+        instance = new InitializerListener();
 
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
             if (repository.getClzz() == Void.class)

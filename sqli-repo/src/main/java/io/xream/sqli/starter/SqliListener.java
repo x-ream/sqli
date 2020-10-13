@@ -55,7 +55,7 @@ public class SqliListener {
 
         instance = new SqliListener();
 
-        HealthChecker.onStarted(nativeSupport,dialectSupport,sqlInit);
+        InitializerListener.onStarted(nativeSupport,dialectSupport,sqlInit);
         ParserListener.onStarted();
     }
 }
