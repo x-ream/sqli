@@ -37,7 +37,6 @@ public class MySqlDialect implements Dialect {
 
     private final Map<String, String> map = new HashMap<String, String>() {
         {
-
             put(DATE, "timestamp");
             put(BYTE, "tinyint(1)");
             put(INT, "int(11)");
@@ -48,9 +47,7 @@ public class MySqlDialect implements Dialect {
             put(LONG_TEXT, "longtext");
             put(INCREAMENT, "AUTO_INCREMENT");
             put(ENGINE, "ENGINE=InnoDB DEFAULT CHARSET=utf8");
-
         }
-
     };
 
     @Override

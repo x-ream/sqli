@@ -29,11 +29,13 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
 public class OracleDialect implements Dialect {
+
 
     private final Map<String, String> map = new HashMap<String, String>() {
         {
@@ -55,6 +57,21 @@ public class OracleDialect implements Dialect {
     private final static String ORACLE_PAGINATION_REGX_SQL = "${SQL}";
     private final static String ORACLE_PAGINATION_REGX_BEGIN = "${BEGIN}";
     private final static String ORACLE_PAGINATION_REGX_END = "${END}";
+    private Method NCLOBReader = null;
+    private Method NCLOBLength = null;
+    private  void init() {
+        try{
+            Class clzz = Class.forName("oracle.sql.NCLOB");
+            NCLOBReader = clzz.getDeclaredMethod("getCharacterStream");
+            NCLOBLength = clzz.getDeclaredMethod("length");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public OracleDialect(){
+        init();
+    }
 
     @Override
     public String getKey(){
@@ -73,6 +90,60 @@ public class OracleDialect implements Dialect {
     public String replaceAll(String origin) {
         return replace(origin,map);
     }
+
+    private Object toNCLOBString(Object obj) {
+        if (obj.getClass().getSimpleName().endsWith("NCLOB")) {
+            Reader reader = null;
+            try {
+                reader = (Reader) NCLOBReader.invoke(obj);
+                int length = (int) NCLOBLength.invoke(obj);
+                char[] charArr = new char[length];
+                reader.read(charArr);
+                return new String(charArr);//FIXME UIF-8 ?
+            } catch (Exception e) {
+                SqliExceptionUtil.throwRuntimeExceptionFirst(e);
+                throw new PersistenceException(SqliExceptionUtil.getMessage(e));
+            }finally{
+                if (reader !=null) {
+                    try {
+                        reader.close();
+                    }catch (Exception e){
+
+                    }
+                }
+            }
+        }
+        return obj;
+    }
+
+    private Object toBigDecimal(Class clzz, Object obj) {
+        BigDecimal bg = (BigDecimal) obj;
+        if (clzz == int.class || clzz == Integer.class) {
+            return bg.intValue();
+        } else if (clzz == long.class || clzz == Long.class) {
+            return bg.longValue();
+        } else if (clzz == double.class || clzz == Double.class) {
+            return bg.doubleValue();
+        } else if (clzz == float.class || clzz == Float.class) {
+            return bg.floatValue();
+        } else if (clzz == boolean.class || clzz == Boolean.class) {
+            int i = bg.intValue();
+            return i == 0 ? false : true;
+        } else if (clzz == Date.class) {
+            long l = bg.longValue();
+            return new Date(l);
+        } else if (clzz == java.sql.Date.class) {
+            long l = bg.longValue();
+            return new java.sql.Date(l);
+        } else if (clzz == Timestamp.class) {
+            long l = bg.longValue();
+            return new Timestamp(l);
+        } else if (clzz == byte.class || clzz == Byte.class) {
+            return bg.byteValue();
+        }
+        return bg;
+    }
+
     @Override
     public Object mappingToObject(Object obj, BeanElement element) {
         if (obj == null)
@@ -80,41 +151,14 @@ public class OracleDialect implements Dialect {
 
         Class ec = element.getClz();
 
+        obj = toNCLOBString(obj);
+
         if (element.isJson()) {
 
-            String str = null;
-            if (obj instanceof oracle.sql.NCLOB) {
-
-                oracle.sql.NCLOB clob = (oracle.sql.NCLOB) obj;
-
-                Reader reader = null;
-                try {
-                    reader = clob.getCharacterStream();
-
-                    char[] charArr = new char[(int) clob.length()];
-                    reader.read(charArr);
-                    str = new String(charArr);//FIXME UIF-8 ?
-                } catch (Exception e) {
-                    SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-                    throw new PersistenceException(SqliExceptionUtil.getMessage(e));
-                }finally{
-                    if (reader !=null) {
-                        try {
-                            reader.close();
-                        }catch (Exception e){
-
-                        }
-                    }
-                }
-
-            }else if (obj instanceof String) {
-                str = obj.toString();
-            }
-
-            if (SqliStringUtil.isNullOrEmpty(str))
+            if (SqliStringUtil.isNullOrEmpty(obj))
                 return null;
 
-            str = str.trim();
+            String str = obj.toString().trim();
 
             if (!(str.startsWith("{") || str.startsWith("[")))
                 return str;
@@ -129,33 +173,7 @@ public class OracleDialect implements Dialect {
         }
 
         if (obj instanceof BigDecimal) {
-
-            BigDecimal bg = (BigDecimal) obj;
-            if (ec == BigDecimal.class) {
-                return bg;
-            } else if (ec == int.class || ec == Integer.class) {
-                return bg.intValue();
-            } else if (ec == long.class || ec == Long.class) {
-                return bg.longValue();
-            } else if (ec == double.class || ec == Double.class) {
-                return bg.doubleValue();
-            } else if (ec == float.class || ec == Float.class) {
-                return bg.floatValue();
-            } else if (ec == boolean.class || ec == Boolean.class) {
-                int i = bg.intValue();
-                return i == 0 ? false : true;
-            } else if (ec == Date.class) {
-                long l = bg.longValue();
-                return new Date(l);
-            } else if (ec == java.sql.Date.class) {
-                long l = bg.longValue();
-                return new java.sql.Date(l);
-            } else if (ec == Timestamp.class) {
-                long l = bg.longValue();
-                return new Timestamp(l);
-            } else if (ec == byte.class || ec == Byte.class) {
-                return bg.byteValue();
-            }
+            return toBigDecimal(ec, obj);
 
         } else if (obj instanceof Timestamp && ec == Date.class) {
             Timestamp ts = (Timestamp) obj;

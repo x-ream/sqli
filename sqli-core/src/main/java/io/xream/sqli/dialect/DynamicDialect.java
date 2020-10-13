@@ -54,133 +54,76 @@ public final class DynamicDialect implements Dialect{
         return currentDialect.getKey();
     }
 
-    @Override
-    public String buildPageSql(String sql, long start, long rows) {
+    private Dialect getCurrentDialect() {
         String key = DynamicDialectHolder.getDialectKey();
         if (key == null){
-            return defaultDialect.buildPageSql(sql,start,rows);
+            return defaultDialect;
         }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.buildPageSql(sql,start,rows);
+        return map.get(key);
+    }
+
+    @Override
+    public String buildPageSql(String sql, long start, long rows) {
+        return getCurrentDialect().buildPageSql(sql,start,rows);
     }
 
     @Override
     public String replaceAll(String sql) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.replaceAll(sql);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.replaceAll(sql);
+        return getCurrentDialect().replaceAll(sql);
     }
 
     @Override
     public String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.transformAlia(mapper,aliaMap,resultKeyAliaMap);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.transformAlia(mapper,aliaMap,resultKeyAliaMap);
+        return getCurrentDialect().transformAlia(mapper,aliaMap,resultKeyAliaMap);
     }
 
     @Override
     public Object filterValue(Object value) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.filterValue(value);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.filterValue(value);
+        return getCurrentDialect().filterValue(value);
     }
 
     @Override
     public Object[] toArr(Collection<Object> list) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.toArr(list);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.toArr(list);
+        return getCurrentDialect().toArr(list);
     }
 
     @Override
     public Object mappingToObject(Object obj, BeanElement element) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.mappingToObject(obj, element);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.mappingToObject(obj, element);
+        return getCurrentDialect().mappingToObject(obj, element);
     }
 
     @Override
     public String createOrReplaceSql(String sql) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.createOrReplaceSql(sql);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.createOrReplaceSql(sql);
+        return getCurrentDialect().createOrReplaceSql(sql);
     }
 
     @Override
     public Object convertJsonToPersist(Object json) {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.convertJsonToPersist(json);
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.convertJsonToPersist(json);
+        return getCurrentDialect().convertJsonToPersist(json);
     }
 
     @Override
     public String getAlterTableUpdate() {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.getAlterTableUpdate();
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.getAlterTableUpdate();
+        return getCurrentDialect().getAlterTableUpdate();
     }
 
     @Override
     public String getAlterTableDelete() {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.getAlterTableDelete();
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.getAlterTableDelete();
+        return getCurrentDialect().getAlterTableDelete();
     }
 
     @Override
     public String getCommandUpdate() {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.getCommandUpdate();
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.getCommandUpdate();
+        return getCurrentDialect().getCommandUpdate();
     }
 
     @Override
     public String getCommandDelete() {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.getCommandDelete();
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.getCommandDelete();
+        return getCurrentDialect().getCommandDelete();
     }
 
     @Override
     public String getTemporaryTableCreate() {
-        String key = DynamicDialectHolder.getDialectKey();
-        if (key == null){
-            return defaultDialect.getTemporaryTableCreate();
-        }
-        Dialect currentDialect = map.get(key);
-        return currentDialect.getTemporaryTableCreate();
+        return getCurrentDialect().getTemporaryTableCreate();
     }
 }
