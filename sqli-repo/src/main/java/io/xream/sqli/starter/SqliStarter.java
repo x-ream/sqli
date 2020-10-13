@@ -30,7 +30,9 @@ import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.repository.dao.DaoImpl;
 import io.xream.sqli.repository.dao.TemporaryDao;
 import io.xream.sqli.repository.dao.TemporaryDaoImpl;
+import io.xream.sqli.repository.init.DefaultSqlInit;
 import io.xream.sqli.repository.init.DefaultTemporaryTableParser;
+import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.internal.DefaultNativeRepository;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.spi.JdbcHelper;
@@ -73,7 +75,8 @@ public class SqliStarter {
     }
 
     public TemporaryRepository temporaryRepository(CriteriaToSql criteriaToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
-        TemporaryRepository.Parser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
+        DefaultTemporaryTableParser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
+        temporaryTableParser.setDialect(dialect);
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
         ((TemporaryDaoImpl)temporaryDao).setJdbcHelper(jdbcHelper);
         ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(criteriaToSql);
@@ -90,6 +93,12 @@ public class SqliStarter {
         NativeRepository nativeRepository = DefaultNativeRepository.newInstance();
         ((DefaultNativeRepository) nativeRepository).setNativeSupport((NativeSupport) repository);
         return nativeRepository;
+    }
+
+    public SqlInit sqlInit(Dialect dialect){
+        SqlInit sqlInit = DefaultSqlInit.newInstance();
+        sqlInit.setDialect(dialect);
+        return sqlInit;
     }
 
 }

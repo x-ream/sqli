@@ -18,67 +18,35 @@
  */
 package io.xream.sqli.repository.init;
 
-import io.xream.sqli.dialect.Dialect;
-import io.xream.sqli.parser.BeanElement;
-import io.xream.sqli.util.BeanUtil;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * @Author Sim
  */
-public interface SqlInit {
+public interface SqlInit extends SqlTemplate{
 
-    String CREATE = "CREATE";
-    String REMOVE = "REMOVE";
-    String LOAD = "LOAD";
-    String CREATE_TABLE = "CREATE_TABLE";
-    String GET_ONE = "GET_ONE";
+    String getTableSql(Class clz);
+
+    String getLoadSql(Class clz);
+
+    String getCreateSql(Class clz);
+
+    String getOneSql(Class clz);
+
+    String getRemoveSql(Class clz);
 
 
-    interface Interpreter {
+    default String tryToParse(Class clz) {
 
-        String getTableSql(Class clz);
+        getTableSql(clz);
+        getRemoveSql(clz);
+        getOneSql(clz);
+        getLoadSql(clz);
+        getCreateSql(clz);
 
-        String getLoadSql(Class clz);
+        String createTable = getSql(clz,CREATE_TABLE);
+        SQLS_MAP.get(clz).remove(CREATE_TABLE);
 
-        String getCreateSql(Class clz);
-
-        String getOneSql(Class clz);
-
-        String getRemoveSql(Class clz);
-
+        return createTable;
     }
 
-    static String getSqlTypeRegX(BeanElement be) {
-
-        Class clz = be.getClz();
-        if (clz == Date.class || clz == java.sql.Date.class || clz == java.sql.Timestamp.class) {
-            return Dialect.DATE;
-        } else if (clz == String.class) {
-            return Dialect.STRING;
-        } else if (BeanUtil.isEnum(clz)) {
-            return Dialect.STRING;
-        } else if (clz == int.class || clz == Integer.class) {
-            return Dialect.INT;
-        } else if (clz == long.class || clz == Long.class) {
-            return Dialect.LONG;
-        } else if (clz == double.class || clz == Double.class) {
-            return Dialect.BIG;
-        } else if (clz == float.class || clz == Float.class) {
-            return Dialect.BIG;
-        } else if (clz == BigDecimal.class) {
-            return Dialect.BIG;
-        } else if (clz == boolean.class || clz == Boolean.class) {
-            return Dialect.BYTE;
-        } else if (clz == short.class || clz == Short.class) {
-            return Dialect.INT;
-        } else if (clz == byte.class || clz == Byte.class) {
-            return Dialect.BYTE;
-        }
-        return Dialect.TEXT;
-
-    }
 
 }

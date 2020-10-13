@@ -25,7 +25,6 @@ import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
-import io.xream.sqli.repository.init.SqlInitFactory;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,7 @@ public class HealthChecker {
     private static HealthChecker instance;
     private HealthChecker(){}
 
-    public static void onStarted(NativeSupport nativeSupport, DialectSupport dialect) {
+    public static void onStarted(NativeSupport nativeSupport, DialectSupport dialect, SqlInit sqlInit) {
 
         if (instance != null)
             return;
@@ -62,8 +61,8 @@ public class HealthChecker {
                 Class clz = repository.getClzz();
                 if (repository.getClzz() == Void.class)
                     continue;
-                String createSql = SqlInitFactory.tryToCreate(clz);
-                String test = SqlInitFactory.getSql(clz, SqlInit.CREATE);
+                String createSql = sqlInit.tryToParse(clz);
+                String test = sqlInit.getSql(clz, SqlInit.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {
                     logger.info("Failed to start sqli-repo, check Bean: {}",clz);
                     throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
@@ -75,6 +74,7 @@ public class HealthChecker {
 
             } catch (Exception e) {
                 flag |= true;
+                e.printStackTrace();
             }
         }
 

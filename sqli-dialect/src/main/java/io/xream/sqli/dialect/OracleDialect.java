@@ -36,7 +36,6 @@ import java.util.*;
 
 public class OracleDialect implements Dialect {
 
-
     private final Map<String, String> map = new HashMap<String, String>() {
         {
             put(DATE, "date");
@@ -50,7 +49,6 @@ public class OracleDialect implements Dialect {
             put(INCREAMENT, "");
             put(ENGINE, "");
         }
-
     };
 
     private final static String ORACLE_PAGINATION = "SELECT * FROM (SELECT A.*, ROWNUM RN FROM ( ${SQL} ) A   WHERE ROWNUM <= ${END}  )  WHERE RN > ${BEGIN} ";
@@ -182,9 +180,7 @@ public class OracleDialect implements Dialect {
         if (BeanUtil.isEnum(ec)) {
             return Enum.valueOf(ec, obj.toString());
         }
-
         return obj;
-
     }
 
     @Override
@@ -218,10 +214,9 @@ public class OracleDialect implements Dialect {
             }
             return clzName + "." + p;
         }
-
         return mapper;
-
     }
+
     @Override
     public Object filterValue(Object object) {
         return filter(object, (obj) -> {
@@ -235,7 +230,6 @@ public class OracleDialect implements Dialect {
             }
             return obj;
         });
-
     }
 
     @Override

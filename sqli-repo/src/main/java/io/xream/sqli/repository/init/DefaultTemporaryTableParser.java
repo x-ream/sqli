@@ -19,6 +19,7 @@
 package io.xream.sqli.repository.init;
 
 import io.xream.sqli.api.TemporaryRepository;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -29,20 +30,30 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @Author Sim
  */
-public final class DefaultTemporaryTableParser implements TemporaryRepository.Parser {
+public final class DefaultTemporaryTableParser implements TemporaryRepository.Parser, SqlTemplate {
 
-    private static TemporaryRepository.Parser instance;
+    private static DefaultTemporaryTableParser instance;
 
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
 
+    private Dialect dialect;
+
     private DefaultTemporaryTableParser(){}
 
-    public static TemporaryRepository.Parser newInstance(){
+    public static DefaultTemporaryTableParser newInstance(){
         if (instance == null){
             instance = new DefaultTemporaryTableParser();
             return instance;
         }
         return null;
+    }
+
+    public void setDialect(Dialect dialect) {
+        this.dialect = dialect;
+    }
+
+    public Dialect getDialect(){
+        return this.dialect;
     }
 
     @Override
@@ -57,11 +68,8 @@ public final class DefaultTemporaryTableParser implements TemporaryRepository.Pa
             throw new ParsingException("Table exists while parse temporary table entity to get sql: " + clzz.getName());
         Parser.parse(clzz);
 
-        return getTableSql(clzz);
+        return buildTableSql(clzz,true);
     }
 
 
-    protected String getTableSql(Class clz) {
-        return SqlInitFactory.StandardSql.buildTableSql(clz,true);
-    }
 }

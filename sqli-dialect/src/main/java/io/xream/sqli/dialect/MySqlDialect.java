@@ -67,8 +67,8 @@ public class MySqlDialect implements Dialect {
             sb.append(SqlScript.OFFSET).append(start);
         }
         return sb.toString();
-
     }
+
     @Override
     public String replaceAll(String origin) {
         return replace(origin,map);
@@ -116,10 +116,9 @@ public class MySqlDialect implements Dialect {
         if (resultKeyAliaMap.containsKey(mapper)) {
              mapper = resultKeyAliaMap.get(mapper);
         }
-
         return mapper;
-
     }
+
     @Override
     public Object filterValue(Object object) {
         return filter(object,null);
