@@ -49,4 +49,5 @@ public class ClickhouseDialect extends MySqlDialect{
     public String getCommandDelete() {
         return SqlScript.DELETE;
     }
+
 }

@@ -32,4 +32,5 @@ public class ImpalaDialect extends MySqlDialect{
     public String createOrReplaceSql(String sql) {
         return sql.replaceFirst("INSERT","UPSERT");
     }
+
 }

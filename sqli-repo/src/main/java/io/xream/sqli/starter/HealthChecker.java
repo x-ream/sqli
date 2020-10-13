@@ -54,6 +54,7 @@ public class HealthChecker {
 
 
         boolean flag = false;
+        boolean isNotSupportTableSql = false;
 
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
 
@@ -74,8 +75,14 @@ public class HealthChecker {
 
             } catch (Exception e) {
                 flag |= true;
-                e.printStackTrace();
+                if (e.getClass().getSimpleName().toLowerCase().contains("grammar")) {
+                    isNotSupportTableSql = true;
+                }
             }
+        }
+
+        if (isNotSupportTableSql) {
+            logger.info("The dialect not support creating table, try to implement Dialect.buildTableSql(clzz, isTemporary)");
         }
 
         logger.info("sqli-repo " + (flag ? "still " : "") + "started" + (flag ? " OK, wtih some problem" : "" ) + "\n");

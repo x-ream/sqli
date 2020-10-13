@@ -98,6 +98,11 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
+    public String buildTableSql(Class clzz, boolean isTemporary) {
+        return getCurrentDialect().buildTableSql(clzz,isTemporary);
+    }
+
+    @Override
     public Object convertJsonToPersist(Object json) {
         return getCurrentDialect().convertJsonToPersist(json);
     }

@@ -189,6 +189,11 @@ public class OracleDialect implements Dialect {
     }
 
     @Override
+    public String buildTableSql(Class clzz, boolean isTemporary) {
+        return null;
+    }
+
+    @Override
     public Object convertJsonToPersist(Object json) {
         if (json == null)
             return null;

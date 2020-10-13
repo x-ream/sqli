@@ -23,8 +23,11 @@ import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.builder.PageSqlSupport;
 import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.util.BeanUtil;
 
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -55,6 +58,8 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
 
     String createOrReplaceSql(String sql);
 
+    String buildTableSql(Class clzz, boolean isTemporary);
+
     default String replace(String originSql, Map<String, String> map){
         String dateV = map.get(DATE);
         String byteV = map.get(BYTE);
@@ -73,4 +78,32 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
                 .replace(INCREAMENT, increamentV).replace(ENGINE, engineV);
     }
 
+    default String getSqlTypeRegX(BeanElement be) {
+
+        Class clz = be.getClz();
+        if (clz == Date.class || clz == java.sql.Date.class || clz == java.sql.Timestamp.class) {
+            return DATE;
+        } else if (clz == String.class) {
+            return STRING;
+        } else if (BeanUtil.isEnum(clz)) {
+            return STRING;
+        } else if (clz == int.class || clz == Integer.class) {
+            return INT;
+        } else if (clz == long.class || clz == Long.class) {
+            return LONG;
+        } else if (clz == double.class || clz == Double.class) {
+            return BIG;
+        } else if (clz == float.class || clz == Float.class) {
+            return BIG;
+        } else if (clz == BigDecimal.class) {
+            return BIG;
+        } else if (clz == boolean.class || clz == Boolean.class) {
+            return BYTE;
+        } else if (clz == short.class || clz == Short.class) {
+            return INT;
+        } else if (clz == byte.class || clz == Byte.class) {
+            return BYTE;
+        }
+        return TEXT;
+    }
 }
