@@ -43,7 +43,7 @@ public interface SqlInit extends SqlTemplate{
         getCreateSql(clz);
 
         String createTable = getSql(clz,CREATE_TABLE);
-        SQLS_MAP.get(clz).remove(CREATE_TABLE);
+        getSqlMap(clz).remove(CREATE_TABLE);
 
         return createTable;
     }
