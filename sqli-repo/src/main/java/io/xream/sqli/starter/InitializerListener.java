@@ -69,7 +69,7 @@ public class InitializerListener {
                     throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
                 }
 
-                if (dialect.getKey().contains("mysql") && SqliStringUtil.isNotNull(createSql)) {
+                if (SqliStringUtil.isNotNull(createSql)) {
                     nativeSupport.execute(clz, createSql);
                 }
 
