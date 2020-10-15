@@ -40,7 +40,7 @@ public interface JdbcHelper extends BaseFinder, ResultMapFinder {
 
     boolean remove(String sql, Object id);
 
-    boolean execute(String sql);
+    boolean execute(String sql,Object...objs);
 
     <K> List<K> queryForPlainValueList(Class<K> clzz, String sql, Collection<Object> valueList, Dialect dialect);
 

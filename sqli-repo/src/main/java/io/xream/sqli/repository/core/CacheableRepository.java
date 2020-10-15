@@ -230,19 +230,8 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
 
-    public <T> boolean execute(Class<T> clzz, String sql) {
-
-        Parsed parsed = Parser.get(clzz);
-        boolean b = dao.execute(clzz, sql);
-
-        if (!b)
-            return b;
-        if (isCacheEnabled(parsed)) {
-            String key = ParserUtil.getCacheKey(clzz, parsed);
-            cacheResolver.refresh(clzz, key);
-        }
-
-        return b;
+    public boolean execute(String sql, Object...objs) {
+        return dao.execute(sql,objs);
     }
 
 

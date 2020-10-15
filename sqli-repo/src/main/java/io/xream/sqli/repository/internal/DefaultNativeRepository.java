@@ -54,9 +54,9 @@ public final class DefaultNativeRepository implements NativeRepository, DynamicD
 	}
 
 	@Override
-	public <T> boolean execute(Class<T> clzz, String sql){
+	public boolean execute(String sql, Object...objs){
 		try {
-			return nativeSupport.execute(clzz, sql);
+			return nativeSupport.execute(sql, objs);
 		}catch (Exception e) {
 			if (e instanceof RuntimeException){
 				throw e;

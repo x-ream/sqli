@@ -16,17 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
-
-import java.util.List;
-import java.util.Map;
+package io.xream.sqli.filter;
 
 /**
  * @Author Sim
  */
-public interface NativeSupport {
+public interface UnsafeSyntaxFilter {
 
-     boolean execute(String sql, Object...objs);
-
-     List<Map<String,Object>> list(String sql, List<Object> conditionList);
+    default String filter(String sql) {
+        return sql.replace("'", "''");
+    }
 }

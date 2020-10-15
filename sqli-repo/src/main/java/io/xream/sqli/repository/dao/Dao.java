@@ -66,8 +66,7 @@ public interface Dao extends QueryForCache {
 
 	<T> List<T> list(Criteria criteria);
 
-	@Deprecated
-	<T> boolean execute(Class<T> clzz, String sql);
+	boolean execute(String sql, Object...objs);
 
 	<T> T getOne(T conditionObj);
 
