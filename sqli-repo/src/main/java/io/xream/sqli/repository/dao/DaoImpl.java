@@ -19,7 +19,6 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
 import io.xream.sqli.converter.ObjectDataConverter;
@@ -35,7 +34,6 @@ import io.xream.sqli.repository.exception.TooManyResultsException;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.init.SqlTemplate;
 import io.xream.sqli.repository.util.ResultSortUtil;
-import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.spi.JdbcHelper;
 import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliStringUtil;

@@ -60,7 +60,6 @@ public final class DefaultSqlInit implements SqlInit {
 
     public String getRemoveSql(Class clz) {
         Parsed parsed = Parser.get(clz);
-        String space = " ";
         StringBuilder sb = new StringBuilder();
         sb.append(dialect.getAlterTableDelete()).append(SqlScript.SPACE);
         sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(dialect.getCommandDelete());
