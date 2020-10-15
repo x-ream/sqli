@@ -19,6 +19,7 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.filter.BaseTypeFilter;
+import io.xream.sqli.filter.UnsafeSyntaxFilter;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.mapping.Mapper;
 import io.xream.sqli.mapping.Script;
@@ -36,7 +37,7 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public interface ConditionToSql extends Mapper, SqlNormalizer {
+public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
 
     default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
         if (bbList == null || bbList.isEmpty())
@@ -84,7 +85,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
     }
 
 
-    static void buildIn(StringBuilder sb, Class clz, List<? extends Object> inList) {
+    default void buildIn(StringBuilder sb, Class clz, List<? extends Object> inList) {
 
         sb.append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);//"( "
 
@@ -133,11 +134,6 @@ public interface ConditionToSql extends Mapper, SqlNormalizer {
         sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
     }
 
-    static String filter(String sql) {
-        sql = sql.replace("drop", SqlScript.SPACE)
-                .replace(";", SqlScript.SPACE);// 手动拼接SQL,
-        return sql;
-    }
 
     interface Filter {
 

@@ -34,9 +34,18 @@ import java.util.Map;
 /**
  * @Author Sim
  */
-public final class DaoHelper {
+public final class SqlBuilder implements ConditionToSql{
 
-    protected static String paged(String sql, int page, int rows, Dialect dialect) {
+    private static SqlBuilder instance;
+    private SqlBuilder(){}
+    protected static SqlBuilder getInstance() {
+        if (instance == null) {
+            instance = new SqlBuilder();
+        }
+        return instance;
+    }
+
+    protected String buildPageSql(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;
         return dialect.buildPageSql(sql, start, rows);
     }
@@ -44,7 +53,7 @@ public final class DaoHelper {
     /**
      * 拼接SQL
      */
-    protected static String concat(Parsed parsed, String sql, Map<String, Object> queryMap) {
+    protected String buildQueryByObject(Parsed parsed, String sql, Map<String, Object> queryMap) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -68,43 +77,12 @@ public final class DaoHelper {
     }
 
 
-    protected static String buildRefresh(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser, DialectSupport dialectSupport) {
+    protected String buildRefreshByCondition(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser, DialectSupport dialectSupport) {
         return criteriaParser.toSql(parsed,refreshCondition, dialectSupport);
     }
 
-    protected static String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap, Dialect dialect) {
 
-        sb.append(SqlScript.SET);
-        int size = refreshMap.size();
-        int i = 0;
-        for (String key : refreshMap.keySet()) {
-
-            BeanElement element = parsed.getElement(key);
-            if (element.isJson() ){
-                Object json = refreshMap.get(key);
-                Object o = dialect.convertJsonToPersist(json);
-                refreshMap.put(key,o);
-            }
-
-            String mapper = parsed.getMapper(key);
-            sb.append(mapper);
-            sb.append(SqlScript.EQ_PLACE_HOLDER);
-            if (i < size - 1) {
-                sb.append(SqlScript.COMMA);
-            }
-            i++;
-        }
-
-        String keyOne = parsed.getKey(X.KEY_ONE);
-
-        sb.append(SqlScript.WHERE);
-        String mapper = parsed.getMapper(keyOne);
-        sb.append(mapper).append(SqlScript.EQ_PLACE_HOLDER);
-
-        return sb.toString();
-    }
-
-    protected static String buildIn(String sqlSegment, String mapper, BeanElement be, List<? extends Object> inList) {
+    protected String buildQueryByInCondition(String sqlSegment, String mapper, BeanElement be, List<? extends Object> inList) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(sqlSegment).append(SqlScript.WHERE);
@@ -112,12 +90,12 @@ public final class DaoHelper {
 
         Class<?> keyType = be.getClz();
 
-        ConditionToSql.buildIn(sb,keyType,inList);
+        buildIn(sb,keyType,inList);
 
         return sb.toString();
     }
 
-    protected static SqlBuilt fromCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
+    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
 
         final SqlBuilt sqlBuilt = new SqlBuilt();
         final List<SqlBuilt> subList = new ArrayList<>();
@@ -151,14 +129,7 @@ public final class DaoHelper {
         return sqlBuilt;
     }
 
-    protected static String filter(String sql) {
-        sql = sql.replace("drop", SqlScript.SPACE)
-                .replace(";", SqlScript.SPACE);// 手动拼接SQL,
-        return sql;
-    }
-
-
-    public static <T> Object[] toRefreshSqlAndValueList(T t, Class<T> clz,Dialect dialect) {
+    protected <T> Object[] buildRefreshSqlAndValueListByObject(T t, Class<T> clz, Dialect dialect) {
 
         Parsed parsed = Parser.get(clz);
         String tableName = parsed.getTableName();
@@ -178,5 +149,38 @@ public final class DaoHelper {
         valueList.add(keyOneValue);
 
         return new Object[]{sql,valueList};
+    }
+
+
+    private String concatRefresh(StringBuilder sb, Parsed parsed, Map<String, Object> refreshMap, Dialect dialect) {
+
+        sb.append(SqlScript.SET);
+        int size = refreshMap.size();
+        int i = 0;
+        for (String key : refreshMap.keySet()) {
+
+            BeanElement element = parsed.getElement(key);
+            if (element.isJson() ){
+                Object json = refreshMap.get(key);
+                Object o = dialect.convertJsonToPersist(json);
+                refreshMap.put(key,o);
+            }
+
+            String mapper = parsed.getMapper(key);
+            sb.append(mapper);
+            sb.append(SqlScript.EQ_PLACE_HOLDER);
+            if (i < size - 1) {
+                sb.append(SqlScript.COMMA);
+            }
+            i++;
+        }
+
+        String keyOne = parsed.getKey(X.KEY_ONE);
+
+        sb.append(SqlScript.WHERE);
+        String mapper = parsed.getMapper(keyOne);
+        sb.append(mapper).append(SqlScript.EQ_PLACE_HOLDER);
+
+        return sb.toString();
     }
 }

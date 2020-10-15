@@ -48,6 +48,8 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
     private JdbcHelper jdbcHelper;
 
+    private SqlBuilder sqlBuilder = SqlBuilder.getInstance();
+
     private TemporaryDaoImpl(){}
 
     public static TemporaryDao newInstance(){
@@ -70,11 +72,12 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         this.jdbcHelper = jdbcHelper;
     }
 
+
     @Override
     public boolean   findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlBuilt sqlBuilt = DaoHelper.fromCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
+        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,ResultMapCriteria, criteriaToSql, dialect);
         StringBuilder fromSqlSb = sqlBuilt.getSql();
 
         Parsed parsed = Parser.get(clzz);
