@@ -22,6 +22,7 @@ import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.RepositoryManagement;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
@@ -37,7 +38,9 @@ public class InitializerListener {
     private final static Logger logger = LoggerFactory.getLogger(InitializerListener.class);
 
     private static InitializerListener instance;
-    private InitializerListener(){}
+
+    private InitializerListener() {
+    }
 
     public static void onStarted(NativeSupport nativeSupport, DialectSupport dialect, SqlInit sqlInit) {
 
@@ -45,13 +48,19 @@ public class InitializerListener {
             return;
         instance = new InitializerListener();
 
+
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
             if (repository.getClzz() == Void.class)
                 continue;
-            logger.info("Parsing {}" ,repository.getClzz());
-            Parser.get(repository.getClzz());
+            logger.info("Parsing {}", repository.getClzz());
+            try {
+                Parser.get(repository.getClzz());
+            } catch (Exception e) {
+                if (e instanceof ParsingException) {
+                    throw new ParsingException(repository.getClzz() + ", " + e.getMessage());
+                }
+            }
         }
-
 
         boolean flag = false;
         boolean isNotSupportTableSql = false;
@@ -65,12 +74,12 @@ public class InitializerListener {
                 String createSql = sqlInit.tryToParse(clz);
                 String test = sqlInit.getSql(clz, SqlInit.CREATE);
                 if (SqliStringUtil.isNullOrEmpty(test)) {
-                    logger.info("Failed to start sqli-repo, check Bean: {}",clz);
+                    logger.info("Failed to start sqli-repo, check Bean: {}", clz);
                     throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
                 }
 
                 if (SqliStringUtil.isNotNull(createSql)) {
-                    nativeSupport.execute(clz, createSql);
+                    nativeSupport.execute(createSql);
                 }
 
             } catch (Exception e) {
@@ -85,7 +94,7 @@ public class InitializerListener {
             logger.info("The dialect not support creating table, try to implement Dialect.buildTableSql(clzz, isTemporary)");
         }
 
-        logger.info("sqli-repo " + (flag ? "still " : "") + "started" + (flag ? " OK, wtih some problem" : "" ) + "\n");
+        logger.info("sqli-repo " + (flag ? "still " : "") + "started" + (flag ? " OK, wtih some problem" : "") + "\n");
 
     }
 }

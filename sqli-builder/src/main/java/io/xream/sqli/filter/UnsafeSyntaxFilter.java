@@ -26,7 +26,6 @@ import io.xream.sqli.builder.SqlScript;
 public interface UnsafeSyntaxFilter {
 
     default String filter(String sql) {
-        return sql.replace("'", "''")
-                .replace(";", SqlScript.SPACE);
+        return sql.replace("'", "''");
     }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public interface NativeSupport {
 
-     <T> boolean execute(Class<T> clzz, String sql);
+     boolean execute(String sql, Object...objs);
 
      List<Map<String,Object>> list(String sql, List<Object> conditionList);
 }

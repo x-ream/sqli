@@ -19,6 +19,7 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.annotation.X;
+import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
 import io.xream.sqli.converter.ObjectDataConverter;
@@ -175,8 +176,6 @@ public final class DaoImpl implements Dao, SqlTemplate {
     @Override
     public List<Map<String, Object>> list(String sql, List<Object> conditionList) {
 
-        sql = sqlBuilder.filter(sql);
-
         return this.jdbcHelper.queryForResultMapList(sql, conditionList,null, null,this.dialect);
     }
 
@@ -262,21 +261,14 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
     /**
      *
-     * @param clzz
+     * @param
      * @param sql
      */
     @Deprecated
     @Override
-    public boolean execute(Class clzz, String sql) {
+    public boolean execute(String sql, Object...objs) {
 
-        Parsed parsed = Parser.get(clzz);
-
-        sql = sqlBuilder.filter(sql);
-        sql = SqlParserUtil.mapperForNative(sql, parsed);
-
-        SqliLoggerProxy.debug(clzz, sql);
-
-        return this.jdbcHelper.execute(sql);
+        return this.jdbcHelper.execute(sql,objs);
 
     }
 

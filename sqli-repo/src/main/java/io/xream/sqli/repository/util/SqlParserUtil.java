@@ -26,33 +26,8 @@ import io.xream.sqli.util.BeanUtil;
  */
 public final class SqlParserUtil {
 
-    public final static String COMMA = ",";
     public final static String SPACE = " ";
     public final static String SQL_KEYWORD_MARK = "`";
-
-
-    public static String mapperForNative(String sqlSegment, Parsed parsed) {
-
-        sqlSegment = mapper(sqlSegment,parsed);
-
-        if (parsed.isNoSpec())
-            return sqlSegment;
-
-        if (!sqlSegment.contains(COMMA))
-            return sqlSegment;
-
-        for (String property : parsed.getPropertyMapperMap().keySet()){//FIXME 解析之后, 替换,拼接
-            String key = SPACE+property+COMMA;
-            String value = SPACE+parsed.getMapper(property)+COMMA;
-            sqlSegment = sqlSegment.replaceAll(key, value);
-        }
-        for (String property : parsed.getPropertyMapperMap().keySet()){//FIXME 解析之后, 替换,拼接
-            String key = COMMA+property+COMMA;
-            String value = COMMA+parsed.getMapper(property)+COMMA;
-            sqlSegment = sqlSegment.replaceAll(key, value);
-        }
-        return sqlSegment;
-    }
 
 
     public static String mapper(String sql, Parsed parsed) {
