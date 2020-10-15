@@ -23,7 +23,7 @@ import io.xream.sqli.builder.SqlScript;
 /**
  * @Author Sim
  */
-public class ClickhouseDialect extends MySqlDialect{
+public final class ClickhouseDialect extends MySqlDialect{
 
     @Override
     public String getKey(){
