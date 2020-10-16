@@ -32,12 +32,8 @@ public final class DynamicDialect implements Dialect{
     private Dialect defaultDialect;
     private Map<String,Dialect> map = new HashMap<>();
     public void setDefaultDialect(Dialect dialect) {
-        if (this.defaultDialect == null) {
-            this.defaultDialect = dialect;
-            map.put(dialect.getKey(),dialect);
-        }else {
-            throw new IllegalArgumentException();
-        }
+        this.defaultDialect = dialect;
+        map.put(dialect.getKey(),dialect);
     }
 
     public void addDialect(Dialect dialect) {
