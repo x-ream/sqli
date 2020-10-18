@@ -38,12 +38,57 @@ public interface SqlNormalizer {
             add("-");
             add("*");
             add("/");
-            add("(");
-            add(")");
+//            add("(");
+//            add(")");
             add(";");
             add(":");
         }
     };
+
+    default void normalizeFunctionParentThesis(int j, String strEle,StringBuilder valueSb, String handwritten) {
+        if (strEle.equals(SqlScript.LEFT_PARENTTHESIS) && j - 1 > -1) {
+            String pre = String.valueOf(handwritten.charAt(j - 1));
+            if (pre.equals(SqlScript.SPACE) || OP_SET.contains(pre)) {
+                valueSb.append(Script.SPACE);
+            }
+        }else{
+            valueSb.append(Script.SPACE);
+        }
+    }
+
+
+
+    default int normalizeParentThesis(int j, int length,String strEle, StringBuilder valueSb, String handwritten){
+
+        normalizeFunctionParentThesis(j, strEle, valueSb, handwritten);
+
+        valueSb.append(strEle);
+
+        for (; j + 1 < length; ) {
+            String nextOp = String.valueOf(handwritten.charAt(j + 1));
+            if (nextOp.equals(strEle)) {
+                valueSb.append(nextOp);
+                j++;
+            } else {
+                break;
+            }
+        }
+        valueSb.append(Script.SPACE);
+        return j;
+    }
+
+    default int normalizeOp(int j, int length, String strEle, StringBuilder valueSb, String handwritten){
+        valueSb.append(Script.SPACE).append(strEle);
+        if (j + 1 < length) {
+            String nextOp = String.valueOf(handwritten.charAt(j + 1));
+            if (OP_SET.contains(nextOp)) {
+                valueSb.append(nextOp);
+                j++;
+            }
+        }
+        valueSb.append(Script.SPACE);
+        return j;
+    }
 
     default String normalizeSql(final String handwritten) {
         StringBuilder valueSb = new StringBuilder();
@@ -55,49 +100,14 @@ public interface SqlNormalizer {
                 ignored = true;
                 continue;
             }
+
+            if (strEle.equals(SqlScript.LEFT_PARENTTHESIS) || strEle.equals(SqlScript.RIGHT_PARENTTHESIS)) {
+                j = normalizeParentThesis(j,length,strEle,valueSb,handwritten);
+                continue;
+            }
+
             if (OP_SET.contains(strEle)) {
-                if (strEle.equals(SqlScript.LEFT_PARENTTHESIS)) {//support function
-                    int index = j - 1;
-                    if (index > -1) {
-                        String pre = String.valueOf(handwritten.charAt(j - 1));
-                        if (pre.equals(SqlScript.SPACE) || OP_SET.contains(pre)) {
-                            valueSb.append(Script.SPACE);
-                        }
-                    }
-                    for (;j + 1 < length;) {
-                        String nextOp = String.valueOf(handwritten.charAt(j + 1));
-                        if (nextOp.equals(SqlScript.LEFT_PARENTTHESIS)){
-                            valueSb.append(nextOp);
-                            j++;
-                        }else{
-                            break;
-                        }
-                    }
-                }else if(strEle.equals(SqlScript.RIGHT_PARENTTHESIS)){
-                    valueSb.append(Script.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
-                    for (;j + 1 < length;) {
-                        String nextOp = String.valueOf(handwritten.charAt(j + 1));
-                        if (nextOp.equals(SqlScript.RIGHT_PARENTTHESIS)){
-                            valueSb.append(SqlScript.RIGHT_PARENTTHESIS);
-                            j++;
-                        }else{
-                            break;
-                        }
-                    }
-                    valueSb.append(Script.SPACE);
-                    continue;
-                }else{
-                    valueSb.append(Script.SPACE);
-                }
-                valueSb.append(strEle);
-                if (j + 1 < length) {
-                    String nextOp = String.valueOf(handwritten.charAt(j + 1));
-                    if (!nextOp.equals(SqlScript.LEFT_PARENTTHESIS) && OP_SET.contains(nextOp)) {
-                        valueSb.append(nextOp);
-                        j++;
-                    }
-                }
-                valueSb.append(Script.SPACE);
+                j = normalizeOp(j,length,strEle,valueSb,handwritten);
             } else {
                 if (ignored)
                     valueSb.append(Script.SPACE);
