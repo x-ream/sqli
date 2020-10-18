@@ -86,7 +86,7 @@ public interface SqlNormalizer {
                 j++;
             }
         }
-        valueSb.append(Script.SPACE);
+//        valueSb.append(Script.SPACE);
         return j;
     }
 
@@ -112,8 +112,9 @@ public interface SqlNormalizer {
                 if (ignored)
                     valueSb.append(Script.SPACE);
                 valueSb.append(strEle);
+                ignored = false;
             }
-            ignored = false;
+
         }
         return valueSb.toString();
     }
