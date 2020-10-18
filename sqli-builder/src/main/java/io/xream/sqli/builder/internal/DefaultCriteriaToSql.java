@@ -147,6 +147,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         sb.append(conditionSql);
 
+        if (SqliStringUtil.isNotNull(dialectSupport.getLimitOne()) && refreshCondition.getLimit() > 0){
+            sb.append(SqlScript.LIMIT).append(refreshCondition.getLimit());
+        }
+
         String sql = sb.toString();
 
         if (sql.contains("SET  WHERE"))

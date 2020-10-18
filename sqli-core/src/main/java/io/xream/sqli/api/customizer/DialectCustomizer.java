@@ -16,42 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.api.customizer;
+
+import io.xream.sqli.dialect.Dialect;
 
 /**
  * @Author Sim
  */
-public enum  Op {
-    EQ ("="),
-    NE( "<>"),
-    GT(">"),
-    LT ("<"),
-    GTE (">="),
-    LTE ("<="),
-    LIKE("LIKE"),
-    NOT_LIKE("NOT LIKE"),
-    IN("IN"),
-    NOT_IN("NOT IN"),
-    IS_NOT_NULL("IS NOT NULL"),
-    IS_NULL("IS NULL"),
-    X(""),
-    LIMIT("LIMIT"),
-    OFFSET("OFFSET"),
-    SUB("SUB"),
-
-    NONE(""),
-    AND(" AND "),
-    OR(" OR "),
-    ORDER_BY(" ORDER BY "),
-    GROUP_BY(" GROUP BY "),
-    HAVING(" HAVING "),
-    WHERE(" WHERE ");
-
-    private String op;
-    Op(String str){
-        op = str;
-    }
-    public String sql(){
-        return op;
-    }
+public interface DialectCustomizer {
+    Dialect customize();
 }

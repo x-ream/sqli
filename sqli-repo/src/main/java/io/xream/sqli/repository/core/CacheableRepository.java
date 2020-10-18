@@ -175,9 +175,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
         try {
             return this.dao.list(clzz.newInstance());
         }catch (Exception e){
-            if (e instanceof RuntimeException){
-                throw (RuntimeException) e;
-            }
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new QueryException(SqliExceptionUtil.getMessage(e));
         }
     }

@@ -18,8 +18,10 @@
  */
 package io.xream.sqli.starter;
 
+import io.xream.sqli.api.customizer.DialectCustomizer;
 import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
+import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
@@ -44,6 +46,10 @@ public class SqliListener {
         if (l2CacheResolver != null && l2CacheConsistency != null) {
             l2CacheResolver.setL2CacheConsistency(l2CacheConsistency);
         }
+    }
+
+    public static void customizeDialectOnStarted(Dialect dialect, DialectCustomizer dialectCustomizer) {
+        DialectListener.customizeOnStarted(dialect,dialectCustomizer);
     }
 
     public static void onStarted(NativeSupport nativeSupport, DialectSupport dialectSupport, SqlInit sqlInit){

@@ -16,42 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.starter;
+
+import io.xream.sqli.api.customizer.DialectCustomizer;
+import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.dialect.DynamicDialect;
 
 /**
  * @Author Sim
  */
-public enum  Op {
-    EQ ("="),
-    NE( "<>"),
-    GT(">"),
-    LT ("<"),
-    GTE (">="),
-    LTE ("<="),
-    LIKE("LIKE"),
-    NOT_LIKE("NOT LIKE"),
-    IN("IN"),
-    NOT_IN("NOT IN"),
-    IS_NOT_NULL("IS NOT NULL"),
-    IS_NULL("IS NULL"),
-    X(""),
-    LIMIT("LIMIT"),
-    OFFSET("OFFSET"),
-    SUB("SUB"),
+public class DialectListener {
 
-    NONE(""),
-    AND(" AND "),
-    OR(" OR "),
-    ORDER_BY(" ORDER BY "),
-    GROUP_BY(" GROUP BY "),
-    HAVING(" HAVING "),
-    WHERE(" WHERE ");
-
-    private String op;
-    Op(String str){
-        op = str;
-    }
-    public String sql(){
-        return op;
+    protected static void customizeOnStarted(Dialect dialect, DialectCustomizer dialectCustomizer) {
+        if (dialectCustomizer == null)
+            return;
+        Dialect customedDialect = dialectCustomizer.customize();
+        if (customedDialect == null)
+            return;
+        if (dialect instanceof DynamicDialect) {
+            DynamicDialect dynamicDialect = (DynamicDialect) dialect;
+            dynamicDialect.setDefaultDialect(customedDialect);
+        }
     }
 }

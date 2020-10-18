@@ -25,6 +25,7 @@ import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.dialect.DynamicDialect;
 import io.xream.sqli.repository.core.CacheableRepository;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.repository.dao.DaoImpl;
@@ -51,6 +52,12 @@ public class SqliStarter {
         return instance;
     }
     private SqliStarter(){}
+
+    public Dialect dialect(Dialect dialect) {
+        DynamicDialect dynamicDialect = new DynamicDialect();
+        dynamicDialect.setDefaultDialect(dialect);
+        return dynamicDialect;
+    }
 
     public CriteriaToSql criteriaToSql(){
         return DefaultCriteriaToSql.newInstance();

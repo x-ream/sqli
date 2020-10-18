@@ -594,9 +594,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 						list = listQueryFromDb.query();
 					} catch (Exception e) {
 						close();
-						if (e instanceof RuntimeException){
-							throw (RuntimeException) e;
-						}
+						SqliExceptionUtil.throwRuntimeExceptionFirst(e);
 						throw new L2CacheException(SqliExceptionUtil.getMessage(e));
 					}
 					p = new Page<>();

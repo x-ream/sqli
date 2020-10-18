@@ -38,6 +38,7 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
 
     private List<Bb> bbList = new ArrayList<>();
     private Object routeKey;
+    private transient int limit;
     @JsonIgnore
     private transient Class clz;
     @JsonIgnore
@@ -98,6 +99,14 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
 
     public void setRouteKey(Object routeKey) {
         this.routeKey = routeKey;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     @Deprecated

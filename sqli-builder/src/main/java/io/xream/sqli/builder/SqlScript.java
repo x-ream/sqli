@@ -147,6 +147,7 @@ public interface SqlScript extends Script {
 	String SINGLE_QUOTES = "'";
 	String KEYWORD_MARK = "`";
 	String SUB = "${SUB}";
+	String LIMIT_ONE = " LIMIT 1";
 
 	String sql();
 }
