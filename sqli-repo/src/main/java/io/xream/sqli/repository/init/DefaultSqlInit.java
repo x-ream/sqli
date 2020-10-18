@@ -27,6 +27,7 @@ import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.util.SqlParserUtil;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,10 @@ public final class DefaultSqlInit implements SqlInit {
         sb.append("WHERE ");
 
         parseKey(sb, clz);
+
+        if (SqliStringUtil.isNotNull(dialect.getLimitOne())){
+            sb.append(dialect.getLimitOne());
+        }
 
         String sql = sb.toString();
 

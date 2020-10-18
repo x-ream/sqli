@@ -19,28 +19,26 @@
 package io.xream.sqli.repository.internal;
 
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.ResultMapRepository;
-import io.xream.sqli.builder.*;
+import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.core.RowHandler;
-import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
-import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.spi.IdGenerator;
 import io.xream.sqli.util.SqliStringUtil;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Implement of BaseRepository, ResultMapRepository
@@ -48,7 +46,7 @@ import java.util.Objects;
  * @param <T>
  * @author Sim
  */
-public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository {
+public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository, SafeRefreshBiz<T> {
 
     private Class<T> clzz;
     private Class childClzz;
@@ -135,32 +133,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     @Override
     public boolean refresh(RefreshCondition refreshCondition) {
 
-        refreshCondition.setClz(this.clzz);
-        Parsed parsed = Parser.get(this.clzz);
-        Field keyField = parsed.getKeyField(X.KEY_ONE);
-        if (Objects.isNull(keyField))
-            throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
-
-        boolean unSafe = true;//Safe
-
-        if (unSafe) {
-            String key = parsed.getKey(X.KEY_ONE);
-            List<Bb> bbList = refreshCondition.getBbList();
-            for (Bb bb : bbList) {
-                String k = bb.getKey();
-                boolean b = k.contains(".") ? k.endsWith("."+key) : key.equals(k);
-                if (b) {
-                    Object value = bb.getValue();
-                    if (Objects.nonNull(value) && !value.toString().equals("0")) {
-                        unSafe = false;//Safe
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (unSafe)
-            throw new CriteriaSyntaxException("UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
+        tryToRefreshSafe(this.clzz, refreshCondition);
 
         return repository.refresh(refreshCondition);
     }

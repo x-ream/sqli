@@ -248,4 +248,9 @@ public class MySqlDialect implements Dialect {
     public String getTemporaryTableCreate() {
         return "CREATE TEMPORARY TABLE IF NOT EXISTS ";
     }
+
+    @Override
+    public String getLimitOne() {
+        return SqlScript.LIMIT_ONE;
+    }
 }

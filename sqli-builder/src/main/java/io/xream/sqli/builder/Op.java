@@ -35,6 +35,8 @@ public enum  Op {
     IS_NOT_NULL("IS NOT NULL"),
     IS_NULL("IS NULL"),
     X(""),
+    LIMIT("LIMIT"),
+    OFFSET("OFFSET"),
     SUB("SUB"),
 
     NONE(""),

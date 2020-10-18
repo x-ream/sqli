@@ -127,4 +127,9 @@ public final class DynamicDialect implements Dialect{
     public String getTemporaryTableCreate() {
         return getCurrentDialect().getTemporaryTableCreate();
     }
+
+    @Override
+    public String getLimitOne() {
+        return getCurrentDialect().getLimitOne();
+    }
 }

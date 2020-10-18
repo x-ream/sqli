@@ -276,4 +276,9 @@ public class OracleDialect implements Dialect {
     public String getTemporaryTableCreate() {
         return "CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS ";
     }
+
+    @Override
+    public String getLimitOne() {
+        return null;
+    }
 }

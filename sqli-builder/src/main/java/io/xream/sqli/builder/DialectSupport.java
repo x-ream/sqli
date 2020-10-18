@@ -33,4 +33,6 @@ public interface DialectSupport {
     String getCommandDelete();
 
     String getTemporaryTableCreate();
+
+    String getLimitOne();
 }

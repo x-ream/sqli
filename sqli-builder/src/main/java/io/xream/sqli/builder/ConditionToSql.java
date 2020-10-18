@@ -42,10 +42,15 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
     default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
         if (bbList == null || bbList.isEmpty())
             return;
+
         for (Bb bb : bbList) {
 
-            if (bb.getP() == Op.SUB) {
+            Op p = bb.getP();
+            if (p == Op.LIMIT || p == Op.OFFSET) {
+                continue;
+            }
 
+            if (p == Op.SUB) {
                 if (bb.getSubList().isEmpty())
                     continue;
                 bb.getSubList().get(0).setC(Op.NONE);
@@ -57,7 +62,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
             }
 
             String mapper = null;
-            if (bb.getP() == Op.X){
+            if (p == Op.X){
                 final String str  = normalizeSql(bb.getKey());
                 StringBuilder sbx = new StringBuilder();
                 mapping((reg)->str.split(reg), mappable,sbx);
@@ -65,21 +70,22 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                 sb.append(bb.getC().sql()).append(mapper);
             }else {
                 mapper = mapping(bb.getKey(), mappable);
-                sb.append(bb.getC().sql()).append(mapper).append(Script.SPACE).append(bb.getP().sql()).append(Script.SPACE);
+                sb.append(bb.getC().sql()).append(mapper).append(Script.SPACE).append(p.sql()).append(Script.SPACE);
             }
 
             if (bb.getValue() != null) {
-                if (bb.getP() == Op.IN || bb.getP() == Op.NOT_IN) {
+                if (p == Op.IN || p == Op.NOT_IN) {
                     List<Object> inList = (List<Object>) bb.getValue();
                     Object v = inList.get(0);
                     Class<?> vType = v.getClass();
                     buildIn(sb, vType, inList);
-                } else if (!(bb.getP() == Op.IS_NULL
-                        || bb.getP() == Op.IS_NOT_NULL
-                        || bb.getP() == Op.X)) {
+                } else if (!(p == Op.IS_NULL
+                        || p == Op.IS_NOT_NULL
+                        || p == Op.X)) {
                     sb.append(SqlScript.PLACE_HOLDER).append(SqlScript.SPACE);
                 }
             }
+
         }
 
     }
@@ -229,10 +235,13 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
     interface Pre {
         default void pre(List<Object> valueList, List<Bb> bbList) {
             for (Bb bb : bbList) {
-                if (bb.getP() == Op.SUB){
+                Op p = bb.getP();
+                if (p == Op.LIMIT || p == Op.OFFSET){
+                    continue;
+                }else if (p == Op.SUB){
                     pre(valueList, bb.getSubList());
                     continue;
-                }else if (bb.getP() == Op.X) {
+                }else if (p == Op.X) {
                     Object value = bb.getValue();
                     if (value == null)
                         continue;
@@ -241,12 +250,11 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                             add(valueList,v);
                         }
                     }
-                }else if (!(bb.getP() == Op.IN
-                        || bb.getP() == Op.NOT_IN
-                        || bb.getP() == Op.IS_NULL
-                        || bb.getP() == Op.IS_NOT_NULL)) {
-                    Object v = bb.getValue();
-                    add(valueList, v);
+                }else if (!(p == Op.IN
+                        || p == Op.NOT_IN
+                        || p == Op.IS_NULL
+                        || p == Op.IS_NOT_NULL)) {
+                    add(valueList, bb.getValue());
                 }
             }
         }
