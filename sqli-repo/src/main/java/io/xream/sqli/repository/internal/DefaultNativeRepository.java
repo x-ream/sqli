@@ -58,9 +58,7 @@ public final class DefaultNativeRepository implements NativeRepository, DynamicD
 		try {
 			return nativeSupport.execute(sql, objs);
 		}catch (Exception e) {
-			if (e instanceof RuntimeException){
-				throw e;
-			}
+			SqliExceptionUtil.throwRuntimeExceptionFirst(e);
 			throw new PersistenceException(SqliExceptionUtil.getMessage(e));
 		}finally {
 			removeDialectKey();
@@ -71,9 +69,7 @@ public final class DefaultNativeRepository implements NativeRepository, DynamicD
 		try {
 			return nativeSupport.list(sql, conditionList);
 		}catch (Exception e) {
-			if (e instanceof RuntimeException){
-				throw e;
-			}
+			SqliExceptionUtil.throwRuntimeExceptionFirst(e);
 			throw new QueryException(SqliExceptionUtil.getMessage(e));
 		}finally {
 			removeDialectKey();

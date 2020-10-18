@@ -55,10 +55,9 @@ public class InitializerListener {
             logger.info("Parsing {}", repository.getClzz());
             try {
                 Parser.get(repository.getClzz());
-            } catch (Exception e) {
-                if (e instanceof ParsingException) {
-                    throw new ParsingException(repository.getClzz() + ", " + e.getMessage());
-                }
+            } catch (ParsingException pe) {
+                throw new ParsingException(repository.getClzz() + ", " + pe.getMessage());
+            }catch (Exception e) {
             }
         }
 
