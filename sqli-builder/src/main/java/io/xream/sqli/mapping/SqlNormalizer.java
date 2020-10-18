@@ -47,12 +47,12 @@ public interface SqlNormalizer {
 
     default String normalizeSql(final String handwritten) {
         StringBuilder valueSb = new StringBuilder();
-//        boolean ignore = false;
+        boolean ignored = false;
         int length = handwritten.length();
         for (int j = 0; j < length; j++) {
             String strEle = String.valueOf(handwritten.charAt(j));
             if (Script.SPACE.equals(strEle)) {
-//                ignore = true;
+                ignored = true;
                 continue;
             }
             if (OP_SET.contains(strEle)) {
@@ -99,11 +99,11 @@ public interface SqlNormalizer {
                 }
                 valueSb.append(Script.SPACE);
             } else {
-//                if (ignore)
-//                    valueSb.append(Script.SPACE);
+                if (ignored)
+                    valueSb.append(Script.SPACE);
                 valueSb.append(strEle);
             }
-//            ignore = false;
+            ignored = false;
         }
         return valueSb.toString();
     }
