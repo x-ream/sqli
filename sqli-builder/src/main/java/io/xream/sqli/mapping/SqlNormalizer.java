@@ -18,15 +18,13 @@
  */
 package io.xream.sqli.mapping;
 
-import io.xream.sqli.builder.SqlScript;
-
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @Author Sim
  */
-public interface SqlNormalizer {
+public interface SqlNormalizer extends Script{
 
     Set<String> OP_SET = new HashSet() {
         {
@@ -38,56 +36,52 @@ public interface SqlNormalizer {
             add("-");
             add("*");
             add("/");
-//            add("(");
-//            add(")");
             add(";");
             add(":");
         }
     };
 
-    default void normalizeFunctionParentThesis(int j, String strEle,StringBuilder valueSb, String handwritten) {
-        if (strEle.equals(SqlScript.LEFT_PARENTTHESIS) && j - 1 > -1) {
-            String pre = String.valueOf(handwritten.charAt(j - 1));
-            if (pre.equals(SqlScript.SPACE) || OP_SET.contains(pre)) {
-                valueSb.append(Script.SPACE);
+    default void normalizeFunctionParentThesis(int idx, String strEle,StringBuilder valueSb, String handwritten) {
+        if (strEle.equals(LEFT_PARENTTHESIS) && idx - 1 > -1) {
+            String pre = String.valueOf(handwritten.charAt(idx - 1));
+            if (pre.equals(SPACE) || OP_SET.contains(pre)) {
+                valueSb.append(SPACE);
             }
         }else{
-            valueSb.append(Script.SPACE);
+            valueSb.append(SPACE);
         }
     }
 
+    default int normalizeParentThesis(int idx, int length,String strEle, StringBuilder valueSb, String handwritten){
 
-
-    default int normalizeParentThesis(int j, int length,String strEle, StringBuilder valueSb, String handwritten){
-
-        normalizeFunctionParentThesis(j, strEle, valueSb, handwritten);
+        normalizeFunctionParentThesis(idx, strEle, valueSb, handwritten);
 
         valueSb.append(strEle);
 
-        for (; j + 1 < length; ) {
-            String nextOp = String.valueOf(handwritten.charAt(j + 1));
+        for (; idx + 1 < length; ) {
+            String nextOp = String.valueOf(handwritten.charAt(idx + 1));
             if (nextOp.equals(strEle)) {
                 valueSb.append(nextOp);
-                j++;
+                idx++;
             } else {
                 break;
             }
         }
-        valueSb.append(Script.SPACE);
-        return j;
+        valueSb.append(SPACE);
+        return idx;
     }
 
-    default int normalizeOp(int j, int length, String strEle, StringBuilder valueSb, String handwritten){
-        valueSb.append(Script.SPACE).append(strEle);
-        if (j + 1 < length) {
-            String nextOp = String.valueOf(handwritten.charAt(j + 1));
+    default int normalizeOp(int idx, int length, String strEle, StringBuilder valueSb, String handwritten){
+        valueSb.append(SPACE).append(strEle);
+        if (idx + 1 < length) {
+            String nextOp = String.valueOf(handwritten.charAt(idx + 1));
             if (OP_SET.contains(nextOp)) {
                 valueSb.append(nextOp);
-                j++;
+                idx++;
             }
         }
-//        valueSb.append(Script.SPACE);
-        return j;
+//        valueSb.append(SPACE);
+        return idx;
     }
 
     default String normalizeSql(final String handwritten) {
@@ -96,12 +90,12 @@ public interface SqlNormalizer {
         int length = handwritten.length();
         for (int j = 0; j < length; j++) {
             String strEle = String.valueOf(handwritten.charAt(j));
-            if (Script.SPACE.equals(strEle)) {
+            if (SPACE.equals(strEle)) {
                 ignored = true;
                 continue;
             }
 
-            if (strEle.equals(SqlScript.LEFT_PARENTTHESIS) || strEle.equals(SqlScript.RIGHT_PARENTTHESIS)) {
+            if (strEle.equals(LEFT_PARENTTHESIS) || strEle.equals(RIGHT_PARENTTHESIS)) {
                 j = normalizeParentThesis(j,length,strEle,valueSb,handwritten);
                 continue;
             }
@@ -110,7 +104,7 @@ public interface SqlNormalizer {
                 j = normalizeOp(j,length,strEle,valueSb,handwritten);
             } else {
                 if (ignored)
-                    valueSb.append(Script.SPACE);
+                    valueSb.append(SPACE);
                 valueSb.append(strEle);
                 ignored = false;
             }

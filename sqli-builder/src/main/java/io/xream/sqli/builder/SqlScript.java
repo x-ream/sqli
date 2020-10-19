@@ -141,8 +141,6 @@ public interface SqlScript extends Script {
 	String COMMA = ",";
 	String STAR = "*";
 	String UNDER_LINE = "_";
-	String LEFT_PARENTTHESIS = "(";
-	String RIGHT_PARENTTHESIS = ")";
 	String DOLLOR = "$";
 	String SINGLE_QUOTES = "'";
 	String KEYWORD_MARK = "`";

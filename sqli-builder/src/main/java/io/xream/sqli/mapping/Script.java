@@ -24,4 +24,6 @@ package io.xream.sqli.mapping;
 public interface Script {
     String SPACE = " ";
     String DOT = ".";
+    String LEFT_PARENTTHESIS = "(";
+    String RIGHT_PARENTTHESIS = ")";
 }
