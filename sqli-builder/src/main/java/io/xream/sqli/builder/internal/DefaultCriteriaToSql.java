@@ -635,6 +635,8 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             int i = 0;
             for (Sort sort : sortList) {
                 String orderBy = sort.getOrderBy();
+                orderBy = normalizeSql(orderBy);
+                orderBy = noSpace(orderBy);
                 String mapper = mapping(orderBy, criteria);
                 sb.sbCondition.append(mapper).append(SqlScript.SPACE);
                 addConditonBeforeOptimization(orderBy,sb.conditionSet);

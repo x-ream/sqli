@@ -18,6 +18,8 @@
  */
 package io.xream.sqli.filter;
 
+import io.xream.sqli.mapping.Script;
+
 /**
  * @Author Sim
  */
@@ -25,5 +27,11 @@ public interface UnsafeSyntaxFilter {
 
     default String filter(String sql) {
         return sql.replace("'", "''");
+    }
+
+    default String noSpace(String sql) {
+        if (sql.contains(Script.SPACE))
+            throw new IllegalArgumentException("While building ORDER BY, find the property contains SPACE, after normalized: " + sql );
+        return sql;
     }
 }
