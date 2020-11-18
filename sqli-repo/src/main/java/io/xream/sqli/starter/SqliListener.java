@@ -27,6 +27,7 @@ import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.spi.L2CacheConsistency;
 import io.xream.sqli.spi.L2CacheResolver;
+import io.xream.sqli.util.SqliJsonUtil;
 
 /**
  * @Author Sim
@@ -37,6 +38,10 @@ public class SqliListener {
     private static boolean initialized = false;
 
     private SqliListener(){}
+
+    public static void cusomizeJsonConfig(SqliJsonUtil.Customizer customizer) {
+        customizer.customize();
+    }
 
     public static void onBeanCreated(InitPhaseable initPhaseable){
         initialized |= initPhaseable.init();

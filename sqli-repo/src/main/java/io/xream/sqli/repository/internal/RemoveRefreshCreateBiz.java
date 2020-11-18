@@ -25,8 +25,8 @@ import io.xream.sqli.core.Repository;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
@@ -37,27 +37,41 @@ import java.util.*;
  */
 public final class RemoveRefreshCreateBiz {
 
-    protected static <T> boolean doIt(Class<T> clz, Repository repository, RemoveRefreshCreate wrapper) {
+    protected static <T> boolean doIt(Class<T> clzz, Repository repository, RemoveRefreshCreate wrapper) {
 
         Objects.requireNonNull(wrapper, "removeRefreshCreate(wrapper),wrapper is null");
 
-        if (wrapper.getList() == null || wrapper.getList().isEmpty())
-            return false;
-        List<T> list = null;
-        Object obj = wrapper.getList().get(0);
-        if (obj.getClass() != clz){
-            list = new ArrayList<>();
-            for (Object o : wrapper.getList()){
-                T t = JsonWrapper.toObject(o,clz);
-                list.add(t);
+        Map<Object,T> map = new HashMap<>();
+        List<T> entityList = wrapper.getList();
+        if (entityList != null && !entityList.isEmpty()) {
+            List<T> list = null;
+            Object obj = entityList.get(0);
+            if (obj.getClass() != clzz) {
+                list = new ArrayList<>();
+                for (Object o : entityList) {
+                    T t = SqliJsonUtil.toObject(o, clzz);
+                    list.add(t);
+                }
+            } else {
+                list = entityList;
             }
-        }else{
-            list = wrapper.getList();
+
+            Parsed parsed = Parser.get(clzz);
+            Field f = parsed.getKeyField(X.KEY_ONE);
+            try {
+                for (T t : list) {
+                    Object id = f.get(t);
+                    map.put(id, t);
+                }
+            } catch (Exception e) {
+                SqliExceptionUtil.throwRuntimeExceptionFirst(e);
+                throw new ParsingException(SqliExceptionUtil.getMessage(e));
+            }
         }
 
         Object[] ins = wrapper.getIns();
 
-        List<String> inList = new ArrayList<>();
+        List<Object> inList = new ArrayList<>();
         if (ins != null ) {
             for (Object in : ins){
                 if (in == null)
@@ -69,24 +83,10 @@ public final class RemoveRefreshCreateBiz {
             }
         }
 
-        final Parsed parsed = Parser.get(clz);
-        Field f = parsed.getKeyField(X.KEY_ONE);
-        Map<String,T> map = new HashMap<>();
-        try {
-            for (T t : list) {
-                Object id = f.get(t);
-                map.put(String.valueOf(id), t);
-            }
-        }catch (Exception e){
-            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-            throw new ParsingException(SqliExceptionUtil.getMessage(e));
-        }
-
-
         /*
          * remove
          */
-        Iterator<String> existIte = inList.iterator();
+        Iterator<Object> existIte = inList.iterator();
         while (existIte.hasNext()) {
             Object id = existIte.next();
             if (map.containsKey(id))
@@ -100,7 +100,7 @@ public final class RemoveRefreshCreateBiz {
 
                 @Override
                 public Class<Object> getClzz() {
-                    return parsed.getClzz();
+                    return (Class<Object>) clzz;
                 }
             });
         }
@@ -108,8 +108,8 @@ public final class RemoveRefreshCreateBiz {
         /*
          * refreshOrCreate
          */
-        for (Map.Entry<String,T> entry : map.entrySet()) {
-            String id = entry.getKey();
+        for (Map.Entry<Object,T> entry : map.entrySet()) {
+            Object id = entry.getKey();
             T t = entry.getValue();
             if (inList.contains(id)) {
                 repository.refresh(t);

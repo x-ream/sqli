@@ -24,8 +24,8 @@ import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.lang.reflect.Method;
@@ -58,7 +58,7 @@ public final class ObjectDataConverter {
                         list.add(null);
                 } else {
                     if (ele.isJson()) {
-                        String str = JsonWrapper.toJson(value);
+                        String str = SqliJsonUtil.toJson(value);
                         Object jsonStr = dialect.convertJsonToPersist(str);
                         list.add(jsonStr);
                     } else if (BeanUtil.isEnum(clz)) {
@@ -141,7 +141,7 @@ public final class ObjectDataConverter {
                 } else if (type == BigDecimal.class){
                     map.put(property, value);
                 }else if (element.isJson()) {
-                    String str = JsonWrapper.toJson(value);
+                    String str = SqliJsonUtil.toJson(value);
                     map.put(property, str);
                 }else {
                     map.put(property, value);

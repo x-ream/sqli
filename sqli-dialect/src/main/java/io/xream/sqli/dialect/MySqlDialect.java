@@ -24,7 +24,8 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliJsonUtil;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -83,13 +84,18 @@ public class MySqlDialect implements Dialect {
         if (BeanUtil.isEnum(ec)) {
             return Enum.valueOf(ec, obj.toString());
         } else if (element.isJson()) {
+
+            if (SqliStringUtil.isNullOrEmpty(obj))
+                return null;
+            String str = obj.toString().trim();
+
             if (ec == List.class) {
                 Class geneType = element.getGeneType();
-                return JsonWrapper.toList(obj.toString(), geneType);
+                return SqliJsonUtil.toList(str, geneType);
             } else if (ec == Map.class) {
-                return JsonWrapper.toMap(obj);
+                return SqliJsonUtil.toMap(str);
             } else {
-                return JsonWrapper.toObject(obj.toString(), ec);
+                return SqliJsonUtil.toObject(str, ec);
             }
         } else if (ec == BigDecimal.class) {
             return new BigDecimal(String.valueOf(obj));

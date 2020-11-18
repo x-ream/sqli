@@ -29,7 +29,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.support.ResultMapSingleSourceSupport;
 import io.xream.sqli.support.TimestampSupport;
-import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.*;
@@ -232,7 +232,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                     if (be.isJson()) {
                         Object v = bb.getValue();
                         if (v != null) {
-                            String str = JsonWrapper.toJson(v);
+                            String str = SqliJsonUtil.toJson(v);
                             Object jsonStr = dialectSupport.convertJsonToPersist(str);
                             bb.setValue(jsonStr);
                         }

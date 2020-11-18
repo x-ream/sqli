@@ -31,9 +31,9 @@ import io.xream.sqli.parser.Parser;
 import io.xream.sqli.spi.L2CacheConsistency;
 import io.xream.sqli.spi.L2CacheResolver;
 import io.xream.sqli.spi.L2CacheStorage;
-import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -274,7 +274,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		String key = getConditionedKey(clz, condition.toString());
 		try{
 			int validSecond = getValidSecondAdjusted();
-			getCachestorage().set(key, JsonWrapper.toJson(keyList), validSecond,TimeUnit.SECONDS);
+			getCachestorage().set(key, SqliJsonUtil.toJson(keyList), validSecond,TimeUnit.SECONDS);
 		}catch (Exception e) {
 			throwException(e);
 		}
@@ -284,7 +284,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		String key = getConditionedKey(clz,condition.toString());
 		try{
 			int validSecond = getValidSecondAdjusted();
-			getCachestorage().set(key, JsonWrapper.toJson(pagination), validSecond, TimeUnit.SECONDS);
+			getCachestorage().set(key, SqliJsonUtil.toJson(pagination), validSecond, TimeUnit.SECONDS);
 		}catch (Exception e) {
 			throwException(e);
 		}
@@ -296,7 +296,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		if (SqliStringUtil.isNullOrEmpty(str))
 			throw new NotQueryUnderProtectionException();
 		
-		return JsonWrapper.toList(str, String.class);
+		return SqliJsonUtil.toList(str, String.class);
 	}
 	
 	private Page<String> getResultKeyListPaginated(Class clz, Object condition) {
@@ -312,7 +312,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	private <T> Page<T> toPagination(String json) {
 		if (SqliStringUtil.isNullOrEmpty(json))
 			return null;
-		Page<T> pagination = JsonWrapper.toObject(json, Page.class);
+		Page<T> pagination = SqliJsonUtil.toObject(json, Page.class);
 		return pagination;
 	}
 
@@ -327,7 +327,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		List<T> list = new ArrayList<T>();
 		for (String json : jsonList){
 			if (SqliStringUtil.isNotNull(json)) {
-				T t = JsonWrapper.toObject(json,clz);
+				T t = SqliJsonUtil.toObject(json,clz);
 				list.add(t);
 			}
 		}
@@ -342,7 +342,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 			return null;
 		if (str.trim().equals(DEFAULT_VALUE))
 			throw new NoResultUnderProtectionException();
-		return JsonWrapper.toObject(str,clz);
+		return SqliJsonUtil.toObject(str,clz);
 	}
 
 	/**
@@ -352,7 +352,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		if (cacheKey == null )
 			return;
 		String k = getSimpleKey(clz, cacheKey.toString());
-		String v = JsonWrapper.toJson(obj == null ? DEFAULT_VALUE : obj);
+		String v = SqliJsonUtil.toJson(obj == null ? DEFAULT_VALUE : obj);
 		getCachestorage().set(k, v, validSecond,TimeUnit.SECONDS);
 	}
 

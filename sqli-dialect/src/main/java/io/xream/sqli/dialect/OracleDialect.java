@@ -23,8 +23,8 @@ import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.util.BeanUtil;
-import io.xream.sqli.util.JsonWrapper;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
@@ -158,15 +158,13 @@ public class OracleDialect implements Dialect {
 
             String str = obj.toString().trim();
 
-            if (!(str.startsWith("{") || str.startsWith("[")))
-                return str;
             if (ec == List.class) {
                 Class geneType = element.getGeneType();
-                return JsonWrapper.toList(str, geneType);
+                return SqliJsonUtil.toList(str, geneType);
             } else if (ec == Map.class) {
-                return JsonWrapper.toMap(str);
+                return SqliJsonUtil.toMap(str);
             } else {
-                return JsonWrapper.toObject(str, ec);
+                return SqliJsonUtil.toObject(str, ec);
             }
         }
 

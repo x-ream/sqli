@@ -19,9 +19,8 @@
 package io.xream.sqli.page;
 
 
-import com.alibaba.fastjson.JSONObject;
 import io.xream.sqli.builder.Sort;
-import io.xream.sqli.util.JsonWrapper;
+import io.xream.sqli.util.SqliJsonUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,7 +104,7 @@ public final class Page<T> implements Paged, Serializable{
 
 	@Deprecated
 	public void setList(List<T> list) {
-		if (Objects.isNull(this.clzz)){
+		if (Objects.isNull(this.clzz) || this.clzz == Void.class){
 			this.list = list;
 			return;
 		}
@@ -126,8 +125,8 @@ public final class Page<T> implements Paged, Serializable{
 			if (this.clzz == Map.class){
 				this.list.add(t);
 			}else {
-				if (t instanceof JSONObject){
-					T obj = JsonWrapper.toObject(t,this.clzz);
+				if (t instanceof Map){
+					T obj = SqliJsonUtil.toObject(t,this.clzz);
 					this.list.add(obj);
 				}else{
 					this.list.add(t);
@@ -192,8 +191,8 @@ public final class Page<T> implements Paged, Serializable{
 				"page=" + page + ", " +
 				"rows=" + rows + ", " +
 				"sortList=" + sortList + ", " +
-				"\n		list=" + list + ", " +
-				"\n		keyList=" + keyList ;
+				"list=" + list + ", " +
+				"keyList=" + keyList ;
 	}
 
 }
