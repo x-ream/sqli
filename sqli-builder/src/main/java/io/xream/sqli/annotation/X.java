@@ -30,8 +30,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 public @interface X {
-//
-//    int KEY_ONE = 1;
 
     /**
      * only effect on getter<br>
@@ -74,10 +72,7 @@ public @interface X {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD})
     @interface Tag {
+        boolean isKey() default false;
     }
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.FIELD})
-    @interface SubKey {
-    }
 }

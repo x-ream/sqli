@@ -88,10 +88,10 @@ public final class TAOSDialect extends MySqlDialect {
         List<Field> tagFieldList = parsed.getTagFieldList();
         filterTags(tempList, tagFieldList);
         try {
-            boolean hasSubKey = parsed.getSubField() != null;
+            boolean hasSubKey = parsed.getTagKeyField() != null;
             String dynamicTableName = parsed.getTableName();
             if (hasSubKey){
-                dynamicTableName = dynamicTableName + "_" + parsed.getSubField().get(obj);
+                dynamicTableName = dynamicTableName + "_" + parsed.getTagKeyField().get(obj);
                 list.add(dynamicTableName);
             }
             for (Field field : tagFieldList) {

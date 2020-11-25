@@ -340,13 +340,9 @@ public final class ParserUtil {
             if (a != null) {
                 f.setAccessible(true);
                 parsed.getTagFieldList().add(f);
-            }
-        }
-        for (Field f : list) {
-            X.SubKey a = f.getAnnotation(X.SubKey.class);
-            if (a != null) {
-                f.setAccessible(true);
-                parsed.setSubField(f);
+                if (a.isKey()){
+                    parsed.setTagKeyField(f);
+                }
             }
         }
     }

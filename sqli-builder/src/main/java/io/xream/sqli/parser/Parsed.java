@@ -41,7 +41,7 @@ public final class Parsed {
 
 	private String key;
 	private Field keyField;
-	private Field subField;
+	private Field tagKeyField;
 	private final List<Field> tagFieldList = new ArrayList<>();
 	
 	private List<BeanElement> beanElementList;
@@ -79,18 +79,9 @@ public final class Parsed {
 		return be;
 	}
 
-//	public Map<String, BeanElement> getElementMap() {
-//		return elementMap;
-//	}
-
-
 	public String getKey() {
 		return key;
 	}
-
-//	public Map<Integer, Field> getKeyFieldMap() {
-//		return keyFieldMap;
-//	}
 
 	public void setKeyField(Field keyField) {
 		this.keyField = keyField;
@@ -103,12 +94,12 @@ public final class Parsed {
 		return keyField;
 	}
 
-	public Field getSubField() {
-		return subField;
+	public Field getTagKeyField() {
+		return tagKeyField;
 	}
 
-	public void setSubField(Field subField) {
-		this.subField = subField;
+	public void setTagKeyField(Field tagKeyField) {
+		this.tagKeyField = tagKeyField;
 	}
 
 	public List<Field> getTagFieldList() {
@@ -123,8 +114,6 @@ public final class Parsed {
 	public Long tryToGetLongKey(Object obj){
 		Long keyOneValue = 0L;
 
-//		if (Objects.isNull(keyField))
-//			throw new ParsingException("No setting of PrimaryKey by @X.Key");
 		Class keyOneType = keyField.getType();
 		if (keyOneType != String.class && keyOneType != Date.class && keyOneType != Timestamp.class) {
 			try {
