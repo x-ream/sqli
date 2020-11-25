@@ -38,8 +38,6 @@ import java.util.Map;
 public final class SqliJsonUtil {
     private static final Logger logger = LoggerFactory.getLogger(SqliJsonUtil.class);
 
-    private static SqliJsonUtil instance;
-
     private static ObjectMapper objectMapper;
 
     static {

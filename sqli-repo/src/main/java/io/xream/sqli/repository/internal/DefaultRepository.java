@@ -49,7 +49,6 @@ import java.util.Map;
 public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository, SafeRefreshBiz<T> {
 
     private Class<T> clzz;
-    private Class childClzz;
     private IdGenerator idGeneratorService;
     private Repository repository;
 
@@ -63,10 +62,6 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
      */
     public void setClz(Class<T> clz) {
         this.clzz = clz;
-    }
-
-    public void setChildClzz(Class childClzz){
-        this.childClzz = childClzz;
     }
 
     public void setIdGeneratorService(IdGenerator  idGeneratorService){
