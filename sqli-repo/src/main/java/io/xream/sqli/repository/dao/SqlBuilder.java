@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.dialect.Dialect;
@@ -139,7 +138,7 @@ public final class SqlBuilder implements ConditionToSql{
 
         Map<String, Object> refreshMap = ObjectDataConverter.objectToMap(parsed, t);
 
-        String keyOne = parsed.getKey(X.KEY_ONE);
+        String keyOne = parsed.getKey();
         Object keyOneValue = refreshMap.remove(keyOne);
 
         String sql = concatRefresh(sb, parsed, refreshMap,dialect);
@@ -175,7 +174,7 @@ public final class SqlBuilder implements ConditionToSql{
             i++;
         }
 
-        String keyOne = parsed.getKey(X.KEY_ONE);
+        String keyOne = parsed.getKey();
 
         sb.append(SqlScript.WHERE);
         String mapper = parsed.getMapper(keyOne);

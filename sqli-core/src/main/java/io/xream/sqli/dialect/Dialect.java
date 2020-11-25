@@ -50,8 +50,6 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
 
     String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) ;
 
-    Object filterValue(Object value);
-
     Object[] toArr(Collection<Object> list);
 
     Object mappingToObject(Object obj, BeanElement element);

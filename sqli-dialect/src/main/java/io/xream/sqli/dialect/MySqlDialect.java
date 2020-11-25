@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.dialect;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -27,6 +26,7 @@ import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -125,7 +125,7 @@ public class MySqlDialect implements Dialect {
             map.put(be.getProperty(), be);
         }
 
-        final String keyOne = parsed.getKey(X.KEY_ONE);
+        final String keyOne = parsed.getKey();
 
         StringBuilder sb = new StringBuilder();
         if (isTemporary) {
@@ -259,4 +259,28 @@ public class MySqlDialect implements Dialect {
     public String getLimitOne() {
         return SqlScript.LIMIT_ONE;
     }
+
+    @Override
+    public String getInsertTagged() {
+        return null;
+    }
+
+    @Override
+    public void filterTags(List<BeanElement> list, List<Field> tagList) {
+        return;
+    }
+
+    @Override
+    public List<Object> objectToListForCreate(Object obj, Parsed parsed) {
+        List<BeanElement> tempList = parsed.getBeanElementList();
+
+        List<Object> list = new ArrayList<>();
+
+        objectToListForCreate(list, obj, tempList);
+
+        return list;
+
+    }
+
+
 }

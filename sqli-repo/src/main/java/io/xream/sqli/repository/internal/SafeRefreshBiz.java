@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.repository.internal;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Op;
 import io.xream.sqli.builder.RefreshCondition;
@@ -38,14 +37,14 @@ public interface SafeRefreshBiz<T> {
     default void tryToRefreshSafe(Class clzz, RefreshCondition refreshCondition) {
         refreshCondition.setClz(clzz);
         Parsed parsed = Parser.get(clzz);
-        Field keyField = parsed.getKeyField(X.KEY_ONE);
+        Field keyField = parsed.getKeyField();
         if (Objects.isNull(keyField))
             throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
 
         boolean unSafe = true;//Safe
 
         if (unSafe) {
-            String key = parsed.getKey(X.KEY_ONE);
+            String key = parsed.getKey();
             List<Bb> bbList = refreshCondition.getBbList();
             for (Bb bb : bbList) {
                 String k = bb.getKey();

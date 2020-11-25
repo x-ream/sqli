@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public final class Parser {
         if (parsed == null) {
             parse(clz);
             parsed = map.get(clz);
-            Field f = parsed.getKeyField(X.KEY_ONE);
+            Field f = parsed.getKeyField();
             if (f == null)
                 throw new ParsingException("No Primary Key, class: " + clz.getName());
         }
@@ -103,6 +104,7 @@ public final class Parser {
         parsed.setNoSpec(isNoSpec);
         parsed.reset(elementList);
         ParserUtil.parseKey(parsed, clz);
+        ParserUtil.parseTagAndSub(parsed, clz);
     }
 
     private static void parseTableNameMapping(Class clz, Parsed parsed) {
@@ -145,23 +147,35 @@ public final class Parser {
 
     private static void sortOnParsing(Parsed parsed, List<BeanElement> elementList) {
 
+        List<BeanElement> tempList = new ArrayList<>();
+        tempList.addAll(elementList);
+        elementList.clear();
         BeanElement one = null;
-        Iterator<BeanElement> ite = elementList.iterator();
+        Iterator<BeanElement> ite = tempList.iterator();
         while (ite.hasNext()) {
             BeanElement be = ite.next();
-            if (be.getProperty().equals(parsed.getKey(X.KEY_ONE))) {
+            if (be.getProperty().equals(parsed.getKey())) {
                 one = be;
                 ite.remove();
                 continue;
             }
         }
 
-        elementList.add(0, one);
-
-        Iterator<BeanElement> beIte = parsed.getBeanElementList().iterator();
+        Iterator<BeanElement> beIte = tempList.iterator();
         while (beIte.hasNext()) {
             if (null == beIte.next()) {
                 beIte.remove();
+            }
+        }
+
+        elementList.add(0, one);
+
+        for (Field field : parsed.getClzz().getDeclaredFields()){
+            for (BeanElement be: tempList) {
+                if (be.getProperty().equals(field.getName())){
+                    elementList.add(be);
+                    continue;
+                }
             }
         }
     }

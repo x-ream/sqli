@@ -19,9 +19,12 @@
 package io.xream.sqli.dialect;
 
 import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -131,5 +134,20 @@ public final class DynamicDialect implements Dialect{
     @Override
     public String getLimitOne() {
         return getCurrentDialect().getLimitOne();
+    }
+
+    @Override
+    public String getInsertTagged() {
+        return getCurrentDialect().getInsertTagged();
+    }
+
+    @Override
+    public void filterTags(List<BeanElement> list, List<Field> tagList) {
+        getCurrentDialect().filterTags(list, tagList);
+    }
+
+    @Override
+    public List<Object> objectToListForCreate(Object obj, Parsed parsed) {
+        return getCurrentDialect().objectToListForCreate(obj,parsed);
     }
 }

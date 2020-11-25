@@ -22,6 +22,7 @@ import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
@@ -29,6 +30,7 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -278,5 +280,27 @@ public class OracleDialect implements Dialect {
     @Override
     public String getLimitOne() {
         return null;
+    }
+
+    @Override
+    public String getInsertTagged() {
+        return null;
+    }
+
+    @Override
+    public void filterTags(List<BeanElement> list,List<Field> tagList) {
+
+    }
+
+    @Override
+    public List<Object> objectToListForCreate(Object obj, Parsed parsed) {
+        List<BeanElement> tempList = parsed.getBeanElementList();
+
+        List<Object> list = new ArrayList<>();
+
+        objectToListForCreate(list, obj, tempList);
+
+        return list;
+
     }
 }

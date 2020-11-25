@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
 import io.xream.sqli.converter.ObjectDataConverter;
@@ -96,7 +95,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         JdbcHelper.BatchObjectValues batchObjectValues =  () -> {
             List<Collection<Object>> valuesList = new ArrayList<>();
             for (Object o : objList) {
-                Collection<Object> values= ObjectDataConverter.objectToListForCreate(o, parsed.getBeanElementList(), dialect);
+                Collection<Object> values= ObjectDataConverter.objectToListForCreate(o, parsed, dialect);
                 valuesList.add(values);
             }
             return valuesList;
@@ -135,7 +134,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
             Long keyOneValue = parsed.tryToGetLongKey(obj);
             boolean isAutoIncreaseId = parsed.isAutoIncreaseId(keyOneValue);
 
-            List<Object> valueList = ObjectDataConverter.objectToListForCreate(obj, parsed.getBeanElementList(), dialect);
+            List<Object> valueList = ObjectDataConverter.objectToListForCreate(obj, parsed, dialect);
 
             SqliLoggerProxy.debug(clz, valueList);
             SqliLoggerProxy.debug(clz, sql);
@@ -158,7 +157,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
             final String sql = this.dialect.createOrReplaceSql(createSql);
 
             Parsed parsed = Parser.get(clz);
-            List<Object> valueList = ObjectDataConverter.objectToListForCreate(obj, parsed.getBeanElementList(), dialect);
+            List<Object> valueList = ObjectDataConverter.objectToListForCreate(obj, parsed, dialect);
 
             SqliLoggerProxy.debug(clz, valueList);
             SqliLoggerProxy.debug(clz, sql);
@@ -308,7 +307,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         String inProperty = inCondition.getProperty();
         if (SqliStringUtil.isNullOrEmpty(inProperty)) {
-            inProperty = parsed.getKey(X.KEY_ONE);
+            inProperty = parsed.getKey();
         }
 
         BeanElement be = parsed.getElementExisted(inProperty);

@@ -18,6 +18,18 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliJsonUtil;
+
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  * @Author Sim
  */
@@ -35,4 +47,49 @@ public interface DialectSupport {
     String getTemporaryTableCreate();
 
     String getLimitOne();
+
+    String getInsertTagged();
+
+    Object filterValue(Object value);
+
+    void filterTags(List<BeanElement> list,List<Field> tagList);
+    List<Object> objectToListForCreate(Object obj, Parsed parsed);
+
+    default void objectToListForCreate(List<Object> list, Object obj, List<BeanElement> tempList) {
+
+        try {
+            for (BeanElement ele : tempList) {
+                Object value = ele.getGetMethod().invoke(obj);
+                Class clz = ele.getClz();
+                if (value == null) {
+                    if (BeanUtil.isEnum(clz))
+                        throw new PersistenceException(
+                                "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
+                    if (clz == Boolean.class || clz == Integer.class || clz == Long.class
+                            || clz == Double.class || clz == Float.class || clz == BigDecimal.class
+                            || clz == Byte.class || clz == Short.class)
+                        list.add(0);
+                    else
+                        list.add(null);
+                } else {
+                    if (ele.isJson()) {
+                        String str = SqliJsonUtil.toJson(value);
+                        Object jsonStr = convertJsonToPersist(str);
+                        list.add(jsonStr);
+                    } else if (BeanUtil.isEnum(clz)) {
+                        String str = ((Enum) value).name();
+                        list.add(str);
+                    } else {
+                        value = filterValue(value);
+                        list.add(value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
+            throw new ParsingException(SqliExceptionUtil.getMessage(e));
+        }
+
+
+    }
 }

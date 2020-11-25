@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.repository.internal;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.Repository;
@@ -57,7 +56,7 @@ public final class RemoveRefreshCreateBiz {
             }
 
             Parsed parsed = Parser.get(clzz);
-            Field f = parsed.getKeyField(X.KEY_ONE);
+            Field f = parsed.getKeyField();
             try {
                 for (T t : list) {
                     Object id = f.get(t);

@@ -21,7 +21,7 @@ package io.xream.sqli.dialect;
 /**
  * @Author Sim
  */
-public class ImpalaDialect extends MySqlDialect{
+public final class ImpalaDialect extends MySqlDialect{
 
     @Override
     public String getKey(){

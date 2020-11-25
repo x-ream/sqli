@@ -19,7 +19,6 @@
 package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.api.Routable;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
@@ -166,7 +165,7 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         if (clz == null)
             return null;
         Parsed parsed = Parser.get(clz);
-        String keyOne = parsed.getKey(X.KEY_ONE);
+        String keyOne = parsed.getKey();
         for (Bb bb : bbList) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {

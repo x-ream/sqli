@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.cache.QueryForCache;
@@ -365,7 +364,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 		Object objKey = null;
 		if (obj != null) {
 			Parsed parsed = Parser.get(clz);
-			Field field = parsed.getKeyField(X.KEY_ONE);
+			Field field = parsed.getKeyField();
 			field.setAccessible(true);
 			try {
 				objKey = field.get(obj);
@@ -663,7 +662,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 			keySet.add(key);
 		}
 
-		Field f = parsed.getKeyField(X.KEY_ONE);
+		Field f = parsed.getKeyField();
 		Class keyClz = f.getType();
 		List<Object> idList = new ArrayList<>();
 		for (String key : keyList) {
@@ -682,7 +681,7 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 			}
 		}
-		String key = parsed.getKey(X.KEY_ONE);
+		String key = parsed.getKey();
 		InCondition inCondition = InCondition.of(key, idList);
 		inCondition.setClz(clz);
 		List<T> objList = queryForCache.in(inCondition);

@@ -20,7 +20,6 @@ package io.xream.sqli.converter;
 
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
-import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
@@ -39,43 +38,8 @@ import java.util.*;
  */
 public final class ObjectDataConverter {
 
-    public static List<Object> objectToListForCreate(Object obj, List<BeanElement> eles, Dialect dialect) {
-
-        List<Object> list = new ArrayList<>();
-        try {
-            for (BeanElement ele : eles) {
-                Object value = ele.getGetMethod().invoke(obj);
-                Class clz = ele.getClz();
-                if (value == null) {
-                    if (BeanUtil.isEnum(clz))
-                        throw new PersistenceException(
-                                "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
-                    if (clz == Boolean.class || clz == Integer.class || clz == Long.class
-                            || clz == Double.class || clz == Float.class || clz == BigDecimal.class
-                            || clz == Byte.class || clz == Short.class)
-                        list.add(0);
-                    else
-                        list.add(null);
-                } else {
-                    if (ele.isJson()) {
-                        String str = SqliJsonUtil.toJson(value);
-                        Object jsonStr = dialect.convertJsonToPersist(str);
-                        list.add(jsonStr);
-                    } else if (BeanUtil.isEnum(clz)) {
-                        String str = ((Enum) value).name();
-                        list.add(str);
-                    } else {
-                        value = dialect.filterValue(value);
-                        list.add(value);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-            throw new ParsingException(SqliExceptionUtil.getMessage(e));
-        }
-
-        return list;
+    public static List<Object> objectToListForCreate(Object obj, Parsed parsed, Dialect dialect) {
+        return dialect.objectToListForCreate(obj,parsed);
     }
 
     /**

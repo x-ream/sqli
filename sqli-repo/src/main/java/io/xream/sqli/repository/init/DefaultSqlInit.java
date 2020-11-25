@@ -18,9 +18,9 @@
  */
 package io.xream.sqli.repository.init;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -109,7 +109,7 @@ public final class DefaultSqlInit implements SqlInit {
     public void parseKey(StringBuilder sb, Class clz) {
         Parsed parsed = Parser.get(clz);
 
-        sb.append(parsed.getKey(X.KEY_ONE));
+        sb.append(parsed.getKey());
         sb.append(" = ?");
 
     }
@@ -140,7 +140,7 @@ public final class DefaultSqlInit implements SqlInit {
 
         Parsed parsed = Parser.get(clz);
 
-        List<BeanElement> tempList = new ArrayList<BeanElement>();
+        List<BeanElement> tempList = new ArrayList<>();
         for (BeanElement p : list) {
 
             tempList.add(p);
@@ -149,19 +149,37 @@ public final class DefaultSqlInit implements SqlInit {
         String space = " ";
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
-        sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
+        if (dialect.getInsertTagged() == null) {
+            sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
+            sb.append("(");
+            int size = tempList.size();
+            for (int i = 0; i < size; i++) {
+                String p = tempList.get(i).getProperty();
 
-        sb.append("(");
-        int size = tempList.size();
-        for (int i = 0; i < size; i++) {
-            String p = tempList.get(i).getProperty();
-
-            sb.append(" ").append(p).append(" ");
-            if (i < size - 1) {
-                sb.append(",");
+                sb.append(" ").append(p).append(" ");
+                if (i < size - 1) {
+                    sb.append(",");
+                }
             }
+        }else {
+            String insertTagged = dialect.getInsertTagged();
+            insertTagged = insertTagged.replace("#stb#", BeanUtil.getByFirstLower(parsed.getClzName()));
+            int size = parsed.getTagFieldList().size();
+            if (size == 0)
+                throw new ParsingException("NOT FOUND @X.Tag of entity: " + clz);
+            sb.append(insertTagged).append(" (");
+            for (int i=0; i<size; i++) {
+                sb.append("?");
+                if (i < size - 1) {
+                    sb.append(",");
+                }
+            }
+            dialect.filterTags(tempList,parsed.getTagFieldList());
         }
+
         sb.append(") VALUES (");
+
+        int size = tempList.size();
 
         for (int i = 0; i < size; i++) {
 

@@ -297,9 +297,7 @@ public final class ParserUtil {
     @SuppressWarnings({"rawtypes"})
     public static void parseKey(Parsed parsed, Class clz) {
 
-        Map<Integer, String> map = parsed.getKeyMap();
-        Map<Integer, Field> keyFieldMap = parsed.getKeyFieldMap();
-        List<Field> list = new ArrayList<Field>();
+        List<Field> list = new ArrayList<>();
 
         try {
 
@@ -315,11 +313,41 @@ public final class ParserUtil {
         for (Field f : list) {
             X.Key a = f.getAnnotation(X.Key.class);
             if (a != null) {
-                map.put(X.KEY_ONE, f.getName());
                 f.setAccessible(true);
-                keyFieldMap.put(X.KEY_ONE, f);
+                parsed.setKeyField(f);
             }
 
+        }
+    }
+
+    public static void parseTagAndSub(Parsed parsed, Class clz) {
+
+        List<Field> list = new ArrayList<>();
+
+        try {
+
+            list.addAll(Arrays.asList(clz.getDeclaredFields()));
+            Class sc = clz.getSuperclass();
+            if (sc != Object.class) {
+                list.addAll(Arrays.asList(sc.getDeclaredFields()));
+            }
+        } catch (Exception e) {
+
+        }
+
+        for (Field f : list) {
+            X.Tag a = f.getAnnotation(X.Tag.class);
+            if (a != null) {
+                f.setAccessible(true);
+                parsed.getTagFieldList().add(f);
+            }
+        }
+        for (Field f : list) {
+            X.SubKey a = f.getAnnotation(X.SubKey.class);
+            if (a != null) {
+                f.setAccessible(true);
+                parsed.setSubField(f);
+            }
         }
     }
 
@@ -341,7 +369,7 @@ public final class ParserUtil {
 
     public static <T> Object tryToGetId(T t, Parsed parsed) {
 
-        Field f = parsed.getKeyField(X.KEY_ONE);
+        Field f = parsed.getKeyField();
         Object id = null;
         try {
             id = f.get(t);

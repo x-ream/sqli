@@ -18,16 +18,13 @@
  */
 package io.xream.sqli.parser;
 
-import io.xream.sqli.annotation.X;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -42,8 +39,10 @@ public final class Parsed {
 	private String originTable;
 	private boolean isNoSpec = true;
 
-	private final Map<Integer,String> keyMap = new HashMap<Integer,String>();
-	private final Map<Integer,Field> keyFieldMap = new HashMap<Integer,Field>();
+	private String key;
+	private Field keyField;
+	private Field subField;
+	private final List<Field> tagFieldList = new ArrayList<>();
 	
 	private List<BeanElement> beanElementList;
 	
@@ -80,48 +79,56 @@ public final class Parsed {
 		return be;
 	}
 
-	public Map<String, BeanElement> getElementMap() {
-		return elementMap;
+//	public Map<String, BeanElement> getElementMap() {
+//		return elementMap;
+//	}
+
+
+	public String getKey() {
+		return key;
 	}
 
-	public Map<Integer, String> getKeyMap() {
-		return keyMap;
+//	public Map<Integer, Field> getKeyFieldMap() {
+//		return keyFieldMap;
+//	}
+
+	public void setKeyField(Field keyField) {
+		this.keyField = keyField;
+		this.key = keyField.getName();
 	}
 
-	public Map<Integer, Field> getKeyFieldMap() {
-		return keyFieldMap;
-	}
-	
-	public Field getKeyField(int index){
-		Field field = keyFieldMap.get(index);
-		if (Objects.isNull(field))
+	public Field getKeyField(){
+		if (Objects.isNull(keyField))
 			throw new ParsingException("No setting of PrimaryKey by @X.Key");
-		return field;
+		return keyField;
+	}
+
+	public Field getSubField() {
+		return subField;
+	}
+
+	public void setSubField(Field subField) {
+		this.subField = subField;
+	}
+
+	public List<Field> getTagFieldList() {
+		return tagFieldList;
 	}
 
 	public boolean isAutoIncreaseId(Long keyOneValue){
-		Field keyOneField = getKeyField(X.KEY_ONE);
-		Class keyOneType = keyOneField.getType();
-
-		return keyOneType != String.class && (keyOneValue == null || keyOneValue == 0);
-	}
-
-	public String getKey(int index){
-		String key = keyMap.get(index);
-		if (Objects.isNull(key))
-			throw new ParsingException("No setting of PrimaryKey by @X.Key");
-		return key;
+		Class keyOneType = keyField.getType();
+		return (keyOneType != String.class && keyOneType != Date.class && keyOneType != Timestamp.class) && (keyOneValue == null || keyOneValue == 0);
 	}
 
 	public Long tryToGetLongKey(Object obj){
 		Long keyOneValue = 0L;
-		Field keyOneField = getKeyField(X.KEY_ONE);
-		if (Objects.isNull(keyOneField))
-			throw new ParsingException("No setting of PrimaryKey by @X.Key");
-		Class keyOneType = keyOneField.getType();
-		if (keyOneType != String.class) {
+
+//		if (Objects.isNull(keyField))
+//			throw new ParsingException("No setting of PrimaryKey by @X.Key");
+		Class keyOneType = keyField.getType();
+		if (keyOneType != String.class && keyOneType != Date.class && keyOneType != Timestamp.class) {
 			try {
-				Object keyValue = keyOneField.get(obj);
+				Object keyValue = keyField.get(obj);
 				if (keyValue != null) {
 					keyOneValue = Long.valueOf(keyValue.toString());
 				}
@@ -212,8 +219,8 @@ public final class Parsed {
 				", tableName='" + tableName + '\'' +
 				", originTable='" + originTable + '\'' +
 				", isNoSpec=" + isNoSpec +
-				", keyMap=" + keyMap +
-				", keyFieldMap=" + keyFieldMap +
+				", key=" + key +
+				", keyField=" + keyField +
 				", beanElementList=" + beanElementList +
 				", elementMap=" + elementMap +
 				", propertyMapperMap=" + propertyMapperMap +
