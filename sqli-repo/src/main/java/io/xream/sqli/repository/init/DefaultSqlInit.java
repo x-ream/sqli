@@ -149,7 +149,7 @@ public final class DefaultSqlInit implements SqlInit {
         String space = " ";
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
-        if (dialect.getInsertTagged() == null) {
+        if (dialect.getInsertTagged() == null || parsed.getTagFieldList().isEmpty()) {
             sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
             sb.append("(");
             int size = tempList.size();
@@ -165,8 +165,6 @@ public final class DefaultSqlInit implements SqlInit {
             String insertTagged = dialect.getInsertTagged();
             insertTagged = insertTagged.replace("#stb#", BeanUtil.getByFirstLower(parsed.getClzName()));
             int size = parsed.getTagFieldList().size();
-            if (size == 0)
-                throw new ParsingException("NOT FOUND @X.Tag of entity: " + clz);
             sb.append(insertTagged).append(" (");
             for (int i=0; i<size; i++) {
                 sb.append("?");
