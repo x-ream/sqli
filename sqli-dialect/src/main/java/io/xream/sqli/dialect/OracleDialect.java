@@ -289,7 +289,7 @@ public class OracleDialect implements Dialect {
 
     @Override
     public void filterTags(List<BeanElement> list,List<Field> tagList) {
-
+        return;
     }
 
     @Override
