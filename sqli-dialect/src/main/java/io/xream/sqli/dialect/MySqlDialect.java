@@ -112,6 +112,11 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
+    public String createSql(Parsed parsed, List<BeanElement> tempList) {
+        return getDefaultCreateSql(parsed,tempList);
+    }
+
+    @Override
     public String buildTableSql(Class clz, boolean isTemporary) {
         Parsed parsed = Parser.get(clz);
         List<BeanElement> temp = parsed.getBeanElementList();

@@ -97,6 +97,11 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
+    public String createSql(Parsed parsed, List<BeanElement> tempList) {
+        return getCurrentDialect().createSql(parsed,tempList);
+    }
+
+    @Override
     public String buildTableSql(Class clzz, boolean isTemporary) {
         return getCurrentDialect().buildTableSql(clzz,isTemporary);
     }

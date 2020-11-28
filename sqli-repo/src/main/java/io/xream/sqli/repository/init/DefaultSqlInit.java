@@ -141,57 +141,13 @@ public final class DefaultSqlInit implements SqlInit {
 
         List<BeanElement> tempList = new ArrayList<>();
         for (BeanElement p : list) {
-
             tempList.add(p);
         }
-
-        String space = " ";
-        StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO ");
-        if (dialect.getInsertTagged() == null || parsed.getTagFieldList().isEmpty()) {
-            sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
-            sb.append("(");
-            int size = tempList.size();
-            for (int i = 0; i < size; i++) {
-                String p = tempList.get(i).getProperty();
-
-                sb.append(" ").append(p).append(" ");
-                if (i < size - 1) {
-                    sb.append(",");
-                }
-            }
-        }else {
-            String insertTagged = dialect.getInsertTagged();
-            insertTagged = insertTagged.replace("#stb#", BeanUtil.getByFirstLower(parsed.getClzName()));
-            int size = parsed.getTagFieldList().size();
-            sb.append(insertTagged).append(" (");
-            for (int i=0; i<size; i++) {
-                sb.append("?");
-                if (i < size - 1) {
-                    sb.append(",");
-                }
-            }
-            dialect.filterTags(tempList,parsed.getTagFieldList());
-        }
-
-        sb.append(") VALUES (");
-
-        int size = tempList.size();
-
-        for (int i = 0; i < size; i++) {
-
-            sb.append("?");
-            if (i < size - 1) {
-                sb.append(",");
-            }
-        }
-        sb.append(")");
-
-        String sql = sb.toString();
+        String sql = dialect.createSql(parsed,tempList);
         sql = SqlParserUtil.mapper(sql, parsed);
         getSqlMap(clz).put(CREATE, sql);
 
-        SqliLoggerProxy.debug(clz, sb);
+        SqliLoggerProxy.debug(clz, sql);
 
         return sql;
 

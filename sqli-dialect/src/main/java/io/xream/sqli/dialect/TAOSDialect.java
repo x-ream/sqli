@@ -90,7 +90,7 @@ public final class TAOSDialect extends MySqlDialect {
         try {
             boolean hasSubKey = parsed.getTagKeyField() != null;
             String dynamicTableName = parsed.getTableName();
-            if (hasSubKey){
+            if (hasSubKey) {
                 dynamicTableName = dynamicTableName + "_" + parsed.getTagKeyField().get(obj);
                 list.add(dynamicTableName);
             }
@@ -99,18 +99,18 @@ public final class TAOSDialect extends MySqlDialect {
                 if (BeanUtil.isEnum(field.getType())) {
                     String str = ((Enum) value).name();
                     list.add(str);
-                    if (!hasSubKey){
+                    if (!hasSubKey) {
                         dynamicTableName = dynamicTableName + "_" + str.hashCode();
                     }
                 } else {
                     list.add(value);
-                    if (!hasSubKey){
+                    if (!hasSubKey) {
                         dynamicTableName = dynamicTableName + "_" + value.hashCode();
                     }
                 }
             }
-            if (!hasSubKey){
-                list.add(0,dynamicTableName);
+            if (!hasSubKey) {
+                list.add(0, dynamicTableName);
             }
         } catch (Exception e) {
             SqliExceptionUtil.throwRuntimeExceptionFirst(e);
@@ -120,5 +120,42 @@ public final class TAOSDialect extends MySqlDialect {
         objectToListForCreate(list, obj, tempList);
 
         return list;
+    }
+
+    @Override
+    public String createSql(Parsed parsed, List<BeanElement> tempList) {
+        if (parsed.getTagFieldList().isEmpty()) {
+            return getDefaultCreateSql(parsed, tempList);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO ");
+
+        String insertTagged = getInsertTagged();
+        insertTagged = insertTagged.replace("#stb#", BeanUtil.getByFirstLower(parsed.getClzName()));
+        int size = parsed.getTagFieldList().size();
+        sb.append(insertTagged).append(" (");
+        for (int i = 0; i < size; i++) {
+            sb.append("?");
+            if (i < size - 1) {
+                sb.append(",");
+            }
+        }
+        filterTags(tempList, parsed.getTagFieldList());
+
+        sb.append(") VALUES (");
+
+        size = tempList.size();
+
+        for (int i = 0; i < size; i++) {
+
+            sb.append("?");
+            if (i < size - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(")");
+
+        return sb.toString();
     }
 }

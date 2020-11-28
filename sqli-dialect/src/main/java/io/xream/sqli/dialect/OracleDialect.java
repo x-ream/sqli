@@ -189,6 +189,11 @@ public class OracleDialect implements Dialect {
     }
 
     @Override
+    public String createSql(Parsed parsed, List<BeanElement> tempList) {
+        return getDefaultCreateSql(parsed,tempList);
+    }
+
+    @Override
     public String buildTableSql(Class clzz, boolean isTemporary) {
         return null;
     }

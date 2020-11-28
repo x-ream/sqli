@@ -23,11 +23,13 @@ import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.builder.PageSqlSupport;
 import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +50,7 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
 
     String replaceAll(String sql);
 
-    String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) ;
+    String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap);
 
     Object[] toArr(Collection<Object> list);
 
@@ -56,9 +58,11 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
 
     String createOrReplaceSql(String sql);
 
+    String createSql(Parsed parsed, List<BeanElement> tempList);
+
     String buildTableSql(Class clzz, boolean isTemporary);
 
-    default String replace(String originSql, Map<String, String> map){
+    default String replace(String originSql, Map<String, String> map) {
         String dateV = map.get(DATE);
         String byteV = map.get(BYTE);
         String intV = map.get(INT);
@@ -103,5 +107,36 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
             return BYTE;
         }
         return TEXT;
+    }
+
+    default String getDefaultCreateSql(Parsed parsed, List<BeanElement> tempList) {
+        String space = " ";
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO ");
+
+        sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(space);
+        sb.append("(");
+        int size = tempList.size();
+        for (int i = 0; i < size; i++) {
+            String p = tempList.get(i).getProperty();
+
+            sb.append(" ").append(p).append(" ");
+            if (i < size - 1) {
+                sb.append(",");
+            }
+        }
+
+        sb.append(") VALUES (");
+
+        for (int i = 0; i < size; i++) {
+
+            sb.append("?");
+            if (i < size - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(")");
+
+        return sb.toString();
     }
 }
