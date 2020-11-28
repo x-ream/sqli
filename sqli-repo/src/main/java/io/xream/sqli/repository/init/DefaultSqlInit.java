@@ -20,7 +20,6 @@ package io.xream.sqli.repository.init;
 
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.dialect.Dialect;
-import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

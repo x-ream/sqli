@@ -19,7 +19,6 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.api.BaseRepository;
-import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.RepositoryManagement;
 import io.xream.sqli.exception.ParsingException;

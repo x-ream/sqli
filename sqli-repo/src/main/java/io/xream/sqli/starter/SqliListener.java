@@ -19,7 +19,6 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.api.customizer.DialectCustomizer;
-import io.xream.sqli.builder.DialectSupport;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.ParserListener;

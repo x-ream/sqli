@@ -49,7 +49,7 @@ import java.util.Map;
 public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository, SafeRefreshBiz<T> {
 
     private Class<T> clzz;
-    private IdGenerator idGeneratorService;
+    private IdGenerator idGenerator;
     private Repository repository;
 
     @Override
@@ -64,8 +64,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         this.clzz = clz;
     }
 
-    public void setIdGeneratorService(IdGenerator  idGeneratorService){
-        this.idGeneratorService = idGeneratorService;
+    public void setIdGenerator(IdGenerator idGenerator){
+        this.idGenerator = idGenerator;
     }
 
     public void setRepository(Repository repository) {
@@ -101,7 +101,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
         final String clzName = this.clzz.getName();
 
-        final long id = this.idGeneratorService.createId(clzName);
+        final long id = this.idGenerator.createId(clzName);
 
         if (id == 0)
             throw new PersistenceException("UNEXPECTED EXCEPTION WHILE CREATING ID");
