@@ -25,14 +25,10 @@ import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.RemoveRefreshCreate;
-import io.xream.sqli.core.KeyOne;
-import io.xream.sqli.core.Repository;
-import io.xream.sqli.core.RepositoryManagement;
-import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.core.*;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.spi.IdGenerator;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.ParameterizedType;
