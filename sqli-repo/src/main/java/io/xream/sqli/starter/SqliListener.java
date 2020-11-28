@@ -57,7 +57,7 @@ public class SqliListener {
         DialectListener.customizeOnStarted(dialect,dialectCustomizer);
     }
 
-    public static void onStarted(NativeSupport nativeSupport, DialectSupport dialectSupport, SqlInit sqlInit){
+    public static void onStarted(NativeSupport nativeSupport,  SqlInit sqlInit){
         if (instance != null)
             return;
 
@@ -66,7 +66,7 @@ public class SqliListener {
 
         instance = new SqliListener();
 
-        InitializerListener.onStarted(nativeSupport,dialectSupport,sqlInit);
+        InitializerListener.onStarted(nativeSupport,sqlInit);
         ParserListener.onStarted();
     }
 }

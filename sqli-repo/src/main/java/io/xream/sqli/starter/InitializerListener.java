@@ -42,7 +42,7 @@ public class InitializerListener {
     private InitializerListener() {
     }
 
-    protected static void onStarted(NativeSupport nativeSupport, DialectSupport dialect, SqlInit sqlInit) {
+    protected static void onStarted(NativeSupport nativeSupport, SqlInit sqlInit) {
 
         if (instance != null)
             return;
