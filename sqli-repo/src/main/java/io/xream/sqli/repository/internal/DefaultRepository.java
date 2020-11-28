@@ -60,6 +60,10 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         this.clzz = clz;
     }
 
+    /**
+     * para implements IdGeneratorProxy
+     * @param idGenerator
+     */
     public void setIdGenerator(IdGenerator idGenerator){
         this.idGenerator = idGenerator;
     }

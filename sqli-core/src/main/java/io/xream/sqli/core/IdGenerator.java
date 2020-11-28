@@ -22,6 +22,5 @@ package io.xream.sqli.core;
  * @Author Sim
  */
 public interface IdGenerator {
-
     long createId(String clzName);
 }
