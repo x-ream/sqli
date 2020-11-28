@@ -22,4 +22,5 @@ package io.xream.sqli.spi;
  * @Author Sim
  */
 public interface IdGeneratorProxy extends IdGenerator{
+
 }
