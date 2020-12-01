@@ -16,35 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.builder;
 
-import io.xream.sqli.util.EnumUtil;
-
-import java.util.Objects;
+import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface ValuePost {
-    default Object filter(Object object, MoreFilter moreFilter) {
-        Object o = null;
-        if (object instanceof String) {
-            String str = (String) object;
-            o = str.replace("<", "&lt").replace(">", "&gt");
-        }else if (Objects.nonNull(object) && EnumUtil.isEnum(object.getClass())){
-            o = EnumUtil.serialize((Enum) object);
-        }else{
-            o = object;
-        }
+public interface ValueCollector {
 
-        if (moreFilter == null)
-            return o;
-
-        return moreFilter.filter(o);
+    default void add(List<Object> valueList, Object value){
+        valueList.add(value);
     }
-
-    interface MoreFilter{
-        Object filter(Object object);
-    }
-
 }

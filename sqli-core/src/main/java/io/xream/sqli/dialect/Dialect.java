@@ -25,6 +25,7 @@ import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -87,7 +88,7 @@ public interface Dialect extends DialectSupport, PageSqlSupport, ValuePost {
             return DATE;
         } else if (clz == String.class) {
             return STRING;
-        } else if (BeanUtil.isEnum(clz)) {
+        } else if (EnumUtil.isEnum(clz)) {
             return STRING;
         } else if (clz == int.class || clz == Integer.class) {
             return INT;

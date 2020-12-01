@@ -22,7 +22,7 @@ import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 
@@ -62,7 +62,7 @@ public interface DialectSupport {
                 Object value = ele.getGetMethod().invoke(obj);
                 Class clz = ele.getClz();
                 if (value == null) {
-                    if (BeanUtil.isEnum(clz))
+                    if (EnumUtil.isEnum(clz))
                         throw new PersistenceException(
                                 "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
                     if (clz == Boolean.class || clz == Integer.class || clz == Long.class
@@ -76,9 +76,8 @@ public interface DialectSupport {
                         String str = SqliJsonUtil.toJson(value);
                         Object jsonStr = convertJsonToPersist(str);
                         list.add(jsonStr);
-                    } else if (BeanUtil.isEnum(clz)) {
-                        String str = ((Enum) value).name();
-                        list.add(str);
+                    } else if (EnumUtil.isEnum(clz)) {
+                        list.add(EnumUtil.serialize((Enum) value));
                     } else {
                         value = filterValue(value);
                         list.add(value);

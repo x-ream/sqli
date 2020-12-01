@@ -43,7 +43,7 @@ public final class ParserUtil {
         super();
     }
 
-    private static void parseFieldsOfElementList(Class clz,Map<String,Field> filterMap, Map<String,Field> allMap){
+    private static void parseFieldsOfElementList(Class clz, Map<String, Field> filterMap, Map<String, Field> allMap) {
 
         List<Field> fl = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public final class ParserUtil {
         }
     }
 
-    private static void parseMethodsOfElementList(Class clz, Set<String> mns, List<Method> methodList){
+    private static void parseMethodsOfElementList(Class clz, Set<String> mns, List<Method> methodList) {
         if (clz.getSuperclass() != Object.class) {
             methodList.addAll(Arrays.asList(clz.getSuperclass().getDeclaredMethods()));
         }
@@ -83,7 +83,7 @@ public final class ParserUtil {
         }
     }
 
-    private static void parseFilterListOfElementList(List<BeanElement> filterList,Set<String> mns, List<Method> ml){
+    private static void parseFilterListOfElementList(List<BeanElement> filterList, Set<String> mns, List<Method> ml) {
 
         for (Method m : ml) {
             String name = m.getName();
@@ -121,7 +121,7 @@ public final class ParserUtil {
         }
     }
 
-    private static void filterElementList(List<BeanElement> filterList,Map<String, Field> filterMap){
+    private static void filterElementList(List<BeanElement> filterList, Map<String, Field> filterMap) {
         /*
          * 找出有setter 和 getter的一对
          */
@@ -148,7 +148,7 @@ public final class ParserUtil {
         }
     }
 
-    private static List<BeanElement> buildElementList(Class clz, List<BeanElement> filterList, Map<String,Field> allMap){
+    private static List<BeanElement> buildElementList(Class clz, List<BeanElement> filterList, Map<String, Field> allMap) {
         List<BeanElement> list = new ArrayList<BeanElement>();
 
         for (BeanElement element : filterList) {
@@ -180,7 +180,7 @@ public final class ParserUtil {
                         element.setLength(60);
                 } else if (ec == BigDecimal.class) {
                     element.setSqlType(SqlFieldType.DECIMAL);
-                } else if (BeanUtil.isEnum(ec)) {
+                } else if (EnumUtil.isEnum(ec)) {
                     element.setSqlType(SqlFieldType.VARCHAR);
                     if (element.getLength() == 0)
                         element.setLength(20);
@@ -213,13 +213,13 @@ public final class ParserUtil {
         return list;
     }
 
-    private static void initMethodCache(Class clz,List<BeanElement> list) {
+    private static void initMethodCache(Class clz, List<BeanElement> list) {
         try {
             for (BeanElement be : list) {
                 try {
-                    be.setSetMethod(clz.getDeclaredMethod(be.getSetter(),be.getClz()));
+                    be.setSetMethod(clz.getDeclaredMethod(be.getSetter(), be.getClz()));
                 } catch (NoSuchMethodException e) {
-                    be.setSetMethod(clz.getSuperclass().getDeclaredMethod(be.getSetter(),be.getClz()));
+                    be.setSetMethod(clz.getSuperclass().getDeclaredMethod(be.getSetter(), be.getClz()));
                 }
                 try {
                     be.setGetMethod(clz.getDeclaredMethod(be.getGetter()));
@@ -237,18 +237,18 @@ public final class ParserUtil {
 
         Map<String, Field> filterMap = new HashMap<>();
         Map<String, Field> allMap = new HashMap<>();
-        parseFieldsOfElementList(clz,filterMap,allMap); //Step 1
+        parseFieldsOfElementList(clz, filterMap, allMap); //Step 1
 
         Set<String> mns = new HashSet<>();
         List<Method> ml = new ArrayList<>();
-        parseMethodsOfElementList(clz,mns,ml);
+        parseMethodsOfElementList(clz, mns, ml);
 
 
         List<BeanElement> filterList = new ArrayList<>();
-        parseFilterListOfElementList(filterList,mns,ml);
-        filterElementList(filterList,filterMap);
+        parseFilterListOfElementList(filterList, mns, ml);
+        filterElementList(filterList, filterMap);
 
-        List<BeanElement> list = buildElementList(clz,filterList,allMap);
+        List<BeanElement> list = buildElementList(clz, filterList, allMap);
 
         initMethodCache(clz, list);
 
@@ -340,7 +340,7 @@ public final class ParserUtil {
             if (a != null) {
                 f.setAccessible(true);
                 parsed.getTagFieldList().add(f);
-                if (a.isKey()){
+                if (a.isKey()) {
                     parsed.setTagKeyField(f);
                 }
             }
@@ -356,7 +356,7 @@ public final class ParserUtil {
         return mapper;
     }
 
-    public static String getClzName(String alia, Map<String,String> aliaMap) {
+    public static String getClzName(String alia, Map<String, String> aliaMap) {
         String a = aliaMap.get(alia);
         if (SqliStringUtil.isNotNull(a))
             return a;

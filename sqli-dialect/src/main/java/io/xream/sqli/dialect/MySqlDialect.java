@@ -23,6 +23,7 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
@@ -81,8 +82,8 @@ public class MySqlDialect implements Dialect {
             return null;
         Class ec = element.getClz();
 
-        if (BeanUtil.isEnum(ec)) {
-            return Enum.valueOf(ec, obj.toString());
+        if (EnumUtil.isEnum(ec)) {
+            return EnumUtil.deSerialize(ec, obj.toString());
         } else if (element.isJson()) {
 
             if (SqliStringUtil.isNullOrEmpty(obj))
@@ -170,7 +171,7 @@ public class MySqlDialect implements Dialect {
             } else if (sqlType.equals(Dialect.DATE)) {
                 sb.append(" NULL");
 
-            } else if (BeanUtil.isEnum(bet.getClz())) {
+            } else if (EnumUtil.isEnum(bet.getClz())) {
                 sb.append("(").append(bet.getLength()).append(") NOT NULL");
             } else if (sqlType.equals(Dialect.STRING)) {
                 sb.append("(").append(bet.getLength()).append(") NULL");

@@ -22,6 +22,7 @@ import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 
 import java.lang.reflect.Field;
@@ -96,17 +97,14 @@ public final class TAOSDialect extends MySqlDialect {
             }
             for (Field field : tagFieldList) {
                 Object value = field.get(obj);
-                if (BeanUtil.isEnum(field.getType())) {
-                    String str = ((Enum) value).name();
-                    list.add(str);
-                    if (!hasSubKey) {
-                        dynamicTableName = dynamicTableName + "_" + str.hashCode();
-                    }
+                if (EnumUtil.isEnum(field.getType())) {
+                    Object enumObj = EnumUtil.serialize((Enum) value);
+                    list.add(enumObj);
                 } else {
                     list.add(value);
-                    if (!hasSubKey) {
-                        dynamicTableName = dynamicTableName + "_" + value.hashCode();
-                    }
+                }
+                if (!hasSubKey) {
+                    dynamicTableName = dynamicTableName + "_" + value.hashCode();
                 }
             }
             if (!hasSubKey) {
@@ -158,4 +156,5 @@ public final class TAOSDialect extends MySqlDialect {
 
         return sb.toString();
     }
+
 }

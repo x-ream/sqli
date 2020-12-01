@@ -19,6 +19,7 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.mapping.SqlNormalizer;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -140,10 +141,19 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
 
         String sql = normalizeSql(sqlSegment);
 
+        Object[] arr = null;
+        if (values != null){
+            int length = values.length;
+            arr = new Object[length];
+            for (int i=0; i<length; i++) {
+                arr[i] = EnumUtil.filter(values[i]);
+            }
+        }
+
         Bb bb = new Bb(isOr());
         bb.setP(Op.X);
         bb.setKey(sql);
-        bb.setValue(values);
+        bb.setValue(arr);
         this.add(bb);
 
         return instance;
@@ -199,7 +209,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         Bb bb = new Bb(isOr());
         bb.setP(p);
         bb.setKey(property);
-        bb.setValue(value);
+        bb.setValue(EnumUtil.filter(value));
         this.add(bb);
 
         return instance;
@@ -227,6 +237,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         for (Object obj : list) {
             if (Objects.isNull(obj))
                 continue;
+            obj = EnumUtil.filter(obj);
             if (!tempList.contains(obj)) {
                 tempList.add(obj);
             }

@@ -23,7 +23,7 @@ import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
@@ -177,8 +177,8 @@ public class OracleDialect implements Dialect {
             Timestamp ts = (Timestamp) obj;
             return new Date(ts.getTime());
         }
-        if (BeanUtil.isEnum(ec)) {
-            return Enum.valueOf(ec, obj.toString());
+        if (EnumUtil.isEnum(ec)) {
+            return EnumUtil.deSerialize(ec, obj.toString());
         }
         return obj;
     }

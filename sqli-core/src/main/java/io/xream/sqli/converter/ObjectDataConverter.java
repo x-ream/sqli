@@ -22,7 +22,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
@@ -98,8 +98,8 @@ public final class ObjectDataConverter {
                     map.put(property, value);
                 } else if (type == String.class) {
                     map.put(property, value);
-                } else if (BeanUtil.isEnum(type)){
-                    map.put(property, ((Enum)value).name());
+                } else if (EnumUtil.isEnum(type)){
+                    map.put(property, EnumUtil.serialize((Enum)value));
                 }else if (type == Date.class || clz == java.sql.Date.class || type == Timestamp.class) {
                     map.put(property, value);
                 } else if (type == BigDecimal.class){

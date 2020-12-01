@@ -28,7 +28,7 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.support.TimestampSupport;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.Iterator;
@@ -109,18 +109,18 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                 }
             }
 
-        } else if (BeanUtil.isEnum(clz)) {
+        } else if (EnumUtil.isEnum(clz)) {
             for (int j = 0; j < length; j++) {
                 Object value = inList.get(j);
                 if (value == null)
                     continue;
-                String ev = null;
+                value = EnumUtil.serialize((Enum) value);
+
                 if (value instanceof String){
-                    ev = (String) value;
+                    sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'
                 }else {
-                    ev = ((Enum) value).name();
+                    sb.append(value);
                 }
-                sb.append(SqlScript.SINGLE_QUOTES).append(ev).append(SqlScript.SINGLE_QUOTES);//'string'
                 if (j < length - 1) {
                     sb.append(SqlScript.COMMA);
                 }
@@ -232,7 +232,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
 
     }
 
-    interface Pre {
+    interface Pre extends ValueCollector{
         default void pre(List<Object> valueList, List<Bb> bbList) {
             for (Bb bb : bbList) {
                 Op p = bb.getP();
@@ -259,16 +259,6 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
             }
         }
 
-        static void add(List<Object> valueList, Object value){
-            if (BeanUtil.isEnum(value.getClass())) {
-                try {
-                    valueList.add(((Enum) value).name());
-                } catch (Exception e) {
-                }
-            } else {
-                valueList.add(value);
-            }
-        }
     }
 
 }

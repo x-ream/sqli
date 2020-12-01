@@ -27,7 +27,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.spi.JdbcHelper;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.sql.Timestamp;
@@ -95,8 +95,13 @@ public final class TemporaryDaoImpl implements TemporaryDao{
             for (Object obj : arr) {
                 if (obj instanceof String) {
                     fromSql = fromSql.replaceFirst("\\?", "'" + obj.toString() + "'");
-                }else if (BeanUtil.isEnum(obj.getClass())){
-                    fromSql = fromSql.replaceFirst("\\?", "'" + ((Enum)obj).name() + "'");
+                }else if (EnumUtil.isEnum(obj.getClass())){
+                    Object enumObj = EnumUtil.serialize((Enum)obj);
+                    if (enumObj instanceof String) {
+                        fromSql = fromSql.replaceFirst("\\?", "'" + EnumUtil.serialize((Enum) obj) + "'");
+                    }else{
+                        fromSql = fromSql.replaceFirst("\\?", String.valueOf(EnumUtil.serialize((Enum) obj)));
+                    }
                 }else if (obj instanceof Date ) {
                     fromSql = fromSql.replaceFirst("\\?",
                             "DATE_FORMAT(" + ((Date)obj).getTime()

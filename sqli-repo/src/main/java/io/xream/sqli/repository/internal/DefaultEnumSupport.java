@@ -16,35 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.core;
+package io.xream.sqli.repository.internal;
 
-import io.xream.sqli.util.EnumUtil;
-
-import java.util.Objects;
+import io.xream.sqli.support.EnumSupport;
 
 /**
  * @Author Sim
  */
-public interface ValuePost {
-    default Object filter(Object object, MoreFilter moreFilter) {
-        Object o = null;
-        if (object instanceof String) {
-            String str = (String) object;
-            o = str.replace("<", "&lt").replace(">", "&gt");
-        }else if (Objects.nonNull(object) && EnumUtil.isEnum(object.getClass())){
-            o = EnumUtil.serialize((Enum) object);
-        }else{
-            o = object;
-        }
-
-        if (moreFilter == null)
-            return o;
-
-        return moreFilter.filter(o);
+public class DefaultEnumSupport implements EnumSupport {
+    @Override
+    public Object serialize(Enum obj) {
+        return obj.name();
     }
 
-    interface MoreFilter{
-        Object filter(Object object);
+    @Override
+    public Enum deserialize(Class<Enum> clzz, Object obj) {
+        return Enum.valueOf(clzz, obj.toString());
     }
-
 }

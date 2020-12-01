@@ -239,7 +239,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                     }
                 }
 
-                refreshValueList.add(bb.getValue());
+                add(refreshValueList,bb.getValue());
             }
 
         }

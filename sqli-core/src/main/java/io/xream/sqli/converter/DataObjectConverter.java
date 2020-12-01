@@ -25,7 +25,7 @@ import io.xream.sqli.mapping.ResultMapHelpful;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.util.BeanUtil;
+import io.xream.sqli.util.EnumUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public final class DataObjectConverter {
             Object value = map.get(mapper);
 
             if (value == null) {
-                if (BeanUtil.isEnum(ele.getClz()))
+                if (EnumUtil.isEnum(ele.getClz()))
                     throw new PersistenceException(
                             "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
             } else {

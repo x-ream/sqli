@@ -18,42 +18,37 @@
  */
 package io.xream.sqli.util;
 
+import io.xream.sqli.support.EnumSupport;
 
 /**
  * @Author Sim
  */
-public final class BeanUtil {
+public class EnumUtil {
 
-    protected BeanUtil(){}
+    private static EnumSupport enumSupport;
+    protected static void setEnumSupport(EnumSupport es) {
+        enumSupport = es;
+    }
 
-    public static String getSetter(String property) {
-        if (property.startsWith("is")) {
-            String rest = property.substring(2);
-            return "set" + rest;
+    public static boolean isEnum(Class clz) {
+        Class superClzz = clz.getSuperclass();
+        return clz.isEnum() || (superClzz != null && superClzz.isEnum());
+    }
+
+    public static Object serialize(Enum obj) {
+        return enumSupport.serialize(obj);
+    }
+
+    public static Enum deSerialize(Class<Enum> clzz, Object obj) {
+        return enumSupport.deserialize(clzz, obj);
+    }
+
+    public static Object filter(Object obj) {
+        if (obj == null)
+            return null;
+        if (isEnum(obj.getClass())) {
+            return serialize((Enum) obj);
         }
-
-        String a = property.substring(0, 1);
-        String rest = property.substring(1);
-        return "set" + a.toUpperCase() + rest;
+        return obj;
     }
-
-    public static String getByFirstLower(String str) {
-        if (SqliStringUtil.isNullOrEmpty(str))
-            return str;
-
-        String a = str.substring(0, 1);
-        String rest = str.substring(1);
-        String result = a.toLowerCase() + rest;
-        return result;
-
-    }
-
-    public static String getProperty(String methodName) {
-        if (methodName.startsWith("is"))
-            return methodName;
-        String str = methodName.substring(3);
-        return getByFirstLower(str);
-    }
-
-
 }
