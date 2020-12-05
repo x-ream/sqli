@@ -99,13 +99,6 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
         return this;
     }
 
-    public CriteriaBuilder forceIndex(String indexName) {
-        if (SqliStringUtil.isNullOrEmpty(indexName))
-            return this;
-        this.criteria.setForceIndex(indexName);
-        return this;
-    }
-
     private CriteriaBuilder(Criteria criteria) {
         super(criteria.getBbList());
         this.criteria = criteria;

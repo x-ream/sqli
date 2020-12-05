@@ -86,10 +86,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
          * select column
          */
         select(sqlSth, resultKey(sqlSth,criteria,sqlBuildingAttached));
-        /*
-         * force index
-         */
-        forceIndex(isSub, sqlSth, criteria);
 
         sourceScriptPre(criteria, sqlBuildingAttached);
         /*
@@ -603,15 +599,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
         sb.sbSource.append(script);
 
-    }
-
-    private void forceIndex(boolean isSub, SqlSth sqlSth, Criteria criteria) {
-        if (isSub)
-            return;
-        if (SqliStringUtil.isNullOrEmpty(criteria.getForceIndex()))
-            return;
-        sqlSth.sbCondition.append(" FORCE INDEX(" + criteria.getForceIndex() + ")");
-        addConditonBeforeOptimization(criteria.getForceIndex(), sqlSth.conditionSet);
     }
 
     private void count(boolean isSub,  boolean isTotalRowsIgnored,  SqlSth sqlSth) {

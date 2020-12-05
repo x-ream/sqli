@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -172,7 +173,7 @@ public final class ParserUtil {
                 } else if (ec == boolean.class || ec == Boolean.class) {
                     element.setSqlType(SqlFieldType.BYTE);
                     element.setLength(1);
-                } else if (ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class) {
+                } else if (ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class || ec == LocalDateTime.class) {
                     element.setSqlType(SqlFieldType.DATE);
                 } else if (ec == String.class) {
                     element.setSqlType(SqlFieldType.VARCHAR);

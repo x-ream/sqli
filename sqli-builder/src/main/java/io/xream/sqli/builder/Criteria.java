@@ -48,7 +48,6 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
 	private List<Bb> bbList = new ArrayList<>();
-	private String forceIndex;
 
 	@JsonIgnore
 	private transient Parsed parsed;
@@ -131,14 +130,6 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		this.rows = rows;
 	}
 
-	public String getForceIndex() {
-		return forceIndex;
-	}
-
-	public void setForceIndex(String forceIndex) {
-		this.forceIndex = forceIndex;
-	}
-
 	@Override
 	public Object getRouteKey() {
 		return routeKey;
@@ -182,7 +173,6 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 				", rows=" + rows +
 				", sortList='" + sortList + '\'' +
 				", bbList=" + bbList +
-				", forceIndex=" + forceIndex +
 				", clz=" + clzz +
 				'}';
 	}
