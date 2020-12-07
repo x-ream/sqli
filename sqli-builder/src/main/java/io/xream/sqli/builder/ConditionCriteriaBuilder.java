@@ -131,7 +131,6 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         return doNull(Op.IS_NULL,property);
     }
 
-
     public ConditionCriteriaBuilder x(String sqlSegment, Object... values){
 
         if (SqliStringUtil.isNullOrEmpty(sqlSegment)){
@@ -182,6 +181,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
 
         return instance;
     }
+    
     public ConditionCriteriaBuilder endSub(){
         isOr();
         int size = getSubsList().size();

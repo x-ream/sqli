@@ -266,14 +266,14 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
          * @param functionScript FUNCTION(?,?)
          * @param values           "test", 1000
          */
-        public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_wrap, String functionScript, String... values) {
+        public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_of, String functionScript, String... values) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
                 return this;
-            Objects.requireNonNull(functionAlia_wrap, "function no alia");
-            Objects.requireNonNull(functionAlia_wrap.getAlia());
+            Objects.requireNonNull(functionAlia_of, "function no alia");
+            Objects.requireNonNull(functionAlia_of.getAlia());
             FunctionResultKey functionResultKey = new FunctionResultKey();
             functionResultKey.setScript(functionScript);
-            functionResultKey.setAlia(functionAlia_wrap.getAlia());
+            functionResultKey.setAlia(functionAlia_of.getAlia());
             functionResultKey.setValues(values);
             get().getResultFunctionList().add(functionResultKey);
             return this;
@@ -303,6 +303,20 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
 
         public ResultMapBuilder groupBy(String property) {
             get().setGroupBy(property);
+            return this;
+        }
+
+        public ResultMapBuilder xAggr(String function, Object...values) {
+            List<Bb> list = get().getAggrList();
+            if (list == null) {
+                list = new ArrayList<>();
+                get().setAggrList(list);
+            }
+            Bb bb = new Bb();
+            bb.setKey(function);
+            bb.setValue(values);
+            bb.setP(Op.X_AGGR);
+            list.add(bb);
             return this;
         }
 

@@ -45,7 +45,8 @@ public enum  Op {
     ORDER_BY(" ORDER BY "),
     GROUP_BY(" GROUP BY "),
     HAVING(" HAVING "),
-    WHERE(" WHERE ");
+    WHERE(" WHERE "),
+    X_AGGR("");
 
     private String op;
     Op(String str){

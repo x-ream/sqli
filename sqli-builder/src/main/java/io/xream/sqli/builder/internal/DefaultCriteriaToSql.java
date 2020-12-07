@@ -91,9 +91,11 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         /*
          * StringList
          */
-        condition(sqlSth, criteria.getBbList(), criteria, sqlBuildingAttached.getValueList());
+        condition(sqlSth, criteria, sqlBuildingAttached.getValueList());
 
         count(isSub, criteria.isTotalRowsIgnored(), sqlSth);
+
+        xAggr(sqlSth, criteria, sqlBuildingAttached.getValueList());
         /*
          * group by
          */
@@ -445,7 +447,28 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         sqlSth.sbResult.append(SqlScript.SELECT).append(SqlScript.SPACE).append(resultKeys).append(SqlScript.SPACE);
     }
 
-    private void groupBy(SqlSth sb, Criteria criteria) {
+    private void xAggr(SqlSth sqlSth, Criteria criteria, List<Object> valueList) {
+        if (criteria instanceof Criteria.ResultMapCriteria) {
+            Criteria.ResultMapCriteria rm = (Criteria.ResultMapCriteria) criteria;
+            List<Bb> list = rm.getAggrList();
+            if (list == null)
+                return;
+            for (Bb bb : list) {
+                String key = bb.getKey();
+                if (key.contains(SqlScript.PLACE_HOLDER) && Objects.isNull(bb.getValue()))
+                    continue;
+                List<String> originList = mapping((reg) -> key.split(reg), criteria, sqlSth.sbCondition);
+                for (String origin : originList){
+                    addConditonBeforeOptimization(origin,sqlSth.conditionSet);
+                }
+                for (Object obj : (Object[]) bb.getValue()) {
+                    add(valueList, obj);
+                }
+            }
+        }
+    }
+
+    private void groupBy(SqlSth sqlSth, Criteria criteria) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
             Criteria.ResultMapCriteria rm = (Criteria.ResultMapCriteria) criteria;
 
@@ -453,7 +476,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (SqliStringUtil.isNullOrEmpty(groupByS))
                 return;
 
-            sb.sbCondition.append(Op.GROUP_BY.sql());
+            sqlSth.sbCondition.append(Op.GROUP_BY.sql());
 
             String[] arr = groupByS.split(SqlScript.COMMA);
 
@@ -464,25 +487,25 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 if (SqliStringUtil.isNotNull(groupBy)) {
                     if (groupBy.contains(SqlScript.LEFT_PARENTTHESIS)){
                         final String groupByStrFinal = normalizeSql(groupByStr);
-                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), criteria, sb.sbCondition);
+                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), criteria, sqlSth.sbCondition);
                         for (String origin : originList){
-                            addConditonBeforeOptimization(origin,sb.conditionSet);
+                            addConditonBeforeOptimization(origin,sqlSth.conditionSet);
                         }
                     }else {
                         String mapper = mapping(groupByStr, rm);
-                        addConditonBeforeOptimization(groupByStr,sb.conditionSet);
-                        sb.sbCondition.append(mapper);
+                        addConditonBeforeOptimization(groupByStr,sqlSth.conditionSet);
+                        sqlSth.sbCondition.append(mapper);
                     }
                     i++;
                     if (i < l) {
-                        sb.sbCondition.append(SqlScript.COMMA);
+                        sqlSth.sbCondition.append(SqlScript.COMMA);
                     }
                 }
             }
         }
     }
 
-    private void having(SqlSth sb, Criteria criteria) {
+    private void having(SqlSth sqlSth, Criteria criteria) {
         if (!(criteria instanceof Criteria.ResultMapCriteria))
             return;
 
@@ -501,25 +524,25 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (h == null)
                 continue;
             if (flag) {
-                sb.sbCondition.append(Op.HAVING.sql());
+                sqlSth.sbCondition.append(Op.HAVING.sql());
                 flag = false;
             } else {
-                sb.sbCondition.append(Op.AND.sql());
+                sqlSth.sbCondition.append(Op.AND.sql());
             }
 
             String alia = h.getAliaOrFunction();
             if (alia.contains(SqlScript.LEFT_PARENTTHESIS)) {
                 alia = normalizeSql(alia);
                 final String finalKey = alia;
-                List<String> originList = mapping((reg) -> finalKey.split(reg), criteria, sb.sbCondition);
+                List<String> originList = mapping((reg) -> finalKey.split(reg), criteria, sqlSth.sbCondition);
                 for (String origin : originList){
-                    addConditonBeforeOptimization(origin,sb.conditionSet);
+                    addConditonBeforeOptimization(origin,sqlSth.conditionSet);
                 }
             }else {
-                sb.sbCondition.append(alia);
-                addConditonBeforeOptimization(alia,sb.conditionSet);
+                sqlSth.sbCondition.append(alia);
+                addConditonBeforeOptimization(alia,sqlSth.conditionSet);
             }
-            sb.sbCondition.append(SqlScript.SPACE).append(h.getOp().sql()).append(SqlScript.SPACE).append(h.getValue());
+            sqlSth.sbCondition.append(SqlScript.SPACE).append(h.getOp().sql()).append(SqlScript.SPACE).append(h.getValue());
         }
     }
 
@@ -667,7 +690,8 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void condition(SqlSth sqlSth, List<Bb> bbList, Criteria criteria, List<Object> valueList) {
+    private void condition(SqlSth sqlSth, Criteria criteria, List<Object> valueList) {
+        List<Bb> bbList = criteria.getBbList();
         if (bbList.isEmpty())
             return;
         addConditionBeforeOptimization(bbList, sqlSth.conditionSet);//优化连表查询前的准备

@@ -184,6 +184,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		private List<FunctionResultKey> resultFunctionList;
 		private List<KV> resultKeyAssignedAliaList;
 		private String groupBy;
+		private List<Bb> aggrList;
 		private Distinct distinct;
 		private String sourceScript;
 		private List<SourceScript> sourceScripts;
@@ -235,6 +236,14 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 			if (this.groupBy.contains(groupBy))
 				return;
 			this.groupBy = this.groupBy + ", " + groupBy;
+		}
+
+		public List<Bb> getAggrList() {
+			return aggrList;
+		}
+
+		public void setAggrList(List<Bb> aggrList) {
+			this.aggrList = aggrList;
 		}
 
 		public void setDistinct(Distinct distinct) {
@@ -336,6 +345,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 					", sourceScript='" + sourceScript + '\'' +
 					", distinct=" + distinct +
 					", groupBy='" + groupBy + '\'' +
+					", aggrList='" + aggrList + '\'' +
 					", reduceList=" + reduceList +
 					", aliaMap=" + aliaMap +
 					'}';
