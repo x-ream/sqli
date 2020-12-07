@@ -47,7 +47,7 @@ public final class TAOSDialect extends MySqlDialect {
 
     @Override
     public String getInsertTagged() {
-        return " ? USING #stb# TAGS ";
+        return "? USING #stb# TAGS ";
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class TAOSDialect extends MySqlDialect {
         String insertTagged = getInsertTagged();
         insertTagged = insertTagged.replace("#stb#", BeanUtil.getByFirstLower(parsed.getClzName()));
         int size = parsed.getTagFieldList().size();
-        sb.append(insertTagged).append(" (");
+        sb.append(insertTagged).append("(");
         for (int i = 0; i < size; i++) {
             sb.append("?");
             if (i < size - 1) {
