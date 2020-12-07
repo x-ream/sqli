@@ -41,6 +41,11 @@ public final class TAOSDialect extends MySqlDialect {
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     @Override
+    public String getKey(){
+        return "taosdata";
+    }
+
+    @Override
     public String getInsertTagged() {
         return " ? USING #stb# TAGS ";
     }
