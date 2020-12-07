@@ -78,6 +78,9 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                     List<Object> inList = (List<Object>) bb.getValue();
                     Object v = inList.get(0);
                     Class<?> vType = v.getClass();
+                    if (vType == String.class) {
+                        vType = mapClzz(bb.getKey(), mappable);
+                    }
                     buildIn(sb, vType, inList);
                 } else if (!(p == Op.IS_NULL
                         || p == Op.IS_NOT_NULL
@@ -114,7 +117,11 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                 Object value = inList.get(j);
                 if (value == null)
                     continue;
-                value = EnumUtil.serialize((Enum) value);
+
+                if (!EnumUtil.isEnum(value.getClass())){
+                    value = EnumUtil.deSerialize(clz,value);
+                }
+                value = EnumUtil.serialize((Enum)value);
 
                 if (value instanceof String){
                     sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'
@@ -233,13 +240,13 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
     }
 
     interface Pre extends ValueCollector{
-        default void pre(List<Object> valueList, List<Bb> bbList) {
+        default void pre(List<Object> valueList, List<Bb> bbList,Mappable mappable) {
             for (Bb bb : bbList) {
                 Op p = bb.getP();
                 if (p == Op.LIMIT || p == Op.OFFSET){
                     continue;
                 }else if (p == Op.SUB){
-                    pre(valueList, bb.getSubList());
+                    pre(valueList, bb.getSubList(),mappable);
                     continue;
                 }else if (p == Op.X) {
                     Object value = bb.getValue();
@@ -250,7 +257,17 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                             add(valueList,v);
                         }
                     }
-                }else if (!(p == Op.IN
+                }else if (p == Op.EQ) {
+                    Object value = bb.getValue();
+                    if (value.getClass() == String.class) {
+                        Class<?> vType = mapClzz(bb.getKey(), mappable);
+                        if (EnumUtil.isEnum(vType)) {
+                            Enum en = EnumUtil.deSerialize((Class<Enum>) vType, value.toString());
+                            value = EnumUtil.serialize(en);
+                        }
+                    }
+                    add(valueList,value);
+                } else if (!(p == Op.IN
                         || p == Op.NOT_IN
                         || p == Op.IS_NULL
                         || p == Op.IS_NOT_NULL)) {

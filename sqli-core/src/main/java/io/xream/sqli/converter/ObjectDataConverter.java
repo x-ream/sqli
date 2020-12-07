@@ -18,6 +18,7 @@
  */
 package io.xream.sqli.converter;
 
+import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
@@ -119,8 +120,12 @@ public final class ObjectDataConverter {
         return map;
     }
 
-    public static void log(Class clz, List<Object> valueList) {
-        SqliLoggerProxy.debug(clz, valueList);
+    public static void log(Criteria criteria, List<Object> valueList) {
+        if (criteria instanceof Criteria.ResultMapCriteria){
+            SqliLoggerProxy.debug(((Criteria.ResultMapCriteria)criteria).getRepositoryClzz(), valueList);
+        }else {
+            SqliLoggerProxy.debug(criteria.getClzz(), valueList);
+        }
     }
 
 }

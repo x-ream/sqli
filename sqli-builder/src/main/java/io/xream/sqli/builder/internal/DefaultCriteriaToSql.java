@@ -65,7 +65,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         if (bbList.isEmpty())
             return "";
 
-        pre(valueList, bbList);
+        pre(valueList, bbList,mappable);
 
         bbList.get(0).setC(Op.WHERE);
 
@@ -685,7 +685,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     private void sourceScriptPre(Criteria criteria, SqlBuildingAttached attached) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                sourceScript.pre(attached, this);
+                sourceScript.pre(attached, this, criteria);
             }
         }
     }
@@ -698,7 +698,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         StringBuilder xsb = new StringBuilder();
 
-        pre(valueList, bbList);//提取占位符对应的值
+        pre(valueList, bbList,criteria);//提取占位符对应的值
         if (bbList.isEmpty())
             return;
         bbList.get(0).setC(Op.WHERE);

@@ -116,7 +116,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     }
 
 
-    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql) {
+    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql, Mappable mappable) {
 
         if (subCriteria != null) {
             final SqlBuilt sqlBuilt = new SqlBuilt();
@@ -125,7 +125,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
         }
         if (bbList == null || bbList.isEmpty())
             return;
-        pre(attached.getValueList(), bbList);
+        pre(attached.getValueList(), bbList, subCriteria == null ? mappable : subCriteria);
 
     }
 

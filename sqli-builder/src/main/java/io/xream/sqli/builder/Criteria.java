@@ -198,6 +198,8 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		private transient Map<String,String> aliaMap = new HashMap<>();
 		@JsonIgnore
 		private transient Map<String,String> resultKeyAliaMap = new HashMap<>();
+		@JsonIgnore
+		private transient Class repositoryClzz;
 
 		public Distinct getDistinct() {
 			return distinct;
@@ -337,6 +339,13 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 			}
 		}
 
+		public Class getRepositoryClzz() {
+			return repositoryClzz;
+		}
+
+		public void setRepositoryClzz(Class repositoryClzz) {
+			this.repositoryClzz = repositoryClzz;
+		}
 
 		@Override
 		public String toString() {

@@ -45,8 +45,10 @@ import java.util.Map;
 public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository, SafeRefreshBiz<T> {
 
     private Class<T> clzz;
+    private Class repositoryClzz;
     private IdGenerator idGenerator;
     private Repository repository;
+
 
     @Override
     public Class<T> getClzz() {
@@ -305,10 +307,15 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         }else{
             resultMapCriteria.setClzz(Void.class);
         }
+        resultMapCriteria.setRepositoryClzz(this.repositoryClzz);
     }
     private void setDefaultClzz(Criteria criteria) {
         criteria.setClzz(this.clzz);
         criteria.setParsed(Parser.get(this.clzz));
+    }
+
+    protected void setRepositoryClzz(Class clzz){
+        this.repositoryClzz = clzz;
     }
 
 }

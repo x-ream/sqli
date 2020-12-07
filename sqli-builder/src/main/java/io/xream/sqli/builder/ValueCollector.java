@@ -18,12 +18,14 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.mapping.Mapper;
+
 import java.util.List;
 
 /**
  * @Author Sim
  */
-public interface ValueCollector {
+public interface ValueCollector extends Mapper {
 
     default void add(List<Object> valueList, Object value){
         valueList.add(value);

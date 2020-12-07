@@ -91,6 +91,35 @@ public interface Mapper {
         return value == null ? key : value;
     }
 
+    default Class mapClzz(String key, Mappable mappable) {
+
+        if (key.contains(Script.DOT)) {
+
+            if (mappable == null)
+                return String.class;
+
+            String[] arr = key.split("\\.");
+            String alia = arr[0];
+            String property = arr[1];
+
+            String clzName = ParserUtil.getClzName(alia, mappable.getAliaMap());
+
+            Parsed parsed = Parser.get(clzName);
+            if (parsed != null){
+                return parsed.getElement(property).getClz();
+            }else {
+                return String.class;
+            }
+        }
+
+        Parsed parsed = mappable.getParsed();
+        if (parsed != null)
+            return parsed.getElement(key).getClz();
+
+        return String.class;
+    }
+
+
     interface ScriptSplitable {
         String[] split(String reg);
     }

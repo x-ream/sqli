@@ -331,7 +331,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         String sql = sqlBuilt.getSql().toString();
         Class clz = resultMapped.getClzz();
 
-        SqliLoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(resultMapped.getRepositoryClzz(), sql);
 
         List<Map<String, Object>> list = this.jdbcHelper.queryForResultMapList(sql, valueList,resultMapped, clz, this.dialect);
         ResultSortUtil.sort(list,resultMapped);
@@ -347,7 +347,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlBuilt.getSql().toString();
 
-        SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getRepositoryClzz(), sql);
 
         List<Map<String,Object>> list = this.jdbcHelper.queryForResultMapList(sql, valueList,resultMapped, resultMapped.getClzz(), this.dialect);
         ResultSortUtil.sort(list,resultMapped);
@@ -360,7 +360,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlBuilt.getSql().toString();
 
-        SqliLoggerProxy.debug(resultMapped.getClzz(), sql);
+        SqliLoggerProxy.debug(resultMapped.getRepositoryClzz(), sql);
 
         List<K> list = this.jdbcHelper.queryForPlainValueList(clzz,sql,valueList,this.dialect);
         return list;
@@ -400,7 +400,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         String sql = sqlBuilt.getSql().toString();
         Class clz = resultMapped.getClzz();
 
-        SqliLoggerProxy.debug(clz, sql);
+        SqliLoggerProxy.debug(resultMapped.getRepositoryClzz(), sql);
 
         this.jdbcHelper.queryForMapToHandle(sql, valueList, dialect, resultMapped, null, handler);
     }

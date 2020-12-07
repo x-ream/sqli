@@ -123,7 +123,7 @@ public final class SqlBuilder implements ConditionToSql{
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlBuilt.setSql(sb);
-        ObjectDataConverter.log(criteria.getClzz(), valueList);
+        ObjectDataConverter.log(criteria, valueList);
 
         return sqlBuilt;
     }
