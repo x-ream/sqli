@@ -119,7 +119,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                     continue;
 
                 if (!EnumUtil.isEnum(value.getClass())){
-                    value = EnumUtil.deSerialize(clz,value);
+                    value = EnumUtil.deserialize(clz,value);
                 }
                 value = EnumUtil.serialize((Enum)value);
 
@@ -262,7 +262,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                     if (value.getClass() == String.class) {
                         Class<?> vType = mapClzz(bb.getKey(), mappable);
                         if (EnumUtil.isEnum(vType)) {
-                            Enum en = EnumUtil.deSerialize((Class<Enum>) vType, value.toString());
+                            Enum en = EnumUtil.deserialize((Class<Enum>) vType, value.toString());
                             value = EnumUtil.serialize(en);
                         }
                     }

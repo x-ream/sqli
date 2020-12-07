@@ -178,7 +178,7 @@ public class OracleDialect implements Dialect {
             return new Date(ts.getTime());
         }
         if (EnumUtil.isEnum(ec)) {
-            return EnumUtil.deSerialize(ec, obj.toString());
+            return EnumUtil.deserialize(ec, obj.toString());
         }
         return obj;
     }

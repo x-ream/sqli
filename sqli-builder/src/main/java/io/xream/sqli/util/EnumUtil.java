@@ -39,7 +39,7 @@ public class EnumUtil {
         return enumSupport.serialize(obj);
     }
 
-    public static Enum deSerialize(Class<Enum> clzz, Object obj) {
+    public static Enum deserialize(Class<Enum> clzz, Object obj) {
         return enumSupport.deserialize(clzz, obj);
     }
 

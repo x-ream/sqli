@@ -83,7 +83,7 @@ public class MySqlDialect implements Dialect {
         Class ec = element.getClz();
 
         if (EnumUtil.isEnum(ec)) {
-            return EnumUtil.deSerialize(ec, obj.toString());
+            return EnumUtil.deserialize(ec, obj.toString());
         } else if (element.isJson()) {
 
             if (SqliStringUtil.isNullOrEmpty(obj))
