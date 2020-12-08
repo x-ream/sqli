@@ -21,10 +21,13 @@ package io.xream.sqli.starter;
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.RepositoryManagement;
+import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
+import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.util.SqliLoggerProxy;
 import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +44,7 @@ public class InitializerListener {
     private InitializerListener() {
     }
 
-    protected static void onStarted(NativeSupport nativeSupport, SqlInit sqlInit) {
+    protected static void onStarted(NativeSupport nativeSupport, SqlInit sqlInit, Schema schema) {
 
         if (instance != null)
             return;
@@ -66,18 +69,20 @@ public class InitializerListener {
         for (BaseRepository repository : RepositoryManagement.REPOSITORY_LIST) {
 
             try {
-                Class clz = repository.getClzz();
+                Class clzz = repository.getClzz();
                 if (repository.getClzz() == Void.class)
                     continue;
-                String createSql = sqlInit.tryToParse(clz);
-                String test = sqlInit.getSql(clz, SqlInit.CREATE);
-                if (SqliStringUtil.isNullOrEmpty(test)) {
-                    logger.info("Failed to start sqli-repo, check Bean: {}", clz);
-                    throw new UninitializedException("Failed to start sqli-repo, check Bean: " + clz);
-                }
+                sqlInit.tryToParse(clzz);
 
-                if (SqliStringUtil.isNotNull(createSql)) {
-                    nativeSupport.execute(createSql);
+                if (schema == null)
+                    continue;
+                Parsed parsed = Parser.get(clzz);
+                String sql = schema.createTableSqlUnMapped(parsed, false);
+                if (SqliStringUtil.isNotNull(sql)) {
+                    String createTableSql = SqlParserUtil.mapper(sql, parsed);
+                    nativeSupport.execute(createTableSql);
+
+                    SqliLoggerProxy.debug(clzz, createTableSql);
                 }
 
             } catch (Exception e) {

@@ -23,8 +23,6 @@ package io.xream.sqli.repository.init;
  */
 public interface SqlInit extends SqlTemplate{
 
-    String getTableSql(Class clz);
-
     String getLoadSql(Class clz);
 
     String getCreateSql(Class clz);
@@ -34,18 +32,13 @@ public interface SqlInit extends SqlTemplate{
     String getRemoveSql(Class clz);
 
 
-    default String tryToParse(Class clz) {
+    default void tryToParse(Class clz) {
 
-        getTableSql(clz);
         getRemoveSql(clz);
         getOneSql(clz);
         getLoadSql(clz);
         getCreateSql(clz);
 
-        String createTable = getSql(clz,CREATE_TABLE);
-        getSqlMap(clz).remove(CREATE_TABLE);
-
-        return createTable;
     }
 
 

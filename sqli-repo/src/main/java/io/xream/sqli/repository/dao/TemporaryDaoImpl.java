@@ -83,7 +83,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         Parsed parsed = Parser.get(clzz);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(dialect.getTemporaryTableCreate()).append(parsed.getTableName())
+        sb.append(SqlScript.CREATE_TEMPORARY_TABLE).append(parsed.getTableName())
                 .append(SqlScript.AS);
 
         String sql = null;
@@ -130,4 +130,6 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         this.jdbcHelper.execute(sql);
         return true;
     }
+
+
 }

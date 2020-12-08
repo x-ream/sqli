@@ -147,5 +147,7 @@ public interface SqlScript extends Script {
 	String SUB = "${SUB}";
 	String LIMIT_ONE = " LIMIT 1";
 
+	String CREATE_TEMPORARY_TABLE = "CREATE TEMPORARY TABLE IF NOT EXISTS ";
+
 	String sql();
 }

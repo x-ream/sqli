@@ -22,6 +22,7 @@ import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.dialect.DynamicDialectKeyRemovable;
+import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.exception.ProxyException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.repository.dao.TemporaryDao;
@@ -54,6 +55,10 @@ public final class DefaultTemporaryRepository implements TemporaryRepository, Dy
             return instance;
         }
         return null;
+    }
+
+    public void setSchema(Schema schema) {
+        this.temporaryRepositoryParser.setSchema(schema);
     }
 
     public void setRepository(Repository repository) {

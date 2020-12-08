@@ -21,6 +21,7 @@ package io.xream.sqli.starter;
 import io.xream.sqli.api.customizer.DialectCustomizer;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
@@ -56,7 +57,7 @@ public class SqliListener {
         DialectListener.customizeOnStarted(dialect,dialectCustomizer);
     }
 
-    public static void onStarted(NativeSupport nativeSupport,  SqlInit sqlInit){
+    public static void onStarted(NativeSupport nativeSupport,  SqlInit sqlInit, Schema schema){
         if (instance != null)
             return;
 
@@ -65,7 +66,7 @@ public class SqliListener {
 
         instance = new SqliListener();
 
-        InitializerListener.onStarted(nativeSupport,sqlInit);
+        InitializerListener.onStarted(nativeSupport,sqlInit, schema);
         ParserListener.onStarted();
     }
 }

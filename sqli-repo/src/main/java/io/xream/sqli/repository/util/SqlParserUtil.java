@@ -57,6 +57,7 @@ public final class SqlParserUtil {
             }
             sql = sql.replaceAll(key, value);
         }
+        sql = sql.trim();
         return sql;
     }
 

@@ -80,7 +80,6 @@ public final class DefaultSqlInit implements SqlInit {
         SqliLoggerProxy.debug(clz, sb);
 
         return sql;
-
     }
 
     public String getOneSql(Class clz) {
@@ -102,7 +101,6 @@ public final class DefaultSqlInit implements SqlInit {
         SqliLoggerProxy.debug(clz, sb);
 
         return sql;
-
     }
 
     public void parseKey(StringBuilder sb, Class clz) {
@@ -110,7 +108,6 @@ public final class DefaultSqlInit implements SqlInit {
 
         sb.append(parsed.getKey());
         sb.append(" = ?");
-
     }
 
     public String getLoadSql(Class clz) {
@@ -129,7 +126,6 @@ public final class DefaultSqlInit implements SqlInit {
         SqliLoggerProxy.debug(clz, sb);
 
         return sql;
-
     }
 
 
@@ -150,12 +146,6 @@ public final class DefaultSqlInit implements SqlInit {
         SqliLoggerProxy.debug(clz, sql);
 
         return sql;
-
     }
-
-    public String getTableSql(Class clz) {
-        return buildTableSql(clz, false);
-    }
-
 
 }

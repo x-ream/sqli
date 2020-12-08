@@ -44,8 +44,6 @@ public interface DialectSupport {
     String getCommandUpdate();
     String getCommandDelete();
 
-    String getTemporaryTableCreate();
-
     String getLimitOne();
 
     String getInsertTagged();

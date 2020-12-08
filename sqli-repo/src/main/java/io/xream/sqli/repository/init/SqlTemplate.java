@@ -19,9 +19,6 @@
 package io.xream.sqli.repository.init;
 
 import io.xream.sqli.dialect.Dialect;
-import io.xream.sqli.parser.Parser;
-import io.xream.sqli.repository.util.SqlParserUtil;
-import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +33,6 @@ public interface SqlTemplate {
     String CREATE = "CREATE";
     String REMOVE = "REMOVE";
     String LOAD = "LOAD";
-    String CREATE_TABLE = "CREATE_TABLE";
     String GET_ONE = "GET_ONE";
 
     Dialect getDialect();
@@ -53,16 +49,6 @@ public interface SqlTemplate {
 
     default String getSql(Class clzz, String type) {
         return getSqlMap(clzz).get(type);
-    }
-
-    default String buildTableSql(Class clzz, boolean isTemporary) {
-
-        String sql = getDialect().buildTableSql(clzz, isTemporary);
-        if (SqliStringUtil.isNullOrEmpty(sql))
-            return null;
-        sql = SqlParserUtil.mapper(sql, Parser.get(clzz));
-        getSqlMap(clzz).put(CREATE_TABLE, sql);
-        return sql;
     }
 
 }

@@ -38,21 +38,6 @@ import java.util.*;
 
 public class OracleDialect implements Dialect {
 
-    private final Map<String, String> map = new HashMap<String, String>() {
-        {
-            put(DATE, "date");
-            put(BYTE, "number(3, 0)");
-            put(INT, "number(10, 0)");
-            put(LONG, "number(18, 0)");
-            put(BIG, "number(19, 2)");
-            put(STRING, "varchar2");
-            put(TEXT, "clob");
-            put(LONG_TEXT, "clob");
-            put(INCREAMENT, "");
-            put(ENGINE, "");
-        }
-    };
-
     private final static String ORACLE_PAGINATION = "SELECT * FROM (SELECT A.*, ROWNUM RN FROM ( ${SQL} ) A   WHERE ROWNUM <= ${END}  )  WHERE RN > ${BEGIN} ";
     private final static String ORACLE_PAGINATION_REGX_SQL = "${SQL}";
     private final static String ORACLE_PAGINATION_REGX_BEGIN = "${BEGIN}";
@@ -86,10 +71,7 @@ public class OracleDialect implements Dialect {
         return origin;
 
     }
-    @Override
-    public String replaceAll(String origin) {
-        return replace(origin,map);
-    }
+
 
     private Object toNCLOBString(Object obj) {
         if (obj.getClass().getSimpleName().endsWith("NCLOB")) {
@@ -193,10 +175,6 @@ public class OracleDialect implements Dialect {
         return getDefaultCreateSql(parsed,tempList);
     }
 
-    @Override
-    public String buildTableSql(Class clzz, boolean isTemporary) {
-        return null;
-    }
 
     @Override
     public Object convertJsonToPersist(Object json) {
@@ -275,11 +253,6 @@ public class OracleDialect implements Dialect {
     @Override
     public String getCommandDelete() {
         return SqlScript.SPACE;
-    }
-
-    @Override
-    public String getTemporaryTableCreate() {
-        return "CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS ";
     }
 
     @Override

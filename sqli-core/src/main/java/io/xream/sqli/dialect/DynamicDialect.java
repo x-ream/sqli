@@ -67,11 +67,6 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
-    public String replaceAll(String sql) {
-        return getCurrentDialect().replaceAll(sql);
-    }
-
-    @Override
     public String transformAlia(String mapper, Map<String, String> aliaMap, Map<String, String> resultKeyAliaMap) {
         return getCurrentDialect().transformAlia(mapper,aliaMap,resultKeyAliaMap);
     }
@@ -102,11 +97,6 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
-    public String buildTableSql(Class clzz, boolean isTemporary) {
-        return getCurrentDialect().buildTableSql(clzz,isTemporary);
-    }
-
-    @Override
     public Object convertJsonToPersist(Object json) {
         return getCurrentDialect().convertJsonToPersist(json);
     }
@@ -129,11 +119,6 @@ public final class DynamicDialect implements Dialect{
     @Override
     public String getCommandDelete() {
         return getCurrentDialect().getCommandDelete();
-    }
-
-    @Override
-    public String getTemporaryTableCreate() {
-        return getCurrentDialect().getTemporaryTableCreate();
     }
 
     @Override

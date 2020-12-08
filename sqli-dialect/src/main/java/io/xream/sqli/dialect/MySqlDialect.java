@@ -21,36 +21,22 @@ package io.xream.sqli.dialect;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.parser.Parser;
-import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * @Author Sim
  */
 public class MySqlDialect implements Dialect {
-
-    private final Map<String, String> map = new HashMap<String, String>() {
-        {
-            put(DATE, "timestamp");
-            put(BYTE, "tinyint(1)");
-            put(INT, "int(11)");
-            put(LONG, "bigint(13)");
-            put(BIG, "decimal(15,2)");
-            put(STRING, "varchar");
-            put(TEXT, "text");
-            put(LONG_TEXT, "longtext");
-            put(INCREAMENT, "AUTO_INCREMENT");
-            put(ENGINE, "ENGINE=InnoDB DEFAULT CHARSET=utf8");
-        }
-    };
 
     @Override
     public String getKey(){
@@ -71,10 +57,6 @@ public class MySqlDialect implements Dialect {
         return sb.toString();
     }
 
-    @Override
-    public String replaceAll(String origin) {
-        return replace(origin,map);
-    }
 
     @Override
     public Object mappingToObject( Object obj, BeanElement element) {
@@ -118,96 +100,12 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
-    public String buildTableSql(Class clz, boolean isTemporary) {
-        Parsed parsed = Parser.get(clz);
-        List<BeanElement> temp = parsed.getBeanElementList();
-        Map<String, BeanElement> map = new HashMap<String, BeanElement>();
-        List<BeanElement> list = new ArrayList<BeanElement>();
-        for (BeanElement be : temp) {
-            if (be.getSqlType() != null && be.getSqlType().equals("text")) {
-                list.add(be);
-                continue;
-            }
-            map.put(be.getProperty(), be);
-        }
-
-        final String keyOne = parsed.getKey();
-
-        StringBuilder sb = new StringBuilder();
-        if (isTemporary) {
-            sb.append(getTemporaryTableCreate());
-        } else {
-            sb.append("CREATE TABLE IF NOT EXISTS ");
-        }
-        sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(" (")
-                .append("\n");
-
-        sb.append("   ").append(keyOne);
-
-        BeanElement be = map.get(keyOne);
-        String sqlType = getSqlTypeRegX(be);
-
-        if (sqlType.equals(Dialect.INT)) {
-            sb.append(" ").append(Dialect.INT + " NOT NULL");
-        } else if (sqlType.equals(Dialect.LONG)) {
-            sb.append(" ").append(Dialect.LONG + " NOT NULL");
-        } else if (sqlType.equals(Dialect.STRING)) {
-            sb.append(" ").append(Dialect.STRING).append("(").append(be.getLength()).append(") NOT NULL");
-        }
-
-        sb.append(", ");// FIXME ORACLE
-
-        sb.append("\n");
-        map.remove(keyOne);
-
-        for (BeanElement bet : map.values()) {
-            sqlType = getSqlTypeRegX(bet);
-            sb.append("   ").append(bet.getProperty()).append(" ");
-
-            sb.append(sqlType);
-
-            if (sqlType.equals(Dialect.BIG)) {
-                sb.append(" DEFAULT 0.00 ");
-            } else if (sqlType.equals(Dialect.DATE)) {
-                sb.append(" NULL");
-
-            } else if (EnumUtil.isEnum(bet.getClz())) {
-                sb.append("(").append(bet.getLength()).append(") NOT NULL");
-            } else if (sqlType.equals(Dialect.STRING)) {
-                sb.append("(").append(bet.getLength()).append(") NULL");
-            } else {
-                Class clzz = bet.getClz();
-                if (clzz == Boolean.class || clzz == boolean.class || clzz == Integer.class
-                        || clzz == int.class || clzz == Long.class || clzz == long.class) {
-                    sb.append(" DEFAULT 0");
-                } else {
-                    sb.append(" DEFAULT NULL");
-                }
-            }
-            sb.append(",").append("\n");
-        }
-
-        for (BeanElement bet : list) {
-            sqlType = getSqlTypeRegX(bet);
-            sb.append("   ").append(bet.getProperty()).append(" ").append(sqlType).append(",").append("\n");
-        }
-
-        sb.append("   PRIMARY KEY ( ").append(keyOne).append(" )");
-
-        sb.append("\n");
-        sb.append(") ").append(" ").append(Dialect.ENGINE).append(";");
-        String sql = sb.toString();
-        return replaceAll(sql);
-    }
-
-    @Override
     public Object convertJsonToPersist(Object json) {
         return json;
     }
 
     @Override
     public String transformAlia(String mapper,Map<String, String> aliaMap,  Map<String, String> resultKeyAliaMap) {
-
         if (resultKeyAliaMap.containsKey(mapper)) {
              mapper = resultKeyAliaMap.get(mapper);
         }
@@ -257,11 +155,6 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
-    public String getTemporaryTableCreate() {
-        return "CREATE TEMPORARY TABLE IF NOT EXISTS ";
-    }
-
-    @Override
     public String getLimitOne() {
         return SqlScript.LIMIT_ONE;
     }
@@ -285,7 +178,6 @@ public class MySqlDialect implements Dialect {
         objectToListForCreate(list, obj, tempList);
 
         return list;
-
     }
 
 

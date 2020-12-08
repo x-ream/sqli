@@ -20,9 +20,11 @@ package io.xream.sqli.repository.init;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.util.SqlParserUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +39,10 @@ public final class DefaultTemporaryTableParser implements TemporaryRepository.Pa
     private Map<Class, String> sqlMap = new ConcurrentHashMap<>();
 
     private Dialect dialect;
+
+    private Schema schema;
+
+    private Object lock = new Object();
 
     private DefaultTemporaryTableParser(){}
 
@@ -56,19 +62,34 @@ public final class DefaultTemporaryTableParser implements TemporaryRepository.Pa
         return this.dialect;
     }
 
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
+
     @Override
     public String parseAndGetSql(Class clzz){
+
+        if (schema == null) {
+            throw new UnsupportedOperationException("Not support temporary table, dialect: " + dialect.getKey() +
+                    ", try to implements Schema, and configure it");
+        }
 
         String sql = sqlMap.get(clzz);
         if (sql != null)
             return sql;
 
-        Parsed parsed = Parser.get(clzz.getSimpleName());
-        if (parsed != null)
-            throw new ParsingException("Table exists while parse temporary table entity to get sql: " + clzz.getName());
-        Parser.parse(clzz);
+        synchronized (lock) {
+            Parsed parsed = Parser.get(clzz.getSimpleName());
+            if (parsed != null)
+                throw new ParsingException("Table exists while parse temporary table entity to get sql: " + clzz.getName());
+            Parser.parse(clzz);
+            parsed = Parser.get(clzz);
 
-        return buildTableSql(clzz,true);
+            String createTableSql = schema.createTableSqlUnMapped(parsed, true);
+            createTableSql = SqlParserUtil.mapper(createTableSql, parsed);
+            sqlMap.put(clzz, createTableSql);
+            return createTableSql;
+        }
     }
 
 
