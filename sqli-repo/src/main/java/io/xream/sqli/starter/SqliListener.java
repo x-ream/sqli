@@ -21,12 +21,12 @@ package io.xream.sqli.starter;
 import io.xream.sqli.api.customizer.DialectCustomizer;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.dialect.Dialect;
-import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.parser.ParserListener;
 import io.xream.sqli.repository.exception.UninitializedException;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.spi.L2CacheConsistency;
 import io.xream.sqli.spi.L2CacheResolver;
+import io.xream.sqli.spi.Schema;
 import io.xream.sqli.util.SqliJsonUtil;
 
 /**

@@ -19,7 +19,7 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.dialect.Schema;
+import io.xream.sqli.spi.Schema;
 
 import java.util.List;
 

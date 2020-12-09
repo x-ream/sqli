@@ -19,9 +19,9 @@
 package io.xream.sqli.repository.init;
 
 import io.xream.sqli.builder.SqlScript;
-import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.spi.Schema;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.EnumUtil;
 

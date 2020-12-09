@@ -20,11 +20,11 @@ package io.xream.sqli.repository.init;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.dialect.Dialect;
-import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.util.SqlParserUtil;
+import io.xream.sqli.spi.Schema;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -19,8 +19,8 @@
 package io.xream.sqli.starter;
 
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.dialect.Schema;
 import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
+import io.xream.sqli.spi.Schema;
 
 /**
  * @Author Sim
