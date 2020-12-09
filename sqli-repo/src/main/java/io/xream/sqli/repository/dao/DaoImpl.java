@@ -182,7 +182,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         Class clz = keyOne.getClzz();
         String sql = getSql(clz, SqlInit.GET_ONE);
-
+        SqliLoggerProxy.debug(clz, keyOne.get());
         SqliLoggerProxy.debug(clz, sql);
 
         List<T> list = this.jdbcHelper.queryForList(sql, Arrays.asList(keyOne.get()), Parser.get(clz), this.dialect);
@@ -203,6 +203,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
         sql = sqlBuilder.buildQueryByObject(parsed, sql, queryMap);
+        SqliLoggerProxy.debug(clz, conditionObj);
         SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcHelper.queryForList(sql, queryMap.values(), parsed, this.dialect);
@@ -377,7 +378,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
         sql = sqlBuilder.buildQueryByObject(parsed, sql, queryMap);
         sql = sqlBuilder.buildPageSql(sql, 1, 1, this.dialect);
-
+        SqliLoggerProxy.debug(clz, conditionObj);
         SqliLoggerProxy.debug(clz, sql);
 
         if (queryMap.isEmpty())
