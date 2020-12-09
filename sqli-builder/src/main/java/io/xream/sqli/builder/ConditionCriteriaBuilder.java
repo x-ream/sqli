@@ -145,7 +145,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
             int length = values.length;
             arr = new Object[length];
             for (int i=0; i<length; i++) {
-                arr[i] = EnumUtil.filter(values[i]);
+                arr[i] = EnumUtil.filterInComplexScriptSimply(values[i]);
             }
         }
 
@@ -209,7 +209,7 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         Bb bb = new Bb(isOr());
         bb.setP(p);
         bb.setKey(property);
-        bb.setValue(EnumUtil.filter(value));
+        bb.setValue(value);
         this.add(bb);
 
         return instance;
@@ -237,7 +237,6 @@ public class ConditionCriteriaBuilder implements SqlNormalizer {
         for (Object obj : list) {
             if (Objects.isNull(obj))
                 continue;
-            obj = EnumUtil.filter(obj);
             if (!tempList.contains(obj)) {
                 tempList.add(obj);
             }

@@ -24,6 +24,7 @@ import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.SqliExceptionUtil;
+import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public final class ResultSortUtil {
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
+        SqliLoggerProxy.debug(criteria.getClzz(), "SORT IN " + kv0.v);
     }
 
     public  static <T> void sort(List<Map<String,Object>> list, Criteria.ResultMapCriteria criteria) {
@@ -126,6 +128,7 @@ public final class ResultSortUtil {
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
+        SqliLoggerProxy.debug(criteria.getRepositoryClzz(), "SORT IN " + kv0.v);
     }
 
 }

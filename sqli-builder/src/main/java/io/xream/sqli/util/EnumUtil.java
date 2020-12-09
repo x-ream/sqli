@@ -43,12 +43,19 @@ public class EnumUtil {
         return enumSupport.deserialize(clzz, obj);
     }
 
-    public static Object filter(Object obj) {
+    public static Object filterInComplexScriptSimply(Object obj) {
         if (obj == null)
             return null;
         if (isEnum(obj.getClass())) {
             return serialize((Enum) obj);
         }
         return obj;
+    }
+
+    public static Object serialize(Class<Enum> clzz, Object obj) {
+        if (obj instanceof String){
+            obj = deserialize(clzz,obj);
+        }
+        return serialize((Enum)obj);
     }
 }
