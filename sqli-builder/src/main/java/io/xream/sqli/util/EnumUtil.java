@@ -30,32 +30,32 @@ public class EnumUtil {
         enumSupport = es;
     }
 
-    public static boolean isEnum(Class clz) {
-        Class superClzz = clz.getSuperclass();
-        return clz.isEnum() || (superClzz != null && superClzz.isEnum());
+    public static boolean isEnum(Class clzz) {
+        Class superClzz = clzz.getSuperclass();
+        return clzz.isEnum() || (superClzz != null && superClzz.isEnum());
     }
 
-    public static Object serialize(Enum obj) {
-        return enumSupport.serialize(obj);
+    public static Object serialize(Enum enumObj) {
+        return enumSupport.serialize(enumObj);
     }
 
-    public static Enum deserialize(Class<Enum> clzz, Object obj) {
-        return enumSupport.deserialize(clzz, obj);
+    public static Enum deserialize(Class<Enum> clzz, Object enumNameOrCode) {
+        return enumSupport.deserialize(clzz, enumNameOrCode);
     }
 
-    public static Object filterInComplexScriptSimply(Object obj) {
-        if (obj == null)
+    public static Object filterInComplexScriptSimply(Object maybeEnum) {
+        if (maybeEnum == null)
             return null;
-        if (isEnum(obj.getClass())) {
-            return serialize((Enum) obj);
+        if (isEnum(maybeEnum.getClass())) {
+            return serialize((Enum) maybeEnum);
         }
-        return obj;
+        return maybeEnum;
     }
 
-    public static Object serialize(Class<Enum> clzz, Object obj) {
-        if (obj instanceof String){
-            obj = deserialize(clzz,obj);
+    public static Object serialize(Class<Enum> clzz, Object strOrEnum) {
+        if (strOrEnum instanceof String){
+            strOrEnum = deserialize(clzz,strOrEnum);
         }
-        return serialize((Enum)obj);
+        return serialize((Enum)strOrEnum);
     }
 }

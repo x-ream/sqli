@@ -399,7 +399,6 @@ public final class DaoImpl implements Dao, SqlTemplate {
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapped, criteriaToSql, dialect);
         String sql = sqlBuilt.getSql().toString();
-        Class clz = resultMapped.getClzz();
 
         SqliLoggerProxy.debug(resultMapped.getRepositoryClzz(), sql);
 
