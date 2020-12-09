@@ -23,7 +23,6 @@ import io.xream.sqli.api.Routable;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.util.EnumUtil;
 
 import java.util.*;
 
@@ -156,7 +155,7 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         Bb bb = new Bb();
         bb.setP(Op.EQ);
         bb.setKey(property);
-        bb.setValue(EnumUtil.filter(value));
+        bb.setValue(value);
         this.refreshList.add(bb);
 
         return this;

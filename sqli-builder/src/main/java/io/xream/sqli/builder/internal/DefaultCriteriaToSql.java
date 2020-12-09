@@ -29,6 +29,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.support.ResultMapSingleSourceSupport;
 import io.xream.sqli.support.TimestampSupport;
+import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
@@ -234,6 +235,13 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                             Object jsonStr = dialectSupport.convertJsonToPersist(str);
                             bb.setValue(jsonStr);
                         }
+                    }else if (EnumUtil.isEnum(be.getClz())){
+                        Object v = bb.getValue();
+                        if (v instanceof String) {
+                            v = EnumUtil.deserialize(be.getClz(), v);
+                        }
+                        v = EnumUtil.serialize((Enum)v);
+                        bb.setValue(v);
                     }
                 }
 
