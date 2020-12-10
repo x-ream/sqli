@@ -418,8 +418,8 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             return (ResultMapBuilder) super.x(sqlSegment);
         }
 
-        public ResultMapBuilder  x(String sqlSegment, Object...valueList){
-            return (ResultMapBuilder) super.x(sqlSegment, valueList);
+        public ResultMapBuilder  x(String sqlSegment, Object...values){
+            return (ResultMapBuilder) super.x(sqlSegment, values);
         }
 
         public ResultMapBuilder  beginSub(){
