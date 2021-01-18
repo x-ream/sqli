@@ -326,8 +326,8 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler) {
-        this.dao.findToHandle(ResultMapCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler) {
+        this.dao.findToHandle(resultMapCriteria,handler);
     }
 
 }

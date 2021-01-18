@@ -28,70 +28,56 @@ import java.util.Map;
 
 
 /**
- * 
- * X7 Persistence Interface<br>
+ *
  * @author Sim
  *
  */
 public interface Repository extends QueryForCache {
 
 	/**
-	 * 更新缓存
 	 * @param clz
 	 */
 	<T> void refreshCache(Class<T> clz);
 	/**
-	 * 创建
 	 * @param obj
 	 */
 	boolean create(Object obj);
 	boolean createOrReplace(Object obj);
 	/**
-	 * 带条件支持局部更新
 	 * @param refreshCondition
 	 * @return true | false
 	 */
 	<T> boolean refresh(RefreshCondition<T> refreshCondition);
 	/**
-	 * 删除
 	 * @param keyOne
 	 */
 	<T> boolean remove(KeyOne<T> keyOne);
 
 	<T> T get(KeyOne<T> keyOne);
 	/**
-	 * 根据对象内容查询<br>
-	 * 
 	 * @param conditionObj
 	 * 
 	 */
 	<T> List<T> list(Object conditionObj);
 
 	/**
-	 * 根据对象内容查询<br>
-	 *
-	 *            可以拼接的条件
 	 *  @param criteria
 	 */
 	<T> Page<T> find(Criteria criteria);
 
 	/**
-	 * 连表查询，标准化拼接
-	 * 尽量避免在互联网业务系统中使用<br>
-	 * 不支持缓存<br>
-	 * @param resultMapped
+	 * @param resultMapCriteria
 	 * 
 	 */
-	Page<Map<String,Object>> find(Criteria.ResultMapCriteria resultMapped);
+	Page<Map<String,Object>> find(Criteria.ResultMapCriteria resultMapCriteria);
 	/**
-	 * 
-	 * 不要通过WEB传来的参数调用此接口, 因为没有分页限制
-	 * @param resultMapped
+	 *
+	 * @param resultMapCriteria
 	 * 
 	 */
-	List<Map<String,Object>> list(Criteria.ResultMapCriteria resultMapped);
+	List<Map<String,Object>> list(Criteria.ResultMapCriteria resultMapCriteria);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped);
+	<K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapCriteria);
 
 	<T> List<T> list(Criteria criteria);
 
@@ -103,7 +89,7 @@ public interface Repository extends QueryForCache {
 
 	<T> void findToHandle(Criteria criteria, RowHandler<T> handler);
 
-	void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler);
 
 	<T> List<T> listByClzz(Class<T> clzz);
 }

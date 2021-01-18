@@ -73,5 +73,5 @@ public interface Dao extends QueryForCache {
     <T> boolean refresh(T t);
 
 	<T> void findToHandle(Criteria criteria, RowHandler<T> handler);
-	void findToHandle(Criteria.ResultMapCriteria ResultMapCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler);
 }

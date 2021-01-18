@@ -266,14 +266,14 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
          * @param functionScript FUNCTION(?,?)
          * @param values           "test", 1000
          */
-        public ResultMapBuilder resultKeyFunction(ResultKeyAlia functionAlia_of, String functionScript, String... values) {
+        public ResultMapBuilder resultKeyFunction(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
                 return this;
-            Objects.requireNonNull(functionAlia_of, "function no alia");
-            Objects.requireNonNull(functionAlia_of.getAlia());
+            Objects.requireNonNull(resultKeyAlia, "function no alia");
+            Objects.requireNonNull(resultKeyAlia.getAlia());
             FunctionResultKey functionResultKey = new FunctionResultKey();
             functionResultKey.setScript(functionScript);
-            functionResultKey.setAlia(functionAlia_of.getAlia());
+            functionResultKey.setAlia(resultKeyAlia.getAlia());
             functionResultKey.setValues(values);
             get().getResultFunctionList().add(functionResultKey);
             return this;

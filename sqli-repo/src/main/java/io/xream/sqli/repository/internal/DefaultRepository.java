@@ -142,8 +142,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     }
 
     @Override
-    public boolean removeRefreshCreate(RemoveRefreshCreate<T> wrapper){
-        return RemoveRefreshCreateBiz.doIt(this.clzz,this.repository,wrapper);
+    public boolean removeRefreshCreate(RemoveRefreshCreate<T> removeRefreshCreate){
+        return RemoveRefreshCreateBiz.doIt(this.clzz,this.repository,removeRefreshCreate);
     }
 
     @Override

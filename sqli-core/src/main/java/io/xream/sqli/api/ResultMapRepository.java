@@ -31,11 +31,11 @@ import java.util.Map;
  */
 public interface ResultMapRepository {
 
-    Page<Map<String, Object>> find(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapBuilder);
 
-    List<Map<String, Object>> list(Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapBuilder);
 
-    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria CriteriaBuilder_ResultMapBuilder_build_get);
+    <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapBuilder);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling

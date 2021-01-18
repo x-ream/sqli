@@ -40,7 +40,7 @@ public interface TemporaryRepository {
 
     boolean create(Object obj);
     boolean createBatch(List objList);
-    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria ResultMapCriteria);
+    boolean findToCreate(Class clzz, Criteria.ResultMapCriteria resultMapCriteria);
 
     boolean createRepository(Class clzz);
     boolean dropRepository(Class clzz);

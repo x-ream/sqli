@@ -36,12 +36,12 @@ import java.util.*;
  */
 public final class RemoveRefreshCreateBiz {
 
-    protected static <T> boolean doIt(Class<T> clzz, Repository repository, RemoveRefreshCreate wrapper) {
+    protected static <T> boolean doIt(Class<T> clzz, Repository repository, RemoveRefreshCreate removeRefreshCreate) {
 
-        Objects.requireNonNull(wrapper, "removeRefreshCreate(wrapper),wrapper is null");
+        Objects.requireNonNull(removeRefreshCreate, "removeRefreshCreate(wrapper),wrapper is null");
 
         Map<Object,T> map = new HashMap<>();
-        List<T> entityList = wrapper.getList();
+        List<T> entityList = removeRefreshCreate.getList();
         if (entityList != null && !entityList.isEmpty()) {
             List<T> list = null;
             Object obj = entityList.get(0);
@@ -68,7 +68,7 @@ public final class RemoveRefreshCreateBiz {
             }
         }
 
-        Object[] ins = wrapper.getIns();
+        Object[] ins = removeRefreshCreate.getIns();
 
         List<Object> inList = new ArrayList<>();
         if (ins != null ) {

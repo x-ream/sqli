@@ -67,7 +67,7 @@ public interface BaseRepository<T> extends Typed<T> {
      * caution:  sometimes, should not use the api </>
      *
      */
-    boolean removeRefreshCreate(RemoveRefreshCreate<T> RemoveRrefreshCreate_wrap);
+    boolean removeRefreshCreate(RemoveRefreshCreate<T> RemoveRrefreshCreate_of);
     /**
      * @param keyOne
      */
@@ -99,11 +99,11 @@ public interface BaseRepository<T> extends Typed<T> {
     /**
      * Standard query pageable API
      *
-     * @param CriteriaBuilder_build_get
+     * @param criteria
      */
-    Page<T> find(Criteria CriteriaBuilder_build_get);
+    Page<T> find(Criteria criteria);
 
-    List<T> list(Criteria CriteriaBuilder_build_get);
+    List<T> list(Criteria criteria);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
