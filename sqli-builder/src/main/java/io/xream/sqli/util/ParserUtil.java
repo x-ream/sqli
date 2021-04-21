@@ -20,6 +20,7 @@ package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -325,7 +326,6 @@ public final class ParserUtil {
         List<Field> list = new ArrayList<>();
 
         try {
-
             list.addAll(Arrays.asList(clz.getDeclaredFields()));
             Class sc = clz.getSuperclass();
             if (sc != Object.class) {
@@ -336,13 +336,17 @@ public final class ParserUtil {
         }
 
         for (Field f : list) {
-            X.Tag a = f.getAnnotation(X.Tag.class);
-            if (a != null) {
+            X.Tag t = f.getAnnotation(X.Tag.class);
+            if (t != null) {
                 f.setAccessible(true);
                 parsed.getTagFieldList().add(f);
-                if (a.isKey()) {
-                    parsed.setTagKeyField(f);
-                }
+            }
+            X.TagTarget tt = f.getAnnotation(X.TagTarget.class);
+            if (tt != null) {
+                f.setAccessible(true);
+                if (parsed.getTagKeyField() != null)
+                    throw new ParsingException("find another annotation: X.TagTarget, class: " + clz);
+                parsed.setTagKeyField(f);
             }
         }
     }

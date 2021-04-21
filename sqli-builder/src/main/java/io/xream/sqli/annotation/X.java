@@ -72,7 +72,11 @@ public @interface X {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD})
     @interface Tag {
-        boolean isKey() default false;
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD})
+    @interface TagTarget {
     }
 
 }

@@ -106,7 +106,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
             return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
         } catch (Exception e) {
             throw ExceptionTranslator.onRollback(obj, e, logger);
-        }
+        }//1618978538016
     }
 
     @Override
