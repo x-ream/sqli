@@ -55,7 +55,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) {
+    public String toConditionSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) {
         if (Objects.isNull(criteriaCondition))
             return "";
         StringBuilder sb = new StringBuilder();
@@ -144,7 +144,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         concatRefresh(sb, parsed, refreshCondition, dialectSupport);
 
-        String conditionSql = toSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
+        String conditionSql = toConditionSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
 
         sb.append(conditionSql);
 

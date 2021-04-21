@@ -29,7 +29,7 @@ import java.util.List;
  */
 public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
 
-    String toSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
+    String toConditionSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
 
     void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
