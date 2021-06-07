@@ -97,7 +97,12 @@ public final class DataObjectConverter {
             } else {
                 value = filter(value);
                 Object v = dialect.mappingToObject(value,ele);
-                method.invoke(obj, v);
+                try {
+                    method.invoke(obj, v);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("method:" + method.getName()+ "; obj.v: " + v );
+                }
             }
 
         }

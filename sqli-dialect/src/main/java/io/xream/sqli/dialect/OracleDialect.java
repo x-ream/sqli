@@ -34,6 +34,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class OracleDialect implements Dialect {
@@ -150,16 +152,21 @@ public class OracleDialect implements Dialect {
             } else {
                 return SqliJsonUtil.toObject(str, ec);
             }
-        }
-
-        if (obj instanceof BigDecimal) {
+        }else if (obj instanceof BigDecimal) {
             return toBigDecimal(ec, obj);
 
         } else if (obj instanceof Timestamp && ec == Date.class) {
             Timestamp ts = (Timestamp) obj;
             return new Date(ts.getTime());
-        }
-        if (EnumUtil.isEnum(ec)) {
+        }else if (obj instanceof LocalDateTime) {
+            if (ec == Date.class) {
+                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                obj = new Date(ts);
+            }else if (ec == Timestamp.class) {
+                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                obj = new Timestamp(ts);
+            }
+        }else if (EnumUtil.isEnum(ec)) {
             return EnumUtil.deserialize(ec, obj.toString());
         }
         return obj;

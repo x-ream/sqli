@@ -27,10 +27,10 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 
 /**
@@ -84,6 +84,14 @@ public class MySqlDialect implements Dialect {
             return new BigDecimal(String.valueOf(obj));
         } else if (ec == double.class || ec == Double.class) {
             return Double.valueOf(obj.toString());
+        } else if (obj instanceof LocalDateTime) {
+            if (ec == Date.class) {
+                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                obj = new Date(ts);
+            }else if (ec == Timestamp.class) {
+                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                obj = new Timestamp(ts);
+            }
         }
 
         return obj;
