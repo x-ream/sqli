@@ -28,6 +28,7 @@ import io.xream.sqli.util.SqliStringUtil;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -86,11 +87,11 @@ public class MySqlDialect implements Dialect {
             return Double.valueOf(obj.toString());
         } else if (obj instanceof LocalDateTime) {
             if (ec == Date.class) {
-                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                obj = new Date(ts);
+                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
+                obj = Date.from(instant);
             }else if (ec == Timestamp.class) {
-                long ts = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                obj = new Timestamp(ts);
+                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
+                obj = Timestamp.from(instant);
             }
         }
 
