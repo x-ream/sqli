@@ -64,6 +64,12 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
                 return this;
             }
 
+            @Override
+            public PageBuilder last(long last) {
+                criteria.setLast(last);
+                return this;
+            }
+
 
         };
         return this.pageBuilder;

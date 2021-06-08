@@ -42,6 +42,7 @@ public final class Page<T> implements Paged, Serializable{
 
 	private int rows = 20;
 	private int page = 1;
+	private long last;
 	private long totalRows = -1;
 	private List<T> list;
 	private List<String> keyList;
@@ -80,6 +81,14 @@ public final class Page<T> implements Paged, Serializable{
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public long getLast() {
+		return last;
+	}
+
+	public void setLast(long last) {
+		this.last = last;
 	}
 
 	public long getTotalRows() {
@@ -190,6 +199,7 @@ public final class Page<T> implements Paged, Serializable{
 				"totalRows=" + totalRows + ", " +
 				"page=" + page + ", " +
 				"rows=" + rows + ", " +
+				"last=" + last + ", " +
 				"sortList=" + sortList + ", " +
 				"list=" + list + ", " +
 				"keyList=" + keyList ;

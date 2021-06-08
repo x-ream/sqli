@@ -91,6 +91,8 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         select(sqlSth, resultKey(sqlSth, criteria, sqlBuildingAttached));
 
         sourceScriptPre(criteria, sqlBuildingAttached);
+
+        lastForPage(criteria);
         /*
          * StringList
          */
@@ -115,6 +117,24 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         sourceScript(sqlSth, criteria);
 
         sqlArr(isSub, criteria.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
+
+    }
+
+    private void lastForPage(Criteria criteria) {
+        long last = criteria.getLast();
+        if (last <= 0)
+            return;
+        List<Sort> list = criteria.getSortList();
+        if (list == null || list.isEmpty())
+            return;
+        Sort sort = list.get(0);
+        Bb bb = new Bb();
+        bb.setC(Op.AND);
+        bb.setKey(sort.getOrderBy());
+        bb.setValue(last);
+        if (sort.getDirection() == Direction.ASC) bb.setP(Op.GT);
+        else bb.setP(Op.LT);
+        criteria.getBbList().add(bb);
 
     }
 

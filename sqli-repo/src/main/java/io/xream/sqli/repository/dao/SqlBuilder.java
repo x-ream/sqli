@@ -46,7 +46,8 @@ public final class SqlBuilder implements ConditionToSql{
 
     protected String buildPageSql(String sql, int page, int rows, Dialect dialect) {
         int start = (page - 1) * rows;
-        return dialect.buildPageSql(sql, start, rows);
+
+        return dialect.buildPageSql(sql, start, rows,0);
     }
 
     /**
@@ -117,8 +118,9 @@ public final class SqlBuilder implements ConditionToSql{
         int rows = criteria.getRows();
 
         int start = (page - 1) * rows;
+        long last = criteria.getLast();
 
-        sql = dialect.buildPageSql(sql, start, rows);
+        sql = dialect.buildPageSql(sql, start, rows,last);
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);

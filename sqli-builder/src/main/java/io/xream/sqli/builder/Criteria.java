@@ -44,6 +44,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	private boolean isTotalRowsIgnored;
 	private int page;
 	private int rows;
+	private long last;
 	private Object routeKey;
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
@@ -130,6 +131,14 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		this.rows = rows;
 	}
 
+	public long getLast() {
+		return last;
+	}
+
+	public void setLast(long last) {
+		this.last = last;
+	}
+
 	@Override
 	public Object getRouteKey() {
 		return routeKey;
@@ -157,6 +166,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		this.isTotalRowsIgnored = paged.isTotalRowsIgnored();
 		this.page = paged.getPage();
 		this.rows = paged.getRows();
+		this.last = paged.getLast();
 		if (this.sortList == null){
 			this.sortList = paged.getSortList();
 		}else{
@@ -171,6 +181,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 				"isTotalRowsIgnored=" + isTotalRowsIgnored +
 				", page=" + page +
 				", rows=" + rows +
+				", last=" + last +
 				", sortList='" + sortList + '\'' +
 				", bbList=" + bbList +
 				", clz=" + clzz +

@@ -30,5 +30,6 @@ public interface Paged {
 	boolean isTotalRowsIgnored();
 	int getPage();
 	int getRows();
+	long getLast();
 	List<Sort> getSortList();
 }

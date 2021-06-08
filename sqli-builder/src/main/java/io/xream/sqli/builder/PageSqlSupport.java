@@ -22,5 +22,5 @@ package io.xream.sqli.builder;
  * @Author Sim
  */
 public interface PageSqlSupport {
-    String buildPageSql(String originSql, long start, long rows);
+    String buildPageSql(String originSql, long start, long rows, long last);
 }

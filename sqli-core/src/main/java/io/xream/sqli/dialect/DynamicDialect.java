@@ -62,8 +62,8 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
-    public String buildPageSql(String sql, long start, long rows) {
-        return getCurrentDialect().buildPageSql(sql,start,rows);
+    public String buildPageSql(String sql, long start, long rows,long last) {
+        return getCurrentDialect().buildPageSql(sql,start,rows,last);
     }
 
     @Override

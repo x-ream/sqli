@@ -28,4 +28,5 @@ public interface PageBuilder {
     PageBuilder ignoreTotalRows();
     PageBuilder rows(int rows);
     PageBuilder page(int page);
+    PageBuilder last(long last);
 }

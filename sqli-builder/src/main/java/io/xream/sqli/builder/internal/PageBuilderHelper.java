@@ -34,7 +34,7 @@ public final class PageBuilderHelper {
 
         long count = 0;
         int rows = criteria.getRows();
-        int page =criteria.getPage();
+        int page = criteria.getPage();
         if (!criteria.isTotalRowsIgnored()) {
             int size = list.size();
             if (page == 0) {
