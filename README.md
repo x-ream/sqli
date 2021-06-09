@@ -171,7 +171,7 @@
         
         分页及排序API  (CriteriaBuilder | ResultMapBuilder)
             30. sort("o.id", Direction.DESC)
-            31. paged().ignoreTotalRows().page(1).rows(10) 
+            31. paged().ignoreTotalRows().page(1).rows(10).last(10000) //设置last(long),会忽略page(int); 
                                            
         更新构建API  (RefreshCondition)
             32. refresh
