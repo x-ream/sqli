@@ -30,6 +30,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 
@@ -173,14 +176,14 @@ public final class ParserUtil {
                 } else if (ec == boolean.class || ec == Boolean.class) {
                     element.setSqlType(SqlFieldType.BYTE);
                     element.setLength(1);
-                } else if (ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class ) {
-                    element.setSqlType(SqlFieldType.DATE);
                 } else if (ec == String.class) {
                     element.setSqlType(SqlFieldType.VARCHAR);
                     if (element.getLength() == 0)
                         element.setLength(60);
                 } else if (ec == BigDecimal.class) {
                     element.setSqlType(SqlFieldType.DECIMAL);
+                } else if (ec == LocalDateTime.class || ec == LocalDate.class || ec == LocalTime.class || ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class ) {
+                    element.setSqlType(SqlFieldType.DATE);
                 } else if (EnumUtil.isEnum(ec)) {
                     element.setSqlType(SqlFieldType.VARCHAR);
                     if (element.getLength() == 0)
