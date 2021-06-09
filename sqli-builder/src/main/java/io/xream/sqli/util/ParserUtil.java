@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 
@@ -182,7 +181,7 @@ public final class ParserUtil {
                         element.setLength(60);
                 } else if (ec == BigDecimal.class) {
                     element.setSqlType(SqlFieldType.DECIMAL);
-                } else if (ec == LocalDateTime.class || ec == LocalDate.class || ec == LocalTime.class || ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class ) {
+                } else if (ec == LocalDateTime.class || ec == LocalDate.class || ec == Date.class || ec == java.sql.Date.class || ec == Timestamp.class ) {
                     element.setSqlType(SqlFieldType.DATE);
                 } else if (EnumUtil.isEnum(ec)) {
                     element.setSqlType(SqlFieldType.VARCHAR);

@@ -19,14 +19,20 @@
 package io.xream.sqli.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +54,41 @@ public final class SqliJsonUtil {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.WRAP_EXCEPTIONS, true);
             objectMapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, true);
+
+            JavaTimeModule javaTimeModule = new JavaTimeModule();
+
+            //LocalDateTime.class
+            javaTimeModule.addSerializer(LocalDateTime.class,new JsonSerializer<LocalDateTime>(){
+                @Override
+                public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                    jsonGenerator.writeNumber(localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                }
+            });
+            javaTimeModule.addDeserializer(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+                @Override
+                public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+                    Long ts = jsonParser.getLongValue();
+                    return Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault()).toLocalDateTime();
+                }
+            });
+
+            //LocalDate.class
+            javaTimeModule.addSerializer(LocalDate.class,new JsonSerializer<LocalDate>(){
+                @Override
+                public void serialize(LocalDate localDate, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                    long ts = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                    jsonGenerator.writeNumber(ts);
+                }
+            });
+            javaTimeModule.addDeserializer(LocalDate.class, new JsonDeserializer<LocalDate>() {
+                @Override
+                public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+                    Long ts = jsonParser.getLongValue();
+                    return LocalDateTime.ofInstant(Instant.ofEpochMilli(ts), ZoneId.systemDefault()).toLocalDate();
+                }
+            });
+
+            objectMapper.registerModule(javaTimeModule);
         }
     }
 
