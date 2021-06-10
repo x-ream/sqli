@@ -24,13 +24,16 @@ import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * @Author Sim
  */
-public final class RefreshCondition<T> extends ConditionCriteriaBuilder implements Mappable,CriteriaCondition, Routable {
+public final class RefreshCondition<T>  implements Mappable,CriteriaCondition, Routable {
 
     private List<Bb> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME
@@ -57,7 +60,6 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
     public List<Bb> getRefreshList() {
         return refreshList;
     }
-
 
     public String getSourceScript() {
         return this.sourceScript;
@@ -90,7 +92,6 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         return Parser.get(this.clz);
     }
 
-
     @Override
     public Object getRouteKey() {
         return routeKey;
@@ -108,58 +109,6 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
         this.limit = limit;
     }
 
-    @Deprecated
-    public RefreshCondition(){
-        super();
-        init(this.bbList);
-    }
-
-
-    public static RefreshCondition build(){
-        return new RefreshCondition();
-    }
-
-
-    public RefreshCondition  and(){
-        return this;
-    }
-
-
-    public RefreshCondition or() {
-        return (RefreshCondition) super.or();
-    }
-
-    /**
-     *
-     * String sqlX = "propertyA = propertyA + propertyB + 1"
-     * @return RefreshCondition
-     */
-    public RefreshCondition refresh(String sqlX){
-
-        if (Objects.isNull(sqlX))
-            return this;
-
-        Bb bb = new Bb();
-        bb.setP(Op.X);
-        bb.setKey(sqlX);
-        this.refreshList.add(bb);
-
-        return this;
-    }
-
-    public RefreshCondition refresh(String property, Object value){
-
-        if (Objects.isNull(value))
-            return this;
-
-        Bb bb = new Bb();
-        bb.setP(Op.EQ);
-        bb.setKey(property);
-        bb.setValue(value);
-        this.refreshList.add(bb);
-
-        return this;
-    }
 
     public KV tryToGetKeyOne() {
         if (clz == null)
@@ -173,86 +122,6 @@ public final class RefreshCondition<T> extends ConditionCriteriaBuilder implemen
             }
         }
         return null;
-    }
-
-
-    public RefreshCondition routeKey(Object routeKey) {
-        this.routeKey = routeKey;
-        return this;
-    }
-
-
-    public RefreshCondition eq(String key, Object value) {
-        return (RefreshCondition) super.eq(key,value);
-    }
-
-    public RefreshCondition gt(String key, Object value) {
-        return (RefreshCondition) super.gt(key,value);
-    }
-
-    public RefreshCondition gte(String key, Object value) {
-        return (RefreshCondition) super.gte(key,value);
-    }
-
-    public RefreshCondition lt(String key, Object value) {
-        return (RefreshCondition) super.lt(key,value);
-    }
-
-    public RefreshCondition lte(String key, Object value) {
-        return (RefreshCondition) super.lte(key,value);
-    }
-
-    public RefreshCondition ne(String property, Object value) {
-        return (RefreshCondition) super.ne(property, value);
-    }
-
-    public RefreshCondition like(String property, String value) {
-        return (RefreshCondition) super.like(property, value);
-    }
-
-    public RefreshCondition likeRight(String property, String value) {
-        return (RefreshCondition) super.likeRight(property, value);
-    }
-
-    public RefreshCondition notLike(String property, String value) {
-        return (RefreshCondition) super.notLike(property, value);
-    }
-
-    public RefreshCondition in(String property, List<? extends Object> list) {
-        return (RefreshCondition) super.in(property,list);
-    }
-
-    public RefreshCondition nin(String property, List<? extends Object> list) {
-        return (RefreshCondition) super.nin(property,list);
-    }
-
-    public RefreshCondition nonNull(String property){
-        return (RefreshCondition) super.nonNull(property);
-    }
-
-    public RefreshCondition isNull(String property){
-        return (RefreshCondition) super.isNull(property);
-    }
-
-    public RefreshCondition  x(String sqlSegment){
-        return (RefreshCondition) super.x(sqlSegment);
-    }
-
-    public RefreshCondition  x(String sqlSegment, Object...values){
-        return (RefreshCondition) super.x(sqlSegment, values);
-    }
-
-    public RefreshCondition  beginSub(){
-        return (RefreshCondition) super.beginSub();
-    }
-
-    public RefreshCondition  endSub(){
-        return (RefreshCondition) super.endSub();
-    }
-
-    public RefreshCondition sourceScript(String sourceScript) {
-        this.sourceScript = sourceScript;
-        return this;
     }
 
 

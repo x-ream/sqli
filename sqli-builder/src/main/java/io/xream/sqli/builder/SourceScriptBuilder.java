@@ -44,7 +44,7 @@ public interface SourceScriptBuilder {
 
     SourceScriptBuilder on(String key, Op op, JoinFrom joinFrom);
 
-    ConditionCriteriaBuilder more();
+    ConditionBuilder more();
 
     static void checkAlia(List<SourceScript> list) {
         for (SourceScript sourceScript : list) {

@@ -22,6 +22,7 @@ import io.xream.sqli.builder.Criteria;
 import io.xream.sqli.page.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Sim
@@ -51,7 +52,10 @@ public final class PageBuilderHelper {
         }
 
         Page<T> pagination = new Page<>();
-        pagination.setClzz(criteria.getClzz());
+        if (criteria instanceof Criteria.ResultMapCriteria)
+            pagination.setClzz(Map.class);
+        else
+            pagination.setClzz(criteria.getClzz());
         pagination.setPage(page == 0 ? 1 : page);
         pagination.setRows(rows == 0 ? Integer.MAX_VALUE : rows);
         pagination.setSortList(criteria.getSortList());

@@ -33,6 +33,11 @@ import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -264,6 +269,19 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                         }
                         v = EnumUtil.serialize((Enum) v);
                         bb.setValue(v);
+                    } else if (be.getClz() == LocalDateTime.class
+                            || be.getClz() == Date.class
+                            || be.getClz() == Timestamp.class
+                            ) {
+                        if (bb.getValue() instanceof Long  || bb.getValue() instanceof Integer) {
+                            bb.setValue(Instant.ofEpochMilli(Long.valueOf(bb.getValue().toString()))
+                                    .atZone(ZoneId.systemDefault()).toLocalDateTime());
+                        }
+                    } else if (be.getClz() == LocalDate.class) {
+                        if (bb.getValue() instanceof Long || bb.getValue() instanceof Integer) {
+                            bb.setValue(Instant.ofEpochMilli(Long.valueOf(bb.getValue().toString()))
+                                    .atZone(ZoneId.systemDefault()).toLocalDate());
+                        }
                     }
                 }
 

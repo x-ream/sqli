@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class CriteriaBuilder extends ConditionCriteriaBuilder {
+public class CriteriaBuilder extends ConditionBuilder {
 
     private Criteria criteria;
     private PageBuilder pageBuilder;
@@ -208,10 +208,10 @@ public class CriteriaBuilder extends ConditionCriteriaBuilder {
             }
 
             @Override
-            public ConditionCriteriaBuilder more() {
+            public ConditionBuilder more() {
                 List<Bb> bbList = new ArrayList<>();
                 sourceScriptTemp.setBbList(bbList);
-                return build(bbList);
+                return builder(bbList);
             }
 
         };

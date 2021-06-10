@@ -170,6 +170,16 @@ public class OracleDialect implements Dialect {
             }else if (ec == LocalDate.class) {
                 obj = ((LocalDateTime)obj).toLocalDate();
             }
+        }else if (obj instanceof Timestamp) {
+            if (ec == LocalDateTime.class) {
+                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
+                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
+            }else if (ec == Date.class) {
+                obj = new Date(((Timestamp)obj).getTime());
+            }else if (ec == LocalDate.class) {
+                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
+                        .atZone(ZoneId.systemDefault()).toLocalDate();
+            }
         }else if (EnumUtil.isEnum(ec)) {
             return EnumUtil.deserialize(ec, obj.toString());
         }
