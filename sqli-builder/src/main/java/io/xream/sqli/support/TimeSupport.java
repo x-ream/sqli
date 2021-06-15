@@ -30,10 +30,35 @@ import java.util.Date;
 /**
  * @Author Sim
  */
-public final class TimestampSupport {
+public final class TimeSupport {
 
-    public static boolean testNumberValueToDate(Class clzz, Bb bb){
-       if (clzz == LocalDateTime.class) {
+    public static Object afterReadTime(Class propertyType, Object obj) {
+        if (obj instanceof LocalDateTime) {
+            if (propertyType == Date.class) {
+                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
+                obj = Date.from(instant);
+            }else if (propertyType == Timestamp.class) {
+                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
+                obj = Timestamp.from(instant);
+            }else if (propertyType == LocalDate.class) {
+                obj = ((LocalDateTime)obj).toLocalDate();
+            }
+        } else if (obj instanceof Timestamp) {
+            if (propertyType == LocalDateTime.class) {
+                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
+                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
+            }else if (propertyType == Date.class) {
+                obj = new Date(((Timestamp)obj).getTime());
+            }else if (propertyType == LocalDate.class) {
+                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
+                        .atZone(ZoneId.systemDefault()).toLocalDate();
+            }
+        }
+        return obj;
+    }
+
+    public static boolean testWriteNumberValueToTime(Class propertyType, Bb bb){
+       if (propertyType == LocalDateTime.class) {
             Object v = bb.getValue();
             if (v instanceof Long || v instanceof Integer) {
                 if (Long.valueOf(v.toString()) == 0){
@@ -44,7 +69,7 @@ public final class TimestampSupport {
                 }
             }
             return true;
-        }else  if (clzz == Date.class) {
+        }else  if (propertyType == Date.class) {
            Object v = bb.getValue();
            if (v instanceof Long || v instanceof Integer) {
                if (Long.valueOf(v.toString()) == 0){
@@ -54,7 +79,7 @@ public final class TimestampSupport {
                }
            }
            return true;
-       } else if (clzz == Timestamp.class) {
+       } else if (propertyType == Timestamp.class) {
            Object v = bb.getValue();
            if (v instanceof Long || v instanceof Integer) {
                if (Long.valueOf(v.toString()) == 0){
@@ -64,7 +89,7 @@ public final class TimestampSupport {
                }
            }
            return true;
-       } else if (clzz == LocalDate.class) {
+       } else if (propertyType == LocalDate.class) {
            Object v = bb.getValue();
            if (v instanceof Long || v instanceof Integer) {
                if (Long.valueOf(v.toString()) == 0){
@@ -76,8 +101,7 @@ public final class TimestampSupport {
            }
            return true;
        }
-
-           return false;
+       return false;
     }
 
     private static long toLongValue(Object v){
@@ -87,7 +111,5 @@ public final class TimestampSupport {
             return ((Long) v).longValue();
         }
     }
-
-
 
 }

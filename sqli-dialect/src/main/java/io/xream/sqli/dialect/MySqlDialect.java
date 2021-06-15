@@ -21,18 +21,17 @@ package io.xream.sqli.dialect;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.support.TimeSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -86,29 +85,10 @@ public class MySqlDialect implements Dialect {
             return new BigDecimal(String.valueOf(obj));
         } else if (ec == double.class || ec == Double.class) {
             return Double.valueOf(obj.toString());
-        } else if (obj instanceof LocalDateTime) {
-            if (ec == Date.class) {
-                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
-                obj = Date.from(instant);
-            }else if (ec == Timestamp.class) {
-                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
-                obj = Timestamp.from(instant);
-            }else if (ec == LocalDate.class) {
-                obj = ((LocalDateTime)obj).toLocalDate();
-            }
-        } else if (obj instanceof Timestamp) {
-            if (ec == LocalDateTime.class) {
-                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
-                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
-            }else if (ec == Date.class) {
-                obj = new Date(((Timestamp)obj).getTime());
-            }else if (ec == LocalDate.class) {
-                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
-                        .atZone(ZoneId.systemDefault()).toLocalDate();
-            }
+        } else {
+            return TimeSupport.afterReadTime(ec,obj);
         }
 
-        return obj;
     }
 
     @Override

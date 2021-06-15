@@ -27,7 +27,7 @@ import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.support.TimestampSupport;
+import io.xream.sqli.support.TimeSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
@@ -182,7 +182,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                             } else {
                                 BeanElement be = parsed.getElement(arr[1]);
                                 if (be != null) {
-                                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
+                                    TimeSupport.testWriteNumberValueToTime(be.getClz(), bb);
                                     if (bb.getValue() == null)
                                         ite.remove();
                                 }
@@ -202,7 +202,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                             } else {
                                 BeanElement be = parsed.getElement(key);
                                 if (be != null) {
-                                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
+                                    TimeSupport.testWriteNumberValueToTime(be.getClz(), bb);
                                     if (bb.getValue() == null)
                                         ite.remove();
                                 }

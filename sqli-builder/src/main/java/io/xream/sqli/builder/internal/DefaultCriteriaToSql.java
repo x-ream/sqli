@@ -28,7 +28,7 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.support.ResultMapSingleSourceSupport;
-import io.xream.sqli.support.TimestampSupport;
+import io.xream.sqli.support.TimeSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;
@@ -233,7 +233,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                         throw new ParsingException("can not find the property " + key + " of " + parsed.getClzName());
                     }
 
-                    TimestampSupport.testNumberValueToDate(be.getClz(), bb);
+                    TimeSupport.testWriteNumberValueToTime(be.getClz(), bb);
 
                     if (SqliStringUtil.isNullOrEmpty(String.valueOf(bb.getValue()))
                             || BaseTypeFilter.isBaseType(key, bb.getValue(), parsed)) {

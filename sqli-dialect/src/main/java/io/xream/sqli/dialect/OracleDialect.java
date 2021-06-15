@@ -23,6 +23,7 @@ import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.support.TimeSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
@@ -34,10 +35,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 public class OracleDialect implements Dialect {
@@ -156,34 +153,15 @@ public class OracleDialect implements Dialect {
             }
         }else if (obj instanceof BigDecimal) {
             return toBigDecimal(ec, obj);
-
         } else if (obj instanceof Timestamp && ec == Date.class) {
             Timestamp ts = (Timestamp) obj;
             return new Date(ts.getTime());
-        }else if (obj instanceof LocalDateTime) {
-            if (ec == Date.class) {
-                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
-                obj = Date.from(instant);
-            }else if (ec == Timestamp.class) {
-                Instant instant = ((LocalDateTime)obj).atZone(ZoneId.systemDefault()).toInstant();
-                obj = Timestamp.from(instant);
-            }else if (ec == LocalDate.class) {
-                obj = ((LocalDateTime)obj).toLocalDate();
-            }
-        }else if (obj instanceof Timestamp) {
-            if (ec == LocalDateTime.class) {
-                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
-                        .atZone(ZoneId.systemDefault()).toLocalDateTime();
-            }else if (ec == Date.class) {
-                obj = new Date(((Timestamp)obj).getTime());
-            }else if (ec == LocalDate.class) {
-                obj = Instant.ofEpochMilli(((Timestamp)obj).getTime())
-                        .atZone(ZoneId.systemDefault()).toLocalDate();
-            }
-        }else if (EnumUtil.isEnum(ec)) {
+        } else if (EnumUtil.isEnum(ec)) {
             return EnumUtil.deserialize(ec, obj.toString());
+        } else {
+            return TimeSupport.afterReadTime(ec,obj);
         }
-        return obj;
+
     }
 
     @Override
