@@ -64,6 +64,7 @@ public final class SqliJsonUtil {
                     jsonGenerator.writeNumber(localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                 }
             });
+
             javaTimeModule.addDeserializer(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
                 @Override
                 public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
@@ -84,7 +85,7 @@ public final class SqliJsonUtil {
                 @Override
                 public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
                     Long ts = jsonParser.getLongValue();
-                    return LocalDateTime.ofInstant(Instant.ofEpochMilli(ts), ZoneId.systemDefault()).toLocalDate();
+                    return Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault()).toLocalDate();
                 }
             });
 
