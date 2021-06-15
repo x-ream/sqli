@@ -21,6 +21,10 @@ package io.xream.sqli.support;
 import io.xream.sqli.builder.Bb;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -29,29 +33,51 @@ import java.util.Date;
 public final class TimestampSupport {
 
     public static boolean testNumberValueToDate(Class clzz, Bb bb){
-        if (clzz == Date.class) {
+       if (clzz == LocalDateTime.class) {
             Object v = bb.getValue();
             if (v instanceof Long || v instanceof Integer) {
                 if (Long.valueOf(v.toString()) == 0){
                     bb.setValue(null);
                 }else {
-                    bb.setValue(new Date(toLongValue(v)));
+                    LocalDateTime time = Instant.ofEpochMilli(toLongValue(v)).atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    bb.setValue(time);
                 }
             }
             return true;
-        } else if (clzz == Timestamp.class) {
-            Object v = bb.getValue();
-            if (v instanceof Long || v instanceof Integer) {
-                if (Long.valueOf(v.toString()) == 0){
-                    bb.setValue(null);
-                }else {
-                    bb.setValue(new Timestamp(toLongValue(v)));
-                }
-            }
-            return true;
-        }
+        }else  if (clzz == Date.class) {
+           Object v = bb.getValue();
+           if (v instanceof Long || v instanceof Integer) {
+               if (Long.valueOf(v.toString()) == 0){
+                   bb.setValue(null);
+               }else {
+                   bb.setValue(new Date(toLongValue(v)));
+               }
+           }
+           return true;
+       } else if (clzz == Timestamp.class) {
+           Object v = bb.getValue();
+           if (v instanceof Long || v instanceof Integer) {
+               if (Long.valueOf(v.toString()) == 0){
+                   bb.setValue(null);
+               }else {
+                   bb.setValue(new Timestamp(toLongValue(v)));
+               }
+           }
+           return true;
+       } else if (clzz == LocalDate.class) {
+           Object v = bb.getValue();
+           if (v instanceof Long || v instanceof Integer) {
+               if (Long.valueOf(v.toString()) == 0){
+                   bb.setValue(null);
+               }else {
+                   LocalDate date = Instant.ofEpochMilli(toLongValue(v)).atZone(ZoneId.systemDefault()).toLocalDate();
+                   bb.setValue(date);
+               }
+           }
+           return true;
+       }
 
-        return false;
+           return false;
     }
 
     private static long toLongValue(Object v){
