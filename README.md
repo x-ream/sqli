@@ -100,7 +100,9 @@
 
         CriteriaBuilder // 返回Criteria, 查出对象形式记录
         CriteriaBuilder.ResultMapBuilder //返回ResultMapCriteria, 查出Map形式记录，支持连表查询
-        RefreshCondition //构建要更新的字段和条件
+        RefreshBuilder //构建要更新的字段和条件
+        
+        没有copy构建要素, 即构建一次, 只可运行一次
         
         代码片段:
             {
@@ -124,7 +126,7 @@
             
             {
                 orderRepository.refresh(
-                    RefreshCondition.build().refresh("status","PAYING").eq("id",1).eq("status","UN_PAID")
+                    RefreshBuilder.builder().refresh("status","PAYING").eq("id",1).eq("status","UN_PAID").build()
                 );
             }
         

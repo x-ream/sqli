@@ -135,7 +135,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         if (sort.getDirection() == Direction.ASC) bb.setP(Op.GT);
         else bb.setP(Op.LT);
         criteria.getBbList().add(bb);
-
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
