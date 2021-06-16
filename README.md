@@ -190,6 +190,11 @@
             in(sql) // 和连表查询及二级缓存的设计有一定的冲突
             union // 过于复杂
             
+        特别提醒
+            Retry和Fallback的正确姿势: add retry at controller, or remote client
+            不能在代码的service和repository层加retry, 和fallback
+            在不适合或没必要用分布式框架(seata, x-ream/reliable)的情况下, 做fallback的时候, 需要小心
+            
 ## 二级缓存 
 
     在x7项目里实现了springBoot的Enable
