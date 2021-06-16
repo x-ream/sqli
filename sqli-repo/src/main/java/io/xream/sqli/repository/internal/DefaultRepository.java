@@ -26,6 +26,7 @@ import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.RefreshCondition;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
+import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parser;
@@ -256,6 +257,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public Page<T> find(Criteria criteria) {
+        assertCriteriaClzz(criteria);
         this.setDefaultClzz(criteria);
         return repository.find(criteria);
     }
@@ -263,6 +265,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public List<T> list(Criteria criteria) {
+        assertCriteriaClzz(criteria);
         this.setDefaultClzz(criteria);
         return repository.list(criteria);
 
@@ -270,6 +273,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
+        assertCriteriaClzz(criteria);
         this.setDefaultClzz(criteria);
         this.repository.findToHandle(criteria,handler);
     }
@@ -310,6 +314,11 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     private void setDefaultClzz(Criteria criteria) {
         criteria.setClzz(this.clzz);
         criteria.setParsed(Parser.get(this.clzz));
+    }
+
+    private void assertCriteriaClzz(Criteria criteria) {
+        if (this.clzz != criteria.getClzz())
+            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + criteria.getClzz());
     }
 
     protected void setRepositoryClzz(Class clzz){
