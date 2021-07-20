@@ -20,6 +20,7 @@ package io.xream.sqli.converter;
 
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.dialect.Dialect;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.mapping.ResultMapHelpful;
 import io.xream.sqli.parser.BeanElement;
@@ -63,6 +64,8 @@ public final class DataObjectConverter {
                         String[] arr = property.split("\\.");
                         String clzName = resultMapHelpful.getAliaMap().get(arr[0]);
                         Parsed parsed = Parser.get(clzName);
+                        if (parsed == null)
+                            throw new ParsingException("clzName: "+clzName + ",alia: " + arr[0] + ", property: " + arr[1]);
                         be = parsed.getElement(arr[1]);
                     } else {
                         Parsed parsed = Parser.get(orClzz);
