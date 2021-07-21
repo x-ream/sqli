@@ -125,12 +125,12 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     }
 
 
-    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql, Mappable mappable) {
+    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql, Mappable mappable,DialectSupport dialectSupport) {
 
         if (subCriteria != null) {
             final SqlBuilt sqlBuilt = new SqlBuilt();
             attached.getSubList().add(sqlBuilt);
-            criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
+            criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached,dialectSupport);
         }
         if (bbList == null || bbList.isEmpty())
             return;

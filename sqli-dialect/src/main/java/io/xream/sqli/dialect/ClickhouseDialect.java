@@ -50,4 +50,9 @@ public final class ClickhouseDialect extends MySqlDialect{
         return SqlScript.DELETE;
     }
 
+    @Override
+    public String withExpress(String alia) {
+        return SqlScript.SUB + SqlScript.AS + alia;
+    }
+
 }

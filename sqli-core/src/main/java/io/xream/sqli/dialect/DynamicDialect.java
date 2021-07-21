@@ -140,4 +140,9 @@ public final class DynamicDialect implements Dialect{
     public List<Object> objectToListForCreate(Object obj, Parsed parsed) {
         return getCurrentDialect().objectToListForCreate(obj,parsed);
     }
+
+    @Override
+    public String withExpress(String alia) {
+        return getCurrentDialect().withExpress(alia);
+    }
 }

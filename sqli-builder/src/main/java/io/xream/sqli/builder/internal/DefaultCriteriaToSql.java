@@ -78,7 +78,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
+    public void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached,DialectSupport dialect) {
 
         SqlSth sqlSth = SqlSth.get();
 
@@ -90,7 +90,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
          */
         select(sqlSth, resultKey(sqlSth, criteria, sqlBuildingAttached));
 
-        sourceScriptPre(criteria, sqlBuildingAttached);
+        sourceScriptPre(criteria, sqlBuildingAttached, dialect);
 
         lastForPage(criteria);
         /*
@@ -114,7 +114,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         /*
          * from table
          */
-        sourceScript(sqlSth, criteria);
+        sourceScript(sqlSth, criteria,dialect);
 
         sqlArr(isSub, criteria.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
 
@@ -678,21 +678,23 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
     }
 
-    private void with(SqlSth sb, Criteria.ResultMapCriteria rmc) {
+    private void with(SqlSth sb, Criteria.ResultMapCriteria rmc,DialectSupport dialectSupport) {
         
         List<SourceScript> ssList = rmc.getSourceScripts();
+        String subStr = null;
         for (SourceScript ss : ssList) {
             if (ss.isWith()) {
-                sb.with = sb.with == null ? "WITH " : (sb.with + SqlScript.COMMA+SqlScript.SPACE);
-                sb.with += (ss.getAlia() + SqlScript.AS + SqlScript.SUB );
+                subStr = subStr == null ? "" : subStr + ", ";
+                //(ss.getAlia() + SqlScript.AS + SqlScript.SUB )
+                subStr += dialectSupport.withExpress(ss.getAlia());
             }
         }
-        if (sb.with != null){
-            sb.with += SqlScript.SPACE;
+        if (subStr != null){
+            sb.with = "WITH " + subStr + SqlScript.SPACE;
         }
     }
 
-    private void sourceScript(SqlSth sb, Criteria criteria) {
+    private void sourceScript(SqlSth sb, Criteria criteria,DialectSupport dialect) {
 
         sb.sbSource.append(SqlScript.SPACE);
 
@@ -714,7 +716,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 script = rmc.getSourceScripts().stream()
                         .map(sourceScript -> sourceScript.sql(rmc))
                         .collect(Collectors.joining()).trim();
-                with(sb,rmc);
+                with(sb,rmc,dialect);
             }
 
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
@@ -786,10 +788,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void sourceScriptPre(Criteria criteria, SqlBuildingAttached attached) {
+    private void sourceScriptPre(Criteria criteria, SqlBuildingAttached attached,DialectSupport dialect) {
         if (criteria instanceof Criteria.ResultMapCriteria) {
             for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                sourceScript.pre(attached, this, criteria);
+                sourceScript.pre(attached, this, criteria,dialect);
             }
         }
     }

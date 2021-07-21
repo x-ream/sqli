@@ -280,4 +280,9 @@ public class OracleDialect implements Dialect {
         return list;
 
     }
+
+    @Override
+    public String withExpress(String alia) {
+        return alia + SqlScript.AS + SqlScript.SUB;
+    }
 }
