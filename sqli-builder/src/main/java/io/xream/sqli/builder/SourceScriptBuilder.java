@@ -30,9 +30,12 @@ import java.util.List;
  * @Author Sim
  */
 public interface SourceScriptBuilder {
+
     SourceScriptBuilder source(String source);
 
     SourceScriptBuilder sub(Sub sub);
+
+    SourceScriptBuilder with(Sub sub);
 
     SourceScriptBuilder alia(String alia);
 

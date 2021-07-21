@@ -25,6 +25,7 @@ public final class SqlBuilt {
 
     private String countSql;
     private StringBuilder sql;
+    private boolean isWith;
 
     public String getCountSql() {
         return countSql;
@@ -42,4 +43,11 @@ public final class SqlBuilt {
         this.sql = sql;
     }
 
+    public boolean isWith() {
+        return isWith;
+    }
+
+    public void setWith(boolean with) {
+        isWith = with;
+    }
 }

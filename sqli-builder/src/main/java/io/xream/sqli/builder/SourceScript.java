@@ -35,6 +35,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     private On on;
     private String alia;
     private List<Bb> bbList;
+    private boolean isWith;
 
     private transient boolean used;
     private transient boolean targeted;
@@ -77,6 +78,14 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
 
     public void setBbList(List<Bb> bbs) {
         this.bbList = bbs;
+    }
+
+    public boolean isWith() {
+        return isWith;
+    }
+
+    public void setWith(boolean with) {
+        isWith = with;
     }
 
     public On getOn() {
@@ -133,7 +142,7 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
         if (SqliStringUtil.isNullOrEmpty(source) && subCriteria == null)
             return "";
         if (subCriteria != null) {
-            source = SqlScript.SUB;
+            source = isWith ? "" : SqlScript.SUB;
         }
         if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
             if (alia != null && !alia.equals(source)) {

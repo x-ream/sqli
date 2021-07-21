@@ -166,6 +166,12 @@ public class CriteriaBuilder extends ConditionBuilder {
             }
 
             @Override
+            public SourceScriptBuilder with(Sub sub){
+                sourceScriptTemp.setWith(true);
+                return sub(sub);
+            }
+
+            @Override
             public SourceScriptBuilder alia(String alia) {
                 sourceScriptTemp.setAlia(alia);
                 return this;

@@ -51,7 +51,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             instance = new DefaultCriteriaToSql();
             return instance;
         }
-        return null;
+        return instance;
     }
 
     @Override
@@ -632,6 +632,22 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
     }
 
+    private void with(SqlSth sb, Criteria.ResultMapCriteria rmc) {
+        String withStr = null;
+        List<SourceScript> ssList = rmc.getSourceScripts();
+        for (SourceScript ss : ssList) {
+            if (ss.isWith()) {
+                withStr = withStr == null ? "WITH " : (withStr + SqlScript.COMMA+SqlScript.SPACE);
+                withStr += (ss.getAlia() + SqlScript.AS + SqlScript.LEFT_PARENTTHESIS
+                        + SqlScript.SUB + SqlScript.RIGHT_PARENTTHESIS);
+            }
+        }
+        if (withStr != null){
+            withStr += SqlScript.SPACE;
+            sb.sbSource.insert(0,withStr);
+        }
+    }
+
     private void sourceScript(SqlSth sb, Criteria criteria) {
 
         sb.sbSource.append(SqlScript.SPACE);
@@ -654,6 +670,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 script = rmc.getSourceScripts().stream()
                         .map(sourceScript -> sourceScript.sql(rmc))
                         .collect(Collectors.joining()).trim();
+                with(sb,rmc);
             }
 
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
