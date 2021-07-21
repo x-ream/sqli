@@ -284,8 +284,16 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     private void sqlArr(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
+        if (sb.with == null)
+            sqlArr0(isSub,isTotalRowsIgnored,sqlBuilt,sqlBuildingAttached,sb);
+        else
+            sqlArr1(isSub,isTotalRowsIgnored,sqlBuilt,sqlBuildingAttached,sb);
+    }
+
+    private void sqlArr0(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
 
         if (!isSub) {
+
             for (SqlBuilt sub : sqlBuildingAttached.getSubList()) {
                 int start = sb.sbSource.indexOf(SqlScript.SUB);
                 sb.sbSource.replace(start, start + SqlScript.SUB.length(),
@@ -299,6 +307,44 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                         .append(sb.sbSource).append(sb.countCondition);
                 sqlBuilt.setCountSql(sqlSb.toString());
             }
+        }
+
+        StringBuilder sqlSb = new StringBuilder();
+        sqlSb.append(sb.sbResult).append(sb.sbSource).append(sb.sbCondition);
+
+        sqlBuilt.setSql(sqlSb);
+    }
+
+    private void sqlArr1(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
+
+        if (!isSub) {
+
+            StringBuilder sqlSb = new StringBuilder();
+            sqlSb.append(sb.with).append(SqlScript.WITH_PLACE).append(sb.sbSource);
+
+            for (SqlBuilt sub : sqlBuildingAttached.getSubList()) {
+                int start = sqlSb.indexOf(SqlScript.SUB);
+                sqlSb.replace(start, start + SqlScript.SUB.length(),
+                        SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
+                );
+            }
+
+            if (!isTotalRowsIgnored) {
+                StringBuilder sqlSbc = new StringBuilder();
+
+                sqlSbc.append(sqlSb);
+                int start = sqlSbc.indexOf(SqlScript.WITH_PLACE);
+                sqlSbc.replace(start, start + SqlScript.WITH_PLACE.length(),
+                        SqlScript.SELECT + SqlScript.SPACE + sb.countSql + SqlScript.SPACE);
+
+                sqlSbc.append(sb.countCondition);
+                sqlBuilt.setCountSql(sqlSbc.toString());
+            }
+
+            int start = sqlSb.indexOf(SqlScript.WITH_PLACE);
+            sqlSb.replace(start, start + SqlScript.WITH_PLACE.length(),sb.sbResult.toString()).append(sb.sbCondition);
+            sqlBuilt.setSql(sqlSb);
+            return;
         }
 
         StringBuilder sqlSb = new StringBuilder();
@@ -633,18 +679,16 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     private void with(SqlSth sb, Criteria.ResultMapCriteria rmc) {
-        String withStr = null;
+        
         List<SourceScript> ssList = rmc.getSourceScripts();
         for (SourceScript ss : ssList) {
             if (ss.isWith()) {
-                withStr = withStr == null ? "WITH " : (withStr + SqlScript.COMMA+SqlScript.SPACE);
-                withStr += (ss.getAlia() + SqlScript.AS + SqlScript.LEFT_PARENTTHESIS
-                        + SqlScript.SUB + SqlScript.RIGHT_PARENTTHESIS);
+                sb.with = sb.with == null ? "WITH " : (sb.with + SqlScript.COMMA+SqlScript.SPACE);
+                sb.with += (ss.getAlia() + SqlScript.AS + SqlScript.SUB );
             }
         }
-        if (withStr != null){
-            withStr += SqlScript.SPACE;
-            sb.sbSource.insert(0,withStr);
+        if (sb.with != null){
+            sb.with += SqlScript.SPACE;
         }
     }
 
@@ -770,6 +814,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
     public static final class SqlSth {
 
+        private String with = null;
         private StringBuilder sbResult = new StringBuilder();
         private StringBuilder sbSource = new StringBuilder();
         private StringBuilder sbCondition = new StringBuilder();

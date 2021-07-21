@@ -145,6 +145,7 @@ public interface SqlScript extends Script {
 	String SINGLE_QUOTES = "'";
 	String KEYWORD_MARK = "`";
 	String SUB = "${SUB}";
+	String WITH_PLACE = "${WP}";
 	String LIMIT_ONE = " LIMIT 1";
 
 	String CREATE_TEMPORARY_TABLE = "CREATE TEMPORARY TABLE IF NOT EXISTS ";
