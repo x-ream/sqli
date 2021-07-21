@@ -686,7 +686,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (ss.isWith()) {
                 subStr = subStr == null ? "" : subStr + ", ";
                 //(ss.getAlia() + SqlScript.AS + SqlScript.SUB )
-                subStr += dialectSupport.withExpress(ss.getAlia());
+                subStr += dialectSupport.withOfSub(ss.getAlia());
             }
         }
         if (subStr != null){

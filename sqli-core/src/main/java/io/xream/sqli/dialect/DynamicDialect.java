@@ -142,7 +142,7 @@ public final class DynamicDialect implements Dialect{
     }
 
     @Override
-    public String withExpress(String alia) {
-        return getCurrentDialect().withExpress(alia);
+    public String withOfSub(String alia) {
+        return getCurrentDialect().withOfSub(alia);
     }
 }

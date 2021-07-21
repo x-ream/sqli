@@ -282,7 +282,7 @@ public class OracleDialect implements Dialect {
     }
 
     @Override
-    public String withExpress(String alia) {
+    public String withOfSub(String alia) {
         return alia + SqlScript.AS + SqlScript.SUB;
     }
 }
