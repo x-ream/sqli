@@ -110,7 +110,7 @@ public final class SqlBuilder implements ConditionToSql{
             public List<SqlBuilt> getSubList() {
                 return subList;
             }
-        },dialect);
+        });
 
         String sql = sqlBuilt.getSql().toString();
 

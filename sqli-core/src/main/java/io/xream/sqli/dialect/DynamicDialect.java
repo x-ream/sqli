@@ -141,8 +141,4 @@ public final class DynamicDialect implements Dialect{
         return getCurrentDialect().objectToListForCreate(obj,parsed);
     }
 
-    @Override
-    public String withOfSub(String alia) {
-        return getCurrentDialect().withOfSub(alia);
-    }
 }

@@ -53,8 +53,6 @@ public interface DialectSupport {
     void filterTags(List<BeanElement> list,List<Field> tagList);
     List<Object> objectToListForCreate(Object obj, Parsed parsed);
 
-    String withOfSub(String alia);
-
     default void objectToListForCreate(List<Object> list, Object obj, List<BeanElement> tempList) {
 
         try {

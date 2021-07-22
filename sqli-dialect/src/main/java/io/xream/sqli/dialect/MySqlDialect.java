@@ -182,8 +182,5 @@ public class MySqlDialect implements Dialect {
         return list;
     }
 
-    public String withOfSub(String alia) {
-        return alia + SqlScript.AS + SqlScript.SUB;
-    }
 
 }
