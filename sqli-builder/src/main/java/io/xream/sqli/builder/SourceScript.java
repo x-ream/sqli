@@ -139,11 +139,13 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     }
 
     public String sql(Mappable mappable) {
-        if (SqliStringUtil.isNullOrEmpty(source) && subCriteria == null)
+        if ((SqliStringUtil.isNullOrEmpty(source) && SqliStringUtil.isNullOrEmpty(alia))
+                && subCriteria == null)
             return "";
-        if (subCriteria != null) {
+        if (subCriteria != null)
             source = isWith ? "" : SqlScript.SUB;
-        }
+        if (source == null)
+            source = "";
         if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
             if (alia != null && !alia.equals(source)) {
                 return mapping(source, mappable) + " " + alia;
