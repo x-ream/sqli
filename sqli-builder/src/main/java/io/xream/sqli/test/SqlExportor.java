@@ -94,6 +94,11 @@ public class SqlExportor {
             sb.append("-- -------------------------------------------").append("\r\n").append("\r\n");
         }
 
+        write(fileName,sb);
+
+    }
+
+    private static void write(String fileName, StringBuilder sb) {
         try {
             File d = new File(".sql");
             if (! d.exists()){
@@ -106,7 +111,8 @@ public class SqlExportor {
                     }
                 }
             }
-            Files.write(Paths.get(".sql/" + fileName + ".sql"), sb.toString().getBytes());
+            fileName = fileName.endsWith(".sql") ? fileName : fileName + ".sql";
+            Files.write(Paths.get(".sql/" + fileName), sb.toString().getBytes());
         }catch (Exception e){
             e.printStackTrace();
         }finally {
