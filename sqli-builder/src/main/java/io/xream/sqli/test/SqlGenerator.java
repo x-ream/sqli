@@ -31,36 +31,36 @@ import java.util.List;
 /**
  * @Author Sim
  */
-public class SqlExportor {
+public class SqlGenerator {
 
-    private static SqlExportor instance;
+    private static SqlGenerator instance;
     private static CriteriaToSql criteriaToSql;
 
     private static List<KV> resultMapCriteriaList = new ArrayList<>();
 
 
-    private SqlExportor(){}
+    private SqlGenerator(){}
 
-    public static SqlExportor exportor() {
+    public static SqlGenerator generator() {
         if (criteriaToSql == null) {
             criteriaToSql = DefaultCriteriaToSql.newInstance();
-            instance = new SqlExportor();
+            instance = new SqlGenerator();
         }
         return instance;
     }
 
-    public SqlExportor source(Class<?> clzz) {
+    public SqlGenerator source(Class<?> clzz) {
         Parser.parse(clzz);
         return instance;
     }
 
-    public SqlExportor build(String traceKey, Criteria.ResultMapCriteria resultMapCriteria){
+    public SqlGenerator build(String traceKey, Criteria.ResultMapCriteria resultMapCriteria){
         KV kv = new KV(traceKey,resultMapCriteria);
         resultMapCriteriaList.add(kv);
         return instance;
     }
 
-    public void export(String fileName){
+    public void generate(String fileName){
 
         StringBuilder sb = new StringBuilder();
 
