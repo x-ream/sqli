@@ -18,13 +18,9 @@
  */
 package io.xream.sqli.test;
 
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.CriteriaToSql;
-import io.xream.sqli.builder.SqlBuildingAttached;
-import io.xream.sqli.builder.SqlBuilt;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
 import io.xream.sqli.parser.Parser;
-import javafx.util.Pair;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -40,7 +36,7 @@ public class SqlExportor {
     private static SqlExportor instance;
     private static CriteriaToSql criteriaToSql;
 
-    private static List<Pair<String,Criteria.ResultMapCriteria>> resultMapCriteriaList = new ArrayList<>();
+    private static List<KV> resultMapCriteriaList = new ArrayList<>();
 
 
     private SqlExportor(){}
@@ -59,8 +55,8 @@ public class SqlExportor {
     }
 
     public SqlExportor build(String traceKey, Criteria.ResultMapCriteria resultMapCriteria){
-        Pair<String,Criteria.ResultMapCriteria> pair = new Pair<>(traceKey,resultMapCriteria);
-        resultMapCriteriaList.add(pair);
+        KV kv = new KV(traceKey,resultMapCriteria);
+        resultMapCriteriaList.add(kv);
         return instance;
     }
 
@@ -68,7 +64,7 @@ public class SqlExportor {
 
         StringBuilder sb = new StringBuilder();
 
-        for (Pair<String,Criteria.ResultMapCriteria> pair : resultMapCriteriaList) {
+        for (KV kv : resultMapCriteriaList) {
 
             SqlBuilt sqlBuilt = new SqlBuilt();
 
@@ -86,9 +82,9 @@ public class SqlExportor {
                     return sqlBuiltList;
                 }
             };
-            criteriaToSql.toSql(false,pair.getValue(),sqlBuilt,sqlBuildingAttached);
+            criteriaToSql.toSql(false,(Criteria.ResultMapCriteria) kv.getV(),sqlBuilt,sqlBuildingAttached);
 
-            sb.append("-- Test trace: " + pair.getKey()).append("\r\n");
+            sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");
             sb.append(sqlBuilt.getSql()).append("\r\n");
             sb.append("-- -------------------------------------------").append("\r\n").append("\r\n");
