@@ -278,8 +278,6 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             }
             v = EnumUtil.serialize((Enum) v);
             bb.setValue(v);
-        } else {
-
         }
     }
 
