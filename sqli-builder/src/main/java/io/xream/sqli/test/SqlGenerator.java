@@ -86,7 +86,7 @@ public class SqlGenerator {
 
             sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");
-            sb.append(sqlBuilt.getSql()).append("\r\n");
+            sb.append(sqlBuilt.getSql()).append(";").append("\r\n");
             sb.append("-- -------------------------------------------").append("\r\n").append("\r\n");
         }
 
@@ -99,13 +99,6 @@ public class SqlGenerator {
             File d = new File(".sql");
             if (! d.exists()){
                 d.mkdir();
-            }else {
-                File[] arr = d.listFiles();
-                if (arr != null) {
-                    for (File f : arr) {
-                        f.delete();
-                    }
-                }
             }
             fileName = fileName.endsWith(".sql") ? fileName : fileName + ".sql";
             Files.write(Paths.get(".sql/" + fileName), sb.toString().getBytes());
