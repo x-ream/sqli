@@ -25,8 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.xream.sqli.exception.JsonException;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -42,7 +41,6 @@ import java.util.Map;
  * @Author Sim
  */
 public final class SqliJsonUtil {
-    private static final Logger logger = LoggerFactory.getLogger(SqliJsonUtil.class);
 
     private static ObjectMapper objectMapper;
 
@@ -107,9 +105,8 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (Exception e) {
-            logger.info(SqliExceptionUtil.getMessage(e));
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public static <T> T toObject(String json, Class<T> clzz) {
@@ -121,9 +118,9 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.readValue(json, clzz);
         } catch (Exception e) {
-            logger.info(SqliExceptionUtil.getMessage(e));
+            throw new JsonException(e);
         }
-        return null;
+
     }
 
 
@@ -136,9 +133,8 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.convertValue(jsonObject,clzz);
         } catch (Exception e) {
-            logger.info(SqliExceptionUtil.getMessage(e));
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public static <E> List<E> toList(Object jsonObject, Class<E> clzz) {
@@ -148,9 +144,8 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.convertValue(jsonObject,javaType);
         } catch (Exception e) {
-            logger.info(SqliExceptionUtil.getMessage(e));
+            throw new JsonException(e);
         }
-        return null;
     }
 
 
@@ -161,9 +156,8 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.readValue(json, javaType);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public static <K,V> Map<K,V> toMap(String json, Class<K> kClzz, Class<V> vClZZ) {
@@ -173,9 +167,8 @@ public final class SqliJsonUtil {
             MapType mapType = objectMapper.getTypeFactory().constructMapType(HashMap.class, kClzz,vClZZ);
             return objectMapper.readValue(json, mapType);
         }catch (Exception e) {
-            logger.info(e.getMessage());
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public static Map toMap(String json) {
@@ -184,9 +177,8 @@ public final class SqliJsonUtil {
         try {
             return objectMapper.readValue(json, Map.class);
         }catch (Exception e) {
-            logger.info(e.getMessage());
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public interface Customizer {
