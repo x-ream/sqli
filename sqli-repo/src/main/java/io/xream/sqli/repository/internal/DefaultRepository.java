@@ -189,9 +189,6 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     @Override
     public T get(long keyOne) {
 
-        if (keyOne == 0)
-            return null;
-
         return repository.get(new KeyOne<T>() {
             @Override
             public Object get() {
