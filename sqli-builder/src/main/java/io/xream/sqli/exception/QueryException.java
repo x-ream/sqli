@@ -29,4 +29,8 @@ public class QueryException extends RuntimeException{
 		super(message);
 	}
 
+	public QueryException(Throwable t) {
+		super(t);
+	}
+
 }

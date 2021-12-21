@@ -27,7 +27,6 @@ import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -63,11 +62,11 @@ public interface DialectSupport {
                     if (EnumUtil.isEnum(clz))
                         throw new PersistenceException(
                                 "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
-                    if (clz == Boolean.class || clz == Integer.class || clz == Long.class
-                            || clz == Double.class || clz == Float.class || clz == BigDecimal.class
-                            || clz == Byte.class || clz == Short.class)
-                        list.add(0);
-                    else
+//                    if (clz == Boolean.class || clz == Integer.class || clz == Long.class
+//                            || clz == Double.class || clz == Float.class || clz == BigDecimal.class
+//                            || clz == Byte.class || clz == Short.class)
+//                        list.add(0);
+//                    else
                         list.add(null);
                 } else {
                     if (ele.isJson()) {
@@ -84,7 +83,7 @@ public interface DialectSupport {
             }
         } catch (Exception e) {
             SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-            throw new ParsingException(SqliExceptionUtil.getMessage(e));
+            throw new ParsingException(e);
         }
 
 

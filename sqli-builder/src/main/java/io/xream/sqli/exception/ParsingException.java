@@ -28,4 +28,8 @@ public class ParsingException extends RuntimeException implements Serializable {
     public ParsingException(String message){
         super(message);
     }
+
+    public ParsingException(Throwable t) {
+        super(t);
+    }
 }

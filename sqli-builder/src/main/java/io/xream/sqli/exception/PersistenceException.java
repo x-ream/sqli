@@ -29,4 +29,8 @@ public class PersistenceException extends RuntimeException{
 		super(message);
 	}
 
+	public PersistenceException(Throwable t) {
+		super(t);
+	}
+
 }

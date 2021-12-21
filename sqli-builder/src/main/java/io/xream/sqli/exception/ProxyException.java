@@ -26,4 +26,8 @@ public class ProxyException extends RuntimeException {
     public ProxyException(String message){
         super(message);
     }
+
+    public ProxyException(Throwable t) {
+        super(t);
+    }
 }

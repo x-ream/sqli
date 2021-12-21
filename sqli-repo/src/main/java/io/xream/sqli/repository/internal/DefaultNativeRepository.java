@@ -59,7 +59,7 @@ public final class DefaultNativeRepository implements NativeRepository, DynamicD
 			return nativeSupport.execute(sql, objs);
 		}catch (Exception e) {
 			SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-			throw new PersistenceException(SqliExceptionUtil.getMessage(e));
+			throw new PersistenceException(e);
 		}finally {
 			removeDialectKey();
 		}

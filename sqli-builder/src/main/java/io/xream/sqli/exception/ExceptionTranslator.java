@@ -32,20 +32,14 @@ public class ExceptionTranslator {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
         if (t instanceof RuntimeException)
             throw (RuntimeException)t;
-        String msg = SqliExceptionUtil.getMessage(t);
-        String objStr = obj == null ? "": obj.toString();
-        String logStr =  objStr + ", Exception: " + msg;
-        String eStr =  objStr + ", \nException: " + msg;
-        logger.error(logStr);
-        return new PersistenceException(eStr);
+        return new PersistenceException(e);
     }
 
     public static QueryException onQuery(Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
         if (t instanceof RuntimeException)
             throw (RuntimeException)t;
-        String msg = SqliExceptionUtil.getMessage(t);
-        logger.error(msg);
-        return new QueryException(msg);
+        logger.error(SqliExceptionUtil.getMessage(t));
+        return new QueryException(e);
     }
 }

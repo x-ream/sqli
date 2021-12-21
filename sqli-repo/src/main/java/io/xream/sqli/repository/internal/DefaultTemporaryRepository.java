@@ -81,7 +81,7 @@ public final class DefaultTemporaryRepository implements TemporaryRepository, Dy
         }catch (Exception e){
             logger.warn("{} exception: {}" , logTag, SqliExceptionUtil.getMessage(e));
             SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-            throw new ProxyException(SqliExceptionUtil.getMessage(e));
+            throw new ProxyException(e);
         }finally {
             removeDialectKey();
             long endTime = System.currentTimeMillis();
