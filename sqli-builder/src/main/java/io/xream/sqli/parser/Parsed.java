@@ -179,7 +179,6 @@ public final class Parsed {
 		this.isNoCache = isNoCache;
 	}
 
-
 	public String getMapper(String property) {
 		return propertyMapperMap.get(property);
 	}

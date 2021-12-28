@@ -638,7 +638,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         String script = refreshCondition.getSourceScript();//string -> list<>
         List<String> list = SourceScriptBuilder.split(script);
         List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
-        SourceScriptBuilder.checkAlia(sourceScripts);
+        SourceScriptBuilder.checkSourceAndAlia(sourceScripts);
         for (SourceScript sc : sourceScripts) {
             refreshCondition.getAliaMap().put(sc.alia(), sc.getSource());
         }
@@ -659,7 +659,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
 
-            SourceScriptBuilder.checkAlia(rmc.getSourceScripts());
+            SourceScriptBuilder.checkSourceAndAlia(rmc.getSourceScripts());
             supportSingleSource(rmc);
 
             Map<String, String> aliaMap = rmc.getAliaMap();

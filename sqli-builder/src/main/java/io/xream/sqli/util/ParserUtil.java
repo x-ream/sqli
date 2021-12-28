@@ -120,7 +120,6 @@ public final class ParserUtil {
                     be.setSetter(setter);
                 }
             }
-
         }
     }
 

@@ -18,6 +18,7 @@
  */
 package io.xream.sqli.mapping;
 
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.ParserUtil;
@@ -60,12 +61,15 @@ public interface Mapper {
             if (parsed == null)
                 return key;
 
-            String p = parsed.getMapper(property);
-            if (SqliStringUtil.isNullOrEmpty(p)) {
-                return mappable.getResultKeyAliaMap().get(key);
+            String m = parsed.getMapper(property);
+            if (SqliStringUtil.isNullOrEmpty(m)) {
+                String s = mappable.getResultKeyAliaMap().get(key);
+                if (SqliStringUtil.isNullOrEmpty(s))
+                    throw new ParsingException(key);
+                return s;
             }
 
-            return parsed.getTableName(alia) + Script.DOT + p;
+            return parsed.getTableName(alia) + Script.DOT + m;
         }
 
         /*
@@ -105,9 +109,9 @@ public interface Mapper {
             String clzName = ParserUtil.getClzName(alia, mappable.getAliaMap());
 
             Parsed parsed = Parser.get(clzName);
-            if (parsed != null){
+            if (parsed != null) {
                 return parsed.getElement(property).getClz();
-            }else {
+            } else {
                 return String.class;
             }
         }

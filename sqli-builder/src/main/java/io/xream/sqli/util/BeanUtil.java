@@ -55,5 +55,4 @@ public final class BeanUtil {
         return getByFirstLower(str);
     }
 
-
 }

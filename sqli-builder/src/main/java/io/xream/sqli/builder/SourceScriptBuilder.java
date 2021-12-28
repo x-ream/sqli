@@ -20,6 +20,7 @@ package io.xream.sqli.builder;
 
 
 import io.xream.sqli.exception.NotSupportedException;
+import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;
 
@@ -49,9 +50,21 @@ public interface SourceScriptBuilder {
 
     ConditionBuilder more();
 
-    static void checkAlia(List<SourceScript> list) {
+
+    static void checkSourceAndAlia(List<SourceScript> list) {
         for (SourceScript sourceScript : list) {
-            String source = sourceScript.getSource();
+            final String source = sourceScript.getSource();
+            if (SqliStringUtil.isNotNull(source) && !Parser.contains(source)) {
+                String tip = "";
+                if (sourceScript.getJoinType() != null) {
+                    tip += sourceScript.getJoinType().name().replace("_"," ");
+                }else if(SqliStringUtil.isNotNull(sourceScript.getJoinStr())){
+                    tip += sourceScript.getJoinStr();
+                }else {
+                    tip += SqlScript.FROM;
+                }
+                throw new ParsingException(tip + SqlScript.SPACE + source);
+            }
             String alia = sourceScript.getAlia();
             if (source !=null && alia !=null && !alia.equals(source) && Parser.contains(alia)) {
                 throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
