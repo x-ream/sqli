@@ -55,4 +55,11 @@ public final class BeanUtil {
         return getByFirstLower(str);
     }
 
+    public static String getBooleanPropertyNoIs(String property) {
+        if (property.startsWith("is")) {
+            String str = property.substring(2);
+            return getByFirstLower(str);
+        }
+        return property;
+    }
 }

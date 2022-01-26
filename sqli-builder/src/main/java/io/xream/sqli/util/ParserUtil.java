@@ -86,7 +86,10 @@ public final class ParserUtil {
         }
     }
 
-    private static void parseFilterListOfElementList(List<BeanElement> filterList, Set<String> mns, List<Method> ml) {
+    private static void parseFilterListOfElementList(List<BeanElement> filterList,
+                                                     Set<String> mns,
+                                                     List<Method> ml,
+                                                     Map<String, Field> allMap) {
 
         for (Method m : ml) {
             String name = m.getName();
@@ -96,6 +99,14 @@ public final class ParserUtil {
             String key = BeanUtil.getProperty(name);
             BeanElement be = null;
             for (BeanElement b : filterList) {
+                if (key.startsWith("is")){
+                    if (!allMap.containsKey(key)){
+                        String noIs = BeanUtil.getBooleanPropertyNoIs(key);
+                        if (allMap.containsKey(noIs)){
+                            key = noIs;
+                        }
+                    }
+                }
                 if (b.getProperty().equals(key)) {
                     be = b;
                     break;
@@ -114,7 +125,7 @@ public final class ParserUtil {
             } else if (name.startsWith("is")) {
                 be.setGetter(name);
                 be.setClz(m.getReturnType());
-                be.setProperty(name);
+//                be.setProperty(name);
                 String setter = BeanUtil.getSetter(name); // FIXME 可能有BUG
                 if (mns.contains(setter)) {
                     be.setSetter(setter);
@@ -247,7 +258,7 @@ public final class ParserUtil {
 
 
         List<BeanElement> filterList = new ArrayList<>();
-        parseFilterListOfElementList(filterList, mns, ml);
+        parseFilterListOfElementList(filterList, mns, ml,allMap);
         filterElementList(filterList, filterMap);
 
         List<BeanElement> list = buildElementList(clz, filterList, allMap);
