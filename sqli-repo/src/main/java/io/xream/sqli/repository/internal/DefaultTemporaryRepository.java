@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DefaultTemporaryRepository implements TemporaryRepository, DynamicDialectKeyRemovable {
 

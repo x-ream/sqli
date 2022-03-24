@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class Sort implements Serializable {
     private static final long serialVersionUID = 7492946384236689679L;

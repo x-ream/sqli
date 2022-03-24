@@ -24,7 +24,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ResultMapSingleSourceSupport {
 

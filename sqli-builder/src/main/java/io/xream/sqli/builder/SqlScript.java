@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface SqlScript extends Script {
 

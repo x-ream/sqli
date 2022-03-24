@@ -21,7 +21,7 @@ package io.xream.sqli.mapping;
 import java.util.Map;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ResultMapHelpful extends Mappable {
     Map<String,String> getMapperPropertyMap();

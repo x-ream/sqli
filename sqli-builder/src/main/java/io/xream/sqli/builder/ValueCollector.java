@@ -23,7 +23,7 @@ import io.xream.sqli.mapping.Mapper;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ValueCollector extends Mapper {
 

@@ -21,7 +21,7 @@ package io.xream.sqli.api.customizer;
 import io.xream.sqli.support.EnumSupport;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface EnumSupportCustomizer {
     EnumSupport customize();

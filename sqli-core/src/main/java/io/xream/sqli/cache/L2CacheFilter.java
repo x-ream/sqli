@@ -20,7 +20,7 @@ package io.xream.sqli.cache;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface L2CacheFilter {
 

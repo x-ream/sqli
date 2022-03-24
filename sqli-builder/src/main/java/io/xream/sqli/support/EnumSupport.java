@@ -19,7 +19,7 @@
 package io.xream.sqli.support;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface EnumSupport {
 

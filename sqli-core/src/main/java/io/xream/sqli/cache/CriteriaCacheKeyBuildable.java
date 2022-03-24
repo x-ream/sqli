@@ -21,7 +21,7 @@ package io.xream.sqli.cache;
 import io.xream.sqli.builder.Criteria;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface CriteriaCacheKeyBuildable {
 

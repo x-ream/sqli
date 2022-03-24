@@ -21,7 +21,7 @@ package io.xream.sqli.spi.customizer;
 import io.xream.sqli.spi.L2CacheConsistency;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface L2CacheConsistencyCustomizer {
     L2CacheConsistency customize();

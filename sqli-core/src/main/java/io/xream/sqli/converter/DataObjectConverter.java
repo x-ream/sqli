@@ -22,6 +22,7 @@ import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.exception.UnexpectedEnumValueException;
 import io.xream.sqli.mapping.ResultMapHelpful;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -35,7 +36,7 @@ import java.util.Map;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DataObjectConverter {
 
@@ -86,23 +87,36 @@ public final class DataObjectConverter {
 
     public static <T> void initObj(T obj, Map<String, Object> map, List<BeanElement> eles,Dialect dialect) throws Exception {
 
-        for (BeanElement ele : eles) {
+        BeanElement be = null;
+        Object value = null;
+        try {
+            for (BeanElement ele : eles) {
+                be = ele;
+                Method method = ele.getSetMethod();
+                String mapper = ele.getMapper();
 
-            Method method = ele.getSetMethod();
-            String mapper = ele.getMapper();
+                value = map.get(mapper);
 
-            Object value = map.get(mapper);
+                if (value == null) {
+                    if (EnumUtil.isEnum(ele.getClz()))
+                        throw new PersistenceException(
+                                "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
+                } else {
+                    value = filter(value);
+                    Object v = dialect.mappingToObject(value, ele);
+                    method.invoke(obj, v);
+                }
 
-            if (value == null) {
-                if (EnumUtil.isEnum(ele.getClz()))
-                    throw new PersistenceException(
-                            "ENUM CAN NOT NULL, property:" + obj.getClass().getName() + "." + ele.getProperty());
-            } else {
-                value = filter(value);
-                Object v = dialect.mappingToObject(value,ele);
-                method.invoke(obj, v);
+            }
+        }catch (IllegalArgumentException e){
+
+            if (e.getMessage().startsWith("No enum constant")){
+                throw new UnexpectedEnumValueException(be.getClz().getName()+"."+value +", unexpected enum value of "+ obj.getClass().getName()+ "." + be.getProperty() + "; db field of " + be.getMapper());
             }
 
+            throw new ParsingException("Mismatched type of " + obj.getClass().getName()+ "." + be.getProperty() + ", type: " + be.getClz()
+            + "; db field of " + be.getMapper() + ", type: " + value.getClass()
+            );
         }
     }
 

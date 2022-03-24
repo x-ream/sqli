@@ -19,7 +19,7 @@
 package io.xream.sqli.builder;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class SqlBuilt {
 

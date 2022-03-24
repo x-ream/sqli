@@ -23,7 +23,7 @@ import io.xream.sqli.builder.InCondition;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface QueryForCache {
     <T> List<T> in(InCondition inCondition);

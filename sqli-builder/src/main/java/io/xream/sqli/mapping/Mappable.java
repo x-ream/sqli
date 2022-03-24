@@ -23,7 +23,7 @@ import io.xream.sqli.parser.Parsed;
 import java.util.Map;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface Mappable {
     Parsed getParsed();

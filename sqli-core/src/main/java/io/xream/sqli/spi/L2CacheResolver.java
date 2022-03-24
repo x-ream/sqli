@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * 
  * 缓存<br>
- * @author sim
+ * @author Sim
  *
  */
 public interface L2CacheResolver extends Protection {

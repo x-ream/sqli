@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class ConditionBuilder implements SqlNormalizer {
 

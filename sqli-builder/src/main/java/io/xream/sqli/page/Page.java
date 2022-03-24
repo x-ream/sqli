@@ -30,7 +30,7 @@ import java.util.Objects;
 
 /**
  * Page
- * @author sim
+ * @author Sim
  *
  * @param <T>
  */

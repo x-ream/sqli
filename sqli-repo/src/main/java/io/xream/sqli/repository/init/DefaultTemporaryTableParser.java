@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DefaultTemporaryTableParser implements TemporaryRepository.Parser, SqlTemplate {
 

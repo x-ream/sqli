@@ -20,7 +20,7 @@ package io.xream.sqli.builder;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class Reduce {
     private ReduceType type;

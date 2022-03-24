@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DynamicDialect implements Dialect{
 

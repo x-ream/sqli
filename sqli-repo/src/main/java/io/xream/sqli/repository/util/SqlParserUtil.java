@@ -22,7 +22,7 @@ import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class SqlParserUtil {
 

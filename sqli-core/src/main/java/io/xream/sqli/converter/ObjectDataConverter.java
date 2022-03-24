@@ -35,7 +35,7 @@ import java.util.*;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class ObjectDataConverter {
 

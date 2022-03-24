@@ -30,7 +30,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface DialectSupport {
 

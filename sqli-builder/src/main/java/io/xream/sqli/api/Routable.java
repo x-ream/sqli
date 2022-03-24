@@ -25,7 +25,7 @@ package io.xream.sqli.api;
  * of Routeable maybe meaningless, of cource, your request object clzz can implements
  * Routeable
  *
- * @Author Sim
+ * @author Sim
  */
 public interface Routable {
     Object getRouteKey();

@@ -21,7 +21,7 @@ package io.xream.sqli.util;
 import io.xream.sqli.support.EnumSupport;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class EnumUtil {
 

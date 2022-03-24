@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * ResultMap API
- * @Author Sim
+ * @author Sim
  */
 public interface ResultMapRepository {
 

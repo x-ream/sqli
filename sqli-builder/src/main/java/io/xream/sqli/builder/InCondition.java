@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class InCondition implements Routable {
 

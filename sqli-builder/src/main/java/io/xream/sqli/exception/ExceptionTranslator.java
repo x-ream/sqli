@@ -22,7 +22,7 @@ import io.xream.sqli.util.SqliExceptionUtil;
 import org.slf4j.Logger;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class ExceptionTranslator {
 

@@ -21,7 +21,7 @@ package io.xream.sqli.filter;
 import io.xream.sqli.mapping.Script;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface UnsafeSyntaxFilter {
 

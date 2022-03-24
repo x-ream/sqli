@@ -37,7 +37,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
 

@@ -16,15 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.exception;
+package io.xream.sqli.exception;
+
+import java.io.Serializable;
 
 /**
  * @author Sim
  */
-public class UninitializedException extends RuntimeException {
+public class UnexpectedEnumValueException extends RuntimeException implements Serializable {
 
-    public UninitializedException(String message){
+    public UnexpectedEnumValueException(String message){
         super(message);
     }
 
+    public UnexpectedEnumValueException(Throwable t) {
+        super(t);
+    }
 }

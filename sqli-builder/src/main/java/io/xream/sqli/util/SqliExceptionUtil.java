@@ -23,7 +23,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class SqliExceptionUtil {
 

@@ -21,7 +21,7 @@ package io.xream.sqli.builder;
 import java.io.Serializable;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class KV implements Serializable{
 

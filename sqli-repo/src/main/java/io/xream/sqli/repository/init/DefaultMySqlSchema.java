@@ -30,7 +30,7 @@ import java.sql.Types;
 import java.util.*;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class DefaultMySqlSchema implements Schema{
 

@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 
 /**
  * JDK reflect cached better than RelfectASM
- * @Author Sim
+ * @author Sim
  */
 public final class BeanElement {
 

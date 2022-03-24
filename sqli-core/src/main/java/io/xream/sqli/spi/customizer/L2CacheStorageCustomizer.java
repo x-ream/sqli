@@ -21,7 +21,7 @@ package io.xream.sqli.spi.customizer;
 import io.xream.sqli.spi.L2CacheStorage;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface L2CacheStorageCustomizer {
     L2CacheStorage customize();

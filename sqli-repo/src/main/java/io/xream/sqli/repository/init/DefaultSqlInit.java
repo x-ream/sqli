@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DefaultSqlInit implements SqlInit {
 

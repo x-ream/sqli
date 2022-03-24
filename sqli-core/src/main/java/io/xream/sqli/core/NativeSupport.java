@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface NativeSupport {
 

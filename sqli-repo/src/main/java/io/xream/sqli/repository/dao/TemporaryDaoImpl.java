@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class TemporaryDaoImpl implements TemporaryDao{
 

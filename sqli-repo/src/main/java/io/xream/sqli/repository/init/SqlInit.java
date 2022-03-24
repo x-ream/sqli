@@ -19,7 +19,7 @@
 package io.xream.sqli.repository.init;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface SqlInit extends SqlTemplate{
 

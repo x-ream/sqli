@@ -19,7 +19,7 @@
 package io.xream.sqli.repository.exception;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class TooManyResultsException extends RuntimeException {
 

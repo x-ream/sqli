@@ -19,7 +19,7 @@
 package io.xream.sqli.dialect;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class ImpalaDialect extends MySqlDialect{
 

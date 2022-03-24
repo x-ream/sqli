@@ -35,7 +35,7 @@ import java.util.Map;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class MySqlDialect implements Dialect {
 

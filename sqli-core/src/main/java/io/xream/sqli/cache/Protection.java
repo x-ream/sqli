@@ -19,7 +19,7 @@
 package io.xream.sqli.cache;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface Protection extends L2CacheFilter{
     String DEFAULT_VALUE = "NULL";

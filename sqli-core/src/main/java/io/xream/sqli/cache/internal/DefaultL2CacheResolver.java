@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 
  * Level Two Cache
- * @author sim
+ * @author Sim
  *
  */
 public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implements L2CacheResolver {

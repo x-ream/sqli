@@ -19,7 +19,7 @@
 package io.xream.sqli.core;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface RowHandler<T> {
     void handle(T t);

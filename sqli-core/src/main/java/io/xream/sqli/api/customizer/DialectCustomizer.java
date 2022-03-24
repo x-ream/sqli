@@ -21,7 +21,7 @@ package io.xream.sqli.api.customizer;
 import io.xream.sqli.dialect.Dialect;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface DialectCustomizer {
     Dialect customize();

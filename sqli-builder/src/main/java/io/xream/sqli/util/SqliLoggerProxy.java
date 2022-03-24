@@ -25,7 +25,7 @@ import java.util.Map;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class SqliLoggerProxy {
 

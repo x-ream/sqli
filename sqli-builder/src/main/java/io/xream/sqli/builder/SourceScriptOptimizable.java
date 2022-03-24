@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface SourceScriptOptimizable {
 

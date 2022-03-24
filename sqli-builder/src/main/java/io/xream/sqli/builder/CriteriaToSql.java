@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
 

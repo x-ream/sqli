@@ -21,7 +21,7 @@ package io.xream.sqli.repository.internal;
 import io.xream.sqli.support.EnumSupport;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class DefaultEnumSupport implements EnumSupport {
     @Override

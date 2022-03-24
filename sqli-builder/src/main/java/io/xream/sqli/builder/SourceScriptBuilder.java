@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface SourceScriptBuilder {
 

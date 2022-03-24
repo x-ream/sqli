@@ -21,7 +21,7 @@ package io.xream.sqli.builder;
 import java.util.Map;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ResultKeyGenerator {
 

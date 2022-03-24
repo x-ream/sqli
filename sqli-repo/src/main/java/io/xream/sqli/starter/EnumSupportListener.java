@@ -22,7 +22,7 @@ import io.xream.sqli.support.EnumSupport;
 import io.xream.sqli.util.EnumUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class EnumSupportListener extends EnumUtil {
 

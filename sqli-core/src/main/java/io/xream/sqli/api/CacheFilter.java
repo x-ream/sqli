@@ -23,7 +23,7 @@ import io.xream.sqli.cache.L2CacheFilter;
 import io.xream.sqli.util.SqliStringUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class CacheFilter implements L2CacheFilter {
 

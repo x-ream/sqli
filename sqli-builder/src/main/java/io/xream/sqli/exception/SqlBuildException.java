@@ -19,7 +19,7 @@
 package io.xream.sqli.exception;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class SqlBuildException extends RuntimeException {
 

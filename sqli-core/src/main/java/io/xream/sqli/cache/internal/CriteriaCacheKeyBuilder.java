@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
 

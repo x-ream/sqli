@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface SqlNormalizer extends Script{
 

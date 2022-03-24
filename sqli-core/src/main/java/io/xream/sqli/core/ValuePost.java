@@ -23,7 +23,7 @@ import io.xream.sqli.util.EnumUtil;
 import java.util.Objects;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ValuePost {
     default Object filter(Object object, MoreFilter moreFilter) {

@@ -22,7 +22,7 @@ package io.xream.sqli.builder;
 import io.xream.sqli.util.SqliStringUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class ResultKeyAlia {
 

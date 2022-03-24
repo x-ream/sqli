@@ -19,7 +19,7 @@
 package io.xream.sqli.builder;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface PageSqlSupport {
     String buildPageSql(String originSql, long start, long rows, long last);

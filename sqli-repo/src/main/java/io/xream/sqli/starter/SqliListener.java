@@ -30,7 +30,7 @@ import io.xream.sqli.spi.Schema;
 import io.xream.sqli.util.SqliJsonUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class SqliListener {
 

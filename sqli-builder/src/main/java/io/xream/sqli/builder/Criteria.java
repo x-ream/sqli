@@ -33,7 +33,7 @@ import java.util.*;
 
 /**
  * 
- * @author sim
+ * @author Sim
  *
  */
 public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Serializable {

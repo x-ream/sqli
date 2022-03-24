@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface JdbcHelper extends BaseFinder, ResultMapFinder {
 

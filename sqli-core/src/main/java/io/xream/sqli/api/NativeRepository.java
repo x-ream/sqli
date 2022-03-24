@@ -21,7 +21,7 @@ package io.xream.sqli.api;
 import io.xream.sqli.core.NativeSupport;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface NativeRepository extends NativeSupport {
 }

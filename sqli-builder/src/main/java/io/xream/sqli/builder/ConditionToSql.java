@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
 

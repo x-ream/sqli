@@ -19,7 +19,7 @@
 package io.xream.sqli.starter;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface InitPhaseable {
 

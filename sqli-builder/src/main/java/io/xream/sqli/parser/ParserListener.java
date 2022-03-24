@@ -19,7 +19,7 @@
 package io.xream.sqli.parser;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 final public class ParserListener {
 

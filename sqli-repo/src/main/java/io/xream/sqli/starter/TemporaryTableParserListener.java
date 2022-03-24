@@ -23,7 +23,7 @@ import io.xream.sqli.repository.internal.DefaultTemporaryRepository;
 import io.xream.sqli.spi.Schema;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class TemporaryTableParserListener {
 

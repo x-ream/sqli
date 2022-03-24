@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  *  Optional SPI <br>
  *  Suggest send message to MQ to refresh again <br>
- * @Author Sim
+ * @author Sim
  */
 public interface L2CacheConsistency {
 

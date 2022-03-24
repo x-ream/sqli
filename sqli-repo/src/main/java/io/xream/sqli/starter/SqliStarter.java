@@ -40,7 +40,7 @@ import io.xream.sqli.spi.JdbcHelper;
 import io.xream.sqli.spi.L2CacheResolver;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class SqliStarter {
 

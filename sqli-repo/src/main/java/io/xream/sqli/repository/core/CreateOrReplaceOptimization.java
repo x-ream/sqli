@@ -23,7 +23,7 @@ import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface CreateOrReplaceOptimization {
 

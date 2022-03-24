@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class Bb {
 

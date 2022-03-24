@@ -28,7 +28,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class TimeSupport {
 

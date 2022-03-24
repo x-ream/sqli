@@ -24,7 +24,7 @@ import java.util.List;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class Distinct implements Serializable {
 

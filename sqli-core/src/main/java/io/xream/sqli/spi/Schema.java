@@ -21,7 +21,7 @@ package io.xream.sqli.spi;
 import io.xream.sqli.parser.Parsed;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface Schema {
 

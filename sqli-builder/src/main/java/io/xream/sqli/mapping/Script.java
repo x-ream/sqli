@@ -19,7 +19,7 @@
 package io.xream.sqli.mapping;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public interface Script {
     String SPACE = " ";

@@ -24,7 +24,7 @@ import io.xream.sqli.util.SqliStringUtil;
 import java.util.List;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
 

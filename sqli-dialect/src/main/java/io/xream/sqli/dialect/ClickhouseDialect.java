@@ -21,7 +21,7 @@ package io.xream.sqli.dialect;
 import io.xream.sqli.builder.SqlScript;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class ClickhouseDialect extends MySqlDialect{
 

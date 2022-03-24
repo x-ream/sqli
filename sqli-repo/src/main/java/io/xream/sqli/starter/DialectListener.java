@@ -23,7 +23,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.dialect.DynamicDialect;
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public class DialectListener {
 

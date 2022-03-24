@@ -31,7 +31,7 @@ import java.util.Map;
 
 
 /**
- * @Author Sim
+ * @author Sim
  */
 public final class DefaultNativeRepository implements NativeRepository, DynamicDialectKeyRemovable {
 
