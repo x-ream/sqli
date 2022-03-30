@@ -19,6 +19,7 @@
 package io.xream.sqli.builder;
 
 
+import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parser;
@@ -87,7 +88,7 @@ public interface SourceScriptBuilder {
             String str = sourceScriptsSplittedList.get(i);
             String strUpper = str.toUpperCase();
             if (strUpper.equals("AND") || strUpper.equals("OR"))
-                throw new IllegalArgumentException("SourceScript String does not support ON AND | OR, try to call builder.sourceScript()");
+                throw new CriteriaSyntaxException("SourceScript String does not support ON AND | OR, try to invoke builder.sourceBuilder()");
 
             if ("FROM".equals(strUpper))
                 continue;
