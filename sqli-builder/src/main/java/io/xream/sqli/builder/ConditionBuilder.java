@@ -214,6 +214,9 @@ public class ConditionBuilder implements SqlNormalizer {
             isOr();
             return instance;
         }
+        if (value instanceof List || value.getClass().isArray()) {
+            throw new IllegalArgumentException(property + " " +p + " " + value + ", try " + property +" " + Op.IN + " (" + value + ")");
+        }
         Bb bb = new Bb(isOr());
         bb.setP(p);
         bb.setKey(property);
