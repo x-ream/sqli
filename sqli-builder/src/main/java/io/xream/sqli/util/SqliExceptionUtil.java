@@ -56,6 +56,9 @@ public class SqliExceptionUtil {
             } else if (unwrapped instanceof UndeclaredThrowableException) {
                 unwrapped = ((UndeclaredThrowableException) unwrapped).getUndeclaredThrowable();
             } else {
+                Throwable t = wrapped.getCause();
+                if (t != null)
+                    return t;
                 return unwrapped;
             }
         }
