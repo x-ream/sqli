@@ -29,6 +29,7 @@ import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.repository.exception.SqliRumtimeException;
 import io.xream.sqli.repository.exception.TooManyResultsException;
 import io.xream.sqli.repository.init.SqlInit;
 import io.xream.sqli.repository.init.SqlTemplate;
@@ -39,6 +40,7 @@ import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 /**
@@ -142,6 +144,14 @@ public final class DaoImpl implements Dao, SqlTemplate {
             return this.jdbcHelper.create(isAutoIncreaseId,sql,valueList);
 
         } catch (Exception e) {
+            Throwable t = e.getCause();
+            if ( t != null &&
+                    t instanceof SQLIntegrityConstraintViolationException){
+                String msg = t.getMessage();
+                if (msg.contains("cannot be null")) {
+                    throw new SqliRumtimeException("Table of "+ Parser.get(clz).getTableName()+", " + msg);
+                }
+            }
             throw ExceptionTranslator.onRollback(obj, e, logger);
         }
 
