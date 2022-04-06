@@ -25,7 +25,6 @@ import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ExceptionTranslator;
-import io.xream.sqli.exception.SqliRuntimeException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -40,7 +39,6 @@ import io.xream.sqli.util.SqliStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 /**
