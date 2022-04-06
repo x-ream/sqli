@@ -18,8 +18,11 @@
  */
 package io.xream.sqli.exception;
 
+import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliExceptionUtil;
 import org.slf4j.Logger;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * @author Sim
@@ -28,8 +31,16 @@ public class ExceptionTranslator {
 
     private ExceptionTranslator(){}
 
-    public static  SqliRuntimeException onRollback(Object obj, Exception e, Logger logger) {
+    public static  SqliRuntimeException onRollback(Class clzz, Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
+        logger.error(SqliExceptionUtil.getMessage(t));
+        if ( t instanceof SQLIntegrityConstraintViolationException){
+            String msg = t.getMessage();
+            if (msg.contains("cannot be null")) {
+                String prefix = (clzz == null ? "" : ("Table of "+ Parser.get(clzz).getTableName()));
+                throw new SqliRuntimeException(prefix+", " + msg);
+            }
+        }
         if (t instanceof RuntimeException)
             throw (RuntimeException)t;
         return new SqliRuntimeException(t);
@@ -37,9 +48,9 @@ public class ExceptionTranslator {
 
     public static QueryException onQuery(Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
+        logger.error(SqliExceptionUtil.getMessage(t));
         if (t instanceof RuntimeException)
             throw (RuntimeException)t;
-        logger.error(SqliExceptionUtil.getMessage(t));
         return new QueryException(e);
     }
 }

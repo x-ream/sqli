@@ -107,7 +107,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         try {
             return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
         } catch (Exception e) {
-            throw ExceptionTranslator.onRollback(obj, e, logger);
+            throw ExceptionTranslator.onRollback(clz, e, logger);
         }//1618978538016
     }
 
@@ -144,15 +144,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
             return this.jdbcHelper.create(isAutoIncreaseId,sql,valueList);
 
         } catch (Exception e) {
-            Throwable t = e.getCause();
-            if ( t != null &&
-                    t instanceof SQLIntegrityConstraintViolationException){
-                String msg = t.getMessage();
-                if (msg.contains("cannot be null")) {
-                    throw new SqliRuntimeException("Table of "+ Parser.get(clz).getTableName()+", " + msg);
-                }
-            }
-            throw ExceptionTranslator.onRollback(obj, e, logger);
+            throw ExceptionTranslator.onRollback(clz, e, logger);
         }
 
     }
@@ -175,7 +167,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
             return this.jdbcHelper.createOrReplace(sql, valueList);
 
         } catch (Exception e) {
-            throw ExceptionTranslator.onRollback(obj, e, logger);
+            throw ExceptionTranslator.onRollback(clz, e, logger);
         }
     }
 
