@@ -28,11 +28,11 @@ public class ExceptionTranslator {
 
     private ExceptionTranslator(){}
 
-    public static  PersistenceException onRollback(Object obj, Exception e, Logger logger) {
+    public static  SqliRuntimeException onRollback(Object obj, Exception e, Logger logger) {
         Throwable t = SqliExceptionUtil.unwrapThrowable(e);
         if (t instanceof RuntimeException)
             throw (RuntimeException)t;
-        return new PersistenceException(e);
+        return new SqliRuntimeException(t);
     }
 
     public static QueryException onQuery(Exception e, Logger logger) {

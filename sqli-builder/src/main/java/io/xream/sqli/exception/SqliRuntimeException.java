@@ -21,9 +21,13 @@ package io.xream.sqli.exception;
 /**
  * @author Sim
  */
-public class SqliRumtimeException extends RuntimeException{
+public class SqliRuntimeException extends RuntimeException{
 
-    public SqliRumtimeException(String message) {
+    public SqliRuntimeException(String message) {
         super(message);
+    }
+
+    public SqliRuntimeException(Throwable t) {
+        super(t);
     }
 }

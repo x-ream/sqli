@@ -25,7 +25,7 @@ import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ExceptionTranslator;
-import io.xream.sqli.exception.SqliRumtimeException;
+import io.xream.sqli.exception.SqliRuntimeException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
@@ -149,7 +149,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
                     t instanceof SQLIntegrityConstraintViolationException){
                 String msg = t.getMessage();
                 if (msg.contains("cannot be null")) {
-                    throw new SqliRumtimeException("Table of "+ Parser.get(clz).getTableName()+", " + msg);
+                    throw new SqliRuntimeException("Table of "+ Parser.get(clz).getTableName()+", " + msg);
                 }
             }
             throw ExceptionTranslator.onRollback(obj, e, logger);
