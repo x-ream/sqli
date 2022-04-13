@@ -30,7 +30,7 @@ public final class SqliStringUtil {
 	}
 	
 	public static boolean isNullOrEmpty(String str){
-		return str == null || str.equals("") || str.equals("null") || str.equals("NaN") || str.equals("undefined");
+		return str == null || str.equals("")  || str.trim().equals("");
 	}
 
 	public static boolean isNullOrEmpty(Object obj) {

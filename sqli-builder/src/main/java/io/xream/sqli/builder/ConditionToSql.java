@@ -103,7 +103,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
 
             for (int j = 0; j < length; j++) {
                 Object value = inList.get(j);
-                if (value == null || SqliStringUtil.isNullOrEmpty(value.toString()))
+                if (value == null )
                     continue;
                 value = filter(value.toString());
                 sb.append(SqlScript.SINGLE_QUOTES).append(value).append(SqlScript.SINGLE_QUOTES);//'string'

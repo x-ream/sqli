@@ -204,7 +204,6 @@ public class ConditionBuilder implements SqlNormalizer {
         return this.instance;
     }
 
-
     private ConditionBuilder doGle(Op p, String property, Object value) {
         if (value == null){
             isOr();
@@ -246,7 +245,7 @@ public class ConditionBuilder implements SqlNormalizer {
 
         List<Object> tempList = new ArrayList<>();
         for (Object obj : list) {
-            if (Objects.isNull(obj))
+            if (SqliStringUtil.isNullOrEmpty(obj))
                 continue;
             if (!tempList.contains(obj)) {
                 tempList.add(obj);
