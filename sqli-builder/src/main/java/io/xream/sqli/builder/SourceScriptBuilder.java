@@ -19,13 +19,13 @@
 package io.xream.sqli.builder;
 
 
-import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,6 +34,8 @@ import java.util.List;
 public interface SourceScriptBuilder {
 
     SourceScriptBuilder source(String source);
+
+    SourceScriptBuilder source(Class clzz);
 
     SourceScriptBuilder sub(Sub sub);
 
@@ -51,6 +53,8 @@ public interface SourceScriptBuilder {
 
     ConditionBuilder more();
 
+    CriteriaBuilder.ResultMapBuilder build();
+
 
     static void checkSourceAndAlia(List<SourceScript> list) {
         for (SourceScript sourceScript : list) {
@@ -58,27 +62,32 @@ public interface SourceScriptBuilder {
             if (SqliStringUtil.isNotNull(source) && !Parser.contains(source)) {
                 String tip = "";
                 if (sourceScript.getJoinType() != null) {
-                    tip += sourceScript.getJoinType().name().replace("_"," ");
-                }else if(SqliStringUtil.isNotNull(sourceScript.getJoinStr())){
+                    tip += sourceScript.getJoinType().name().replace("_", " ");
+                } else if (SqliStringUtil.isNotNull(sourceScript.getJoinStr())) {
                     tip += sourceScript.getJoinStr();
-                }else {
+                } else {
                     tip += SqlScript.FROM;
                 }
                 throw new ParsingException(tip + SqlScript.SPACE + source);
             }
             String alia = sourceScript.getAlia();
-            if (source !=null && alia !=null && !alia.equals(source) && Parser.contains(alia)) {
+            if (source != null && alia != null && !alia.equals(source) && Parser.contains(alia)) {
                 throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
             }
         }
     }
 
+
     /**
-     *
      * @param sourceScriptsSplittedList
      * @return
      */
-    static List<SourceScript> parse(List<String> sourceScriptsSplittedList) {
+    static List<SourceScript> parseScriptAndBuild(List<String> sourceScriptsSplittedList, List<Object> sourceScriptValues) {
+
+        List<Object> sourceScriptValueList = new LinkedList<>();
+        if (sourceScriptValues != null) {
+            sourceScriptValueList.addAll(sourceScriptValues);
+        }
 
         List<SourceScript> list = new ArrayList<>();
 
@@ -87,8 +96,20 @@ public interface SourceScriptBuilder {
         for (int i = 0; i < size; i++) {
             String str = sourceScriptsSplittedList.get(i);
             String strUpper = str.toUpperCase();
-            if (strUpper.equals("AND") || strUpper.equals("OR"))
-                throw new CriteriaSyntaxException("SourceScript String does not support ON AND | OR, try to invoke builder.sourceBuilder()");
+
+            if (strUpper.equals("AND") || strUpper.equals("OR")) {
+
+                sourceScript = getLast(list);
+                List<Bb> bbList = sourceScript.getBbList();
+                if (bbList == null) {
+                    bbList = new ArrayList<>();
+                    sourceScript.setBbList(bbList);
+                }
+
+                i = ConditionParser.parse(i, sourceScriptsSplittedList,
+                        bbList, sourceScriptValueList);
+                continue;
+            }
 
             if ("FROM".equals(strUpper))
                 continue;
@@ -128,7 +149,6 @@ public interface SourceScriptBuilder {
                     sourceScript.setJoinType(JoinType.COMMA);
                     break;
                 case "ON":
-
                     String selfKey = sourceScriptsSplittedList.get(++i);
                     String op = sourceScriptsSplittedList.get(++i);// op
                     String fromKey = sourceScriptsSplittedList.get(++i);
@@ -149,9 +169,7 @@ public interface SourceScriptBuilder {
                     on.setOp(op);
                     on.setJoinFrom(joinFrom);
                     sourceScript.setOn(on);
-
                     break;
-
                 default:
                     if (sourceScript == null) {
                         sourceScript = createAndGet(list);
@@ -170,7 +188,7 @@ public interface SourceScriptBuilder {
 
         return list;
     }
-    
+
     static List<String> split(String script) {
         String[] opArrTwo = {"!=", "<>", "<=", ">="};
         String[] opArrTwoTemp = {"&ne", "&ne", "&lte", "&gte"};
@@ -213,6 +231,10 @@ public interface SourceScriptBuilder {
         SourceScript sourceScript = new SourceScript();
         list.add(sourceScript);
         return sourceScript;
+    }
+
+    static SourceScript getLast(List<SourceScript> list) {
+        return list.get(list.size() - 1);
     }
 
 }

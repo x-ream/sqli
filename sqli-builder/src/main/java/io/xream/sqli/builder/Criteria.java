@@ -174,6 +174,10 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		}
 	}
 
+	public List<Object> getSourceScriptValueList() {
+		return null;
+	}
+
 
 	@Override
 	public String toString() {
@@ -198,6 +202,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 		private List<Bb> aggrList;
 		private Distinct distinct;
 		private String sourceScript;
+		private List<Object> sourceScriptValueList;
 		private List<SourceScript> sourceScripts;
 		private List<Reduce> reduceList;
 		private List<Having> havingList;
@@ -278,6 +283,18 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		public void setSourceScript(String sourceScript) {
 			this.sourceScript = normalizeSql(sourceScript);
+		}
+
+		@Override
+		public List<Object> getSourceScriptValueList() {
+			return sourceScriptValueList;
+		}
+
+		public void setSourceScriptValueList(Object[] vs) {
+			this.sourceScriptValueList = new ArrayList<>();
+			for (Object v : vs) {
+				this.sourceScriptValueList.add(v);
+			}
 		}
 
 		public List<String> getResultKeyList() {

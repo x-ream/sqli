@@ -637,7 +637,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
         String script = refreshCondition.getSourceScript();//string -> list<>
         List<String> list = SourceScriptBuilder.split(script);
-        List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
+        List<SourceScript> sourceScripts = SourceScriptBuilder.parseScriptAndBuild(list,null);
         SourceScriptBuilder.checkSourceAndAlia(sourceScripts);
         for (SourceScript sc : sourceScripts) {
             refreshCondition.getAliaMap().put(sc.alia(), sc.getSource());
@@ -655,7 +655,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String sourceScript = rmc.sourceScript();//string -> list<>
 
                 List<String> list = SourceScriptBuilder.split(sourceScript);
-                List<SourceScript> sourceScripts = SourceScriptBuilder.parse(list);
+                List<SourceScript> sourceScripts = SourceScriptBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
 
@@ -804,10 +804,22 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         pre(valueList, bbList, criteria);//提取占位符对应的值
         if (bbList.isEmpty())
             return;
+        withSourceScriptValuelist(criteria,valueList);
         bbList.get(0).setC(Op.WHERE);
         buildConditionSql(xsb, bbList, criteria);
         sqlSth.sbCondition.append(xsb);
 
+    }
+
+    private void withSourceScriptValuelist(Criteria criteria, List<Object> valueList){
+        List<Object> objectList = criteria.getSourceScriptValueList();
+        if (objectList != null ){
+            for (Object v : objectList) {
+                if (v == null) continue;
+                if (v instanceof List && ((List) v).isEmpty()) continue;
+                valueList.add(0,v);
+            }
+        }
     }
 
 

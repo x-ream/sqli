@@ -42,7 +42,6 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
     default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
         if (bbList == null || bbList.isEmpty())
             return;
-
         for (Bb bb : bbList) {
 
             Op p = bb.getP();
@@ -63,7 +62,10 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
 
             String mapper = null;
             if (p == Op.X){
-                final String str  = normalizeSql(bb.getKey());
+                String key = bb.getKey();
+                if (SqliStringUtil.isNullOrEmpty(key))
+                    continue;
+                final String str  = normalizeSql(key);
                 StringBuilder sbx = new StringBuilder();
                 mapping((reg)->str.split(reg), mappable,sbx);
                 mapper = sbx.toString();
@@ -162,7 +164,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                     if (bb.getSubList().isEmpty()) {
                         ite.remove();
                     }
-                }else if (p == Op.EQ
+                } else if (p == Op.EQ
                         || p == Op.NE
                         || p == Op.GT
                         || p == Op.GTE

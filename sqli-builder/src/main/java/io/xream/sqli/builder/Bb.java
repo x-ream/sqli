@@ -32,7 +32,6 @@ public final class Bb {
     private String key;
     private Object value;
     private List<Bb> subList;
-    private Bb parent;
     public Bb(){}
     public Bb(boolean isOr){
         if (isOr)
@@ -70,12 +69,7 @@ public final class Bb {
     public void setSubList(List<Bb> subList) {
         this.subList = subList;
     }
-    public Bb getParent() {
-        return parent;
-    }
-    public void setParent(Bb parent) {
-        this.parent = parent;
-    }
+
 
     @Override
     public boolean equals(Object object) {

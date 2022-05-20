@@ -25,7 +25,6 @@ import io.xream.sqli.util.SqliStringUtil;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Sim

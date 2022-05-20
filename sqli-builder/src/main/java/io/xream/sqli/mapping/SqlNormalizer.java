@@ -61,7 +61,7 @@ public interface SqlNormalizer extends Script{
         for (; idx + 1 < length; ) {
             String nextOp = String.valueOf(handwritten.charAt(idx + 1));
             if (nextOp.equals(strEle)) {
-                valueSb.append(nextOp);
+                valueSb.append(SPACE).append(nextOp);
                 idx++;
             } else {
                 break;
@@ -96,6 +96,11 @@ public interface SqlNormalizer extends Script{
             }
 
             if (strEle.equals(LEFT_PARENTTHESIS) || strEle.equals(RIGHT_PARENTTHESIS)) {
+                String pre = String.valueOf(handwritten.charAt(j-1));
+                if (pre.equals(LEFT_PARENTTHESIS) || pre.equals(RIGHT_PARENTTHESIS)){
+                    valueSb.append(SPACE).append(strEle);
+                    continue;
+                }
                 j = normalizeParentThesis(j,length,strEle,valueSb,handwritten);
                 continue;
             }

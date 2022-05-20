@@ -173,7 +173,6 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
                         );
             }
         }
-
         buildConditionSql(sb, bbList, mappable);
 
         return sb.toString();

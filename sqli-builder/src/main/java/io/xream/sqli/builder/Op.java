@@ -55,4 +55,13 @@ public enum  Op {
     public String sql(){
         return op;
     }
+
+    public static Op valueOfSql(String str) {
+        String t = str.trim();
+        for (Op op : values()) {
+            if (op.sql().equals(str))
+                return op;
+        }
+        return NONE;
+    }
 }

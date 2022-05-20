@@ -21,6 +21,7 @@ package io.xream.sqli.builder;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
@@ -156,6 +157,12 @@ public class CriteriaBuilder extends ConditionBuilder {
             }
 
             @Override
+            public SourceScriptBuilder source(Class clzz) {
+                sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clzz.getSimpleName()));
+                return this;
+            }
+
+            @Override
             public SourceScriptBuilder sub(Sub sub) {
                 ResultMapBuilder subBuilder = CriteriaBuilder.resultMapBuilder();
                 sub.buildBy(subBuilder);
@@ -220,7 +227,17 @@ public class CriteriaBuilder extends ConditionBuilder {
                 return builder(bbList);
             }
 
+            @Override
+            public ResultMapBuilder build() {
+                return getInstance();
+            }
+
         };
+
+        private ResultMapBuilder instance;
+        protected ResultMapBuilder getInstance(){
+            return this.instance;
+        }
 
         public SourceScriptBuilder sourceBuilder() {
             sourceScriptTemp = new SourceScript();
@@ -245,6 +262,7 @@ public class CriteriaBuilder extends ConditionBuilder {
 
         public ResultMapBuilder(Criteria criteria) {
             super(criteria);
+            instance = this;
         }
 
         public ResultMapBuilder resultKey(String resultKey) {
@@ -294,7 +312,17 @@ public class CriteriaBuilder extends ConditionBuilder {
         public ResultMapBuilder sourceScript(String sourceScript) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))
                 return this;
+            sourceScript = normalizeSql(sourceScript);
             get().setSourceScript(sourceScript);
+            return this;
+        }
+
+        public ResultMapBuilder sourceScript(String sourceScript, Object...vs) {
+            if (SqliStringUtil.isNullOrEmpty(sourceScript))
+                return this;
+            sourceScript = normalizeSql(sourceScript);
+            get().setSourceScript(sourceScript);
+            get().setSourceScriptValueList(vs);
             return this;
         }
 
