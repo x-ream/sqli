@@ -19,13 +19,26 @@
 package io.xream.sqli.builder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Sim
  */
 public interface ConditionParser {
 
+    Set<String> JOIN_SET = new HashSet<String>(){
+        {
+            add("INNER");
+            add("LEFT");
+            add("RIGHT");
+            add("OUTER");
+            add("FULL");
+            add("JOIN");
+            add(",");
+        }
+    };
 
     static int parse(int i, List<String> conditionScriptSplittedList,
                          List<Bb> bbList, List<Object> valueList) {
@@ -85,6 +98,8 @@ public interface ConditionParser {
                 bb.setC(Op.valueOf(u));
                 bb.setP(Op.X);
                 bbList.add(bb);
+            } else if (JOIN_SET.contains(s.toUpperCase())) {
+                return -1;
             } else {
                 if (bb == null) {
                     bb = new Bb();

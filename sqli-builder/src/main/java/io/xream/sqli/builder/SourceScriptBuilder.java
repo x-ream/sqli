@@ -106,8 +106,20 @@ public interface SourceScriptBuilder {
                     sourceScript.setBbList(bbList);
                 }
 
+                int j = i;
+                for (;j<size;j++) {
+                    if (ConditionParser.JOIN_SET.contains(sourceScriptsSplittedList.get(j).toUpperCase())){
+                        break;
+                    }
+                }
+
                 i = ConditionParser.parse(i, sourceScriptsSplittedList,
                         bbList, sourceScriptValueList);
+
+                if (i == -1){
+                    i = j - 1;
+                }
+
                 continue;
             }
 
