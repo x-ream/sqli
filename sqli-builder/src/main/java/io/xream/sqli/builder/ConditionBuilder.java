@@ -71,6 +71,13 @@ public class ConditionBuilder implements SqlNormalizer {
         return () -> bbList;
     }
 
+    public ConditionBuilder bool(Bool condition, Then then) {
+        if (condition.isOk()) {
+            then.build(this.instance);
+        }
+        return this.instance;
+    }
+
     public ConditionBuilder eq(String property, Object value){
         return doGle(Op.EQ, property, value);
     }
