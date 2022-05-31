@@ -272,6 +272,15 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
+        public ResultMapBuilder resultKeys(String... resultKeys) {
+            if (resultKeys == null)
+                return this;
+            for (String resultKey : resultKeys){
+                resultKey(resultKey);
+            }
+            return this;
+        }
+
         /**
          *
          * @param resultKey
