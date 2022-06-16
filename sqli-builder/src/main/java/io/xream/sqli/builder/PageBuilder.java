@@ -22,7 +22,6 @@ package io.xream.sqli.builder;
 /**
  * @author Sim
  */
-
 public interface PageBuilder {
 
     PageBuilder ignoreTotalRows();
