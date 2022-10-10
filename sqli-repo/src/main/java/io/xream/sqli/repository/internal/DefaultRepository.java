@@ -256,7 +256,9 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     public Page<T> find(Criteria criteria) {
         assertCriteriaClzz(criteria);
         this.setDefaultClzz(criteria);
-        return repository.find(criteria);
+        Page<T> page = repository.find(criteria);
+        page.setClzz(this.clzz);
+        return page;
     }
 
 
@@ -317,7 +319,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         if (this.clzz != criteria.getClzz())
             throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + criteria.getClzz());
     }
-
+    //can not delete this method: protected void setRepositoryClzz(Class clzz)
     protected void setRepositoryClzz(Class clzz){
         this.repositoryClzz = clzz;
     }
