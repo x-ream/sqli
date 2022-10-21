@@ -49,6 +49,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
 	private List<Bb> bbList = new ArrayList<>();
+	private boolean isAbort;
 
 	@JsonIgnore
 	private transient Parsed parsed;
@@ -67,6 +68,14 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 	public void setClzz(Class<?> clz) {
 		this.clzz = clz;
+	}
+
+	public boolean isAbort() {
+		return isAbort;
+	}
+
+	public void setAbort(boolean abort) {
+		isAbort = abort;
 	}
 
 	public Parsed getParsed() {
@@ -373,6 +382,28 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		public void setRepositoryClzz(Class repositoryClzz) {
 			this.repositoryClzz = repositoryClzz;
+		}
+
+		@Override
+		public boolean isAbort(){
+			if (super.isAbort())
+				return true;
+			if (this.sourceScripts == null)
+				return false;
+			return isSubAbort(this.sourceScripts);
+		}
+
+		private boolean isSubAbort(List<SourceScript> sourceScripts){
+			for (SourceScript ss : sourceScripts) {
+				Criteria.ResultMapCriteria sub = ss.getSubCriteria();
+				if (sub == null)
+					continue;
+				if (sub.sourceScripts == null)
+					continue;
+				if (sub.isSubAbort(sub.sourceScripts))
+					return true;
+			}
+			return false;
 		}
 
 		@Override

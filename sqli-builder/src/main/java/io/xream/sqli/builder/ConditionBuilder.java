@@ -34,6 +34,7 @@ public class ConditionBuilder implements SqlNormalizer {
     private ConditionBuilder instance;
 
     private transient List<Bb> bbList;
+    protected transient boolean isAbort;
     private transient boolean isOr;
 
     private transient List<Bb> tempList;
@@ -130,6 +131,13 @@ public class ConditionBuilder implements SqlNormalizer {
     }
 
     public ConditionBuilder in(String property, List<? extends Object> list){
+        return doIn(Op.IN,property,list);
+    }
+
+    public ConditionBuilder inRequired(String property, List<? extends Object> list){
+        if (list == null || list.isEmpty()){
+            this.instance.isAbort = true;
+        }
         return doIn(Op.IN,property,list);
     }
 
@@ -240,7 +248,6 @@ public class ConditionBuilder implements SqlNormalizer {
         this.add(bb);
         return instance;
     }
-
 
     private ConditionBuilder doIn(Op p, String property, List<? extends Object> list){
 

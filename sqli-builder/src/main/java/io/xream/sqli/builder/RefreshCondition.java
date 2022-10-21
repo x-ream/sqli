@@ -39,6 +39,7 @@ public final class RefreshCondition<T>  implements Mappable,CriteriaCondition, R
     private String sourceScript;//FIXME
 
     private List<Bb> bbList = new ArrayList<>();
+    private boolean isAbort;
     private Object routeKey;
     private transient int limit;
     @JsonIgnore
@@ -71,6 +72,14 @@ public final class RefreshCondition<T>  implements Mappable,CriteriaCondition, R
 
     public List<Object> getValueList() {
         return this.valueList;
+    }
+
+    public boolean isAbort() {
+        return isAbort;
+    }
+
+    public void setAbort(boolean abort) {
+        isAbort = abort;
     }
 
     @Override

@@ -150,6 +150,13 @@ public class RefreshBuilder<T> extends ConditionBuilder {
         return (RefreshBuilder) super.in(property,list);
     }
 
+    public RefreshBuilder inRequired(String property, List<? extends Object> list) {
+        if (list.isEmpty()) {
+            refreshCondition.setAbort(true);
+        }
+        return (RefreshBuilder) super.in(property,list);
+    }
+
     public RefreshBuilder nin(String property, List<? extends Object> list) {
         return (RefreshBuilder) super.nin(property,list);
     }
@@ -176,6 +183,10 @@ public class RefreshBuilder<T> extends ConditionBuilder {
 
     public RefreshBuilder  endSub(){
         return (RefreshBuilder) super.endSub();
+    }
+
+    public RefreshBuilder  bool(Bool condition, Then then){
+        return (RefreshBuilder) super.bool(condition, then);
     }
 
     public RefreshBuilder sourceScript(String sourceScript) {

@@ -138,6 +138,7 @@ public class CriteriaBuilder extends ConditionBuilder {
     }
 
     public Criteria build(){
+        this.criteria.setAbort(isAbort);
         return this.criteria;
     }
 
@@ -257,7 +258,7 @@ public class CriteriaBuilder extends ConditionBuilder {
 
         @Override
         public Criteria.ResultMapCriteria build() {
-            return (Criteria.ResultMapCriteria) super.get();
+            return (Criteria.ResultMapCriteria) super.build();
         }
 
         public ResultMapBuilder(Criteria criteria) {
@@ -451,6 +452,10 @@ public class CriteriaBuilder extends ConditionBuilder {
             return (ResultMapBuilder) super.in(property,list);
         }
 
+        public ResultMapBuilder inRequired(String property, List<? extends Object> list) {
+            return (ResultMapBuilder) super.inRequired(property,list);
+        }
+
         public ResultMapBuilder nin(String property, List<? extends Object> list) {
             return (ResultMapBuilder) super.nin(property,list);
         }
@@ -477,6 +482,10 @@ public class CriteriaBuilder extends ConditionBuilder {
 
         public ResultMapBuilder  endSub(){
             return (ResultMapBuilder) super.endSub();
+        }
+
+        public ResultMapBuilder bool(Bool conditon, Then then){
+            return (ResultMapBuilder) super.bool(conditon, then);
         }
 
         public void clear(){

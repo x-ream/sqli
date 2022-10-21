@@ -37,6 +37,7 @@ import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -127,6 +128,9 @@ public final class CacheableRepository implements Repository, NativeSupport {
     @Override
     public <T> boolean refresh(RefreshCondition<T> refreshCondition) {
 
+        if (refreshCondition.isAbort())
+            return false;
+
         boolean flag = dao.refreshByCondition(refreshCondition);
 
         if (!flag) return flag;
@@ -198,6 +202,14 @@ public final class CacheableRepository implements Repository, NativeSupport {
     @Override
     public <T> Page<T> find(Criteria criteria) {
 
+        if (criteria.isAbort()) {
+            Page page = new Page<>();
+            page.setClzz(criteria.getClzz());
+            page.setRows(criteria.getRows());
+            page.setPage(criteria.getPage());
+            return page;
+        }
+
         Class clz = criteria.getClzz();
         Parsed parsed = Parser.get(clz);
 
@@ -213,6 +225,9 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
     @Override
     public <T> List<T> list(Criteria criteria) {
+
+        if (criteria.isAbort())
+            return new ArrayList<>();
 
         Class clz = criteria.getClzz();
         Parsed parsed = Parser.get(clz);
@@ -300,18 +315,31 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapped) {
-        return dao.find(resultMapped);
+    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria criteria) {
+        if (criteria.isAbort()) {
+            Page page = new Page<>();
+            page.setClzz(criteria.getClzz());
+            page.setRows(criteria.getRows());
+            page.setPage(criteria.getPage());
+            return page;
+        }
+        return dao.find(criteria);
     }
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapped) {
-        return dao.list(resultMapped);
+    public List<Map<String, Object>> list(Criteria.ResultMapCriteria criteria) {
+
+        if (criteria.isAbort())
+            return new ArrayList<>();
+
+        return dao.list(criteria);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapped){
-        return dao.listPlainValue(clzz,resultMapped);
+    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria criteria){
+        if (criteria.isAbort())
+            return new ArrayList<>();
+        return dao.listPlainValue(clzz,criteria);
     }
 
 
@@ -322,12 +350,16 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
     @Override
     public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
+        if (criteria.isAbort())
+            return;
         this.dao.findToHandle(criteria,handler);
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler) {
-        this.dao.findToHandle(resultMapCriteria,handler);
+    public void findToHandle(Criteria.ResultMapCriteria criteria, RowHandler<Map<String, Object>> handler) {
+        if (criteria.isAbort())
+            return;
+        this.dao.findToHandle(criteria,handler);
     }
 
 }
