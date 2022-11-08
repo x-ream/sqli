@@ -185,14 +185,14 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 	private String getNSKeyReadable(Class clz){
 		if (getFilterFactor() == null)
-			return clz.getName()+ NANO_SECOND;
-		String str = clz.getName() + NANO_SECOND + getFilterFactor();
+			return clz.getSimpleName()+ NANO_SECOND;
+		String str = clz.getSimpleName() + NANO_SECOND + getFilterFactor();
 		return str;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	private String getNSKey(Class clz){
-		return clz.getName()+ NANO_SECOND;
+		return clz.getSimpleName()+ NANO_SECOND;
 	}
 
 	private String getNSReadable(Class clzz){
@@ -224,43 +224,42 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	}
 	
 	/**
-	 * FIXME 有简单simpleKey的地方全改成字符串存储, value为bytes, new String(bytes)
 	 * @param clz
 	 * @param condition
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
 	private String getSimpleKey(Class clz, String condition){
-		return "{"+clz.getName()+"}." + condition;
+		return "{"+clz.getSimpleName()+"}:" + condition;
 	}
 
 	private String getTotalRowsKey(Class clz, String condition){
 		condition = MD5Helper.toMD5(condition) + "~TR";
-		return "{"+clz.getName()+"}." + getNSReadable(clz) + "." + condition;
+		return "{"+clz.getSimpleName()+"}:" + getNSReadable(clz) + "." + condition;
 	}
 
 	private String getConditionedKey(Class clz, String condition){
 		condition = MD5Helper.toMD5(condition) + "~C";
-		return "{"+clz.getName()+"}." + getNSReadable(clz)  + condition;
+		return "{"+clz.getSimpleName()+"}:" + getNSReadable(clz)  + condition;
 	}
 
 	private String getSimpleKeyLike(Class clz){
-		return "{"+clz.getName()+"}.*" ;
+		return "{"+clz.getSimpleName()+"}:*" ;
 	}
 
 	private String getKeyForOneObject(Class clz, Object condition){
 		if (condition == null)
 			throw new L2CacheException("getKeyForOneObject, id = " + condition);
-		return getPrefixForOneObject(clz) +"."+MD5Helper.toMD5(""+condition);
+		return getPrefixForOneObject(clz) +":"+MD5Helper.toMD5(""+condition);
 	}
 
 	private String getPrefixForOneObject(Class clz){
 		String nsStr = getNSReadable(clz);
 		if (nsStr == null){
 			String str = markForRefresh0(clz);
-			return "{"+clz.getName()+"}." + str;
+			return "{"+clz.getSimpleName()+"}:" + str;
 		}
-		return "{"+clz.getName()+"}."  + nsStr;
+		return "{"+clz.getSimpleName()+"}:"  + nsStr;
 	}
 
 	private void setTotalRows(Class clz, String cacheKey, long obj) {
