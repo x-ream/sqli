@@ -246,6 +246,8 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
     @Override
     public List<T> in(String property, List<? extends Object> inList) {
+        if (inList == null)
+            throw new IllegalArgumentException("inList can not be null");
         InCondition inCondition = InCondition.of(property,inList);
         inCondition.setClz(this.clzz);
         return repository.in(inCondition);
