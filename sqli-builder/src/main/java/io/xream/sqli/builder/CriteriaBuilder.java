@@ -52,6 +52,12 @@ public class CriteriaBuilder extends ConditionBuilder {
                 criteria.setTotalRowsIgnored(true);
                 return this;
             }
+            
+            @Override
+            public PageBuilder ignoreTotalRows(boolean ignored) {
+                criteria.setTotalRowsIgnored(ignored);
+                return this;
+            }
 
             @Override
             public PageBuilder rows(int rows) {
