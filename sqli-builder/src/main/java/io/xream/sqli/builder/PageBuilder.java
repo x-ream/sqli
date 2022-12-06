@@ -26,6 +26,7 @@ package io.xream.sqli.builder;
 public interface PageBuilder {
 
     PageBuilder ignoreTotalRows();
+    PageBuilder ignoreTotalRows(boolean ignored);
     PageBuilder rows(int rows);
     PageBuilder page(int page);
     PageBuilder last(long last);
