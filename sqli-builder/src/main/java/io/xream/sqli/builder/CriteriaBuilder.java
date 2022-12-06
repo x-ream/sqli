@@ -60,6 +60,12 @@ public class CriteriaBuilder extends ConditionBuilder {
             }
 
             @Override
+            public PageBuilder ignoreTotalRows(boolean ignored) {
+                criteria.setTotalRowsIgnored(ignored);
+                return this;
+            }
+
+            @Override
             public PageBuilder rows(int rows) {
                 criteria.setRows(rows);
                 return this;
