@@ -362,4 +362,8 @@ public final class CacheableRepository implements Repository, NativeSupport {
         this.dao.findToHandle(criteria,handler);
     }
 
+    @Override
+    public boolean exists(Criteria criteria) {
+        return this.dao.exists(criteria);
+    }
 }

@@ -418,6 +418,21 @@ public final class DaoImpl implements Dao, SqlTemplate {
         this.jdbcHelper.queryForMapToHandle(sql, valueList, dialect,null, Parser.get(clz), handler);
     }
 
+    @Override
+    public boolean exists(Criteria criteria) {
+
+        Class clz = criteria.getClzz();
+        List<Object> valueList = new ArrayList<>();
+        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,criteria, criteriaToSql, dialect);
+        String sql = sqlBuilt.getSql().toString();
+        sql = sql.replace("*","1");
+        sql += " LIMIT 1";
+        SqliLoggerProxy.debug(clz, sql);
+
+        List<Long> list = this.jdbcHelper.queryForPlainValueList(Long.class, sql, valueList,this.dialect);
+
+        return ! list.isEmpty();
+    }
 
     private boolean update(String sql, Collection<Object> list, Dialect dialect, JdbcHelper jdbcHelper) {
         try {

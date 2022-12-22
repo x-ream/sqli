@@ -279,6 +279,12 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         this.repository.findToHandle(criteria,handler);
     }
 
+    @Override
+    public boolean exists(Criteria criteria) {
+        assertCriteriaClzz(criteria);
+        this.setDefaultClzz(criteria);
+        return this.repository.exists(criteria);
+    }
 
     @Override
     public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapCriteria) {

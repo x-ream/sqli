@@ -113,5 +113,6 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     <T> void findToHandle(Criteria criteria, RowHandler<T> handler);
 
-
+    boolean exists(Criteria criteria);
+    
 }

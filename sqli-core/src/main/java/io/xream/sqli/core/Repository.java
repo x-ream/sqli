@@ -92,4 +92,6 @@ public interface Repository extends QueryForCache {
 	void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String, Object>> handler);
 
 	<T> List<T> listByClzz(Class<T> clzz);
+
+	boolean exists(Criteria criteria);
 }
