@@ -429,9 +429,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         sql += " LIMIT 1";
         SqliLoggerProxy.debug(clz, sql);
 
-        List<Long> list = this.jdbcHelper.queryForPlainValueList(Long.class, sql, valueList,this.dialect);
-
-        return ! list.isEmpty();
+        return ! this.jdbcHelper.queryForPlainValueList(Long.class, sql, valueList,this.dialect).isEmpty();
     }
 
     private boolean update(String sql, Collection<Object> list, Dialect dialect, JdbcHelper jdbcHelper) {
