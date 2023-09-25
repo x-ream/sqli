@@ -20,7 +20,7 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Op;
-import io.xream.sqli.builder.RQ;
+import io.xream.sqli.builder.Qr;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -34,18 +34,18 @@ import java.util.Objects;
  */
 public interface SafeRefreshBiz<T> {
 
-    default void tryToRefreshSafe(Class clzz, RQ refreshCondition) {
-        refreshCondition.setClz(clzz);
+    default void tryToRefreshSafe(Class clzz, Qr qr) {
+        qr.setClz(clzz);
         Parsed parsed = Parser.get(clzz);
         Field keyField = parsed.getKeyField();
         if (Objects.isNull(keyField))
-            throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
+            throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
 
         boolean unSafe = true;//Safe
 
         if (unSafe) {
             String key = parsed.getKey();
-            List<Bb> bbList = refreshCondition.getBbList();
+            List<Bb> bbList = qr.getBbList();
             for (Bb bb : bbList) {
                 String k = bb.getKey();
                 boolean b = k.contains(".") ? k.endsWith("."+key) : key.equals(k);
@@ -58,8 +58,8 @@ public interface SafeRefreshBiz<T> {
                             if (value instanceof List) {
                                 size = ((List) value).size();
                             }
-                            if (size > refreshCondition.getLimit()) {
-                                refreshCondition.setLimit(size);
+                            if (size > qr.getLimit()) {
+                                qr.setLimit(size);
                             }
                         }
                         break;
@@ -69,6 +69,6 @@ public interface SafeRefreshBiz<T> {
         }
 
         if (unSafe)
-            throw new CriteriaSyntaxException("UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(RefreshCondition<T> refreshCondition)");
+            throw new CriteriaSyntaxException("UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
     }
 }

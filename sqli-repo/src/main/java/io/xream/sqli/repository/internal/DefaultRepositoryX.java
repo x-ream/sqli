@@ -23,7 +23,7 @@ import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryX;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
-import io.xream.sqli.builder.RQ;
+import io.xream.sqli.builder.Qr;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
 import io.xream.sqli.exception.CriteriaSyntaxException;
@@ -129,24 +129,24 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
 
     @Override
-    public boolean refresh(RQ<T> RQ) {
+    public boolean refresh(Qr<T> qr) {
 
-        if (RQ.getRefreshList().isEmpty())
+        if (qr.getRefreshList().isEmpty())
             return true;
 
-        tryToRefreshSafe(this.clzz, RQ);
+        tryToRefreshSafe(this.clzz, qr);
 
-        return repository.refresh(RQ);
+        return repository.refresh(qr);
     }
 
     @Override
-    public boolean refreshUnSafe(RQ<T> RQ) {
+    public boolean refreshUnSafe(Qr<T> qr) {
 
-        if (RQ.getRefreshList().isEmpty())
+        if (qr.getRefreshList().isEmpty())
             return true;
 
-        RQ.setClz(this.clzz);
-        return repository.refresh(RQ);
+        qr.setClz(this.clzz);
+        return repository.refresh(qr);
     }
 
     @Override

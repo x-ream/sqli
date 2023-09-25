@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public final class RQ<T>  implements Mappable, BbQ, Routable {
+public final class Qr<T>  implements Mappable, BbQ, Routable {
 
     private List<Bb> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME

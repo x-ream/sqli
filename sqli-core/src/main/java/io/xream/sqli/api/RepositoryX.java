@@ -31,16 +31,16 @@ import java.util.Map;
  */
 public interface RepositoryX {
 
-    Page<Map<String, Object>> findX(Q.X xCond);
+    Page<Map<String, Object>> findX(Q.X xq);
 
-    List<Map<String, Object>> listX(Q.X xCond);
+    List<Map<String, Object>> listX(Q.X xq);
 
-    <K> List<K> listPlainValue(Class<K> clzz, Q.X xCond);
+    <K> List<K> listPlainValue(Class<K> clzz, Q.X xq);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param xCond
+     * @param xq
      * @param handler
      */
-    void findToHandleX(Q.X xCond, RowHandler<Map<String, Object>> handler);
+    void findToHandleX(Q.X xq, RowHandler<Map<String, Object>> handler);
 }

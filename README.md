@@ -73,8 +73,8 @@
             7. list() //无条件查全表, 几乎没使用场景
             8. creaet(Object) //插入一条, 不支持返回自增键, 建议用外部机制生成ID
             9. createBatch(List<Object>) //批量插入
-            10. refresh(RefreshCondition) //根据主键更新
-            11. refreshUnSafe(RefreshCondition)//不根据主键更新
+            10. refresh(qr) //根据主键更新
+            11. refreshUnSafe(qr)//不根据主键更新
             12. remove(Id)//根据主键删除
             13. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
             
@@ -93,7 +93,7 @@
             4. createRepository(Class)
             5. dropRepository(Class) //在最后调用此API, 其他框架不会关闭连接而删除临时表
             
-            提醒: 不建议基于临时表调用refresh(RefreshCondition), 建议尝试调用findToHandle(....)流处理API,
+            提醒: 不建议基于临时表调用refresh(qr), 建议尝试调用findToHandle(....)流处理API,
                   异步更新, 用fallback替代事务
             
 ### 标准拼接API
@@ -175,7 +175,7 @@
             30. sort("o.id", Direction.DESC)
             31. paged().ignoreTotalRows().page(1).rows(10).last(10000) //设置last(long),会忽略page(int); 
                                            
-        更新构建API  (RefreshCondition)
+        更新构建API  (qr)
             32. refresh
             
         框架优化

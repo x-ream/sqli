@@ -29,7 +29,7 @@ import java.util.List;
  *      .findToHandle(ResultMapCriteria, map -> {
  *
  *             refresh(
- *                  RefreshCondition.build()....
+ *                  qr.build()....
  *             )
  *
  *         });
@@ -40,7 +40,7 @@ public interface TemporaryRepository {
 
     boolean create(Object obj);
     boolean createBatch(List objList);
-    boolean findToCreate(Class clzz, Q.X xCond);
+    boolean findToCreate(Class clzz, Q.X xq);
 
     boolean createRepository(Class clzz);
     boolean dropRepository(Class clzz);

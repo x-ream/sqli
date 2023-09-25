@@ -22,7 +22,7 @@ package io.xream.sqli.repository.core;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.KV;
-import io.xream.sqli.builder.RQ;
+import io.xream.sqli.builder.Qr;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
@@ -126,20 +126,20 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> boolean refresh(RQ<T> refreshCondition) {
+    public <T> boolean refresh(Qr<T> qr) {
 
-        if (refreshCondition.isAbort())
+        if (qr.isAbort())
             return false;
 
-        boolean flag = dao.refreshByCondition(refreshCondition);
+        boolean flag = dao.refreshByCondition(qr);
 
         if (!flag) return flag;
 
-        Class clz = refreshCondition.getClz();
+        Class clz = qr.getClz();
         Parsed parsed = Parser.get(clz);
         if (isCacheEnabled(parsed)) {
 
-            KV keyOne = refreshCondition.tryToGetKeyOne();
+            KV keyOne = qr.tryToGetKeyOne();
 
             String key = null;
             if (keyOne != null && Objects.nonNull(keyOne.getV())) {
@@ -163,6 +163,10 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
         Class clz = keyOne.getClzz();
         Parsed parsed = Parser.get(clz);
+
+        if (parsed.getKey() == null)
+            throw new IllegalStateException("no primary key, can not call remove(id)");
+
         boolean flag = dao.remove(keyOne);
 
         if (!flag) return flag;
@@ -292,6 +296,9 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
         Class<T> clz = keyOne.getClzz();
         Parsed parsed = Parser.get(clz);
+
+        if (parsed.getKey() == null)
+            throw new IllegalStateException("no primary key, can not call get(id)");
 
         if (!isCacheEnabled(parsed))
             return dao.get(keyOne);

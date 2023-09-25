@@ -29,25 +29,25 @@ import java.util.Objects;
  */
 public class RB<T> extends BbQBuilder {
 
-    private RQ<T> RQ;
+    private Qr<T> qr;
 
-    private RB(RQ refreshCondition){
+    private RB(Qr qr){
         super();
-        init(refreshCondition.getBbList());
+        init(qr.getBbList());
     }
 
 
     public static <T> RB<T> of(Class<T> clzz){
-        RQ RQ = new RQ();
-        RQ.setClz(clzz);
-        RB builder = new RB(RQ);
-        builder.RQ = RQ;
+        Qr Qr = new Qr();
+        Qr.setClz(clzz);
+        RB builder = new RB(Qr);
+        builder.qr = Qr;
 
         return builder;
     }
 
-    public RQ<T> build(){
-        return this.RQ;
+    public Qr<T> build(){
+        return this.qr;
     }
 
     public RB<T> and(){
@@ -61,7 +61,7 @@ public class RB<T> extends BbQBuilder {
     /**
      *
      * String sqlX = "propertyA = propertyA + propertyB + 1"
-     * @return RefreshCondition
+     * @return qr
      */
     public RB<T> refresh(String sqlX){
 
@@ -71,7 +71,7 @@ public class RB<T> extends BbQBuilder {
         Bb bb = new Bb();
         bb.setP(Op.X);
         bb.setKey(sqlX);
-        this.RQ.getRefreshList().add(bb);
+        this.qr.getRefreshList().add(bb);
 
         return this;
     }
@@ -85,17 +85,17 @@ public class RB<T> extends BbQBuilder {
         bb.setP(Op.EQ);
         bb.setKey(property);
         bb.setValue(value);
-        this.RQ.getRefreshList().add(bb);
+        this.qr.getRefreshList().add(bb);
 
         return this;
     }
 
     public KV tryToGetKeyOne() {
-        if (this.RQ.getClz() == null)
+        if (this.qr.getClz() == null)
             return null;
-        Parsed parsed = Parser.get(this.RQ.getClz());
+        Parsed parsed = Parser.get(this.qr.getClz());
         String keyOne = parsed.getKey();
-        for (Bb bb : this.RQ.getBbList()) {
+        for (Bb bb : this.qr.getBbList()) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
                 return new KV(key, bb.getValue());
@@ -106,7 +106,7 @@ public class RB<T> extends BbQBuilder {
 
 
     public RB<T> routeKey(Object routeKey) {
-        this.RQ.setRouteKey(routeKey);
+        this.qr.setRouteKey(routeKey);
         return this;
     }
 
@@ -153,7 +153,7 @@ public class RB<T> extends BbQBuilder {
 
     public RB<T> inRequired(String property, List<? extends Object> list) {
         if (list.isEmpty()) {
-            RQ.setAbort(true);
+            qr.setAbort(true);
         }
         return (RB<T>) super.in(property,list);
     }
@@ -170,31 +170,31 @@ public class RB<T> extends BbQBuilder {
         return (RB<T>) super.isNull(property);
     }
 
-    public RB x(String sqlSegment){
+    public RB<T> x(String sqlSegment){
         return (RB<T>) super.x(sqlSegment);
     }
 
-    public RB x(String sqlSegment, Object...values){
+    public RB<T> x(String sqlSegment, Object...values){
         return (RB<T>) super.x(sqlSegment, values);
     }
 
-    public RB beginSub(){
+    public RB<T> beginSub(){
         return (RB<T>) super.beginSub();
     }
 
-    public RB endSub(){
+    public RB<T> endSub(){
         return (RB<T>) super.endSub();
     }
 
-    public RB bool(Bool condition, ThenRefresh then){
+    public RB<T> bool(Bool condition, ThenRefresh then){
         if (condition.isOk()) {
             then.build(this);
         }
         return this;
     }
 
-    public RB sourceScript(String sourceScript) {
-        this.RQ.setSourceScript(sourceScript);
+    public RB<T> sourceScript(String sourceScript) {
+        this.qr.setSourceScript(sourceScript);
         return this;
     }
 

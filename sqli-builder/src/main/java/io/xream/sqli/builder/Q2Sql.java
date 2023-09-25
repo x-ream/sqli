@@ -33,6 +33,6 @@ public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
     void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
-    String toSql(Parsed parsed, RQ RQ, DialectSupport dialectSupport);
+    String toSql(Parsed parsed, Qr Qr, DialectSupport dialectSupport);
 
 }

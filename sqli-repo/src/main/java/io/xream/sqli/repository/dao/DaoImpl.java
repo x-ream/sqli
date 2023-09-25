@@ -272,12 +272,12 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
 
     @Override
-    public boolean refreshByCondition(RQ refreshCondition) {
+    public boolean refreshByCondition(Qr qr) {
 
-        Class clz = refreshCondition.getClz();
+        Class clz = qr.getClz();
         Parsed parsed = Parser.get(clz);
-        String sql = sqlBuilder.buildRefreshByCondition(parsed, refreshCondition, this.condToSql,this.dialect);
-        List<Object> valueList = refreshCondition.getValueList();
+        String sql = sqlBuilder.buildRefreshByCondition(parsed, qr, this.condToSql,this.dialect);
+        List<Object> valueList = qr.getValueList();
 
         SqliLoggerProxy.debug(clz, valueList);
         SqliLoggerProxy.debug(clz, sql);

@@ -137,38 +137,38 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         q.getBbList().add(bb);
     }
 
-    private String sourceScriptOfRefresh(Parsed parsed, RQ refreshCondition) {
-        String sourceScript = refreshCondition.getSourceScript();
+    private String sourceScriptOfRefresh(Parsed parsed, Qr qr) {
+        String sourceScript = qr.getSourceScript();
         if (SqliStringUtil.isNullOrEmpty(sourceScript))
             return parsed.getTableName();
 
-        parseAliaFromRefresh(refreshCondition);
+        parseAliaFromRefresh(qr);
 
         final String str = normalizeSql(sourceScript);
 
         StringBuilder sb = new StringBuilder();
-        mapping(reg -> str.split(reg), refreshCondition, sb);
+        mapping(reg -> str.split(reg), qr, sb);
 
         return sb.toString();
     }
 
     @Override
-    public String toSql(Parsed parsed, RQ refreshCondition, DialectSupport dialectSupport) {
+    public String toSql(Parsed parsed, Qr qr, DialectSupport dialectSupport) {
 
-        String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
+        String sourceScript = sourceScriptOfRefresh(parsed, qr);
 
         StringBuilder sb = new StringBuilder();
         sb.append(dialectSupport.getAlterTableUpdate()).append(SqlScript.SPACE).append(sourceScript)
                 .append(SqlScript.SPACE).append(dialectSupport.getCommandUpdate()).append(SqlScript.SPACE);
 
-        concatRefresh(sb, parsed, refreshCondition, dialectSupport);
+        concatRefresh(sb, parsed, qr, dialectSupport);
 
-        String conditionSql = toBbqSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
+        String conditionSql = toBbqSql(qr, qr.getValueList(), qr);
 
         sb.append(conditionSql);
 
-        if (SqliStringUtil.isNotNull(dialectSupport.getLimitOne()) && refreshCondition.getLimit() > 0) {
-            sb.append(SqlScript.LIMIT).append(refreshCondition.getLimit());
+        if (SqliStringUtil.isNotNull(dialectSupport.getLimitOne()) && qr.getLimit() > 0) {
+            sb.append(SqlScript.LIMIT).append(qr.getLimit());
         }
 
         String sql = sb.toString();
@@ -179,9 +179,9 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         return sql;
     }
 
-    private void concatRefresh(StringBuilder sb, Parsed parsed, RQ refreshCondition, DialectSupport dialectSupport) {
+    private void concatRefresh(StringBuilder sb, Parsed parsed, Qr qr, DialectSupport dialectSupport) {
 
-        List<Bb> refreshList = refreshCondition.getRefreshList();
+        List<Bb> refreshList = qr.getRefreshList();
 
         List<Object> refreshValueList = new ArrayList<>();
 
@@ -199,7 +199,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 Object key = bb.getKey();
                 String str = key.toString();
                 final String sql = normalizeSql(str);
-                mapping((reg) -> sql.split(reg), refreshCondition, sb);
+                mapping((reg) -> sql.split(reg), qr, sb);
 
             } else {
                 String key = bb.getKey();
@@ -211,7 +211,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
                     isNotFirst = true;
                     final String sql = normalizeSql(key);
-                    mapping((reg) -> sql.split(reg), refreshCondition, sb);
+                    mapping((reg) -> sql.split(reg), qr, sb);
                 } else {
 
                     String k = null;
@@ -245,7 +245,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
                     isNotFirst = true;
 
-                    String mapper = mapping(key, refreshCondition);
+                    String mapper = mapping(key, qr);
                     sb.append(mapper);
                     sb.append(SqlScript.EQ_PLACE_HOLDER);
 
@@ -258,7 +258,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         }
 
         if (!refreshValueList.isEmpty()) {
-            refreshCondition.getValueList().addAll(0, refreshValueList);
+            qr.getValueList().addAll(0, refreshValueList);
         }
     }
 
@@ -633,14 +633,14 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         }
     }
 
-    private void parseAliaFromRefresh(RQ refreshCondition) {
+    private void parseAliaFromRefresh(Qr qr) {
 
-        String script = refreshCondition.getSourceScript();//string -> list<>
+        String script = qr.getSourceScript();//string -> list<>
         List<String> list = SourceBuilder.split(script);
         List<SourceScript> sourceScripts = SourceBuilder.parseScriptAndBuild(list,null);
         SourceBuilder.checkSourceAndAlia(sourceScripts);
         for (SourceScript sc : sourceScripts) {
-            refreshCondition.getAliaMap().put(sc.alia(), sc.getSource());
+            qr.getAliaMap().put(sc.alia(), sc.getSource());
         }
 
     }

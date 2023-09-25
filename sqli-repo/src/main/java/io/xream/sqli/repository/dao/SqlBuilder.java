@@ -77,8 +77,8 @@ public final class SqlBuilder implements BbQToSql {
     }
 
 
-    protected String buildRefreshByCondition(Parsed parsed, RQ refreshCondition, Q2Sql criteriaParser, DialectSupport dialectSupport) {
-        return criteriaParser.toSql(parsed,refreshCondition, dialectSupport);
+    protected String buildRefreshByCondition(Parsed parsed, Qr qr, Q2Sql criteriaParser, DialectSupport dialectSupport) {
+        return criteriaParser.toSql(parsed,qr, dialectSupport);
     }
 
 
