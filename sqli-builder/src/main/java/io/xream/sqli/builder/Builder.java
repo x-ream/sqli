@@ -31,13 +31,13 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class Builder extends BbQBuilder {
+public class Builder<T> extends BbQBuilder {
 
     private Cond cond;
     private PageBuilder pageBuilder;
     protected SourceScript sourceScriptTemp;
 
-    public Builder routeKey(Object routeKey) {
+    public Builder<T> routeKey(Object routeKey) {
         this.cond.setRouteKey(routeKey);
         return this;
     }
@@ -86,7 +86,7 @@ public class Builder extends BbQBuilder {
         cond.paged(paged);
     }
 
-    public Builder sortIn(String porperty, List<? extends Object> inList) {
+    public Builder<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = new KV(porperty, inList);
             List<KV> fixedSortList = cond.getFixedSortList();
@@ -99,7 +99,7 @@ public class Builder extends BbQBuilder {
         return this;
     }
 
-    public Builder sort(String orderBy, Direction direction) {
+    public Builder<T> sort(String orderBy, Direction direction) {
         if (SqliStringUtil.isNullOrEmpty(orderBy))
             return this;
         List<Sort> sortList = cond.getSortList();
@@ -117,10 +117,10 @@ public class Builder extends BbQBuilder {
         this.cond = cond;
     }
 
-    public static Builder builder(Class<?> clz) {
+    public static <T> Builder<T> of(Class<?> clz) {
         Cond cond = new Cond();
         cond.setClzz(clz);
-        Builder builder = new Builder(cond);
+        Builder<T> builder = new Builder(cond);
 
         if (cond.getParsed() == null) {
             Parsed parsed = Parser.get(clz);
@@ -130,7 +130,7 @@ public class Builder extends BbQBuilder {
         return builder;
     }
 
-    public static X resultMapBuilder() {
+    public static X x() {
         Cond.X resultMapCriteria = new Cond.X();
         return new X(resultMapCriteria);
     }
@@ -171,7 +171,7 @@ public class Builder extends BbQBuilder {
 
             @Override
             public SourceScriptBuilder sub(Sub sub) {
-                X subBuilder = Builder.resultMapBuilder();
+                X subBuilder = Builder.x();
                 sub.buildBy(subBuilder);
                 Cond.X resultMapCriteria = subBuilder.build();
                 sourceScriptTemp.setSubCriteria(resultMapCriteria);

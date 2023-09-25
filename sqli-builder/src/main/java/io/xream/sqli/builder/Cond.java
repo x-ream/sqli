@@ -35,9 +35,9 @@ import java.util.*;
  * @author Sim
  *
  */
-public class Cond implements Mappable, BbQ, Paged, Routable {
+public class Cond<T> implements Mappable, BbQ, Paged, Routable {
 
-	private Class<?> clzz;
+	private Class<T> clzz;
 	private boolean isTotalRowsIgnored;
 	private int page;
 	private int rows;
@@ -59,11 +59,11 @@ public class Cond implements Mappable, BbQ, Paged, Routable {
 	@Override
 	public Map<String,String> getResultKeyAliaMap() {return null;}
 
-	public Class<?> getClzz() {
+	public Class<T> getClzz() {
 		return clzz;
 	}
 
-	public void setClzz(Class<?> clz) {
+	public void setClzz(Class<T> clz) {
 		this.clzz = clz;
 	}
 

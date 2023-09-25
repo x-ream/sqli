@@ -49,12 +49,12 @@ public class RefreshBuilder<T> extends BbQBuilder {
         return this.refreshCondition;
     }
 
-    public RefreshBuilder and(){
+    public RefreshBuilder<T> and(){
         return this;
     }
 
-    public RefreshBuilder or() {
-        return (RefreshBuilder) super.or();
+    public RefreshBuilder<T> or() {
+        return (RefreshBuilder<T>) super.or();
     }
 
     /**
@@ -62,7 +62,7 @@ public class RefreshBuilder<T> extends BbQBuilder {
      * String sqlX = "propertyA = propertyA + propertyB + 1"
      * @return RefreshCondition
      */
-    public RefreshBuilder refresh(String sqlX){
+    public RefreshBuilder<T> refresh(String sqlX){
 
         if (Objects.isNull(sqlX))
             return this;
@@ -75,7 +75,7 @@ public class RefreshBuilder<T> extends BbQBuilder {
         return this;
     }
 
-    public RefreshBuilder refresh(String property, Object value){
+    public RefreshBuilder<T> refresh(String property, Object value){
 
         if (Objects.isNull(value))
             return this;
@@ -104,85 +104,85 @@ public class RefreshBuilder<T> extends BbQBuilder {
     }
 
 
-    public RefreshBuilder routeKey(Object routeKey) {
+    public RefreshBuilder<T> routeKey(Object routeKey) {
         this.refreshCondition.setRouteKey(routeKey);
         return this;
     }
 
 
-    public RefreshBuilder eq(String key, Object value) {
-        return (RefreshBuilder) super.eq(key,value);
+    public RefreshBuilder<T> eq(String key, Object value) {
+        return (RefreshBuilder<T>) super.eq(key,value);
     }
 
-    public RefreshBuilder gt(String key, Object value) {
-        return (RefreshBuilder) super.gt(key,value);
+    public RefreshBuilder<T> gt(String key, Object value) {
+        return (RefreshBuilder<T>) super.gt(key,value);
     }
 
-    public RefreshBuilder gte(String key, Object value) {
-        return (RefreshBuilder) super.gte(key,value);
+    public RefreshBuilder<T> gte(String key, Object value) {
+        return (RefreshBuilder<T>) super.gte(key,value);
     }
 
-    public RefreshBuilder lt(String key, Object value) {
-        return (RefreshBuilder) super.lt(key,value);
+    public RefreshBuilder<T> lt(String key, Object value) {
+        return (RefreshBuilder<T>) super.lt(key,value);
     }
 
-    public RefreshBuilder lte(String key, Object value) {
-        return (RefreshBuilder) super.lte(key,value);
+    public RefreshBuilder<T> lte(String key, Object value) {
+        return (RefreshBuilder<T>) super.lte(key,value);
     }
 
-    public RefreshBuilder ne(String property, Object value) {
-        return (RefreshBuilder) super.ne(property, value);
+    public RefreshBuilder<T> ne(String property, Object value) {
+        return (RefreshBuilder<T>) super.ne(property, value);
     }
 
-    public RefreshBuilder like(String property, String value) {
-        return (RefreshBuilder) super.like(property, value);
+    public RefreshBuilder<T> like(String property, String value) {
+        return (RefreshBuilder<T>) super.like(property, value);
     }
 
-    public RefreshBuilder likeRight(String property, String value) {
-        return (RefreshBuilder) super.likeRight(property, value);
+    public RefreshBuilder<T> likeRight(String property, String value) {
+        return (RefreshBuilder<T>) super.likeRight(property, value);
     }
 
-    public RefreshBuilder notLike(String property, String value) {
-        return (RefreshBuilder) super.notLike(property, value);
+    public RefreshBuilder<T> notLike(String property, String value) {
+        return (RefreshBuilder<T>) super.notLike(property, value);
     }
 
-    public RefreshBuilder in(String property, List<? extends Object> list) {
-        return (RefreshBuilder) super.in(property,list);
+    public RefreshBuilder<T> in(String property, List<? extends Object> list) {
+        return (RefreshBuilder<T>) super.in(property,list);
     }
 
-    public RefreshBuilder inRequired(String property, List<? extends Object> list) {
+    public RefreshBuilder<T> inRequired(String property, List<? extends Object> list) {
         if (list.isEmpty()) {
             refreshCondition.setAbort(true);
         }
-        return (RefreshBuilder) super.in(property,list);
+        return (RefreshBuilder<T>) super.in(property,list);
     }
 
-    public RefreshBuilder nin(String property, List<? extends Object> list) {
-        return (RefreshBuilder) super.nin(property,list);
+    public RefreshBuilder<T> nin(String property, List<? extends Object> list) {
+        return (RefreshBuilder<T>) super.nin(property,list);
     }
 
-    public RefreshBuilder nonNull(String property){
-        return (RefreshBuilder) super.nonNull(property);
+    public RefreshBuilder<T> nonNull(String property){
+        return (RefreshBuilder<T>) super.nonNull(property);
     }
 
-    public RefreshBuilder isNull(String property){
-        return (RefreshBuilder) super.isNull(property);
+    public RefreshBuilder<T> isNull(String property){
+        return (RefreshBuilder<T>) super.isNull(property);
     }
 
     public RefreshBuilder  x(String sqlSegment){
-        return (RefreshBuilder) super.x(sqlSegment);
+        return (RefreshBuilder<T>) super.x(sqlSegment);
     }
 
     public RefreshBuilder  x(String sqlSegment, Object...values){
-        return (RefreshBuilder) super.x(sqlSegment, values);
+        return (RefreshBuilder<T>) super.x(sqlSegment, values);
     }
 
     public RefreshBuilder  beginSub(){
-        return (RefreshBuilder) super.beginSub();
+        return (RefreshBuilder<T>) super.beginSub();
     }
 
     public RefreshBuilder  endSub(){
-        return (RefreshBuilder) super.endSub();
+        return (RefreshBuilder<T>) super.endSub();
     }
 
     public RefreshBuilder  bool(Bool condition, ThenRefresh then){
