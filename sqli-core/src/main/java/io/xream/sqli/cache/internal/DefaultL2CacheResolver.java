@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.builder.Cond;
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.In;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.exception.L2CacheException;
 import io.xream.sqli.exception.NoResultUnderProtectionException;
@@ -462,9 +462,9 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	}
 
 	@Override
-	public <T> List<T> listUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
-		final String criteriaKey = buildCacheKey(cond);
-		final Class clz = cond.getClzz();
+	public <T> List<T> listUnderProtection(Q q, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
+		final String criteriaKey = buildCacheKey(q);
+		final Class clz = q.getClzz();
 		List<String> keyList = null;
 		try {
 			keyList = getResultKeyList(clz, criteriaKey);
@@ -565,16 +565,16 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 
 	@Override
-	public <T> Page<T> findUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
-		Class clz = cond.getClzz();
+	public <T> Page<T> findUnderProtection(Q q, QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
+		Class clz = q.getClzz();
 		Parsed parsed = Parser.get(clz);
-		final String criteriaKey = buildCacheKey(cond);
+		final String criteriaKey = buildCacheKey(q);
 		Page p = getResultKeyListPaginated(clz, criteriaKey);// FIXME
 
 		if (p == null) {
 
-			if (!cond.isTotalRowsIgnored()) {
-				final String totalRowsString = buildCacheKeyOfTotalRows(cond);
+			if (!q.isTotalRowsIgnored()) {
+				final String totalRowsString = buildCacheKeyOfTotalRows(q);
 				long totalRows = getTotalRows(clz, totalRowsString);
 				if (totalRows == DEFAULT_NUM) {
 					try {
@@ -597,8 +597,8 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 					}
 					p = new Page<>();
 					p.setTotalRows(totalRows);
-					p.setPage(cond.getPage());
-					p.setRows(cond.getRows());
+					p.setPage(q.getPage());
+					p.setRows(q.getRows());
 					p.reSetList(list);
 				}
 			} else {
@@ -681,9 +681,9 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 			}
 		}
 		String key = parsed.getKey();
-		InCondition inCondition = InCondition.of(key, idList);
-		inCondition.setClz(clz);
-		List<T> objList = queryForCache.in(inCondition);
+		In in = In.of(key, idList);
+		in.setClz(clz);
+		List<T> objList = queryForCache.in(in);
 
 		if (objList.isEmpty()) {
 			markForRefresh0(clz);

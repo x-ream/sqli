@@ -21,8 +21,8 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryX;
-import io.xream.sqli.builder.Cond;
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
@@ -248,84 +248,84 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     public List<T> in(String property, List<? extends Object> inList) {
         if (inList == null)
             throw new IllegalArgumentException("inList can not be null");
-        InCondition inCondition = InCondition.of(property,inList);
-        inCondition.setClz(this.clzz);
-        return repository.in(inCondition);
+        In in = In.of(property,inList);
+        in.setClz(this.clzz);
+        return repository.in(in);
     }
 
 
     @Override
-    public Page<T> find(Cond cond) {
-        assertCriteriaClzz(cond);
-        this.setDefaultClzz(cond);
-        Page<T> page = repository.find(cond);
+    public Page<T> find(Q q) {
+        assertCriteriaClzz(q);
+        this.setDefaultClzz(q);
+        Page<T> page = repository.find(q);
         page.setClzz(this.clzz);
         return page;
     }
 
 
     @Override
-    public List<T> list(Cond cond) {
-        assertCriteriaClzz(cond);
-        this.setDefaultClzz(cond);
-        return repository.list(cond);
+    public List<T> list(Q q) {
+        assertCriteriaClzz(q);
+        this.setDefaultClzz(q);
+        return repository.list(q);
 
     }
 
     @Override
-    public <T> void findToHandle(Cond cond, RowHandler<T> handler) {
-        assertCriteriaClzz(cond);
-        this.setDefaultClzz(cond);
-        this.repository.findToHandle(cond,handler);
+    public <T> void findToHandle(Q q, RowHandler<T> handler) {
+        assertCriteriaClzz(q);
+        this.setDefaultClzz(q);
+        this.repository.findToHandle(q,handler);
     }
 
     @Override
-    public boolean exists(Cond cond) {
-        assertCriteriaClzz(cond);
-        this.setDefaultClzz(cond);
-        return this.repository.exists(cond);
+    public boolean exists(Q q) {
+        assertCriteriaClzz(q);
+        this.setDefaultClzz(q);
+        return this.repository.exists(q);
     }
 
     @Override
-    public Page<Map<String, Object>> find(Cond.X resultMapCriteria) {
+    public Page<Map<String, Object>> findX(Q.X resultMapCriteria) {
         this.setDefaultClzz(resultMapCriteria);
         return repository.find(resultMapCriteria);
     }
 
 
     @Override
-    public List<Map<String, Object>> list(Cond.X resultMapCriteria) {
+    public List<Map<String, Object>> listX(Q.X resultMapCriteria) {
         this.setDefaultClzz(resultMapCriteria);
         return repository.list(resultMapCriteria);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Cond.X resultMapCriteria){
+    public <K> List<K> listPlainValue(Class<K> clzz, Q.X resultMapCriteria){
         this.setDefaultClzz(resultMapCriteria);
         return repository.listPlainValue(clzz,resultMapCriteria);
     }
 
     @Override
-    public void findToHandle(Cond.X resultMapCriteria, RowHandler<Map<String,Object>> handler) {
+    public void findToHandleX(Q.X resultMapCriteria, RowHandler<Map<String,Object>> handler) {
         this.setDefaultClzz(resultMapCriteria);
         this.repository.findToHandle(resultMapCriteria,handler);
     }
 
-    private void setDefaultClzz(Cond.X resultMapCriteria) {
+    private void setDefaultClzz(Q.X resultMapCriteria) {
         if (this.clzz != Void.class) {
             resultMapCriteria.setParsed(Parser.get(this.clzz));
         }
         resultMapCriteria.setClzz(this.clzz);
         resultMapCriteria.setRepositoryClzz(this.repositoryClzz);
     }
-    private void setDefaultClzz(Cond cond) {
-        cond.setClzz(this.clzz);
-        cond.setParsed(Parser.get(this.clzz));
+    private void setDefaultClzz(Q q) {
+        q.setClzz(this.clzz);
+        q.setParsed(Parser.get(this.clzz));
     }
 
-    private void assertCriteriaClzz(Cond cond) {
-        if (this.clzz != cond.getClzz())
-            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + cond.getClzz());
+    private void assertCriteriaClzz(Q q) {
+        if (this.clzz != q.getClzz())
+            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + q.getClzz());
     }
     //can not delete this method: protected void setRepositoryClzz(Class clzz)
     protected void setRepositoryClzz(Class clzz){

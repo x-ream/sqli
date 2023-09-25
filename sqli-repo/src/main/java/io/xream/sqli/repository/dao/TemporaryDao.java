@@ -18,12 +18,12 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 
 /**
  * @author Sim
  */
 public interface TemporaryDao {
-    boolean findToCreate(Class clzz, Cond.X resultMapCriteria);
+    boolean findToCreate(Class clzz, Q.X resultMapCriteria);
     boolean execute(String sql);
 }

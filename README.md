@@ -8,7 +8,7 @@
     
    [WIKI](https://github.com/x-ream/sqli/wiki)
     
-    sqli/sqli-builder
+    sqli/sqli-QBuilder
     sqli/sqli-core
     sqli/sqli-dialect
     sqli/sqli-repo
@@ -88,7 +88,7 @@
 
             1. creaet(Object) //插入一条
             2. createBatch(List<Object>) //批量插入, 适用于数据导入场景     
-            3. findToCreate(Class, Criteria.ResultMapCriteria) //builder.resultKey("foo.fooName","foo_name"), 
+            3. findToCreate(Class, Criteria.ResultMapCriteria) //QBuilder.resultKey("foo.fooName","foo_name"), 
                     //仅在临时表需要设置foo_name, 如果不设置, sqli默认按顺序设置c0,c1...., 无法和临时表匹配
             4. createRepository(Class)
             5. dropRepository(Class) //在最后调用此API, 其他框架不会关闭连接而删除临时表
@@ -106,27 +106,27 @@
         
         代码片段:
             {
-                CriteriaBuilder builder = CriteriaBuilder.builder(Order.class); 
-                builder.eq("userId",obj.getUserId()).eq("status","PAID");
-                Criteria cond = builer.build();
-                orderRepository.find(cond);
+                CriteriaBuilder QBuilder = CriteriaBuilder.QBuilder(Order.class); 
+                QBuilder.eq("userId",obj.getUserId()).eq("status","PAID");
+                Criteria q = builer.build();
+                orderRepository.find(q);
             }
         
             {
-                CriteriaBuilder.ResultMapBuilder builder = CriteriaBuilder.resultMapBuilder();
-                builder.resultKey("o.id");
-                builder.eq("o.status","PAID");
-                builder.beginSub().gt("o.createAt",obj.getStartTime()).lt("o.createAt",obj.getEndTime()).endSub();
-                builder.beginSub().eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()).endSub();
-                builder.sourceScript("FROM order o INNER JOIN orderItem i ON i.orderId = o.id");
-                builder.paged(obj);
-                Criteria.ResultMapCriteria resultMapCriteria = builder.build();
+                CriteriaBuilder.ResultMapBuilder QBuilder = CriteriaBuilder.resultMapBuilder();
+                QBuilder.resultKey("o.id");
+                QBuilder.eq("o.status","PAID");
+                QBuilder.beginSub().gt("o.createAt",obj.getStartTime()).lt("o.createAt",obj.getEndTime()).endSub();
+                QBuilder.beginSub().eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()).endSub();
+                QBuilder.sourceScript("FROM order o INNER JOIN orderItem i ON i.orderId = o.id");
+                QBuilder.paged(obj);
+                Criteria.ResultMapCriteria resultMapCriteria = QBuilder.build();
                 omsRepository.find(resultMapCriteria);
             }
             
             {
                 orderRepository.refresh(
-                    RefreshBuilder.builder().refresh("status","PAYING").eq("id",1).eq("status","UN_PAID").build()
+                    RefreshBuilder.QBuilder().refresh("status","PAYING").eq("id",1).eq("status","UN_PAID").build()
                 );
             }
         
@@ -182,7 +182,7 @@
             sourceScript/sourceBuilder
                 如果条件和返回都不包括sourceScript里的连表，框架会优化移除连接（但目标连接表有用时，中间表不会
                 被移除）。
-                关闭优化: builder.withoutOptimization()
+                关闭优化: QBuilder.withoutOptimization()
             in
                 每500个条件会切割出一次in查询
             
@@ -238,6 +238,6 @@
     
     {
         CacheFilter.filter(userId);
-        this.orderRepository.find(cond);
+        this.orderRepository.find(q);
     }               
     

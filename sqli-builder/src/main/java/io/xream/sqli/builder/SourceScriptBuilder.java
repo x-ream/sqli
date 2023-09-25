@@ -53,7 +53,7 @@ public interface SourceScriptBuilder {
 
     BbQBuilder more();
 
-    Builder.X build();
+    QBuilder.X build();
 
 
     static void checkSourceAndAlia(List<SourceScript> list) {

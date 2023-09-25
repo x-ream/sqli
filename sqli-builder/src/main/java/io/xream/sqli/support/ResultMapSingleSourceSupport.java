@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.support;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.SourceScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -28,7 +28,7 @@ import io.xream.sqli.parser.Parser;
  */
 public interface ResultMapSingleSourceSupport {
 
-    default void supportSingleSource(Cond.X resultMapCriteria) {
+    default void supportSingleSource(Q.X resultMapCriteria) {
         if (resultMapCriteria.getSourceScripts().size() == 1 && resultMapCriteria.getParsed() == null) {
             SourceScript sourceScript = resultMapCriteria.getSourceScripts().get(0);
             String source = sourceScript.getSource();

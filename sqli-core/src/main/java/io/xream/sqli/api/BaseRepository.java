@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.RowHandler;
@@ -99,20 +99,20 @@ public interface BaseRepository<T> extends Typed<T> {
     /**
      * Standard query pageable API
      *
-     * @param cond
+     * @param q
      */
-    Page<T> find(Cond cond);
+    Page<T> find(Q q);
 
-    List<T> list(Cond cond);
+    List<T> list(Q q);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param cond
+     * @param q
      * @param handler
      * @param <T>
      */
-    <T> void findToHandle(Cond cond, RowHandler<T> handler);
+    <T> void findToHandle(Q q, RowHandler<T> handler);
 
-    boolean exists(Cond cond);
+    boolean exists(Q q);
     
 }

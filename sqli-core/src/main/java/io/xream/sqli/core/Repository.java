@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.core;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;
@@ -61,25 +61,25 @@ public interface Repository extends QueryForCache {
 	<T> List<T> list(Object conditionObj);
 
 	/**
-	 *  @param cond
+	 *  @param q
 	 */
-	<T> Page<T> find(Cond cond);
+	<T> Page<T> find(Q q);
 
 	/**
 	 * @param resultMapCriteria
 	 * 
 	 */
-	Page<Map<String,Object>> find(Cond.X resultMapCriteria);
+	Page<Map<String,Object>> find(Q.X xCond);
 	/**
 	 *
 	 * @param resultMapCriteria
 	 * 
 	 */
-	List<Map<String,Object>> list(Cond.X resultMapCriteria);
+	List<Map<String,Object>> list(Q.X xCond);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Cond.X resultMapCriteria);
+	<K> List<K> listPlainValue(Class<K> clzz, Q.X xCond);
 
-	<T> List<T> list(Cond cond);
+	<T> List<T> list(Q q);
 
 	boolean createBatch(List<? extends Object> objList);
 
@@ -87,11 +87,11 @@ public interface Repository extends QueryForCache {
 
     <T> boolean refresh(T t);
 
-	<T> void findToHandle(Cond cond, RowHandler<T> handler);
+	<T> void findToHandle(Q q, RowHandler<T> handler);
 
-	void findToHandle(Cond.X resultMapCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Q.X xCond, RowHandler<Map<String, Object>> handler);
 
 	<T> List<T> listByClzz(Class<T> clzz);
 
-	boolean exists(Cond cond);
+	boolean exists(Q q);
 }

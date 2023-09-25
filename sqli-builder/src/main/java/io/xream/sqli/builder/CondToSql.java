@@ -31,7 +31,7 @@ public interface CondToSql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
     String toConditionSql(BbQ qCondition, List<Object> valueList, Mappable mappable) ;
 
-    void toSql(boolean isSub, Cond cond, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
+    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
     String toSql(Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport);
 

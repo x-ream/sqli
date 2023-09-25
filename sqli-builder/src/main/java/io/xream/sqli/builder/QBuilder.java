@@ -31,14 +31,14 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class Builder<T> extends BbQBuilder {
+public class QBuilder<T> extends BbQBuilder {
 
-    private Cond cond;
+    private Q q;
     private PageBuilder pageBuilder;
     protected SourceScript sourceScriptTemp;
 
-    public Builder<T> routeKey(Object routeKey) {
-        this.cond.setRouteKey(routeKey);
+    public QBuilder<T> routeKey(Object routeKey) {
+        this.q.setRouteKey(routeKey);
         return this;
     }
 
@@ -49,31 +49,31 @@ public class Builder<T> extends BbQBuilder {
 
             @Override
             public PageBuilder ignoreTotalRows() {
-                cond.setTotalRowsIgnored(true);
+                q.setTotalRowsIgnored(true);
                 return this;
             }
             
             @Override
             public PageBuilder ignoreTotalRows(boolean ignored) {
-                cond.setTotalRowsIgnored(ignored);
+                q.setTotalRowsIgnored(ignored);
                 return this;
             }
 
             @Override
             public PageBuilder rows(int rows) {
-                cond.setRows(rows);
+                q.setRows(rows);
                 return this;
             }
 
             @Override
             public PageBuilder page(int page) {
-                cond.setPage(page);
+                q.setPage(page);
                 return this;
             }
 
             @Override
             public PageBuilder last(long last) {
-                cond.setLast(last);
+                q.setLast(last);
                 return this;
             }
 
@@ -83,77 +83,77 @@ public class Builder<T> extends BbQBuilder {
     }
 
     public void paged(Paged paged) {
-        cond.paged(paged);
+        q.paged(paged);
     }
 
-    public Builder<T> sortIn(String porperty, List<? extends Object> inList) {
+    public QBuilder<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = new KV(porperty, inList);
-            List<KV> fixedSortList = cond.getFixedSortList();
+            List<KV> fixedSortList = q.getFixedSortList();
             if (fixedSortList == null){
                 fixedSortList = new ArrayList<>();
-                cond.setFixedSortList(fixedSortList);
+                q.setFixedSortList(fixedSortList);
             }
             fixedSortList.add(kv);
         }
         return this;
     }
 
-    public Builder<T> sort(String orderBy, Direction direction) {
+    public QBuilder<T> sort(String orderBy, Direction direction) {
         if (SqliStringUtil.isNullOrEmpty(orderBy))
             return this;
-        List<Sort> sortList = cond.getSortList();
+        List<Sort> sortList = q.getSortList();
         if (sortList == null) {
             sortList = new ArrayList<>();
-            cond.setSortList(sortList);
+            q.setSortList(sortList);
         }
         Sort sort = new Sort(orderBy, direction);
         sortList.add(sort);
         return this;
     }
 
-    private Builder(Cond cond) {
-        super(cond.getBbList());
-        this.cond = cond;
+    private QBuilder(Q q) {
+        super(q.getBbList());
+        this.q = q;
     }
 
-    public static <T> Builder<T> of(Class<?> clz) {
-        Cond cond = new Cond();
-        cond.setClzz(clz);
-        Builder<T> builder = new Builder(cond);
+    public static <T> QBuilder<T> of(Class<?> clz) {
+        Q q = new Q();
+        q.setClzz(clz);
+        QBuilder<T> QBuilder = new QBuilder(q);
 
-        if (cond.getParsed() == null) {
+        if (q.getParsed() == null) {
             Parsed parsed = Parser.get(clz);
-            cond.setParsed(parsed);
+            q.setParsed(parsed);
         }
 
-        return builder;
+        return QBuilder;
     }
 
     public static X x() {
-        Cond.X resultMapCriteria = new Cond.X();
+        Q.X resultMapCriteria = new Q.X();
         return new X(resultMapCriteria);
     }
 
     public Class<?> getClz() {
-        return this.cond.getClzz();
+        return this.q.getClzz();
     }
 
-    protected Cond get() {
-        return this.cond;
+    protected Q<T> get() {
+        return this.q;
     }
 
-    public Cond build(){
-        this.cond.setAbort(isAbort);
-        return this.cond;
+    public Q<T> build(){
+        this.q.setAbort(isAbort);
+        return this.q;
     }
 
     public void clear(){
-        this.cond = null;
+        this.q = null;
     }
 
 
-    public static final class X extends Builder {
+    public static final class X extends QBuilder {
 
         private SourceScriptBuilder sourceScriptBuilder = new SourceScriptBuilder() {
 
@@ -171,9 +171,9 @@ public class Builder<T> extends BbQBuilder {
 
             @Override
             public SourceScriptBuilder sub(Sub sub) {
-                X subBuilder = Builder.x();
+                X subBuilder = QBuilder.x();
                 sub.buildBy(subBuilder);
-                Cond.X resultMapCriteria = subBuilder.build();
+                Q.X resultMapCriteria = subBuilder.build();
                 sourceScriptTemp.setSubCriteria(resultMapCriteria);
                 subBuilder.clear();
                 return this;
@@ -258,17 +258,17 @@ public class Builder<T> extends BbQBuilder {
         }
 
         @Override
-        protected Cond.X get() {
-            return (Cond.X) super.get();
+        protected Q.X get() {
+            return (Q.X) super.get();
         }
 
         @Override
-        public Cond.X build() {
-            return (Cond.X) super.build();
+        public Q.X build() {
+            return (Q.X) super.build();
         }
 
-        public X(Cond cond) {
-            super(cond);
+        private X(Q q) {
+            super(q);
             instance = this;
         }
 
@@ -345,7 +345,7 @@ public class Builder<T> extends BbQBuilder {
         public X distinct(String... objs) {
             if (objs == null)
                 throw new IllegalArgumentException("distinct non resultKey");
-            Cond.X resultMapped = get();
+            Q.X resultMapped = get();
             Distinct distinct = resultMapped.getDistinct();
             if (Objects.isNull(distinct)) {
                 distinct = new Distinct();
@@ -490,8 +490,8 @@ public class Builder<T> extends BbQBuilder {
             return (X) super.endSub();
         }
 
-        public X bool(Bool conditon, Then then){
-            return (X) super.bool(conditon, then);
+        public X bool(Bool cond, Then then){
+            return (X) super.bool(cond, then);
         }
 
         public void clear(){

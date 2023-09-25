@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.builder.Cond;
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.core.KeyOne;
@@ -54,17 +54,17 @@ public interface Dao extends QueryForCache {
 
 	<T> T get(KeyOne<T> keyOne);
 	
-	<T> List<T> in(InCondition inCondition);
+	<T> List<T> in(In in);
 	
-	Page<Map<String, Object>> find(Cond.X resultMapped);
+	Page<Map<String, Object>> find(Q.X resultMapped);
 
-	List<Map<String,Object>> list(Cond.X resultMapped);
+	List<Map<String,Object>> list(Q.X resultMapped);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Cond.X resultMapped);
+	<K> List<K> listPlainValue(Class<K> clzz, Q.X resultMapped);
 
-	<T> Page<T> find(Cond cond);
+	<T> Page<T> find(Q q);
 
-	<T> List<T> list(Cond cond);
+	<T> List<T> list(Q q);
 
 	boolean execute(String sql, Object...objs);
 
@@ -72,8 +72,8 @@ public interface Dao extends QueryForCache {
 
     <T> boolean refresh(T t);
 
-	<T> void findToHandle(Cond cond, RowHandler<T> handler);
-	void findToHandle(Cond.X resultMapCriteria, RowHandler<Map<String, Object>> handler);
+	<T> void findToHandle(Q q, RowHandler<T> handler);
+	void findToHandle(Q.X resultMapCriteria, RowHandler<Map<String, Object>> handler);
 
-    boolean exists(Cond cond);
+    boolean exists(Q q);
 }

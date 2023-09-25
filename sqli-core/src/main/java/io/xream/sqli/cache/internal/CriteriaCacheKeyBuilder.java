@@ -19,7 +19,7 @@
 package io.xream.sqli.cache.internal;
 
 import io.xream.sqli.builder.Bb;
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.Sort;
 import io.xream.sqli.cache.CriteriaCacheKeyBuildable;
@@ -36,20 +36,20 @@ import java.util.Set;
 public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
 
     @Override
-    public String buildCacheKey(Cond cond, boolean isOfTotalRows){
+    public String buildCacheKey(Q q, boolean isOfTotalRows){
         StringBuilder sb = new StringBuilder();
-        sb.append(cond.getRouteKey());
-        buildCacheKeyByBbList(cond.getBbList(), sb);
+        sb.append(q.getRouteKey());
+        buildCacheKeyByBbList(q.getBbList(), sb);
 
         if (! isOfTotalRows) {
-            sb.append(cond.getPage()).append(cond.getRows());
-            if (cond.getSortList() != null) {
-                for (Sort sort : cond.getSortList()) {
+            sb.append(q.getPage()).append(q.getRows());
+            if (q.getSortList() != null) {
+                for (Sort sort : q.getSortList()) {
                     sb.append(sort.getOrderBy()).append(sort.getDirection());
                 }
             }
-            if (cond.getFixedSortList() != null) {
-                for (KV kv : cond.getFixedSortList()) {
+            if (q.getFixedSortList() != null) {
+                for (KV kv : q.getFixedSortList()) {
                     sb.append(kv.k).append(kv.v);
                 }
             }

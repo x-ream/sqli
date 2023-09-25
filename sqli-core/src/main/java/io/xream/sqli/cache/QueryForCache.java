@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.cache;
 
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.In;
 
 import java.util.List;
 
@@ -26,5 +26,5 @@ import java.util.List;
  * @author Sim
  */
 public interface QueryForCache {
-    <T> List<T> in(InCondition inCondition);
+    <T> List<T> in(In in);
 }

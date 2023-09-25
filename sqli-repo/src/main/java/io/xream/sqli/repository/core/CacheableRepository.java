@@ -19,8 +19,8 @@
 package io.xream.sqli.repository.core;
 
 
-import io.xream.sqli.builder.Cond;
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.core.KeyOne;
@@ -200,45 +200,45 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> Page<T> find(Cond cond) {
+    public <T> Page<T> find(Q q) {
 
-        if (cond.isAbort()) {
+        if (q.isAbort()) {
             Page page = new Page<>();
-            page.setClzz(cond.getClzz());
-            page.setRows(cond.getRows());
-            page.setPage(cond.getPage());
+            page.setClzz(q.getClzz());
+            page.setRows(q.getRows());
+            page.setPage(q.getPage());
             return page;
         }
 
-        Class clz = cond.getClzz();
+        Class clz = q.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dao.find(cond);
+            return dao.find(q);
 
-        return cacheResolver.findUnderProtection(cond,
+        return cacheResolver.findUnderProtection(q,
                 dao,
-                () -> dao.find(cond),
-                () -> dao.list(cond));
+                () -> dao.find(q),
+                () -> dao.list(q));
     }
 
 
     @Override
-    public <T> List<T> list(Cond cond) {
+    public <T> List<T> list(Q q) {
 
-        if (cond.isAbort())
+        if (q.isAbort())
             return new ArrayList<>();
 
-        Class clz = cond.getClzz();
+        Class clz = q.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dao.list(cond);
+            return dao.list(q);
 
         return cacheResolver.listUnderProtection(
-                cond,
+                q,
                 dao,
-                () -> dao.list(cond));
+                () -> dao.list(q));
 
     }
 
@@ -248,27 +248,27 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
 
-    protected <T> List<T> in0(InCondition inCondition) {
+    protected <T> List<T> in0(In in) {
 
-        Class clz = inCondition.getClz();
+        Class clz = in.getClz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dao.in(inCondition);
+            return dao.in(in);
 
-        String condition = InOptimization.keyCondition(inCondition);
+        String condition = InOptimization.keyCondition(in);
 
         return cacheResolver.listUnderProtection(clz,
                 condition,
                 dao,
-                () -> dao.in(inCondition));
+                () -> dao.in(in));
 
     }
 
 
     @Override
-    public <T> List<T> in(InCondition inCondition) {
-        return InOptimization.in(inCondition, this);
+    public <T> List<T> in(In in) {
+        return InOptimization.in(in, this);
     }
 
 
@@ -315,7 +315,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Cond.X criteria) {
+    public Page<Map<String, Object>> find(Q.X criteria) {
         if (criteria.isAbort()) {
             Page page = new Page<>();
             page.setClzz(criteria.getClzz());
@@ -327,7 +327,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public List<Map<String, Object>> list(Cond.X criteria) {
+    public List<Map<String, Object>> list(Q.X criteria) {
 
         if (criteria.isAbort())
             return new ArrayList<>();
@@ -336,7 +336,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Cond.X criteria){
+    public <K> List<K> listPlainValue(Class<K> clzz, Q.X criteria){
         if (criteria.isAbort())
             return new ArrayList<>();
         return dao.listPlainValue(clzz,criteria);
@@ -349,21 +349,21 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> void findToHandle(Cond cond, RowHandler<T> handler) {
-        if (cond.isAbort())
+    public <T> void findToHandle(Q q, RowHandler<T> handler) {
+        if (q.isAbort())
             return;
-        this.dao.findToHandle(cond,handler);
+        this.dao.findToHandle(q,handler);
     }
 
     @Override
-    public void findToHandle(Cond.X criteria, RowHandler<Map<String, Object>> handler) {
+    public void findToHandle(Q.X criteria, RowHandler<Map<String, Object>> handler) {
         if (criteria.isAbort())
             return;
         this.dao.findToHandle(criteria,handler);
     }
 
     @Override
-    public boolean exists(Cond cond) {
-        return this.dao.exists(cond);
+    public boolean exists(Q q) {
+        return this.dao.exists(q);
     }
 }

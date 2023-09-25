@@ -35,7 +35,7 @@ import java.util.*;
  * @author Sim
  *
  */
-public class Cond<T> implements Mappable, BbQ, Paged, Routable {
+public class Q<T> implements Mappable, BbQ, Paged, Routable {
 
 	private Class<T> clzz;
 	private boolean isTotalRowsIgnored;
@@ -187,7 +187,7 @@ public class Cond<T> implements Mappable, BbQ, Paged, Routable {
 
 	@Override
 	public String toString() {
-		return "Cond{" +
+		return "Q{" +
 				"isTotalRowsIgnored=" + isTotalRowsIgnored +
 				", page=" + page +
 				", rows=" + rows +
@@ -198,7 +198,7 @@ public class Cond<T> implements Mappable, BbQ, Paged, Routable {
 				'}';
 	}
 
-	public static final class X extends Cond implements XHelpful, SqlNormalizer{
+	public static final class X extends Q implements XHelpful, SqlNormalizer{
 
 		private List<String> resultKeyList = new ArrayList<String>();
 		private List<FunctionResultKey> resultFunctionList;

@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 
@@ -31,16 +31,16 @@ import java.util.Map;
  */
 public interface RepositoryX {
 
-    Page<Map<String, Object>> find(Cond.X resultMapCriteria);
+    Page<Map<String, Object>> findX(Q.X xCond);
 
-    List<Map<String, Object>> list(Cond.X resultMapCriteria);
+    List<Map<String, Object>> listX(Q.X xCond);
 
-    <K> List<K> listPlainValue(Class<K> clzz, Cond.X resultMapCriteria);
+    <K> List<K> listPlainValue(Class<K> clzz, Q.X xCond);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param resultMapCriteria
+     * @param xCond
      * @param handler
      */
-    void findToHandle(Cond.X resultMapCriteria, RowHandler<Map<String, Object>> handler);
+    void findToHandleX(Q.X xCond, RowHandler<Map<String, Object>> handler);
 }

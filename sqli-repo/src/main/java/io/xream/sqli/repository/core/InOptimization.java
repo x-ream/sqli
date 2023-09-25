@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.repository.core;
 
-import io.xream.sqli.builder.InCondition;
+import io.xream.sqli.builder.In;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -34,18 +34,18 @@ public interface InOptimization {
 
     int IN_MAX = 500;
 
-    static  <T> List<T> in(InCondition inCondition, CacheableRepository repository){
+    static  <T> List<T> in(In in, CacheableRepository repository){
 
-        if (inCondition.getInList().isEmpty())
+        if (in.getInList().isEmpty())
             return new ArrayList<T>();
 
         List<Object> inList = new ArrayList<Object>();
 
-        for (Object obj : inCondition.getInList()) {
+        for (Object obj : in.getInList()) {
             if (Objects.isNull(obj))
                 continue;
-            Parsed parsed = Parser.get(inCondition.getClz());
-            if (BaseTypeFilter.isBaseType(inCondition.getProperty(), obj, parsed))
+            Parsed parsed = Parser.get(in.getClz());
+            if (BaseTypeFilter.isBaseType(in.getProperty(), obj, parsed))
                 continue;
             if (!inList.contains(obj)) {
                 inList.add(obj);
@@ -58,8 +58,8 @@ public interface InOptimization {
         int size = inList.size();
 
         if (size <= IN_MAX) {
-            inCondition.setInList(inList);
-            return repository.in0(inCondition);
+            in.setInList(inList);
+            return repository.in0(in);
         }
 
         List<T> list = new ArrayList<>(size);
@@ -71,8 +71,8 @@ public interface InOptimization {
             int toIndex = fromIndex + segSize;
             List<? extends Object> segInList = inList.subList(fromIndex, toIndex);
 
-            InCondition ic = InCondition.of(inCondition.getProperty(), segInList);
-            ic.setClz(inCondition.getClz());
+            In ic = In.of(in.getProperty(), segInList);
+            ic.setClz(in.getClz());
             List<T> segList = repository.in0(ic);
             list.addAll(segList);
         }
@@ -80,9 +80,9 @@ public interface InOptimization {
         return list;
     }
 
-    static String keyCondition(InCondition inCondition) {
-        String inProperty = inCondition.getProperty();
-        List<? extends Object> inList = inCondition.getInList();
+    static String keyCondition(In in) {
+        String inProperty = in.getProperty();
+        List<? extends Object> inList = in.getInList();
 
         StringBuilder sb = new StringBuilder();
         sb.append(inProperty).append(":");

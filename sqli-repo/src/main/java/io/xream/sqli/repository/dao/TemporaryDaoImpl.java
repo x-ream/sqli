@@ -19,7 +19,7 @@
 package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.CondToSql;
 import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.builder.SqlScript;
@@ -74,7 +74,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
 
     @Override
-    public boolean   findToCreate(Class clzz, Cond.X resultMapCriteria) {
+    public boolean   findToCreate(Class clzz, Q.X resultMapCriteria) {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapCriteria, condToSql, dialect);

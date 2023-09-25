@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.repository.util;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
@@ -39,17 +39,17 @@ public final class ResultSortUtil {
     /**
      * by orderIn0
      * @param list
-     * @param cond
+     * @param q
      * @param parsed
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public  static <T> void sort(List<T> list, Cond cond, Parsed parsed) {
+    public  static <T> void sort(List<T> list, Q q, Parsed parsed) {
 
         if (list.isEmpty())
             return;
 
-        List<KV> fixedSortList = cond.getFixedSortList();
+        List<KV> fixedSortList = q.getFixedSortList();
 
         if (fixedSortList == null || fixedSortList.isEmpty())
             return;
@@ -78,10 +78,10 @@ public final class ResultSortUtil {
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
-        SqliLoggerProxy.debug(cond.getClzz(), "SORT IN " + kv0.v);
+        SqliLoggerProxy.debug(q.getClzz(), "SORT IN " + kv0.v);
     }
 
-    public  static <T> void sort(List<Map<String,Object>> list, Cond.X criteria) {
+    public  static <T> void sort(List<Map<String,Object>> list, Q.X criteria) {
 
         if (list.isEmpty())
             return;

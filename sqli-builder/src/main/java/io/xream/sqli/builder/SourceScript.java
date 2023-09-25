@@ -29,7 +29,7 @@ import java.util.List;
 public final class SourceScript implements BbQToSql, BbQToSql.Pre {
 
     private String source;
-    private Cond.X subCriteria;
+    private Q.X subCriteria;
     private JoinType joinType;
     private String joinStr;
     private On on;
@@ -48,11 +48,11 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
         this.source = source;
     }
 
-    public Cond.X getSubCriteria() {
+    public Q.X getSubCriteria() {
         return subCriteria;
     }
 
-    public void setSubCriteria(Cond.X subCriteria) {
+    public void setSubCriteria(Q.X subCriteria) {
         this.subCriteria = subCriteria;
     }
 

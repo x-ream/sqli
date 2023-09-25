@@ -54,7 +54,7 @@ public class SqlGenerator {
         return instance;
     }
 
-    public SqlGenerator build(String traceKey, Cond.X resultMapCriteria){
+    public SqlGenerator build(String traceKey, Q.X resultMapCriteria){
         KV kv = new KV(traceKey,resultMapCriteria);
         resultMapCriteriaList.add(kv);
         return instance;
@@ -82,7 +82,7 @@ public class SqlGenerator {
                     return sqlBuiltList;
                 }
             };
-            condToSql.toSql(false,(Cond.X) kv.getV(),sqlBuilt,sqlBuildingAttached);
+            condToSql.toSql(false,(Q.X) kv.getV(),sqlBuilt,sqlBuildingAttached);
 
             sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");

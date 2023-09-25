@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class InCondition implements Routable {
+public final class In implements Routable {
 
     private String property;
     private List<? extends Object> inList;
@@ -71,30 +71,30 @@ public final class InCondition implements Routable {
     }
 
     @Deprecated
-    public InCondition(){
+    public In(){
     }
 
     @Deprecated
-    public InCondition(String property,List<? extends Object> inList ){
+    public In(String property, List<? extends Object> inList ){
         this.property = property;
         this.inList = inList;
     }
 
-    public static InCondition of(String property, List<? extends Object> inList ){
+    public static In of(String property, List<? extends Object> inList ){
         return of(null,property,inList);
     }
 
-    public static InCondition of(Object routeKey, String property, List<? extends Object> inList ){
-        InCondition inCondition = new InCondition();
-        inCondition.setRouteKey(routeKey);
-        inCondition.setProperty(property);
-        inCondition.setInList(inList);
-        return inCondition;
+    public static In of(Object routeKey, String property, List<? extends Object> inList ){
+        In in = new In();
+        in.setRouteKey(routeKey);
+        in.setProperty(property);
+        in.setInList(inList);
+        return in;
     }
 
     @Override
     public String toString() {
-        return "InCondition{" +
+        return "In{" +
                 "property='" + property + '\'' +
                 ", inList=" + inList +
                 ", clz=" + clz +

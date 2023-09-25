@@ -78,53 +78,53 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
     }
 
     @Override
-    public void toSql(boolean isSub, Cond cond, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
+    public void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
 
         SqlSth sqlSth = SqlSth.get();
 
-        parseAlia(cond, sqlSth);
+        parseAlia(q, sqlSth);
 
-        filter0(cond);
+        filter0(q);
         /*
          * select column
          */
-        select(sqlSth, resultKey(sqlSth, cond, sqlBuildingAttached));
+        select(sqlSth, resultKey(sqlSth, q, sqlBuildingAttached));
 
-        sourceScriptPre(cond, sqlBuildingAttached);
+        sourceScriptPre(q, sqlBuildingAttached);
 
-        lastForPage(cond);
+        lastForPage(q);
         /*
          * StringList
          */
-        condition(sqlSth, cond, sqlBuildingAttached.getValueList());
+        condition(sqlSth, q, sqlBuildingAttached.getValueList());
 
-        count(isSub, cond.isTotalRowsIgnored(), sqlSth);
+        count(isSub, q.isTotalRowsIgnored(), sqlSth);
 
-        xAggr(sqlSth, cond, sqlBuildingAttached.getValueList());
+        xAggr(sqlSth, q, sqlBuildingAttached.getValueList());
         /*
          * group by
          */
-        groupBy(sqlSth, cond);
+        groupBy(sqlSth, q);
 
-        having(sqlSth, cond);
+        having(sqlSth, q);
         /*
          * sort
          */
-        sort(sqlSth, cond);
+        sort(sqlSth, q);
         /*
          * from table
          */
-        sourceScript(sqlSth, cond);
+        sourceScript(sqlSth, q);
 
-        sqlArr(isSub, cond.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
+        sqlArr(isSub, q.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
 
     }
 
-    private void lastForPage(Cond cond) {
-        long last = cond.getLast();
+    private void lastForPage(Q q) {
+        long last = q.getLast();
         if (last <= 0)
             return;
-        List<Sort> list = cond.getSortList();
+        List<Sort> list = q.getSortList();
         if (list == null || list.isEmpty())
             return;
         Sort sort = list.get(0);
@@ -134,7 +134,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         bb.setValue(last);
         if (sort.getDirection() == Direction.ASC) bb.setP(Op.GT);
         else bb.setP(Op.LT);
-        cond.getBbList().add(bb);
+        q.getBbList().add(bb);
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, RefreshCond refreshCondition) {
@@ -352,13 +352,13 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
     }
 
 
-    private String resultKey(SqlSth sqlSth, Cond cond, SqlBuildingAttached sqlBuildingAttached) {
-        if (!(cond instanceof Cond.X))
+    private String resultKey(SqlSth sqlSth, Q q, SqlBuildingAttached sqlBuildingAttached) {
+        if (!(q instanceof Q.X))
             return SqlScript.STAR;
 
         boolean flag = false;
 
-        Cond.X resultMapped = (Cond.X) cond;
+        Q.X resultMapped = (Q.X) q;
         StringBuilder columnBuilder = new StringBuilder();
 
         Map<String, String> mapperPropertyMap = resultMapped.getMapperPropertyMap();
@@ -401,7 +401,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
                 String alianName = alianProperty.replace(SqlScript.DOT, SqlScript.DOLLOR);
                 resultMapped.getResultKeyAliaMap().put(alianName, alianProperty);
 
-                String value = mapping(reduce.getProperty(), cond);
+                String value = mapping(reduce.getProperty(), q);
 
                 ReduceType reduceType = reduce.getType();
                 if (reduceType == ReduceType.GROUP_CONCAT_DISTINCT) {
@@ -443,7 +443,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
             for (int i = 0; i < size; i++) {
                 String resultKey = resultList.get(i);
                 addConditonBeforeOptimization(resultKey, sqlSth.conditionSet);
-                String mapper = mapping(resultKey, cond);
+                String mapper = mapping(resultKey, q);
                 mapperPropertyMap.put(mapper, resultKey);
                 mapper = generate(mapper, resultMapped);
                 columnBuilder.append(SqlScript.SPACE).append(mapper);
@@ -465,7 +465,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
                 KV kv = resultListAssignedAliaList.get(i);
                 String key = kv.getK();
                 addConditonBeforeOptimization(key, sqlSth.conditionSet);
-                String mapper = mapping(key, cond);
+                String mapper = mapping(key, q);
                 mapperPropertyMap.put(mapper, key);
                 String alian = kv.getV().toString();
                 resultMapped.getResultKeyAliaMap().put(alian, mapper);
@@ -494,7 +494,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
 
                 columnBuilder.append(SqlScript.SPACE);
                 final String functionStr = normalizeSql(function);
-                List<String> originList = mapping((reg) -> functionStr.split(reg), cond, columnBuilder);
+                List<String> originList = mapping((reg) -> functionStr.split(reg), q, columnBuilder);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -527,9 +527,9 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         sqlSth.sbResult.append(SqlScript.SELECT).append(SqlScript.SPACE).append(resultKeys).append(SqlScript.SPACE);
     }
 
-    private void xAggr(SqlSth sqlSth, Cond cond, List<Object> valueList) {
-        if (cond instanceof Cond.X) {
-            Cond.X rm = (Cond.X) cond;
+    private void xAggr(SqlSth sqlSth, Q q, List<Object> valueList) {
+        if (q instanceof Q.X) {
+            Q.X rm = (Q.X) q;
             List<Bb> list = rm.getAggrList();
             if (list == null)
                 return;
@@ -537,7 +537,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
                 String key = bb.getKey();
                 if (key.contains(SqlScript.PLACE_HOLDER) && Objects.isNull(bb.getValue()))
                     continue;
-                List<String> originList = mapping((reg) -> key.split(reg), cond, sqlSth.sbCondition);
+                List<String> originList = mapping((reg) -> key.split(reg), q, sqlSth.sbCondition);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -555,9 +555,9 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         }
     }
 
-    private void groupBy(SqlSth sqlSth, Cond cond) {
-        if (cond instanceof Cond.X) {
-            Cond.X rm = (Cond.X) cond;
+    private void groupBy(SqlSth sqlSth, Q q) {
+        if (q instanceof Q.X) {
+            Q.X rm = (Q.X) q;
 
             String groupByS = rm.getGroupBy();
             if (SqliStringUtil.isNullOrEmpty(groupByS))
@@ -574,7 +574,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
                 if (SqliStringUtil.isNotNull(groupBy)) {
                     if (groupBy.contains(SqlScript.LEFT_PARENTTHESIS)) {
                         final String groupByStrFinal = normalizeSql(groupByStr);
-                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), cond, sqlSth.sbCondition);
+                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), q, sqlSth.sbCondition);
                         for (String origin : originList) {
                             addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                         }
@@ -592,17 +592,17 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         }
     }
 
-    private void having(SqlSth sqlSth, Cond cond) {
-        if (!(cond instanceof Cond.X))
+    private void having(SqlSth sqlSth, Q q) {
+        if (!(q instanceof Q.X))
             return;
 
-        Cond.X resultMapped = (Cond.X) cond;
+        Q.X resultMapped = (Q.X) q;
         List<Having> havingList = resultMapped.getHavingList();
 
         if (havingList.isEmpty())
             return;
 
-        if (!cond.isTotalRowsIgnored()) {
+        if (!q.isTotalRowsIgnored()) {
             throw new CriteriaSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
         }
 
@@ -621,7 +621,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
             if (alia.contains(SqlScript.LEFT_PARENTTHESIS)) {
                 alia = normalizeSql(alia);
                 final String finalKey = alia;
-                List<String> originList = mapping((reg) -> finalKey.split(reg), cond, sqlSth.sbCondition);
+                List<String> originList = mapping((reg) -> finalKey.split(reg), q, sqlSth.sbCondition);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -646,10 +646,10 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
     }
 
 
-    private void parseAlia(Cond cond, SqlSth sqlSth) {
+    private void parseAlia(Q q, SqlSth sqlSth) {
 
-        if (cond instanceof Cond.X) {
-            Cond.X rmc = (Cond.X) cond;
+        if (q instanceof Q.X) {
+            Q.X rmc = (Q.X) q;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String sourceScript = rmc.sourceScript();//string -> list<>
@@ -676,7 +676,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
 
     }
 
-    private void with(SqlSth sb, Cond.X rmc) {
+    private void with(SqlSth sb, Q.X rmc) {
         
         List<SourceScript> ssList = rmc.getSourceScripts();
         String subStr = null;
@@ -691,16 +691,16 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         }
     }
 
-    private void sourceScript(SqlSth sb, Cond cond) {
+    private void sourceScript(SqlSth sb, Q q) {
 
         sb.sbSource.append(SqlScript.SPACE);
 
         String script = null;
-        if (cond instanceof Cond.X) {
-            Cond.X rmc = (Cond.X) cond;
+        if (q instanceof Q.X) {
+            Q.X rmc = (Q.X) q;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
-                String str = cond.sourceScript();
+                String str = q.sourceScript();
                 Objects.requireNonNull(str, "Not set sourceScript of ResultMappedBuilder");
                 final String strd = normalizeSql(str);
                 StringBuilder sbs = new StringBuilder();
@@ -719,7 +719,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
 
         } else {
-            script = mapping(cond.sourceScript(), cond);
+            script = mapping(q.sourceScript(), q);
             if (!script.startsWith(SqlScript.FROM) || !script.startsWith(SqlScript.FROM.toLowerCase()))
                 sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
         }
@@ -735,12 +735,12 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         sqlSth.countCondition.append(sqlSth.sbCondition);
     }
 
-    private void sort(SqlSth sb, Cond cond) {
+    private void sort(SqlSth sb, Q q) {
 
-        if (cond.isFixedSort())
+        if (q.isFixedSort())
             return;
 
-        List<Sort> sortList = cond.getSortList();
+        List<Sort> sortList = q.getSortList();
         if (sortList != null && !sortList.isEmpty()) {
 
             sb.sbCondition.append(Op.ORDER_BY.sql());
@@ -750,7 +750,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
                 String orderBy = sort.getOrderBy();
                 orderBy = normalizeSql(orderBy);
                 orderBy = noSpace(orderBy);
-                String mapper = mapping(orderBy, cond);
+                String mapper = mapping(orderBy, q);
                 sb.sbCondition.append(mapper).append(SqlScript.SPACE);
                 addConditonBeforeOptimization(orderBy, sb.conditionSet);
                 Direction direction = sort.getDirection();
@@ -768,51 +768,51 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
 
     }
 
-    private void filter0(Cond cond) {
-        List<Bb> bbList = cond.getBbList();
+    private void filter0(Q q) {
+        List<Bb> bbList = q.getBbList();
 
-        if (cond instanceof Cond.X) {
-            Cond.X resultMapCriteria = (Cond.X) cond;//FIXME 判断是虚表
+        if (q instanceof Q.X) {
+            Q.X resultMapCriteria = (Q.X) q;//FIXME 判断是虚表
             filter(bbList, resultMapCriteria);
-            for (SourceScript sourceScript : ((Cond.X) cond).getSourceScripts()) {
+            for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
                 List<Bb> bbs = sourceScript.getBbList();
                 if (bbs == null || bbs.isEmpty())
                     continue;
                 filter(bbs, resultMapCriteria);
             }
         } else {
-            filter(bbList, cond);
+            filter(bbList, q);
         }
     }
 
-    private void sourceScriptPre(Cond cond, SqlBuildingAttached attached) {
-        if (cond instanceof Cond.X) {
-            for (SourceScript sourceScript : ((Cond.X) cond).getSourceScripts()) {
-                sourceScript.pre(attached, this, cond);
+    private void sourceScriptPre(Q q, SqlBuildingAttached attached) {
+        if (q instanceof Q.X) {
+            for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
+                sourceScript.pre(attached, this, q);
             }
         }
     }
 
-    private void condition(SqlSth sqlSth, Cond cond, List<Object> valueList) {
-        List<Bb> bbList = cond.getBbList();
+    private void condition(SqlSth sqlSth, Q q, List<Object> valueList) {
+        List<Bb> bbList = q.getBbList();
         if (bbList.isEmpty())
             return;
         addConditionBeforeOptimization(bbList, sqlSth.conditionSet);//优化连表查询前的准备
 
         StringBuilder xsb = new StringBuilder();
 
-        pre(valueList, bbList, cond);//提取占位符对应的值
+        pre(valueList, bbList, q);//提取占位符对应的值
         if (bbList.isEmpty())
             return;
-        withSourceScriptValuelist(cond,valueList);
+        withSourceScriptValuelist(q,valueList);
         bbList.get(0).setC(Op.WHERE);
-        buildConditionSql(xsb, bbList, cond);
+        buildConditionSql(xsb, bbList, q);
         sqlSth.sbCondition.append(xsb);
 
     }
 
-    private void withSourceScriptValuelist(Cond cond, List<Object> valueList){
-        List<Object> objectList = cond.getSourceScriptValueList();
+    private void withSourceScriptValuelist(Q q, List<Object> valueList){
+        List<Object> objectList = q.getSourceScriptValueList();
         if (objectList != null ){
             for (Object v : objectList) {
                 if (v == null) continue;

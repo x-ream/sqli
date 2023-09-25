@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.spi.Schema;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public interface TemporaryRepository {
 
     boolean create(Object obj);
     boolean createBatch(List objList);
-    boolean findToCreate(Class clzz, Cond.X resultMapCriteria);
+    boolean findToCreate(Class clzz, Q.X xCond);
 
     boolean createRepository(Class clzz);
     boolean dropRepository(Class clzz);

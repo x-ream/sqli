@@ -95,12 +95,12 @@ public final class SqlBuilder implements BbQToSql {
         return sb.toString();
     }
 
-    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Cond cond, CondToSql criteriaParser, Dialect dialect) {
+    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Q q, CondToSql criteriaParser, Dialect dialect) {
 
         final SqlBuilt sqlBuilt = new SqlBuilt();
         final List<SqlBuilt> subList = new ArrayList<>();
 
-        criteriaParser.toSql(false, cond, sqlBuilt, new SqlBuildingAttached() {
+        criteriaParser.toSql(false, q, sqlBuilt, new SqlBuildingAttached() {
             @Override
             public List<Object> getValueList() {
                 return valueList;
@@ -114,18 +114,18 @@ public final class SqlBuilder implements BbQToSql {
 
         String sql = sqlBuilt.getSql().toString();
 
-        int page = cond.getPage();
-        int rows = cond.getRows();
+        int page = q.getPage();
+        int rows = q.getRows();
 
         int start = (page - 1) * rows;
-        long last = cond.getLast();
+        long last = q.getLast();
 
         sql = dialect.buildPageSql(sql, start, rows,last);
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlBuilt.setSql(sb);
-        ObjectDataConverter.log(cond, valueList);
+        ObjectDataConverter.log(q, valueList);
 
         return sqlBuilt;
     }

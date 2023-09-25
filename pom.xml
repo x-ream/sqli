@@ -11,7 +11,7 @@
 	<description>http://sqli.xream.io</description>
 	<url>http://sqli.xream.io</url>
 	<modules>
-		<module>sqli-builder</module>
+		<module>sqli-QBuilder</module>
 		<module>sqli-core</module>
 		<module>sqli-repo</module>
 		<module>sqli-dialect</module>

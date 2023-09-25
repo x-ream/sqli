@@ -193,7 +193,7 @@ public interface BbQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
                     }else{
                         Parsed parsed = mappable.getParsed();
                         if (parsed == null) {
-                            String ss = ((Cond.X)mappable).sourceScript();
+                            String ss = ((Q.X)mappable).sourceScript();
                             if (ss != null) {
                                 parsed = Parser.get(ss);
                             }
