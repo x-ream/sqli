@@ -106,8 +106,10 @@ public final class DefaultSqlInit implements SqlInit {
     public void parseKey(StringBuilder sb, Class clz) {
         Parsed parsed = Parser.get(clz);
 
-        sb.append(parsed.getKey());
-        sb.append(" = ?");
+        if (parsed.getClzName() != null) {
+            sb.append(parsed.getKey());
+            sb.append(" = ?");
+        }
     }
 
     public String getLoadSql(Class clz) {

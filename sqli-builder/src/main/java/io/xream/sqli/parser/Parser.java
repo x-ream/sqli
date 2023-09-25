@@ -64,9 +64,6 @@ public final class Parser {
         if (parsed == null) {
             parse(clz);
             parsed = map.get(clz);
-//            Field f = parsed.getKeyField();
-//            if (f == null)
-//                throw new ParsingException("No Primary Key, class: " + clz.getName());
         }
         return parsed;
     }
@@ -168,7 +165,9 @@ public final class Parser {
             }
         }
 
-        elementList.add(0, one);
+        if (one != null) {
+            elementList.add(0, one);
+        }
 
         for (Field field : parsed.getClzz().getDeclaredFields()){
             for (BeanElement be: tempList) {

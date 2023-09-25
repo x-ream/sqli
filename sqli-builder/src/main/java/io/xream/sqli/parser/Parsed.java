@@ -89,8 +89,6 @@ public final class Parsed {
 	}
 
 	public Field getKeyField(){
-		if (Objects.isNull(keyField))
-			throw new ParsingException("No setting of PrimaryKey by @X.Key");
 		return keyField;
 	}
 
@@ -107,13 +105,14 @@ public final class Parsed {
 	}
 
 	public boolean isAutoIncreaseId(Long keyOneValue){
+		if (keyField == null) return false;
 		Class keyOneType = keyField.getType();
 		return (keyOneType != String.class && keyOneType != Date.class && keyOneType != Timestamp.class) && (keyOneValue == null || keyOneValue == 0);
 	}
 
 	public Long tryToGetLongKey(Object obj){
 		Long keyOneValue = 0L;
-
+		if (keyField == null) return null;
 		Class keyOneType = keyField.getType();
 		if (keyOneType != String.class && keyOneType != Date.class && keyOneType != Timestamp.class) {
 			try {
