@@ -25,12 +25,10 @@ public enum ReduceType {
 
     MAX,
     MIN,
-
     SUM,
     COUNT,
     AVG,
     GROUP_CONCAT,
-
     SUM_DISTINCT,
     COUNT_DISTINCT,
     AVG_DISTINCT,

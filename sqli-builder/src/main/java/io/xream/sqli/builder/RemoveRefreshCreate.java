@@ -32,10 +32,8 @@ public final class RemoveRefreshCreate<T> implements Routable {
     private Object routeKey;
     @JsonIgnore
     private transient Class clz;
-
     private List<T> list;
     private Object[] ins;
-
     @Deprecated
     public RemoveRefreshCreate(){}
     public static <T> RemoveRefreshCreate of(List<T> list, Object[] ins){

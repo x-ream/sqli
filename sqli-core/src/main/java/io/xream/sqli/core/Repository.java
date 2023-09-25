@@ -55,10 +55,10 @@ public interface Repository extends QueryForCache {
 
 	<T> T get(KeyOne<T> keyOne);
 	/**
-	 * @param conditionObj
+	 * @param cond
 	 * 
 	 */
-	<T> List<T> list(Object conditionObj);
+	<T> List<T> list(Object cond);
 
 	/**
 	 *  @param q

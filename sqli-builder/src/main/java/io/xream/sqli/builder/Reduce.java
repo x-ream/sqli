@@ -25,7 +25,6 @@ package io.xream.sqli.builder;
 public final class Reduce {
     private ReduceType type;
     private String property;
-
     private Having having;
 
     public ReduceType getType() {
