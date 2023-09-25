@@ -39,23 +39,23 @@ import java.util.stream.Collectors;
 /**
  * @author Sim
  */
-public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
+public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
 
-    private static CondToSql instance;
+    private static Q2Sql instance;
 
-    private DefaultCondToSql() {
+    private DefaultQ2Sql() {
     }
 
-    public static CondToSql newInstance() {
+    public static Q2Sql newInstance() {
         if (instance == null) {
-            instance = new DefaultCondToSql();
+            instance = new DefaultQ2Sql();
             return instance;
         }
         return instance;
     }
 
     @Override
-    public String toConditionSql(BbQ qCondition, List<Object> valueList, Mappable mappable) {
+    public String toBbqSql(BbQ qCondition, List<Object> valueList, Mappable mappable) {
         if (Objects.isNull(qCondition))
             return "";
         StringBuilder sb = new StringBuilder();
@@ -137,7 +137,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         q.getBbList().add(bb);
     }
 
-    private String sourceScriptOfRefresh(Parsed parsed, RefreshCond refreshCondition) {
+    private String sourceScriptOfRefresh(Parsed parsed, RQ refreshCondition) {
         String sourceScript = refreshCondition.getSourceScript();
         if (SqliStringUtil.isNullOrEmpty(sourceScript))
             return parsed.getTableName();
@@ -153,7 +153,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
     }
 
     @Override
-    public String toSql(Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport) {
+    public String toSql(Parsed parsed, RQ refreshCondition, DialectSupport dialectSupport) {
 
         String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
 
@@ -163,7 +163,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
 
         concatRefresh(sb, parsed, refreshCondition, dialectSupport);
 
-        String conditionSql = toConditionSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
+        String conditionSql = toBbqSql(refreshCondition, refreshCondition.getValueList(), refreshCondition);
 
         sb.append(conditionSql);
 
@@ -179,7 +179,7 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         return sql;
     }
 
-    private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport) {
+    private void concatRefresh(StringBuilder sb, Parsed parsed, RQ refreshCondition, DialectSupport dialectSupport) {
 
         List<Bb> refreshList = refreshCondition.getRefreshList();
 
@@ -633,12 +633,12 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
         }
     }
 
-    private void parseAliaFromRefresh(RefreshCond refreshCondition) {
+    private void parseAliaFromRefresh(RQ refreshCondition) {
 
         String script = refreshCondition.getSourceScript();//string -> list<>
-        List<String> list = SourceScriptBuilder.split(script);
-        List<SourceScript> sourceScripts = SourceScriptBuilder.parseScriptAndBuild(list,null);
-        SourceScriptBuilder.checkSourceAndAlia(sourceScripts);
+        List<String> list = SourceBuilder.split(script);
+        List<SourceScript> sourceScripts = SourceBuilder.parseScriptAndBuild(list,null);
+        SourceBuilder.checkSourceAndAlia(sourceScripts);
         for (SourceScript sc : sourceScripts) {
             refreshCondition.getAliaMap().put(sc.alia(), sc.getSource());
         }
@@ -654,12 +654,12 @@ public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, So
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String sourceScript = rmc.sourceScript();//string -> list<>
 
-                List<String> list = SourceScriptBuilder.split(sourceScript);
-                List<SourceScript> sourceScripts = SourceScriptBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
+                List<String> list = SourceBuilder.split(sourceScript);
+                List<SourceScript> sourceScripts = SourceBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
                 rmc.getSourceScripts().addAll(sourceScripts);
             }
 
-            SourceScriptBuilder.checkSourceAndAlia(rmc.getSourceScripts());
+            SourceBuilder.checkSourceAndAlia(rmc.getSourceScripts());
             supportSingleSource(rmc);
 
             Map<String, String> aliaMap = rmc.getAliaMap();

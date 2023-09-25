@@ -20,7 +20,7 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
-import io.xream.sqli.builder.RefreshCond;
+import io.xream.sqli.builder.RQ;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.RowHandler;
@@ -45,7 +45,7 @@ public interface Dao extends QueryForCache {
 
 	<T> boolean remove(KeyOne<T> keyOne);
 
-	<T> boolean refreshByCondition(RefreshCond<T> conditon);
+	<T> boolean refreshByCondition(RQ<T> conditon);
 	
 	<T> List<T> list(Object conditionObj);
 	

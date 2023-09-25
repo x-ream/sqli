@@ -25,10 +25,10 @@ import java.util.Map;
  */
 public interface ResultKeyGenerator {
 
-    default String generate(String mapper, Q.X criteria) {
+    default String generate(String mapper, Q.X qx) {
 
         if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
-            Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();
+            Map<String, String> resultKeyAliaMap = qx.getResultKeyAliaMap();
             String alian = "c" + resultKeyAliaMap.size();
             resultKeyAliaMap.put(alian, mapper);
             String target = mapper + SqlScript.AS + alian;

@@ -81,12 +81,12 @@ public final class ResultSortUtil {
         SqliLoggerProxy.debug(q.getClzz(), "SORT IN " + kv0.v);
     }
 
-    public  static <T> void sort(List<Map<String,Object>> list, Q.X criteria) {
+    public  static <T> void sort(List<Map<String,Object>> list, Q.X qx) {
 
         if (list.isEmpty())
             return;
 
-        List<KV> fixedSortList = criteria.getFixedSortList();
+        List<KV> fixedSortList = qx.getFixedSortList();
 
         if (fixedSortList == null || fixedSortList.isEmpty())
             return;
@@ -99,7 +99,7 @@ public final class ResultSortUtil {
         list.clear();
 
         String key = kv0.k;
-        boolean  isSimpleKey = criteria.isResultWithDottedKey() || !key.contains(".");
+        boolean  isSimpleKey = qx.isResultWithDottedKey() || !key.contains(".");
         String firstKey = null;
         String secondKey = null;
         if (!isSimpleKey){
@@ -128,7 +128,7 @@ public final class ResultSortUtil {
             throw new ParsingException(SqliExceptionUtil.getMessage(e));
         }
 
-        SqliLoggerProxy.debug(criteria.getRepositoryClzz(), "SORT IN " + kv0.v);
+        SqliLoggerProxy.debug(qx.getRepositoryClzz(), "SORT IN " + kv0.v);
     }
 
 }

@@ -28,9 +28,9 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public class ResultMapToBean {
+public class X2Bean {
 
-    private ResultMapToBean(){}
+    private X2Bean(){}
 
     /**
      * not support resultMap by builder.resultWithDottedKey();

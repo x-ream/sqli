@@ -19,7 +19,7 @@
 package io.xream.sqli.test;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.builder.internal.DefaultCondToSql;
+import io.xream.sqli.builder.internal.DefaultQ2Sql;
 import io.xream.sqli.parser.Parser;
 
 import java.io.File;
@@ -34,7 +34,7 @@ import java.util.List;
 public class SqlGenerator {
 
     private static SqlGenerator instance;
-    private static CondToSql condToSql;
+    private static Q2Sql condToSql;
 
     private static List<KV> resultMapCriteriaList = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class SqlGenerator {
 
     public static SqlGenerator generator() {
         if (condToSql == null) {
-            condToSql = DefaultCondToSql.newInstance();
+            condToSql = DefaultQ2Sql.newInstance();
             instance = new SqlGenerator();
         }
         return instance;

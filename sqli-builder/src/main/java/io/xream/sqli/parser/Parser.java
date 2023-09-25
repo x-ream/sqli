@@ -64,9 +64,9 @@ public final class Parser {
         if (parsed == null) {
             parse(clz);
             parsed = map.get(clz);
-            Field f = parsed.getKeyField();
-            if (f == null)
-                throw new ParsingException("No Primary Key, class: " + clz.getName());
+//            Field f = parsed.getKeyField();
+//            if (f == null)
+//                throw new ParsingException("No Primary Key, class: " + clz.getName());
         }
         return parsed;
     }

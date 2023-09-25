@@ -20,8 +20,8 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.builder.CondToSql;
-import io.xream.sqli.builder.internal.DefaultCondToSql;
+import io.xream.sqli.builder.Q2Sql;
+import io.xream.sqli.builder.internal.DefaultQ2Sql;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.dialect.Dialect;
@@ -59,11 +59,11 @@ public class SqliStarter {
         return dynamicDialect;
     }
 
-    public CondToSql criteriaToSql(){
-        return DefaultCondToSql.newInstance();
+    public Q2Sql q2Sql(){
+        return DefaultQ2Sql.newInstance();
     }
 
-    public Repository repository(CondToSql condToSql, JdbcHelper jdbcHelper,
+    public Repository repository(Q2Sql condToSql, JdbcHelper jdbcHelper,
                                  Dialect dialect,
                                  L2CacheResolver l2CacheResolver
                                          ){
@@ -81,12 +81,12 @@ public class SqliStarter {
         return repository;
     }
 
-    public TemporaryRepository temporaryRepository(CondToSql condToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
+    public TemporaryRepository temporaryRepository(Q2Sql condToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
         DefaultTemporaryTableParser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
         temporaryTableParser.setDialect(dialect);
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
         ((TemporaryDaoImpl)temporaryDao).setJdbcHelper(jdbcHelper);
-        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(condToSql);
+        ((TemporaryDaoImpl)temporaryDao).setQ2Sql(condToSql);
         ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
 
         TemporaryRepository tr = DefaultTemporaryRepository.newInstance();

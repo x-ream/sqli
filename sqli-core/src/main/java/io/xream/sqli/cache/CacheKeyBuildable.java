@@ -16,23 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.cache;
 
-import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.parser.Parsed;
-
-import java.util.List;
-
+import io.xream.sqli.builder.Q;
 
 /**
  * @author Sim
  */
-public interface CondToSql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
+public interface CacheKeyBuildable {
 
-    String toConditionSql(BbQ qCondition, List<Object> valueList, Mappable mappable) ;
+    default String buildCacheKey(Q q){
+        return buildCacheKey(q,false);
+    }
 
-    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
+    default String buildCacheKeyOfTotalRows(Q q){
+        return buildCacheKey(q,true);
+    }
 
-    String toSql(Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport);
+   String buildCacheKey(Q q, boolean isOfTotalRows);
 
 }

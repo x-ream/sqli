@@ -20,7 +20,7 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Op;
-import io.xream.sqli.builder.RefreshCond;
+import io.xream.sqli.builder.RQ;
 import io.xream.sqli.exception.CriteriaSyntaxException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public interface SafeRefreshBiz<T> {
 
-    default void tryToRefreshSafe(Class clzz, RefreshCond refreshCondition) {
+    default void tryToRefreshSafe(Class clzz, RQ refreshCondition) {
         refreshCondition.setClz(clzz);
         Parsed parsed = Parser.get(clzz);
         Field keyField = parsed.getKeyField();

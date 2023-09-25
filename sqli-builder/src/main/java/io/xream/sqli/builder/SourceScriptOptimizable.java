@@ -58,7 +58,7 @@ public interface SourceScriptOptimizable {
             }
         }
         for (SourceScript sourceScript : sourceScripts) {
-            if (sourceScript.getSubCriteria() != null) {
+            if (sourceScript.getSubQ() != null) {
                 sourceScript.used();
                 continue;
             }
@@ -82,7 +82,7 @@ public interface SourceScriptOptimizable {
         int size = sourceScripts.size();
         for (int i = size - 1; i >= 0; i--) {
             SourceScript sourceScript = sourceScripts.get(i);
-            if (sourceScript.getSubCriteria() != null) {
+            if (sourceScript.getSubQ() != null) {
                 sourceScript.targeted();
                 continue;
             }

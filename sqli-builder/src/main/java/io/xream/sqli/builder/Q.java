@@ -391,7 +391,7 @@ public class Q<T> implements Mappable, BbQ, Paged, Routable {
 
 		private boolean isSubAbort(List<SourceScript> sourceScripts){
 			for (SourceScript ss : sourceScripts) {
-				X sub = ss.getSubCriteria();
+				X sub = ss.getSubQ();
 				if (sub == null)
 					continue;
 				if (sub.sourceScripts == null)

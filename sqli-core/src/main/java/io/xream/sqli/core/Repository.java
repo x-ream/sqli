@@ -19,7 +19,7 @@
 package io.xream.sqli.core;
 
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.RefreshCond;
+import io.xream.sqli.builder.RQ;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;
 
@@ -47,7 +47,7 @@ public interface Repository extends QueryForCache {
 	 * @param refreshCondition
 	 * @return true | false
 	 */
-	<T> boolean refresh(RefreshCond<T> refreshCondition);
+	<T> boolean refresh(RQ<T> refreshCondition);
 	/**
 	 * @param keyOne
 	 */

@@ -23,5 +23,5 @@ package io.xream.sqli.builder;
  * @author Sim
  */
 public interface Sub {
-    void buildBy(QBuilder.X subBuilder);
+    void buildBy(QB.X subBuilder);
 }

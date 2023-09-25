@@ -22,7 +22,7 @@ package io.xream.sqli.repository.core;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.KV;
-import io.xream.sqli.builder.RefreshCond;
+import io.xream.sqli.builder.RQ;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
@@ -126,7 +126,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> boolean refresh(RefreshCond<T> refreshCondition) {
+    public <T> boolean refresh(RQ<T> refreshCondition) {
 
         if (refreshCondition.isAbort())
             return false;

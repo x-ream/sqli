@@ -31,13 +31,13 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class QBuilder<T> extends BbQBuilder {
+public class QB<T> extends BbQBuilder {
 
     private Q q;
     private PageBuilder pageBuilder;
     protected SourceScript sourceScriptTemp;
 
-    public QBuilder<T> routeKey(Object routeKey) {
+    public QB<T> routeKey(Object routeKey) {
         this.q.setRouteKey(routeKey);
         return this;
     }
@@ -86,7 +86,7 @@ public class QBuilder<T> extends BbQBuilder {
         q.paged(paged);
     }
 
-    public QBuilder<T> sortIn(String porperty, List<? extends Object> inList) {
+    public QB<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = new KV(porperty, inList);
             List<KV> fixedSortList = q.getFixedSortList();
@@ -99,7 +99,7 @@ public class QBuilder<T> extends BbQBuilder {
         return this;
     }
 
-    public QBuilder<T> sort(String orderBy, Direction direction) {
+    public QB<T> sort(String orderBy, Direction direction) {
         if (SqliStringUtil.isNullOrEmpty(orderBy))
             return this;
         List<Sort> sortList = q.getSortList();
@@ -112,22 +112,22 @@ public class QBuilder<T> extends BbQBuilder {
         return this;
     }
 
-    private QBuilder(Q q) {
+    private QB(Q q) {
         super(q.getBbList());
         this.q = q;
     }
 
-    public static <T> QBuilder<T> of(Class<?> clz) {
+    public static <T> QB<T> of(Class<T> clz) {
         Q q = new Q();
         q.setClzz(clz);
-        QBuilder<T> QBuilder = new QBuilder(q);
+        QB<T> QB = new QB(q);
 
         if (q.getParsed() == null) {
             Parsed parsed = Parser.get(clz);
             q.setParsed(parsed);
         }
 
-        return QBuilder;
+        return QB;
     }
 
     public static X x() {
@@ -153,58 +153,58 @@ public class QBuilder<T> extends BbQBuilder {
     }
 
 
-    public static final class X extends QBuilder {
+    public static final class X extends QB {
 
-        private SourceScriptBuilder sourceScriptBuilder = new SourceScriptBuilder() {
+        private SourceBuilder sourceBuilder = new SourceBuilder() {
 
             @Override
-            public SourceScriptBuilder source(String source) {
+            public SourceBuilder source(String source) {
                 sourceScriptTemp.setSource(source);
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder source(Class clzz) {
+            public SourceBuilder source(Class clzz) {
                 sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clzz.getSimpleName()));
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder sub(Sub sub) {
-                X subBuilder = QBuilder.x();
+            public SourceBuilder sub(Sub sub) {
+                X subBuilder = QB.x();
                 sub.buildBy(subBuilder);
                 Q.X resultMapCriteria = subBuilder.build();
-                sourceScriptTemp.setSubCriteria(resultMapCriteria);
+                sourceScriptTemp.setSubQ(resultMapCriteria);
                 subBuilder.clear();
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder with(Sub sub){
+            public SourceBuilder with(Sub sub){
                 sourceScriptTemp.setWith(true);
                 return sub(sub);
             }
 
             @Override
-            public SourceScriptBuilder alia(String alia) {
+            public SourceBuilder alia(String alia) {
                 sourceScriptTemp.setAlia(alia);
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder join(JoinType joinType) {
+            public SourceBuilder join(JoinType joinType) {
                 sourceScriptTemp.setJoinType(joinType);
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder join(String joinStr) {
+            public SourceBuilder join(String joinStr) {
                 sourceScriptTemp.setJoinStr(joinStr);
                 return this;
             }
 
             @Override
-            public SourceScriptBuilder on(String key, JoinFrom joinFrom) {
+            public SourceBuilder on(String key, JoinFrom joinFrom) {
                 if (key.contains("."))
                     throw new IllegalArgumentException("On key can not contains '.'");
                 On on = new On();
@@ -216,7 +216,7 @@ public class QBuilder<T> extends BbQBuilder {
             }
 
             @Override
-            public SourceScriptBuilder on(String key, Op op, JoinFrom joinFrom) {
+            public SourceBuilder on(String key, Op op, JoinFrom joinFrom) {
                 if (key.contains("."))
                     throw new IllegalArgumentException("On key can not contains '.'");
                 On on = new On();
@@ -246,10 +246,10 @@ public class QBuilder<T> extends BbQBuilder {
             return this.instance;
         }
 
-        public SourceScriptBuilder sourceBuilder() {
+        public SourceBuilder sourceBuilder() {
             sourceScriptTemp = new SourceScript();
             get().getSourceScripts().add(sourceScriptTemp);
-            return this.sourceScriptBuilder;
+            return this.sourceBuilder;
         }
 
         public X withoutOptimization() {

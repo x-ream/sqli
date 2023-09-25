@@ -77,7 +77,7 @@ public final class SqlBuilder implements BbQToSql {
     }
 
 
-    protected String buildRefreshByCondition(Parsed parsed, RefreshCond refreshCondition, CondToSql criteriaParser, DialectSupport dialectSupport) {
+    protected String buildRefreshByCondition(Parsed parsed, RQ refreshCondition, Q2Sql criteriaParser, DialectSupport dialectSupport) {
         return criteriaParser.toSql(parsed,refreshCondition, dialectSupport);
     }
 
@@ -95,7 +95,7 @@ public final class SqlBuilder implements BbQToSql {
         return sb.toString();
     }
 
-    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Q q, CondToSql criteriaParser, Dialect dialect) {
+    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Q q, Q2Sql criteriaParser, Dialect dialect) {
 
         final SqlBuilt sqlBuilt = new SqlBuilt();
         final List<SqlBuilt> subList = new ArrayList<>();

@@ -20,7 +20,7 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.CondToSql;
+import io.xream.sqli.builder.Q2Sql;
 import io.xream.sqli.builder.SqlBuilt;
 import io.xream.sqli.builder.SqlScript;
 import io.xream.sqli.dialect.Dialect;
@@ -42,7 +42,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
     private static TemporaryDao instance;
 
-    private CondToSql condToSql;
+    private Q2Sql q2Sql;
 
     private Dialect dialect;
 
@@ -64,8 +64,8 @@ public final class TemporaryDaoImpl implements TemporaryDao{
         this.dialect = dialect;
     }
 
-    public void setCriteriaToSql(CondToSql condToSql) {
-        this.condToSql = condToSql;
+    public void setQ2Sql(Q2Sql q2Sql) {
+        this.q2Sql = q2Sql;
     }
 
     public void setJdbcHelper(JdbcHelper jdbcHelper) {
@@ -77,7 +77,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
     public boolean   findToCreate(Class clzz, Q.X resultMapCriteria) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapCriteria, condToSql, dialect);
+        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapCriteria, q2Sql, dialect);
         StringBuilder fromSqlSb = sqlBuilt.getSql();
 
         Parsed parsed = Parser.get(clzz);

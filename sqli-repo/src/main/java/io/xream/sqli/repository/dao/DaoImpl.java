@@ -49,7 +49,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
     private Logger logger = LoggerFactory.getLogger(Dao.class);
 
     private static Dao instance;
-    private CondToSql condToSql;
+    private Q2Sql condToSql;
     private Dialect dialect;
     private JdbcHelper jdbcHelper;
 
@@ -72,7 +72,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         return this.dialect;
     }
 
-    public void setCriteriaToSql(CondToSql condToSql) {
+    public void setCriteriaToSql(Q2Sql condToSql) {
         this.condToSql = condToSql;
     }
 
@@ -272,7 +272,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
 
     @Override
-    public boolean refreshByCondition(RefreshCond refreshCondition) {
+    public boolean refreshByCondition(RQ refreshCondition) {
 
         Class clz = refreshCondition.getClz();
         Parsed parsed = Parser.get(clz);

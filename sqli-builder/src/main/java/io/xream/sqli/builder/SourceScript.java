@@ -29,7 +29,7 @@ import java.util.List;
 public final class SourceScript implements BbQToSql, BbQToSql.Pre {
 
     private String source;
-    private Q.X subCriteria;
+    private Q.X subQ;
     private JoinType joinType;
     private String joinStr;
     private On on;
@@ -48,12 +48,12 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
         this.source = source;
     }
 
-    public Q.X getSubCriteria() {
-        return subCriteria;
+    public Q.X getSubQ() {
+        return subQ;
     }
 
-    public void setSubCriteria(Q.X subCriteria) {
-        this.subCriteria = subCriteria;
+    public void setSubQ(Q.X subQ) {
+        this.subQ = subQ;
     }
 
     public JoinType getJoinType() {
@@ -125,24 +125,24 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
     }
 
 
-    public void pre(SqlBuildingAttached attached, CondToSql condToSql, Mappable mappable) {
+    public void pre(SqlBuildingAttached attached, Q2Sql condToSql, Mappable mappable) {
 
-        if (subCriteria != null) {
+        if (subQ != null) {
             final SqlBuilt sqlBuilt = new SqlBuilt();
             attached.getSubList().add(sqlBuilt);
-            condToSql.toSql(true, subCriteria, sqlBuilt, attached);
+            condToSql.toSql(true, subQ, sqlBuilt, attached);
         }
         if (bbList == null || bbList.isEmpty())
             return;
-        pre(attached.getValueList(), bbList, subCriteria == null ? mappable : subCriteria);
+        pre(attached.getValueList(), bbList, subQ == null ? mappable : subQ);
 
     }
 
     public String sql(Mappable mappable) {
         if ((SqliStringUtil.isNullOrEmpty(source) && SqliStringUtil.isNullOrEmpty(alia))
-                && subCriteria == null)
+                && subQ == null)
             return "";
-        if (subCriteria != null)
+        if (subQ != null)
             source = isWith ? "" : SqlScript.SUB;
         if (source == null)
             source = "";
@@ -182,7 +182,7 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
     public String toString() {
         return "SourceScript{" +
                 "source='" + source + '\'' +
-                ", subCriteria=" + subCriteria +
+                ", subCriteria=" + subQ +
                 ", joinType=" + joinType +
                 ", joinStr='" + joinStr + '\'' +
                 ", on=" + on +

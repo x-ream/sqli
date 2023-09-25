@@ -19,7 +19,7 @@
 package io.xream.sqli.api;
 
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.RefreshCond;
+import io.xream.sqli.builder.RQ;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.core.Typed;
@@ -50,13 +50,13 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     boolean createOrReplace(T obj);
 
-    boolean refresh(RefreshCond<T> RefreshCondition_build);
+    boolean refresh(RQ<T> RQ);
 
     /**
      *
      *  refreshCondition without keyOne
      */
-    boolean refreshUnSafe(RefreshCond<T> RefreshCondition_build);
+    boolean refreshUnSafe(RQ<T> RQ);
 
     boolean remove(String keyOne);
 

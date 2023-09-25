@@ -8,7 +8,7 @@
     
    [WIKI](https://github.com/x-ream/sqli/wiki)
     
-    sqli/sqli-QBuilder
+    sqli/sqli-QB
     sqli/sqli-core
     sqli/sqli-dialect
     sqli/sqli-repo

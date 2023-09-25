@@ -11,7 +11,7 @@
 	<description>http://sqli.xream.io</description>
 	<url>http://sqli.xream.io</url>
 	<modules>
-		<module>sqli-QBuilder</module>
+		<module>sqli-builder</module>
 		<module>sqli-core</module>
 		<module>sqli-repo</module>
 		<module>sqli-dialect</module>
@@ -19,7 +19,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
 		<maven.test.skip>true</maven.test.skip>

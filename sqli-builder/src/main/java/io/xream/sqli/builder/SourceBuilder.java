@@ -31,29 +31,29 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface SourceScriptBuilder {
+public interface SourceBuilder {
 
-    SourceScriptBuilder source(String source);
+    SourceBuilder source(String source);
 
-    SourceScriptBuilder source(Class clzz);
+    SourceBuilder source(Class clzz);
 
-    SourceScriptBuilder sub(Sub sub);
+    SourceBuilder sub(Sub sub);
 
-    SourceScriptBuilder with(Sub sub);
+    SourceBuilder with(Sub sub);
 
-    SourceScriptBuilder alia(String alia);
+    SourceBuilder alia(String alia);
 
-    SourceScriptBuilder join(JoinType joinType);
+    SourceBuilder join(JoinType joinType);
 
-    SourceScriptBuilder join(String joinStr);
+    SourceBuilder join(String joinStr);
 
-    SourceScriptBuilder on(String key, JoinFrom joinFrom);
+    SourceBuilder on(String key, JoinFrom joinFrom);
 
-    SourceScriptBuilder on(String key, Op op, JoinFrom joinFrom);
+    SourceBuilder on(String key, Op op, JoinFrom joinFrom);
 
     BbQBuilder more();
 
-    QBuilder.X build();
+    QB.X build();
 
 
     static void checkSourceAndAlia(List<SourceScript> list) {

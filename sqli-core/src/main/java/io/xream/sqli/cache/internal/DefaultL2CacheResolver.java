@@ -50,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * @author Sim
  *
  */
-public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implements L2CacheResolver {
+public final class DefaultL2CacheResolver extends CacheKeyBuilder implements L2CacheResolver {
 
 	private final static Logger logger = LoggerFactory.getLogger(DefaultL2CacheResolver.class);
 	private static L2CacheResolver instance;

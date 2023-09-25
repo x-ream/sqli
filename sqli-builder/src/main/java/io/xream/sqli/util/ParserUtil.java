@@ -221,7 +221,6 @@ public final class ParserUtil {
                 element.setSqlType(SqlFieldType.VARCHAR);
             }
 
-            list.add(element);
         }
         return list;
     }

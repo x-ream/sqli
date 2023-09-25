@@ -22,7 +22,7 @@ import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.Sort;
-import io.xream.sqli.cache.CriteriaCacheKeyBuildable;
+import io.xream.sqli.cache.CacheKeyBuildable;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.HashSet;
@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * @author Sim
  */
-public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
+public class CacheKeyBuilder implements CacheKeyBuildable {
 
     @Override
     public String buildCacheKey(Q q, boolean isOfTotalRows){
@@ -44,12 +44,12 @@ public class CriteriaCacheKeyBuilder implements CriteriaCacheKeyBuildable {
         if (! isOfTotalRows) {
             sb.append(q.getPage()).append(q.getRows());
             if (q.getSortList() != null) {
-                for (Sort sort : q.getSortList()) {
+                for (Sort sort : (List<Sort>)q.getSortList()) {
                     sb.append(sort.getOrderBy()).append(sort.getDirection());
                 }
             }
             if (q.getFixedSortList() != null) {
-                for (KV kv : q.getFixedSortList()) {
+                for (KV kv : (List<KV>)q.getFixedSortList()) {
                     sb.append(kv.k).append(kv.v);
                 }
             }
