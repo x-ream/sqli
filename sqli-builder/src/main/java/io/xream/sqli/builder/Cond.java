@@ -21,14 +21,13 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
 import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.mapping.ResultMapHelpful;
+import io.xream.sqli.mapping.XHelpful;
 import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.page.Paged;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.SqliStringUtil;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -36,9 +35,7 @@ import java.util.*;
  * @author Sim
  *
  */
-public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Serializable {
-
-	private static final long serialVersionUID = 7088698915888081349L;
+public class Cond implements Mappable, BbQ, Paged, Routable {
 
 	private Class<?> clzz;
 	private boolean isTotalRowsIgnored;
@@ -190,7 +187,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 	@Override
 	public String toString() {
-		return "Criteria{" +
+		return "Cond{" +
 				"isTotalRowsIgnored=" + isTotalRowsIgnored +
 				", page=" + page +
 				", rows=" + rows +
@@ -201,9 +198,8 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 				'}';
 	}
 
-	public static final class ResultMapCriteria extends Criteria implements ResultMapHelpful, SqlNormalizer,Serializable{
+	public static final class X extends Cond implements XHelpful, SqlNormalizer{
 
-		private static final long serialVersionUID = -2365612538012282380L;
 		private List<String> resultKeyList = new ArrayList<String>();
 		private List<FunctionResultKey> resultFunctionList;
 		private List<KV> resultKeyAssignedAliaList;
@@ -395,7 +391,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		private boolean isSubAbort(List<SourceScript> sourceScripts){
 			for (SourceScript ss : sourceScripts) {
-				Criteria.ResultMapCriteria sub = ss.getSubCriteria();
+				X sub = ss.getSubCriteria();
 				if (sub == null)
 					continue;
 				if (sub.sourceScripts == null)
@@ -408,7 +404,7 @@ public class Criteria implements Mappable,CriteriaCondition, Paged, Routable,Ser
 
 		@Override
 		public String toString() {
-			return "ResultMapCriteria{" +
+			return "X{" +
 					"resultKeyList=" + resultKeyList +
 					", sourceScript='" + sourceScript + '\'' +
 					", distinct=" + distinct +

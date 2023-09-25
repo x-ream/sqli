@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.exception.L2CacheException;
@@ -462,9 +462,9 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 	}
 
 	@Override
-	public <T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
-		final String criteriaKey = buildCacheKey(criteria);
-		final Class clz = criteria.getClzz();
+	public <T> List<T> listUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
+		final String criteriaKey = buildCacheKey(cond);
+		final Class clz = cond.getClzz();
 		List<String> keyList = null;
 		try {
 			keyList = getResultKeyList(clz, criteriaKey);
@@ -565,16 +565,16 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 
 
 	@Override
-	public <T> Page<T> findUnderProtection(Criteria criteria,QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
-		Class clz = criteria.getClzz();
+	public <T> Page<T> findUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
+		Class clz = cond.getClzz();
 		Parsed parsed = Parser.get(clz);
-		final String criteriaKey = buildCacheKey(criteria);
+		final String criteriaKey = buildCacheKey(cond);
 		Page p = getResultKeyListPaginated(clz, criteriaKey);// FIXME
 
 		if (p == null) {
 
-			if (!criteria.isTotalRowsIgnored()) {
-				final String totalRowsString = buildCacheKeyOfTotalRows(criteria);
+			if (!cond.isTotalRowsIgnored()) {
+				final String totalRowsString = buildCacheKeyOfTotalRows(cond);
 				long totalRows = getTotalRows(clz, totalRowsString);
 				if (totalRows == DEFAULT_NUM) {
 					try {
@@ -597,8 +597,8 @@ public final class DefaultL2CacheResolver extends CriteriaCacheKeyBuilder implem
 					}
 					p = new Page<>();
 					p.setTotalRows(totalRows);
-					p.setPage(criteria.getPage());
-					p.setRows(criteria.getRows());
+					p.setPage(cond.getPage());
+					p.setRows(cond.getRows());
 					p.reSetList(list);
 				}
 			} else {

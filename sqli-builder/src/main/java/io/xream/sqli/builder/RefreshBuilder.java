@@ -27,25 +27,25 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class RefreshBuilder<T> extends ConditionBuilder {
+public class RefreshBuilder<T> extends BbQBuilder {
 
-    private RefreshCondition<T> refreshCondition;
+    private RefreshCond<T> refreshCondition;
 
-    private RefreshBuilder(RefreshCondition refreshCondition){
+    private RefreshBuilder(RefreshCond refreshCondition){
         super();
         init(refreshCondition.getBbList());
     }
 
 
     public static RefreshBuilder builder(){
-        RefreshCondition refreshCondition = new RefreshCondition();
+        RefreshCond refreshCondition = new RefreshCond();
         RefreshBuilder builder = new RefreshBuilder(refreshCondition);
         builder.refreshCondition = refreshCondition;
 
         return builder;
     }
 
-    public RefreshCondition<T> build(){
+    public RefreshCond<T> build(){
         return this.refreshCondition;
     }
 
@@ -185,8 +185,11 @@ public class RefreshBuilder<T> extends ConditionBuilder {
         return (RefreshBuilder) super.endSub();
     }
 
-    public RefreshBuilder  bool(Bool condition, Then then){
-        return (RefreshBuilder) super.bool(condition, then);
+    public RefreshBuilder  bool(Bool condition, ThenRefresh then){
+        if (condition.isOk()) {
+            then.build(this);
+        }
+        return this;
     }
 
     public RefreshBuilder sourceScript(String sourceScript) {

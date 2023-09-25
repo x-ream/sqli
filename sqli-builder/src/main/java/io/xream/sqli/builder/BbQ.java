@@ -24,6 +24,6 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface CriteriaCondition{
+public interface BbQ {
     List<Bb> getBbList();
 }

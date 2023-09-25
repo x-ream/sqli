@@ -39,27 +39,27 @@ import java.util.stream.Collectors;
 /**
  * @author Sim
  */
-public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
+public final class DefaultCondToSql implements CondToSql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
 
-    private static CriteriaToSql instance;
+    private static CondToSql instance;
 
-    private DefaultCriteriaToSql() {
+    private DefaultCondToSql() {
     }
 
-    public static CriteriaToSql newInstance() {
+    public static CondToSql newInstance() {
         if (instance == null) {
-            instance = new DefaultCriteriaToSql();
+            instance = new DefaultCondToSql();
             return instance;
         }
         return instance;
     }
 
     @Override
-    public String toConditionSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) {
-        if (Objects.isNull(criteriaCondition))
+    public String toConditionSql(BbQ qCondition, List<Object> valueList, Mappable mappable) {
+        if (Objects.isNull(qCondition))
             return "";
         StringBuilder sb = new StringBuilder();
-        List<Bb> bbList = criteriaCondition.getBbList();
+        List<Bb> bbList = qCondition.getBbList();
 
         if (bbList.isEmpty())
             return "";
@@ -78,53 +78,53 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
+    public void toSql(boolean isSub, Cond cond, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
 
         SqlSth sqlSth = SqlSth.get();
 
-        parseAlia(criteria, sqlSth);
+        parseAlia(cond, sqlSth);
 
-        filter0(criteria);
+        filter0(cond);
         /*
          * select column
          */
-        select(sqlSth, resultKey(sqlSth, criteria, sqlBuildingAttached));
+        select(sqlSth, resultKey(sqlSth, cond, sqlBuildingAttached));
 
-        sourceScriptPre(criteria, sqlBuildingAttached);
+        sourceScriptPre(cond, sqlBuildingAttached);
 
-        lastForPage(criteria);
+        lastForPage(cond);
         /*
          * StringList
          */
-        condition(sqlSth, criteria, sqlBuildingAttached.getValueList());
+        condition(sqlSth, cond, sqlBuildingAttached.getValueList());
 
-        count(isSub, criteria.isTotalRowsIgnored(), sqlSth);
+        count(isSub, cond.isTotalRowsIgnored(), sqlSth);
 
-        xAggr(sqlSth, criteria, sqlBuildingAttached.getValueList());
+        xAggr(sqlSth, cond, sqlBuildingAttached.getValueList());
         /*
          * group by
          */
-        groupBy(sqlSth, criteria);
+        groupBy(sqlSth, cond);
 
-        having(sqlSth, criteria);
+        having(sqlSth, cond);
         /*
          * sort
          */
-        sort(sqlSth, criteria);
+        sort(sqlSth, cond);
         /*
          * from table
          */
-        sourceScript(sqlSth, criteria);
+        sourceScript(sqlSth, cond);
 
-        sqlArr(isSub, criteria.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
+        sqlArr(isSub, cond.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
 
     }
 
-    private void lastForPage(Criteria criteria) {
-        long last = criteria.getLast();
+    private void lastForPage(Cond cond) {
+        long last = cond.getLast();
         if (last <= 0)
             return;
-        List<Sort> list = criteria.getSortList();
+        List<Sort> list = cond.getSortList();
         if (list == null || list.isEmpty())
             return;
         Sort sort = list.get(0);
@@ -134,10 +134,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         bb.setValue(last);
         if (sort.getDirection() == Direction.ASC) bb.setP(Op.GT);
         else bb.setP(Op.LT);
-        criteria.getBbList().add(bb);
+        cond.getBbList().add(bb);
     }
 
-    private String sourceScriptOfRefresh(Parsed parsed, RefreshCondition refreshCondition) {
+    private String sourceScriptOfRefresh(Parsed parsed, RefreshCond refreshCondition) {
         String sourceScript = refreshCondition.getSourceScript();
         if (SqliStringUtil.isNullOrEmpty(sourceScript))
             return parsed.getTableName();
@@ -153,7 +153,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
     @Override
-    public String toSql(Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport) {
+    public String toSql(Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport) {
 
         String sourceScript = sourceScriptOfRefresh(parsed, refreshCondition);
 
@@ -179,7 +179,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         return sql;
     }
 
-    private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport) {
+    private void concatRefresh(StringBuilder sb, Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport) {
 
         List<Bb> refreshList = refreshCondition.getRefreshList();
 
@@ -352,13 +352,13 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
 
-    private String resultKey(SqlSth sqlSth, Criteria criteria, SqlBuildingAttached sqlBuildingAttached) {
-        if (!(criteria instanceof Criteria.ResultMapCriteria))
+    private String resultKey(SqlSth sqlSth, Cond cond, SqlBuildingAttached sqlBuildingAttached) {
+        if (!(cond instanceof Cond.X))
             return SqlScript.STAR;
 
         boolean flag = false;
 
-        Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
+        Cond.X resultMapped = (Cond.X) cond;
         StringBuilder columnBuilder = new StringBuilder();
 
         Map<String, String> mapperPropertyMap = resultMapped.getMapperPropertyMap();
@@ -401,7 +401,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String alianName = alianProperty.replace(SqlScript.DOT, SqlScript.DOLLOR);
                 resultMapped.getResultKeyAliaMap().put(alianName, alianProperty);
 
-                String value = mapping(reduce.getProperty(), criteria);
+                String value = mapping(reduce.getProperty(), cond);
 
                 ReduceType reduceType = reduce.getType();
                 if (reduceType == ReduceType.GROUP_CONCAT_DISTINCT) {
@@ -443,7 +443,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             for (int i = 0; i < size; i++) {
                 String resultKey = resultList.get(i);
                 addConditonBeforeOptimization(resultKey, sqlSth.conditionSet);
-                String mapper = mapping(resultKey, criteria);
+                String mapper = mapping(resultKey, cond);
                 mapperPropertyMap.put(mapper, resultKey);
                 mapper = generate(mapper, resultMapped);
                 columnBuilder.append(SqlScript.SPACE).append(mapper);
@@ -465,7 +465,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 KV kv = resultListAssignedAliaList.get(i);
                 String key = kv.getK();
                 addConditonBeforeOptimization(key, sqlSth.conditionSet);
-                String mapper = mapping(key, criteria);
+                String mapper = mapping(key, cond);
                 mapperPropertyMap.put(mapper, key);
                 String alian = kv.getV().toString();
                 resultMapped.getResultKeyAliaMap().put(alian, mapper);
@@ -494,7 +494,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
                 columnBuilder.append(SqlScript.SPACE);
                 final String functionStr = normalizeSql(function);
-                List<String> originList = mapping((reg) -> functionStr.split(reg), criteria, columnBuilder);
+                List<String> originList = mapping((reg) -> functionStr.split(reg), cond, columnBuilder);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -527,9 +527,9 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         sqlSth.sbResult.append(SqlScript.SELECT).append(SqlScript.SPACE).append(resultKeys).append(SqlScript.SPACE);
     }
 
-    private void xAggr(SqlSth sqlSth, Criteria criteria, List<Object> valueList) {
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria rm = (Criteria.ResultMapCriteria) criteria;
+    private void xAggr(SqlSth sqlSth, Cond cond, List<Object> valueList) {
+        if (cond instanceof Cond.X) {
+            Cond.X rm = (Cond.X) cond;
             List<Bb> list = rm.getAggrList();
             if (list == null)
                 return;
@@ -537,7 +537,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String key = bb.getKey();
                 if (key.contains(SqlScript.PLACE_HOLDER) && Objects.isNull(bb.getValue()))
                     continue;
-                List<String> originList = mapping((reg) -> key.split(reg), criteria, sqlSth.sbCondition);
+                List<String> originList = mapping((reg) -> key.split(reg), cond, sqlSth.sbCondition);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -555,9 +555,9 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void groupBy(SqlSth sqlSth, Criteria criteria) {
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria rm = (Criteria.ResultMapCriteria) criteria;
+    private void groupBy(SqlSth sqlSth, Cond cond) {
+        if (cond instanceof Cond.X) {
+            Cond.X rm = (Cond.X) cond;
 
             String groupByS = rm.getGroupBy();
             if (SqliStringUtil.isNullOrEmpty(groupByS))
@@ -574,7 +574,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 if (SqliStringUtil.isNotNull(groupBy)) {
                     if (groupBy.contains(SqlScript.LEFT_PARENTTHESIS)) {
                         final String groupByStrFinal = normalizeSql(groupByStr);
-                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), criteria, sqlSth.sbCondition);
+                        List<String> originList = mapping((reg) -> groupByStrFinal.split(reg), cond, sqlSth.sbCondition);
                         for (String origin : originList) {
                             addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                         }
@@ -592,17 +592,17 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void having(SqlSth sqlSth, Criteria criteria) {
-        if (!(criteria instanceof Criteria.ResultMapCriteria))
+    private void having(SqlSth sqlSth, Cond cond) {
+        if (!(cond instanceof Cond.X))
             return;
 
-        Criteria.ResultMapCriteria resultMapped = (Criteria.ResultMapCriteria) criteria;
+        Cond.X resultMapped = (Cond.X) cond;
         List<Having> havingList = resultMapped.getHavingList();
 
         if (havingList.isEmpty())
             return;
 
-        if (!criteria.isTotalRowsIgnored()) {
+        if (!cond.isTotalRowsIgnored()) {
             throw new CriteriaSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
         }
 
@@ -621,7 +621,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             if (alia.contains(SqlScript.LEFT_PARENTTHESIS)) {
                 alia = normalizeSql(alia);
                 final String finalKey = alia;
-                List<String> originList = mapping((reg) -> finalKey.split(reg), criteria, sqlSth.sbCondition);
+                List<String> originList = mapping((reg) -> finalKey.split(reg), cond, sqlSth.sbCondition);
                 for (String origin : originList) {
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
@@ -633,7 +633,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void parseAliaFromRefresh(RefreshCondition refreshCondition) {
+    private void parseAliaFromRefresh(RefreshCond refreshCondition) {
 
         String script = refreshCondition.getSourceScript();//string -> list<>
         List<String> list = SourceScriptBuilder.split(script);
@@ -646,10 +646,10 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
     }
 
 
-    private void parseAlia(Criteria criteria, SqlSth sqlSth) {
+    private void parseAlia(Cond cond, SqlSth sqlSth) {
 
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria rmc = (Criteria.ResultMapCriteria) criteria;
+        if (cond instanceof Cond.X) {
+            Cond.X rmc = (Cond.X) cond;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String sourceScript = rmc.sourceScript();//string -> list<>
@@ -676,7 +676,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
     }
 
-    private void with(SqlSth sb, Criteria.ResultMapCriteria rmc) {
+    private void with(SqlSth sb, Cond.X rmc) {
         
         List<SourceScript> ssList = rmc.getSourceScripts();
         String subStr = null;
@@ -691,16 +691,16 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         }
     }
 
-    private void sourceScript(SqlSth sb, Criteria criteria) {
+    private void sourceScript(SqlSth sb, Cond cond) {
 
         sb.sbSource.append(SqlScript.SPACE);
 
         String script = null;
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria rmc = (Criteria.ResultMapCriteria) criteria;
+        if (cond instanceof Cond.X) {
+            Cond.X rmc = (Cond.X) cond;
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
-                String str = criteria.sourceScript();
+                String str = cond.sourceScript();
                 Objects.requireNonNull(str, "Not set sourceScript of ResultMappedBuilder");
                 final String strd = normalizeSql(str);
                 StringBuilder sbs = new StringBuilder();
@@ -719,7 +719,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
 
         } else {
-            script = mapping(criteria.sourceScript(), criteria);
+            script = mapping(cond.sourceScript(), cond);
             if (!script.startsWith(SqlScript.FROM) || !script.startsWith(SqlScript.FROM.toLowerCase()))
                 sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
         }
@@ -735,12 +735,12 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
         sqlSth.countCondition.append(sqlSth.sbCondition);
     }
 
-    private void sort(SqlSth sb, Criteria criteria) {
+    private void sort(SqlSth sb, Cond cond) {
 
-        if (criteria.isFixedSort())
+        if (cond.isFixedSort())
             return;
 
-        List<Sort> sortList = criteria.getSortList();
+        List<Sort> sortList = cond.getSortList();
         if (sortList != null && !sortList.isEmpty()) {
 
             sb.sbCondition.append(Op.ORDER_BY.sql());
@@ -750,7 +750,7 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
                 String orderBy = sort.getOrderBy();
                 orderBy = normalizeSql(orderBy);
                 orderBy = noSpace(orderBy);
-                String mapper = mapping(orderBy, criteria);
+                String mapper = mapping(orderBy, cond);
                 sb.sbCondition.append(mapper).append(SqlScript.SPACE);
                 addConditonBeforeOptimization(orderBy, sb.conditionSet);
                 Direction direction = sort.getDirection();
@@ -768,51 +768,51 @@ public final class DefaultCriteriaToSql implements CriteriaToSql, ResultKeyGener
 
     }
 
-    private void filter0(Criteria criteria) {
-        List<Bb> bbList = criteria.getBbList();
+    private void filter0(Cond cond) {
+        List<Bb> bbList = cond.getBbList();
 
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            Criteria.ResultMapCriteria resultMapCriteria = (Criteria.ResultMapCriteria) criteria;//FIXME 判断是虚表
+        if (cond instanceof Cond.X) {
+            Cond.X resultMapCriteria = (Cond.X) cond;//FIXME 判断是虚表
             filter(bbList, resultMapCriteria);
-            for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
+            for (SourceScript sourceScript : ((Cond.X) cond).getSourceScripts()) {
                 List<Bb> bbs = sourceScript.getBbList();
                 if (bbs == null || bbs.isEmpty())
                     continue;
                 filter(bbs, resultMapCriteria);
             }
         } else {
-            filter(bbList, criteria);
+            filter(bbList, cond);
         }
     }
 
-    private void sourceScriptPre(Criteria criteria, SqlBuildingAttached attached) {
-        if (criteria instanceof Criteria.ResultMapCriteria) {
-            for (SourceScript sourceScript : ((Criteria.ResultMapCriteria) criteria).getSourceScripts()) {
-                sourceScript.pre(attached, this, criteria);
+    private void sourceScriptPre(Cond cond, SqlBuildingAttached attached) {
+        if (cond instanceof Cond.X) {
+            for (SourceScript sourceScript : ((Cond.X) cond).getSourceScripts()) {
+                sourceScript.pre(attached, this, cond);
             }
         }
     }
 
-    private void condition(SqlSth sqlSth, Criteria criteria, List<Object> valueList) {
-        List<Bb> bbList = criteria.getBbList();
+    private void condition(SqlSth sqlSth, Cond cond, List<Object> valueList) {
+        List<Bb> bbList = cond.getBbList();
         if (bbList.isEmpty())
             return;
         addConditionBeforeOptimization(bbList, sqlSth.conditionSet);//优化连表查询前的准备
 
         StringBuilder xsb = new StringBuilder();
 
-        pre(valueList, bbList, criteria);//提取占位符对应的值
+        pre(valueList, bbList, cond);//提取占位符对应的值
         if (bbList.isEmpty())
             return;
-        withSourceScriptValuelist(criteria,valueList);
+        withSourceScriptValuelist(cond,valueList);
         bbList.get(0).setC(Op.WHERE);
-        buildConditionSql(xsb, bbList, criteria);
+        buildConditionSql(xsb, bbList, cond);
         sqlSth.sbCondition.append(xsb);
 
     }
 
-    private void withSourceScriptValuelist(Criteria criteria, List<Object> valueList){
-        List<Object> objectList = criteria.getSourceScriptValueList();
+    private void withSourceScriptValuelist(Cond cond, List<Object> valueList){
+        List<Object> objectList = cond.getSourceScriptValueList();
         if (objectList != null ){
             for (Object v : objectList) {
                 if (v == null) continue;

@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public interface ResultMapHelpful extends Mappable {
+public interface XHelpful extends Mappable {
     Map<String,String> getMapperPropertyMap();
     boolean isResultWithDottedKey();
 }

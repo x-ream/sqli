@@ -51,9 +51,9 @@ public interface SourceScriptBuilder {
 
     SourceScriptBuilder on(String key, Op op, JoinFrom joinFrom);
 
-    ConditionBuilder more();
+    BbQBuilder more();
 
-    CriteriaBuilder.ResultMapBuilder build();
+    Builder.X build();
 
 
     static void checkSourceAndAlia(List<SourceScript> list) {
@@ -108,12 +108,12 @@ public interface SourceScriptBuilder {
 
                 int j = i;
                 for (;j<size;j++) {
-                    if (ConditionParser.JOIN_SET.contains(sourceScriptsSplittedList.get(j).toUpperCase())){
+                    if (BbQParser.JOIN_SET.contains(sourceScriptsSplittedList.get(j).toUpperCase())){
                         break;
                     }
                 }
 
-                i = ConditionParser.parse(i, sourceScriptsSplittedList,
+                i = BbQParser.parse(i, sourceScriptsSplittedList,
                         bbList, sourceScriptValueList);
 
                 if (i == -1){

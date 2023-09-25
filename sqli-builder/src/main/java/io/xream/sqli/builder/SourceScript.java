@@ -26,10 +26,10 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
+public final class SourceScript implements BbQToSql, BbQToSql.Pre {
 
     private String source;
-    private Criteria.ResultMapCriteria subCriteria;
+    private Cond.X subCriteria;
     private JoinType joinType;
     private String joinStr;
     private On on;
@@ -48,11 +48,11 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
         this.source = source;
     }
 
-    public Criteria.ResultMapCriteria getSubCriteria() {
+    public Cond.X getSubCriteria() {
         return subCriteria;
     }
 
-    public void setSubCriteria(Criteria.ResultMapCriteria subCriteria) {
+    public void setSubCriteria(Cond.X subCriteria) {
         this.subCriteria = subCriteria;
     }
 
@@ -125,12 +125,12 @@ public final class SourceScript implements ConditionToSql, ConditionToSql.Pre {
     }
 
 
-    public void pre(SqlBuildingAttached attached, CriteriaToSql criteriaToSql, Mappable mappable) {
+    public void pre(SqlBuildingAttached attached, CondToSql condToSql, Mappable mappable) {
 
         if (subCriteria != null) {
             final SqlBuilt sqlBuilt = new SqlBuilt();
             attached.getSubList().add(sqlBuilt);
-            criteriaToSql.toSql(true, subCriteria, sqlBuilt, attached);
+            condToSql.toSql(true, subCriteria, sqlBuilt, attached);
         }
         if (bbList == null || bbList.isEmpty())
             return;

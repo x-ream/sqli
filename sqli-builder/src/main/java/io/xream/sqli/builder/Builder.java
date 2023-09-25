@@ -31,14 +31,14 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class CriteriaBuilder extends ConditionBuilder {
+public class Builder extends BbQBuilder {
 
-    private Criteria criteria;
+    private Cond cond;
     private PageBuilder pageBuilder;
     protected SourceScript sourceScriptTemp;
 
-    public CriteriaBuilder routeKey(Object routeKey) {
-        this.criteria.setRouteKey(routeKey);
+    public Builder routeKey(Object routeKey) {
+        this.cond.setRouteKey(routeKey);
         return this;
     }
 
@@ -49,31 +49,31 @@ public class CriteriaBuilder extends ConditionBuilder {
 
             @Override
             public PageBuilder ignoreTotalRows() {
-                criteria.setTotalRowsIgnored(true);
+                cond.setTotalRowsIgnored(true);
                 return this;
             }
             
             @Override
             public PageBuilder ignoreTotalRows(boolean ignored) {
-                criteria.setTotalRowsIgnored(ignored);
+                cond.setTotalRowsIgnored(ignored);
                 return this;
             }
 
             @Override
             public PageBuilder rows(int rows) {
-                criteria.setRows(rows);
+                cond.setRows(rows);
                 return this;
             }
 
             @Override
             public PageBuilder page(int page) {
-                criteria.setPage(page);
+                cond.setPage(page);
                 return this;
             }
 
             @Override
             public PageBuilder last(long last) {
-                criteria.setLast(last);
+                cond.setLast(last);
                 return this;
             }
 
@@ -83,77 +83,77 @@ public class CriteriaBuilder extends ConditionBuilder {
     }
 
     public void paged(Paged paged) {
-        criteria.paged(paged);
+        cond.paged(paged);
     }
 
-    public CriteriaBuilder sortIn(String porperty, List<? extends Object> inList) {
+    public Builder sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = new KV(porperty, inList);
-            List<KV> fixedSortList = criteria.getFixedSortList();
+            List<KV> fixedSortList = cond.getFixedSortList();
             if (fixedSortList == null){
                 fixedSortList = new ArrayList<>();
-                criteria.setFixedSortList(fixedSortList);
+                cond.setFixedSortList(fixedSortList);
             }
             fixedSortList.add(kv);
         }
         return this;
     }
 
-    public CriteriaBuilder sort(String orderBy, Direction direction) {
+    public Builder sort(String orderBy, Direction direction) {
         if (SqliStringUtil.isNullOrEmpty(orderBy))
             return this;
-        List<Sort> sortList = criteria.getSortList();
+        List<Sort> sortList = cond.getSortList();
         if (sortList == null) {
             sortList = new ArrayList<>();
-            criteria.setSortList(sortList);
+            cond.setSortList(sortList);
         }
         Sort sort = new Sort(orderBy, direction);
         sortList.add(sort);
         return this;
     }
 
-    private CriteriaBuilder(Criteria criteria) {
-        super(criteria.getBbList());
-        this.criteria = criteria;
+    private Builder(Cond cond) {
+        super(cond.getBbList());
+        this.cond = cond;
     }
 
-    public static CriteriaBuilder builder(Class<?> clz) {
-        Criteria criteria = new Criteria();
-        criteria.setClzz(clz);
-        CriteriaBuilder builder = new CriteriaBuilder(criteria);
+    public static Builder builder(Class<?> clz) {
+        Cond cond = new Cond();
+        cond.setClzz(clz);
+        Builder builder = new Builder(cond);
 
-        if (criteria.getParsed() == null) {
+        if (cond.getParsed() == null) {
             Parsed parsed = Parser.get(clz);
-            criteria.setParsed(parsed);
+            cond.setParsed(parsed);
         }
 
         return builder;
     }
 
-    public static ResultMapBuilder resultMapBuilder() {
-        Criteria.ResultMapCriteria resultMapCriteria = new Criteria.ResultMapCriteria();
-        return new ResultMapBuilder(resultMapCriteria);
+    public static X resultMapBuilder() {
+        Cond.X resultMapCriteria = new Cond.X();
+        return new X(resultMapCriteria);
     }
 
     public Class<?> getClz() {
-        return this.criteria.getClzz();
+        return this.cond.getClzz();
     }
 
-    protected Criteria get() {
-        return this.criteria;
+    protected Cond get() {
+        return this.cond;
     }
 
-    public Criteria build(){
-        this.criteria.setAbort(isAbort);
-        return this.criteria;
+    public Cond build(){
+        this.cond.setAbort(isAbort);
+        return this.cond;
     }
 
     public void clear(){
-        this.criteria = null;
+        this.cond = null;
     }
 
 
-    public static final class ResultMapBuilder extends CriteriaBuilder {
+    public static final class X extends Builder {
 
         private SourceScriptBuilder sourceScriptBuilder = new SourceScriptBuilder() {
 
@@ -171,9 +171,9 @@ public class CriteriaBuilder extends ConditionBuilder {
 
             @Override
             public SourceScriptBuilder sub(Sub sub) {
-                ResultMapBuilder subBuilder = CriteriaBuilder.resultMapBuilder();
+                X subBuilder = Builder.resultMapBuilder();
                 sub.buildBy(subBuilder);
-                Criteria.ResultMapCriteria resultMapCriteria = subBuilder.build();
+                Cond.X resultMapCriteria = subBuilder.build();
                 sourceScriptTemp.setSubCriteria(resultMapCriteria);
                 subBuilder.clear();
                 return this;
@@ -228,21 +228,21 @@ public class CriteriaBuilder extends ConditionBuilder {
             }
 
             @Override
-            public ConditionBuilder more() {
+            public BbQBuilder more() {
                 List<Bb> bbList = new ArrayList<>();
                 sourceScriptTemp.setBbList(bbList);
                 return builder(bbList);
             }
 
             @Override
-            public ResultMapBuilder build() {
+            public X build() {
                 return getInstance();
             }
 
         };
 
-        private ResultMapBuilder instance;
-        protected ResultMapBuilder getInstance(){
+        private X instance;
+        protected X getInstance(){
             return this.instance;
         }
 
@@ -252,34 +252,34 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this.sourceScriptBuilder;
         }
 
-        public ResultMapBuilder withoutOptimization() {
+        public X withoutOptimization() {
             get().setWithoutOptimization(true);
             return this;
         }
 
         @Override
-        protected Criteria.ResultMapCriteria get() {
-            return (Criteria.ResultMapCriteria) super.get();
+        protected Cond.X get() {
+            return (Cond.X) super.get();
         }
 
         @Override
-        public Criteria.ResultMapCriteria build() {
-            return (Criteria.ResultMapCriteria) super.build();
+        public Cond.X build() {
+            return (Cond.X) super.build();
         }
 
-        public ResultMapBuilder(Criteria criteria) {
-            super(criteria);
+        public X(Cond cond) {
+            super(cond);
             instance = this;
         }
 
-        public ResultMapBuilder resultKey(String resultKey) {
+        public X resultKey(String resultKey) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             get().getResultKeyList().add(resultKey);
             return this;
         }
 
-        public ResultMapBuilder resultKeys(String... resultKeys) {
+        public X resultKeys(String... resultKeys) {
             if (resultKeys == null)
                 return this;
             for (String resultKey : resultKeys){
@@ -295,7 +295,7 @@ public class CriteriaBuilder extends ConditionBuilder {
          * @return resultKey set by framework, not alia, (temporaryRepository.findToCreate)
          *
          */
-        public ResultMapBuilder resultKey(String resultKey, String alia) {
+        public X resultKey(String resultKey, String alia) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
@@ -303,7 +303,7 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder resultWithDottedKey() {
+        public X resultWithDottedKey() {
             get().setResultWithDottedKey(true);
             return this;
         }
@@ -312,7 +312,7 @@ public class CriteriaBuilder extends ConditionBuilder {
          * @param functionScript FUNCTION(?,?)
          * @param values           "test", 1000
          */
-        public ResultMapBuilder resultKeyFunction(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
+        public X resultKeyFunction(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
                 return this;
             Objects.requireNonNull(resultKeyAlia, "function no alia");
@@ -325,7 +325,7 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder sourceScript(String sourceScript) {
+        public X sourceScript(String sourceScript) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))
                 return this;
             sourceScript = normalizeSql(sourceScript);
@@ -333,7 +333,7 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder sourceScript(String sourceScript, Object...vs) {
+        public X sourceScript(String sourceScript, Object...vs) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))
                 return this;
             sourceScript = normalizeSql(sourceScript);
@@ -342,10 +342,10 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder distinct(String... objs) {
+        public X distinct(String... objs) {
             if (objs == null)
                 throw new IllegalArgumentException("distinct non resultKey");
-            Criteria.ResultMapCriteria resultMapped = get();
+            Cond.X resultMapped = get();
             Distinct distinct = resultMapped.getDistinct();
             if (Objects.isNull(distinct)) {
                 distinct = new Distinct();
@@ -357,12 +357,12 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder groupBy(String property) {
+        public X groupBy(String property) {
             get().setGroupBy(property);
             return this;
         }
 
-        public ResultMapBuilder xAggr(String function, Object...values) {
+        public X xAggr(String function, Object...values) {
             List<Bb> list = get().getAggrList();
             if (list == null) {
                 list = new ArrayList<>();
@@ -376,21 +376,21 @@ public class CriteriaBuilder extends ConditionBuilder {
             return this;
         }
 
-        public ResultMapBuilder having(ResultKeyAlia resultKeyAlia, Op op, Object value) {
+        public X having(ResultKeyAlia resultKeyAlia, Op op, Object value) {
             Having having = Having.of(op,value);
             having.setAliaOrFunction(resultKeyAlia.getKey());
             get().getHavingList().add(having);
             return this;
         }
 
-        public ResultMapBuilder having(String functionScript, Op op, Object value) {
+        public X having(String functionScript, Op op, Object value) {
             Having having = Having.of(op,value);
             having.setAliaOrFunction(functionScript);
             get().getHavingList().add(having);
             return this;
         }
 
-        public ResultMapBuilder reduce(ReduceType type, String property) {
+        public X reduce(ReduceType type, String property) {
             Reduce reduce = new Reduce();
             reduce.setType(type);
             reduce.setProperty(property);
@@ -399,8 +399,8 @@ public class CriteriaBuilder extends ConditionBuilder {
         }
 
         @Override
-        public ResultMapBuilder sort(String orderBy, Direction direction){
-            return (ResultMapBuilder) super.sort(orderBy,direction);
+        public X sort(String orderBy, Direction direction){
+            return (X) super.sort(orderBy,direction);
         }
 
         /**
@@ -408,7 +408,7 @@ public class CriteriaBuilder extends ConditionBuilder {
          * @param property
          * @param having   paged().totalRowsIgnored(true), if isTotalRowsIgnored == false，will throw Exception
          */
-        public ResultMapBuilder reduce(ReduceType type, String property, Having having) {
+        public X reduce(ReduceType type, String property, Having having) {
             Reduce reduce = new Reduce();
             reduce.setType(type);
             reduce.setProperty(property);
@@ -418,80 +418,80 @@ public class CriteriaBuilder extends ConditionBuilder {
         }
 
 
-        public ResultMapBuilder eq(String key, Object value) {
-            return (ResultMapBuilder) super.eq(key,value);
+        public X eq(String key, Object value) {
+            return (X) super.eq(key,value);
         }
 
-        public ResultMapBuilder gt(String key, Object value) {
-            return (ResultMapBuilder) super.gt(key,value);
+        public X gt(String key, Object value) {
+            return (X) super.gt(key,value);
         }
 
-        public ResultMapBuilder gte(String key, Object value) {
-            return (ResultMapBuilder) super.gte(key,value);
+        public X gte(String key, Object value) {
+            return (X) super.gte(key,value);
         }
 
-        public ResultMapBuilder lt(String key, Object value) {
-            return (ResultMapBuilder) super.lt(key,value);
+        public X lt(String key, Object value) {
+            return (X) super.lt(key,value);
         }
 
-        public ResultMapBuilder lte(String key, Object value) {
-            return (ResultMapBuilder) super.lte(key,value);
+        public X lte(String key, Object value) {
+            return (X) super.lte(key,value);
         }
 
-        public ResultMapBuilder ne(String property, Object value) {
-            return (ResultMapBuilder) super.ne(property, value);
+        public X ne(String property, Object value) {
+            return (X) super.ne(property, value);
         }
 
-        public ResultMapBuilder like(String property, String value) {
-            return (ResultMapBuilder) super.like(property, value);
+        public X like(String property, String value) {
+            return (X) super.like(property, value);
         }
 
-        public ResultMapBuilder likeRight(String property, String value) {
-            return (ResultMapBuilder) super.likeRight(property, value);
+        public X likeRight(String property, String value) {
+            return (X) super.likeRight(property, value);
         }
 
-        public ResultMapBuilder notLike(String property, String value) {
-            return (ResultMapBuilder) super.notLike(property, value);
+        public X notLike(String property, String value) {
+            return (X) super.notLike(property, value);
         }
 
-        public ResultMapBuilder in(String property, List<? extends Object> list) {
-            return (ResultMapBuilder) super.in(property,list);
+        public X in(String property, List<? extends Object> list) {
+            return (X) super.in(property,list);
         }
 
-        public ResultMapBuilder inRequired(String property, List<? extends Object> list) {
-            return (ResultMapBuilder) super.inRequired(property,list);
+        public X inRequired(String property, List<? extends Object> list) {
+            return (X) super.inRequired(property,list);
         }
 
-        public ResultMapBuilder nin(String property, List<? extends Object> list) {
-            return (ResultMapBuilder) super.nin(property,list);
+        public X nin(String property, List<? extends Object> list) {
+            return (X) super.nin(property,list);
         }
 
-        public ResultMapBuilder nonNull(String property){
-            return (ResultMapBuilder) super.nonNull(property);
+        public X nonNull(String property){
+            return (X) super.nonNull(property);
         }
 
-        public ResultMapBuilder isNull(String property){
-            return (ResultMapBuilder) super.isNull(property);
+        public X isNull(String property){
+            return (X) super.isNull(property);
         }
 
-        public ResultMapBuilder  x(String sqlSegment){
-            return (ResultMapBuilder) super.x(sqlSegment);
+        public X x(String sqlSegment){
+            return (X) super.x(sqlSegment);
         }
 
-        public ResultMapBuilder  x(String sqlSegment, Object...values){
-            return (ResultMapBuilder) super.x(sqlSegment, values);
+        public X x(String sqlSegment, Object...values){
+            return (X) super.x(sqlSegment, values);
         }
 
-        public ResultMapBuilder  beginSub(){
-            return (ResultMapBuilder) super.beginSub();
+        public X beginSub(){
+            return (X) super.beginSub();
         }
 
-        public ResultMapBuilder  endSub(){
-            return (ResultMapBuilder) super.endSub();
+        public X endSub(){
+            return (X) super.endSub();
         }
 
-        public ResultMapBuilder bool(Bool conditon, Then then){
-            return (ResultMapBuilder) super.bool(conditon, then);
+        public X bool(Bool conditon, Then then){
+            return (X) super.bool(conditon, then);
         }
 
         public void clear(){

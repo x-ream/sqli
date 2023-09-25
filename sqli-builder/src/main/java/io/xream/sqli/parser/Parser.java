@@ -19,7 +19,7 @@
 package io.xream.sqli.parser;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.exception.NotSupportedException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
@@ -183,7 +183,7 @@ public final class Parser {
     @SuppressWarnings({"rawtypes"})
     public static void parse(Class clz) {
 
-        if (clz == Criteria.class || clz == Criteria.ResultMapCriteria.class || clz == Void.class)
+        if (clz == Cond.class || clz == Cond.X.class || clz == Void.class)
             throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
 
         Parsed parsed = new Parsed(clz);

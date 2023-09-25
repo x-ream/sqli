@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public final class RefreshCondition<T>  implements Mappable,CriteriaCondition, Routable {
+public final class RefreshCond<T>  implements Mappable, BbQ, Routable {
 
     private List<Bb> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME

@@ -23,7 +23,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.exception.UnexpectedEnumValueException;
-import io.xream.sqli.mapping.ResultMapHelpful;
+import io.xream.sqli.mapping.XHelpful;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -40,30 +40,30 @@ import java.util.Map;
  */
 public final class DataObjectConverter {
 
-    public static Map<String,Object> toMapWithKeyOfObjectProperty(Map<String,Object> dataMap, Class orClzz, ResultMapHelpful resultMapHelpful, Dialect dialect) {
-        if (resultMapHelpful == null && orClzz == null)
+    public static Map<String,Object> toMapWithKeyOfObjectProperty(Map<String,Object> dataMap, Class orClzz, XHelpful xHelpful, Dialect dialect) {
+        if (xHelpful == null && orClzz == null)
             return dataMap;
         Map<String, Object> propertyMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
             String mapper = entry.getKey();
             String property = null;
             BeanElement be = null;
-            if (resultMapHelpful == null) {
+            if (xHelpful == null) {
                 Parsed parsed = Parser.get(orClzz);
                 property = parsed.getPropertyByLower(mapper);
                 be = parsed.getElement(property);
             } else {
 
                 if (mapper.contains(SqlScript.DOLLOR)) {
-                    property = dialect.transformAlia(mapper, resultMapHelpful.getAliaMap(), resultMapHelpful.getResultKeyAliaMap());
+                    property = dialect.transformAlia(mapper, xHelpful.getAliaMap(), xHelpful.getResultKeyAliaMap());
                 } else {
-                    mapper = dialect.transformAlia(mapper, resultMapHelpful.getAliaMap(), resultMapHelpful.getResultKeyAliaMap());
-                    property = resultMapHelpful.getMapperPropertyMap().get(mapper);
+                    mapper = dialect.transformAlia(mapper, xHelpful.getAliaMap(), xHelpful.getResultKeyAliaMap());
+                    property = xHelpful.getMapperPropertyMap().get(mapper);
                     if (property == null) {
                         property = mapper;
                     }else if (property.contains(".")) {
                         String[] arr = property.split("\\.");
-                        String clzName = resultMapHelpful.getAliaMap().get(arr[0]);
+                        String clzName = xHelpful.getAliaMap().get(arr[0]);
                         Parsed parsed = Parser.get(clzName);
                         if (parsed == null)
                             throw new ParsingException("clzName: "+clzName + ",alia: " + arr[0] + ", property: " + arr[1]);

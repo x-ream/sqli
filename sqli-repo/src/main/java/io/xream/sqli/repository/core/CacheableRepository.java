@@ -19,10 +19,10 @@
 package io.xream.sqli.repository.core;
 
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.builder.InCondition;
 import io.xream.sqli.builder.KV;
-import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
@@ -126,7 +126,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> boolean refresh(RefreshCondition<T> refreshCondition) {
+    public <T> boolean refresh(RefreshCond<T> refreshCondition) {
 
         if (refreshCondition.isAbort())
             return false;
@@ -200,45 +200,45 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> Page<T> find(Criteria criteria) {
+    public <T> Page<T> find(Cond cond) {
 
-        if (criteria.isAbort()) {
+        if (cond.isAbort()) {
             Page page = new Page<>();
-            page.setClzz(criteria.getClzz());
-            page.setRows(criteria.getRows());
-            page.setPage(criteria.getPage());
+            page.setClzz(cond.getClzz());
+            page.setRows(cond.getRows());
+            page.setPage(cond.getPage());
             return page;
         }
 
-        Class clz = criteria.getClzz();
+        Class clz = cond.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dao.find(criteria);
+            return dao.find(cond);
 
-        return cacheResolver.findUnderProtection(criteria,
+        return cacheResolver.findUnderProtection(cond,
                 dao,
-                () -> dao.find(criteria),
-                () -> dao.list(criteria));
+                () -> dao.find(cond),
+                () -> dao.list(cond));
     }
 
 
     @Override
-    public <T> List<T> list(Criteria criteria) {
+    public <T> List<T> list(Cond cond) {
 
-        if (criteria.isAbort())
+        if (cond.isAbort())
             return new ArrayList<>();
 
-        Class clz = criteria.getClzz();
+        Class clz = cond.getClzz();
         Parsed parsed = Parser.get(clz);
 
         if (!isCacheEnabled(parsed))
-            return dao.list(criteria);
+            return dao.list(cond);
 
         return cacheResolver.listUnderProtection(
-                criteria,
+                cond,
                 dao,
-                () -> dao.list(criteria));
+                () -> dao.list(cond));
 
     }
 
@@ -315,7 +315,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria criteria) {
+    public Page<Map<String, Object>> find(Cond.X criteria) {
         if (criteria.isAbort()) {
             Page page = new Page<>();
             page.setClzz(criteria.getClzz());
@@ -327,7 +327,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMapCriteria criteria) {
+    public List<Map<String, Object>> list(Cond.X criteria) {
 
         if (criteria.isAbort())
             return new ArrayList<>();
@@ -336,7 +336,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria criteria){
+    public <K> List<K> listPlainValue(Class<K> clzz, Cond.X criteria){
         if (criteria.isAbort())
             return new ArrayList<>();
         return dao.listPlainValue(clzz,criteria);
@@ -349,21 +349,21 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
+    public <T> void findToHandle(Cond cond, RowHandler<T> handler) {
+        if (cond.isAbort())
+            return;
+        this.dao.findToHandle(cond,handler);
+    }
+
+    @Override
+    public void findToHandle(Cond.X criteria, RowHandler<Map<String, Object>> handler) {
         if (criteria.isAbort())
             return;
         this.dao.findToHandle(criteria,handler);
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMapCriteria criteria, RowHandler<Map<String, Object>> handler) {
-        if (criteria.isAbort())
-            return;
-        this.dao.findToHandle(criteria,handler);
-    }
-
-    @Override
-    public boolean exists(Criteria criteria) {
-        return this.dao.exists(criteria);
+    public boolean exists(Cond cond) {
+        return this.dao.exists(cond);
     }
 }

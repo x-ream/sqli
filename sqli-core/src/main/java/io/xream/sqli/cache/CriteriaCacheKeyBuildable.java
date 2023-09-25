@@ -18,21 +18,21 @@
  */
 package io.xream.sqli.cache;
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 
 /**
  * @author Sim
  */
 public interface CriteriaCacheKeyBuildable {
 
-    default String buildCacheKey(Criteria criteria){
-        return buildCacheKey(criteria,false);
+    default String buildCacheKey(Cond cond){
+        return buildCacheKey(cond,false);
     }
 
-    default String buildCacheKeyOfTotalRows(Criteria criteria){
-        return buildCacheKey(criteria,true);
+    default String buildCacheKeyOfTotalRows(Cond cond){
+        return buildCacheKey(cond,true);
     }
 
-   String buildCacheKey(Criteria criteria, boolean isOfTotalRows);
+   String buildCacheKey(Cond cond, boolean isOfTotalRows);
 
 }

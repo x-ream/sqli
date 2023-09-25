@@ -19,7 +19,7 @@
 package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.dialect.DynamicDialectKeyRemovable;
 import io.xream.sqli.exception.ProxyException;
@@ -103,7 +103,7 @@ public final class DefaultTemporaryRepository implements TemporaryRepository, Dy
     }
 
     @Override
-    public boolean findToCreate(Class clzz, Criteria.ResultMapCriteria resultMapCriteria) {
+    public boolean findToCreate(Class clzz, Cond.X resultMapCriteria) {
 
         return doProxy("findToCreate(Class, ResultMapCriteria)", () -> {
             Parsed parsed = io.xream.sqli.parser.Parser.get(clzz.getSimpleName());

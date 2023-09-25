@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.spi;
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.cache.Protection;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.page.Page;
@@ -49,10 +49,10 @@ public interface L2CacheResolver extends Protection {
 	boolean refresh(Class clz);
 
 	<T> List<T> listUnderProtection(Class<T> clz, Object conditionObj, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
-	<T> List<T> listUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
+	<T> List<T> listUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<List<T>> queryList);
 	<T> T getUnderProtection(Class<T> clz, Object conditonObj, QueryFromDb<T> queryObject);
 	<T> T getOneUnderProtection(Class<T> clz, Object conditonObj, QueryFromDb<T> queryObject);
-	<T> Page<T> findUnderProtection(Criteria criteria, QueryForCache queryForCache, QueryFromDb<Page<T>> queryPage, QueryFromDb<List<T>> queryList);
+	<T> Page<T> findUnderProtection(Cond cond, QueryForCache queryForCache, QueryFromDb<Page<T>> queryPage, QueryFromDb<List<T>> queryList);
 
 	default Object getFilterFactor(){
 		return get();

@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.api;
 
-import io.xream.sqli.builder.Criteria;
-import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.Cond;
+import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.core.Typed;
@@ -50,13 +50,13 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     boolean createOrReplace(T obj);
 
-    boolean refresh(RefreshCondition<T> RefreshCondition_build);
+    boolean refresh(RefreshCond<T> RefreshCondition_build);
 
     /**
      *
      *  refreshCondition without keyOne
      */
-    boolean refreshUnSafe(RefreshCondition<T> RefreshCondition_build);
+    boolean refreshUnSafe(RefreshCond<T> RefreshCondition_build);
 
     boolean remove(String keyOne);
 
@@ -99,20 +99,20 @@ public interface BaseRepository<T> extends Typed<T> {
     /**
      * Standard query pageable API
      *
-     * @param criteria
+     * @param cond
      */
-    Page<T> find(Criteria criteria);
+    Page<T> find(Cond cond);
 
-    List<T> list(Criteria criteria);
+    List<T> list(Cond cond);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
-     * @param criteria
+     * @param cond
      * @param handler
      * @param <T>
      */
-    <T> void findToHandle(Criteria criteria, RowHandler<T> handler);
+    <T> void findToHandle(Cond cond, RowHandler<T> handler);
 
-    boolean exists(Criteria criteria);
+    boolean exists(Cond cond);
     
 }

@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public interface ResultKeyGenerator {
 
-    default String generate(String mapper, Criteria.ResultMapCriteria criteria) {
+    default String generate(String mapper, Cond.X criteria) {
 
         if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
             Map<String, String> resultKeyAliaMap = criteria.getResultKeyAliaMap();

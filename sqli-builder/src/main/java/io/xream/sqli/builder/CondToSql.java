@@ -27,12 +27,12 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface CriteriaToSql extends ConditionToSql, ConditionToSql.Filter, ConditionToSql.Pre {
+public interface CondToSql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
-    String toConditionSql(CriteriaCondition criteriaCondition, List<Object> valueList, Mappable mappable) ;
+    String toConditionSql(BbQ qCondition, List<Object> valueList, Mappable mappable) ;
 
-    void toSql(boolean isSub, Criteria criteria, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
+    void toSql(boolean isSub, Cond cond, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
-    String toSql(Parsed parsed, RefreshCondition refreshCondition, DialectSupport dialectSupport);
+    String toSql(Parsed parsed, RefreshCond refreshCondition, DialectSupport dialectSupport);
 
 }

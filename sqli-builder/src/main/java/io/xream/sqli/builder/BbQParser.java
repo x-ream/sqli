@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Sim
  */
-public interface ConditionParser {
+public interface BbQParser {
 
     Set<String> JOIN_SET = new HashSet<String>(){
         {

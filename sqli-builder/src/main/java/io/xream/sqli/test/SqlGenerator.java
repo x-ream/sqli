@@ -19,7 +19,7 @@
 package io.xream.sqli.test;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
+import io.xream.sqli.builder.internal.DefaultCondToSql;
 import io.xream.sqli.parser.Parser;
 
 import java.io.File;
@@ -34,7 +34,7 @@ import java.util.List;
 public class SqlGenerator {
 
     private static SqlGenerator instance;
-    private static CriteriaToSql criteriaToSql;
+    private static CondToSql condToSql;
 
     private static List<KV> resultMapCriteriaList = new ArrayList<>();
 
@@ -42,8 +42,8 @@ public class SqlGenerator {
     private SqlGenerator(){}
 
     public static SqlGenerator generator() {
-        if (criteriaToSql == null) {
-            criteriaToSql = DefaultCriteriaToSql.newInstance();
+        if (condToSql == null) {
+            condToSql = DefaultCondToSql.newInstance();
             instance = new SqlGenerator();
         }
         return instance;
@@ -54,7 +54,7 @@ public class SqlGenerator {
         return instance;
     }
 
-    public SqlGenerator build(String traceKey, Criteria.ResultMapCriteria resultMapCriteria){
+    public SqlGenerator build(String traceKey, Cond.X resultMapCriteria){
         KV kv = new KV(traceKey,resultMapCriteria);
         resultMapCriteriaList.add(kv);
         return instance;
@@ -82,7 +82,7 @@ public class SqlGenerator {
                     return sqlBuiltList;
                 }
             };
-            criteriaToSql.toSql(false,(Criteria.ResultMapCriteria) kv.getV(),sqlBuilt,sqlBuildingAttached);
+            condToSql.toSql(false,(Cond.X) kv.getV(),sqlBuilt,sqlBuildingAttached);
 
             sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");

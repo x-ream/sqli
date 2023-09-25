@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.builder.internal;
 
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.page.Page;
 
 import java.util.List;
@@ -31,12 +31,12 @@ public final class PageBuilderHelper {
 
     private PageBuilderHelper(){}
 
-    public static <T> Page<T> build(Criteria criteria, List<T> list, TotalRows totalRows) {
+    public static <T> Page<T> build(Cond cond, List<T> list, TotalRows totalRows) {
 
         long count = 0;
-        int rows = criteria.getRows();
-        int page = criteria.getPage();
-        if (!criteria.isTotalRowsIgnored()) {
+        int rows = cond.getRows();
+        int page = cond.getPage();
+        if (!cond.isTotalRowsIgnored()) {
             int size = list.size();
             if (page == 0) {
                 count = size;
@@ -52,14 +52,14 @@ public final class PageBuilderHelper {
         }
 
         Page<T> pagination = new Page<>();
-        if (criteria instanceof Criteria.ResultMapCriteria)
+        if (cond instanceof Cond.X)
             pagination.setClzz(Map.class);
         else
-            pagination.setClzz(criteria.getClzz());
+            pagination.setClzz(cond.getClzz());
         pagination.setPage(page == 0 ? 1 : page);
         pagination.setRows(rows == 0 ? Integer.MAX_VALUE : rows);
-        pagination.setSortList(criteria.getSortList());
-        pagination.setTotalRowsIgnored(criteria.isTotalRowsIgnored());
+        pagination.setSortList(cond.getSortList());
+        pagination.setTotalRowsIgnored(cond.isTotalRowsIgnored());
         pagination.setList(list);
         pagination.setTotalRows(count);
 

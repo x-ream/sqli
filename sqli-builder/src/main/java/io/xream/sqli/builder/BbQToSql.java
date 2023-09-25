@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
+public interface BbQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
 
     default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
         if (bbList == null || bbList.isEmpty())
@@ -193,7 +193,7 @@ public interface ConditionToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilte
                     }else{
                         Parsed parsed = mappable.getParsed();
                         if (parsed == null) {
-                            String ss = ((Criteria.ResultMapCriteria)mappable).sourceScript();
+                            String ss = ((Cond.X)mappable).sourceScript();
                             if (ss != null) {
                                 parsed = Parser.get(ss);
                             }

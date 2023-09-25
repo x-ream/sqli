@@ -20,10 +20,10 @@ package io.xream.sqli.repository.internal;
 
 
 import io.xream.sqli.api.BaseRepository;
-import io.xream.sqli.api.ResultMapRepository;
-import io.xream.sqli.builder.Criteria;
+import io.xream.sqli.api.RepositoryX;
+import io.xream.sqli.builder.Cond;
 import io.xream.sqli.builder.InCondition;
-import io.xream.sqli.builder.RefreshCondition;
+import io.xream.sqli.builder.RefreshCond;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
 import io.xream.sqli.exception.CriteriaSyntaxException;
@@ -43,7 +43,7 @@ import java.util.Map;
  * @param <T>
  * @author Sim
  */
-public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultMapRepository, SafeRefreshBiz<T> {
+public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, RepositoryX, SafeRefreshBiz<T> {
 
     private Class<T> clzz;
     private Class repositoryClzz;
@@ -75,7 +75,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
         this.repository =repository;
     }
 
-    public DefaultRepository(){
+    public DefaultRepositoryX(){
         parse();
     }
 
@@ -129,7 +129,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
 
     @Override
-    public boolean refresh(RefreshCondition refreshCondition) {
+    public boolean refresh(RefreshCond refreshCondition) {
 
         tryToRefreshSafe(this.clzz, refreshCondition);
 
@@ -137,7 +137,7 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
     }
 
     @Override
-    public boolean refreshUnSafe(RefreshCondition<T> refreshCondition) {
+    public boolean refreshUnSafe(RefreshCond<T> refreshCondition) {
         refreshCondition.setClz(this.clzz);
         return repository.refresh(refreshCondition);
     }
@@ -255,77 +255,77 @@ public abstract class DefaultRepository<T> implements BaseRepository<T>, ResultM
 
 
     @Override
-    public Page<T> find(Criteria criteria) {
-        assertCriteriaClzz(criteria);
-        this.setDefaultClzz(criteria);
-        Page<T> page = repository.find(criteria);
+    public Page<T> find(Cond cond) {
+        assertCriteriaClzz(cond);
+        this.setDefaultClzz(cond);
+        Page<T> page = repository.find(cond);
         page.setClzz(this.clzz);
         return page;
     }
 
 
     @Override
-    public List<T> list(Criteria criteria) {
-        assertCriteriaClzz(criteria);
-        this.setDefaultClzz(criteria);
-        return repository.list(criteria);
+    public List<T> list(Cond cond) {
+        assertCriteriaClzz(cond);
+        this.setDefaultClzz(cond);
+        return repository.list(cond);
 
     }
 
     @Override
-    public <T> void findToHandle(Criteria criteria, RowHandler<T> handler) {
-        assertCriteriaClzz(criteria);
-        this.setDefaultClzz(criteria);
-        this.repository.findToHandle(criteria,handler);
+    public <T> void findToHandle(Cond cond, RowHandler<T> handler) {
+        assertCriteriaClzz(cond);
+        this.setDefaultClzz(cond);
+        this.repository.findToHandle(cond,handler);
     }
 
     @Override
-    public boolean exists(Criteria criteria) {
-        assertCriteriaClzz(criteria);
-        this.setDefaultClzz(criteria);
-        return this.repository.exists(criteria);
+    public boolean exists(Cond cond) {
+        assertCriteriaClzz(cond);
+        this.setDefaultClzz(cond);
+        return this.repository.exists(cond);
     }
 
     @Override
-    public Page<Map<String, Object>> find(Criteria.ResultMapCriteria resultMapCriteria) {
+    public Page<Map<String, Object>> find(Cond.X resultMapCriteria) {
         this.setDefaultClzz(resultMapCriteria);
         return repository.find(resultMapCriteria);
     }
 
 
     @Override
-    public List<Map<String, Object>> list(Criteria.ResultMapCriteria resultMapCriteria) {
+    public List<Map<String, Object>> list(Cond.X resultMapCriteria) {
         this.setDefaultClzz(resultMapCriteria);
         return repository.list(resultMapCriteria);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Criteria.ResultMapCriteria resultMapCriteria){
+    public <K> List<K> listPlainValue(Class<K> clzz, Cond.X resultMapCriteria){
         this.setDefaultClzz(resultMapCriteria);
         return repository.listPlainValue(clzz,resultMapCriteria);
     }
 
     @Override
-    public void findToHandle(Criteria.ResultMapCriteria resultMapCriteria, RowHandler<Map<String,Object>> handler) {
+    public void findToHandle(Cond.X resultMapCriteria, RowHandler<Map<String,Object>> handler) {
         this.setDefaultClzz(resultMapCriteria);
         this.repository.findToHandle(resultMapCriteria,handler);
     }
 
-    private void setDefaultClzz(Criteria.ResultMapCriteria resultMapCriteria) {
+    private void setDefaultClzz(Cond.X resultMapCriteria) {
         if (this.clzz != Void.class) {
             resultMapCriteria.setParsed(Parser.get(this.clzz));
         }
         resultMapCriteria.setClzz(this.clzz);
         resultMapCriteria.setRepositoryClzz(this.repositoryClzz);
     }
-    private void setDefaultClzz(Criteria criteria) {
-        criteria.setClzz(this.clzz);
-        criteria.setParsed(Parser.get(this.clzz));
+    private void setDefaultClzz(Cond cond) {
+        cond.setClzz(this.clzz);
+        cond.setParsed(Parser.get(this.clzz));
     }
 
-    private void assertCriteriaClzz(Criteria criteria) {
-        if (this.clzz != criteria.getClzz())
-            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + criteria.getClzz());
+    private void assertCriteriaClzz(Cond cond) {
+        if (this.clzz != cond.getClzz())
+            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + cond.getClzz());
     }
     //can not delete this method: protected void setRepositoryClzz(Class clzz)
     protected void setRepositoryClzz(Class clzz){

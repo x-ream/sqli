@@ -108,8 +108,8 @@
             {
                 CriteriaBuilder builder = CriteriaBuilder.builder(Order.class); 
                 builder.eq("userId",obj.getUserId()).eq("status","PAID");
-                Criteria criteria = builer.build();
-                orderRepository.find(criteria);
+                Criteria cond = builer.build();
+                orderRepository.find(cond);
             }
         
             {
@@ -238,6 +238,6 @@
     
     {
         CacheFilter.filter(userId);
-        this.orderRepository.find(criteria);
+        this.orderRepository.find(cond);
     }               
     

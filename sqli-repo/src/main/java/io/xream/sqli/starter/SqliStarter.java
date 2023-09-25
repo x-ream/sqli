@@ -20,8 +20,8 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.builder.CriteriaToSql;
-import io.xream.sqli.builder.internal.DefaultCriteriaToSql;
+import io.xream.sqli.builder.CondToSql;
+import io.xream.sqli.builder.internal.DefaultCondToSql;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;
 import io.xream.sqli.dialect.Dialect;
@@ -59,20 +59,20 @@ public class SqliStarter {
         return dynamicDialect;
     }
 
-    public CriteriaToSql criteriaToSql(){
-        return DefaultCriteriaToSql.newInstance();
+    public CondToSql criteriaToSql(){
+        return DefaultCondToSql.newInstance();
     }
 
-    public Repository repository(CriteriaToSql criteriaToSql, JdbcHelper jdbcHelper,
-                                         Dialect dialect,
-                                         L2CacheResolver l2CacheResolver
+    public Repository repository(CondToSql condToSql, JdbcHelper jdbcHelper,
+                                 Dialect dialect,
+                                 L2CacheResolver l2CacheResolver
                                          ){
         Dao dao = DaoImpl.newInstance();
 
         CacheableRepository repository = CacheableRepository.newInstance();
 
         repository.setDao(dao);
-        ((DaoImpl)dao).setCriteriaToSql(criteriaToSql);
+        ((DaoImpl)dao).setCriteriaToSql(condToSql);
         ((DaoImpl)dao).setJdbcHelper(jdbcHelper);
         ((DaoImpl)dao).setDialect(dialect);
 
@@ -81,12 +81,12 @@ public class SqliStarter {
         return repository;
     }
 
-    public TemporaryRepository temporaryRepository(CriteriaToSql criteriaToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
+    public TemporaryRepository temporaryRepository(CondToSql condToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
         DefaultTemporaryTableParser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
         temporaryTableParser.setDialect(dialect);
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
         ((TemporaryDaoImpl)temporaryDao).setJdbcHelper(jdbcHelper);
-        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(criteriaToSql);
+        ((TemporaryDaoImpl)temporaryDao).setCriteriaToSql(condToSql);
         ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
 
         TemporaryRepository tr = DefaultTemporaryRepository.newInstance();

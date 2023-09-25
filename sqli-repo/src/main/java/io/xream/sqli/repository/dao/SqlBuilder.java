@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public final class SqlBuilder implements ConditionToSql{
+public final class SqlBuilder implements BbQToSql {
 
     private static SqlBuilder instance;
     private SqlBuilder(){}
@@ -77,7 +77,7 @@ public final class SqlBuilder implements ConditionToSql{
     }
 
 
-    protected String buildRefreshByCondition(Parsed parsed, RefreshCondition refreshCondition, CriteriaToSql criteriaParser, DialectSupport dialectSupport) {
+    protected String buildRefreshByCondition(Parsed parsed, RefreshCond refreshCondition, CondToSql criteriaParser, DialectSupport dialectSupport) {
         return criteriaParser.toSql(parsed,refreshCondition, dialectSupport);
     }
 
@@ -95,12 +95,12 @@ public final class SqlBuilder implements ConditionToSql{
         return sb.toString();
     }
 
-    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Criteria criteria, CriteriaToSql criteriaParser, Dialect dialect) {
+    protected SqlBuilt buildQueryByCriteria(List<Object> valueList, Cond cond, CondToSql criteriaParser, Dialect dialect) {
 
         final SqlBuilt sqlBuilt = new SqlBuilt();
         final List<SqlBuilt> subList = new ArrayList<>();
 
-        criteriaParser.toSql(false, criteria, sqlBuilt, new SqlBuildingAttached() {
+        criteriaParser.toSql(false, cond, sqlBuilt, new SqlBuildingAttached() {
             @Override
             public List<Object> getValueList() {
                 return valueList;
@@ -114,18 +114,18 @@ public final class SqlBuilder implements ConditionToSql{
 
         String sql = sqlBuilt.getSql().toString();
 
-        int page = criteria.getPage();
-        int rows = criteria.getRows();
+        int page = cond.getPage();
+        int rows = cond.getRows();
 
         int start = (page - 1) * rows;
-        long last = criteria.getLast();
+        long last = cond.getLast();
 
         sql = dialect.buildPageSql(sql, start, rows,last);
 
         StringBuilder sb = new StringBuilder();
         sb.append(sql);
         sqlBuilt.setSql(sb);
-        ObjectDataConverter.log(criteria, valueList);
+        ObjectDataConverter.log(cond, valueList);
 
         return sqlBuilt;
     }
