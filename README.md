@@ -86,7 +86,7 @@
 ###     QueryBuilder拼接API
         QB // 返回q, 查出对象形式记录
         QB.X //xq, 查出Map形式记录，支持连表查询
-        RB //构建要更新的字段和条件
+        QrB //构建要更新的字段和条件
         
         代码片段:
             {
@@ -110,7 +110,7 @@
             
             {
                 orderRepository.refresh(
-                    RB.of(Order.class).refresh("status","PAYING").eq("id",1).eq("status","UN_PAID").build()
+                    QrB.of(Order.class).refresh("status","PAYING").eq("id",1).eq("status","UN_PAID").build()
                 );
             }
         
