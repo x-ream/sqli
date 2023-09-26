@@ -22,5 +22,5 @@ package io.xream.sqli.builder;
  * @author Sim
  */
 public interface ThenRefresh {
-    void build(RB builder);
+    void build(QrB builder);
 }

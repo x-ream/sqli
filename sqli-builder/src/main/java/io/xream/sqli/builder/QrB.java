@@ -27,20 +27,20 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class RB<T> extends BbQBuilder {
+public class QrB<T> extends BbQBuilder {
 
     private Qr<T> qr;
 
-    private RB(Qr qr){
+    private QrB(Qr qr){
         super();
         init(qr.getBbList());
     }
 
 
-    public static <T> RB<T> of(Class<T> clzz){
+    public static <T> QrB<T> of(Class<T> clzz){
         Qr Qr = new Qr();
         Qr.setClz(clzz);
-        RB builder = new RB(Qr);
+        QrB builder = new QrB(Qr);
         builder.qr = Qr;
 
         return builder;
@@ -50,12 +50,12 @@ public class RB<T> extends BbQBuilder {
         return this.qr;
     }
 
-    public RB<T> and(){
+    public QrB<T> and(){
         return this;
     }
 
-    public RB<T> or() {
-        return (RB<T>) super.or();
+    public QrB<T> or() {
+        return (QrB<T>) super.or();
     }
 
     /**
@@ -63,7 +63,7 @@ public class RB<T> extends BbQBuilder {
      * String sqlX = "propertyA = propertyA + propertyB + 1"
      * @return qr
      */
-    public RB<T> refresh(String sqlX){
+    public QrB<T> refresh(String sqlX){
 
         if (Objects.isNull(sqlX))
             return this;
@@ -76,7 +76,7 @@ public class RB<T> extends BbQBuilder {
         return this;
     }
 
-    public RB<T> refresh(String property, Object value){
+    public QrB<T> refresh(String property, Object value){
 
         if (Objects.isNull(value))
             return this;
@@ -105,95 +105,95 @@ public class RB<T> extends BbQBuilder {
     }
 
 
-    public RB<T> routeKey(Object routeKey) {
+    public QrB<T> routeKey(Object routeKey) {
         this.qr.setRouteKey(routeKey);
         return this;
     }
 
 
-    public RB<T> eq(String key, Object value) {
-        return (RB<T>) super.eq(key,value);
+    public QrB<T> eq(String key, Object value) {
+        return (QrB<T>) super.eq(key,value);
     }
 
-    public RB<T> gt(String key, Object value) {
-        return (RB<T>) super.gt(key,value);
+    public QrB<T> gt(String key, Object value) {
+        return (QrB<T>) super.gt(key,value);
     }
 
-    public RB<T> gte(String key, Object value) {
-        return (RB<T>) super.gte(key,value);
+    public QrB<T> gte(String key, Object value) {
+        return (QrB<T>) super.gte(key,value);
     }
 
-    public RB<T> lt(String key, Object value) {
-        return (RB<T>) super.lt(key,value);
+    public QrB<T> lt(String key, Object value) {
+        return (QrB<T>) super.lt(key,value);
     }
 
-    public RB<T> lte(String key, Object value) {
-        return (RB<T>) super.lte(key,value);
+    public QrB<T> lte(String key, Object value) {
+        return (QrB<T>) super.lte(key,value);
     }
 
-    public RB<T> ne(String property, Object value) {
-        return (RB<T>) super.ne(property, value);
+    public QrB<T> ne(String property, Object value) {
+        return (QrB<T>) super.ne(property, value);
     }
 
-    public RB<T> like(String property, String value) {
-        return (RB<T>) super.like(property, value);
+    public QrB<T> like(String property, String value) {
+        return (QrB<T>) super.like(property, value);
     }
 
-    public RB<T> likeRight(String property, String value) {
-        return (RB<T>) super.likeRight(property, value);
+    public QrB<T> likeRight(String property, String value) {
+        return (QrB<T>) super.likeRight(property, value);
     }
 
-    public RB<T> notLike(String property, String value) {
-        return (RB<T>) super.notLike(property, value);
+    public QrB<T> notLike(String property, String value) {
+        return (QrB<T>) super.notLike(property, value);
     }
 
-    public RB<T> in(String property, List<? extends Object> list) {
-        return (RB<T>) super.in(property,list);
+    public QrB<T> in(String property, List<? extends Object> list) {
+        return (QrB<T>) super.in(property,list);
     }
 
-    public RB<T> inRequired(String property, List<? extends Object> list) {
+    public QrB<T> inRequired(String property, List<? extends Object> list) {
         if (list.isEmpty()) {
             qr.setAbort(true);
         }
-        return (RB<T>) super.in(property,list);
+        return (QrB<T>) super.in(property,list);
     }
 
-    public RB<T> nin(String property, List<? extends Object> list) {
-        return (RB<T>) super.nin(property,list);
+    public QrB<T> nin(String property, List<? extends Object> list) {
+        return (QrB<T>) super.nin(property,list);
     }
 
-    public RB<T> nonNull(String property){
-        return (RB<T>) super.nonNull(property);
+    public QrB<T> nonNull(String property){
+        return (QrB<T>) super.nonNull(property);
     }
 
-    public RB<T> isNull(String property){
-        return (RB<T>) super.isNull(property);
+    public QrB<T> isNull(String property){
+        return (QrB<T>) super.isNull(property);
     }
 
-    public RB<T> x(String sqlSegment){
-        return (RB<T>) super.x(sqlSegment);
+    public QrB<T> x(String sqlSegment){
+        return (QrB<T>) super.x(sqlSegment);
     }
 
-    public RB<T> x(String sqlSegment, Object...values){
-        return (RB<T>) super.x(sqlSegment, values);
+    public QrB<T> x(String sqlSegment, Object...values){
+        return (QrB<T>) super.x(sqlSegment, values);
     }
 
-    public RB<T> beginSub(){
-        return (RB<T>) super.beginSub();
+    public QrB<T> beginSub(){
+        return (QrB<T>) super.beginSub();
     }
 
-    public RB<T> endSub(){
-        return (RB<T>) super.endSub();
+    public QrB<T> endSub(){
+        return (QrB<T>) super.endSub();
     }
 
-    public RB<T> bool(Bool condition, ThenRefresh then){
+    public QrB<T> bool(Bool condition, ThenRefresh then){
         if (condition.isOk()) {
             then.build(this);
         }
         return this;
     }
 
-    public RB<T> sourceScript(String sourceScript) {
+    public QrB<T> sourceScript(String sourceScript) {
         this.qr.setSourceScript(sourceScript);
         return this;
     }

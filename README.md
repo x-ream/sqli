@@ -77,7 +77,7 @@
             12. remove(Id)//根据主键删除
             13. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
 
-### RepositoryX API
+###     RepositoryX API
             14. find(xq) //标准拼接查询，返回Map形式记录，返回分页对象
             15. list(xq) //标准拼接查询，返回Map形式记录，不返回分页对象
             16. listPlainValue(Class<K>, qx)//返回没有key的单列数据列表 (结果优化1)
