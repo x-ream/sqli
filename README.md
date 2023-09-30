@@ -40,7 +40,7 @@
 
     @X.Mapping("t_foo")//默认是foo
     public class Foo {
-        @X.Key
+        @X.Key //不指定主键的情况下，不支持根据get(id),remove(id)
         private Long id;
         @X.Mapping("full_name") //默认是fullName
         private String fullName;
