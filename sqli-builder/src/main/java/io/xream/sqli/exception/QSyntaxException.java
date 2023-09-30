@@ -16,27 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.support;
-
-import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.SourceScript;
-import io.xream.sqli.parser.Parsed;
-import io.xream.sqli.parser.Parser;
+package io.xream.sqli.exception;
 
 /**
  * @author Sim
  */
-public interface ResultMapSingleSourceSupport {
+public class QSyntaxException extends RuntimeException{
 
-    default void supportSingleSource(Q.X resultMapCriteria) {
-        if (resultMapCriteria.getSourceScripts().size() == 1 && resultMapCriteria.getParsed() == null) {
-            SourceScript sourceScript = resultMapCriteria.getSourceScripts().get(0);
-            String source = sourceScript.getSource();
-            if (source != null) {
-                Parsed parsed = Parser.get(source);
-                resultMapCriteria.setParsed(parsed);
-                resultMapCriteria.setClzz(parsed.getClzz());
-            }
-        }
+    public QSyntaxException(String message){
+        super(message);
     }
+
 }

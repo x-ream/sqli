@@ -322,31 +322,31 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public Page<Map<String, Object>> find(Q.X criteria) {
-        if (criteria.isAbort()) {
+    public Page<Map<String, Object>> find(Q.X xq) {
+        if (xq.isAbort()) {
             Page page = new Page<>();
-            page.setClzz(criteria.getClzz());
-            page.setRows(criteria.getRows());
-            page.setPage(criteria.getPage());
+            page.setClzz(xq.getClzz());
+            page.setRows(xq.getRows());
+            page.setPage(xq.getPage());
             return page;
         }
-        return dao.find(criteria);
+        return dao.find(xq);
     }
 
     @Override
-    public List<Map<String, Object>> list(Q.X criteria) {
+    public List<Map<String, Object>> list(Q.X xq) {
 
-        if (criteria.isAbort())
+        if (xq.isAbort())
             return new ArrayList<>();
 
-        return dao.list(criteria);
+        return dao.list(xq);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Q.X criteria){
-        if (criteria.isAbort())
+    public <K> List<K> listPlainValue(Class<K> clzz, Q.X xq){
+        if (xq.isAbort())
             return new ArrayList<>();
-        return dao.listPlainValue(clzz,criteria);
+        return dao.listPlainValue(clzz,xq);
     }
 
 
@@ -363,10 +363,10 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public void findToHandle(Q.X criteria, RowHandler<Map<String, Object>> handler) {
-        if (criteria.isAbort())
+    public void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler) {
+        if (xq.isAbort())
             return;
-        this.dao.findToHandle(criteria,handler);
+        this.dao.findToHandle(xq,handler);
     }
 
     @Override

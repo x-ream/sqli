@@ -19,7 +19,7 @@
 package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.exception.CriteriaSyntaxException;
+import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
@@ -27,7 +27,7 @@ import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.support.ResultMapSingleSourceSupport;
+import io.xream.sqli.support.XSingleSourceSupport;
 import io.xream.sqli.support.TimeSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * @author Sim
  */
-public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScriptOptimizable, ResultMapSingleSourceSupport {
+public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScriptOptimizable, XSingleSourceSupport {
 
     private static Q2Sql instance;
 
@@ -358,25 +358,25 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         boolean flag = false;
 
-        Q.X resultMapped = (Q.X) q;
+        Q.X xq = (Q.X) q;
         StringBuilder columnBuilder = new StringBuilder();
 
-        Map<String, String> mapperPropertyMap = resultMapped.getMapperPropertyMap();
+        Map<String, String> mapperPropertyMap = xq.getMapperPropertyMap();
 
-        if (Objects.nonNull(resultMapped.getDistinct())) {
+        if (Objects.nonNull(xq.getDistinct())) {
 
             columnBuilder.append(SqlScript.DISTINCT);
-            List<String> list = resultMapped.getDistinct().getList();
+            List<String> list = xq.getDistinct().getList();
             int size = list.size();
             int i = 0;
             StringBuilder distinctColumn = new StringBuilder();
             distinctColumn.append(columnBuilder);
             for (String resultKey : list) {
                 addConditonBeforeOptimization(resultKey, sqlSth.conditionSet);
-                String mapper = mapping(resultKey, resultMapped);
+                String mapper = mapping(resultKey, xq);
                 mapperPropertyMap.put(mapper, resultKey);//REDUCE ALIAN NAME
                 distinctColumn.append(SqlScript.SPACE).append(mapper);
-                mapper = generate(mapper, resultMapped);
+                mapper = generate(mapper, xq);
                 columnBuilder.append(SqlScript.SPACE).append(mapper);
                 i++;
                 if (i < size) {
@@ -388,7 +388,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             flag = true;
         }
 
-        List<Reduce> reduceList = resultMapped.getReduceList();
+        List<Reduce> reduceList = xq.getReduceList();
 
         if (!reduceList.isEmpty()) {
 
@@ -399,7 +399,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 addConditonBeforeOptimization(reduce.getProperty(), sqlSth.conditionSet);
                 String alianProperty = reduce.getProperty() + SqlScript.UNDER_LINE + reduce.getType().toString().toLowerCase();//property_count
                 String alianName = alianProperty.replace(SqlScript.DOT, SqlScript.DOLLOR);
-                resultMapped.getResultKeyAliaMap().put(alianName, alianProperty);
+                xq.getResultKeyAliaMap().put(alianName, alianProperty);
 
                 String value = mapping(reduce.getProperty(), q);
 
@@ -428,13 +428,13 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 Having h = reduce.getHaving();
                 if (h != null) {
                     h.setAliaOrFunction(alianName);
-                    resultMapped.getHavingList().add(h);
+                    xq.getHavingList().add(h);
                 }
                 flag = true;
             }
         }
 
-        List<String> resultList = resultMapped.getResultKeyList();
+        List<String> resultList = xq.getResultKeyList();
         if (!resultList.isEmpty()) {
             if (flag) {
                 columnBuilder.append(SqlScript.COMMA);
@@ -445,7 +445,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 addConditonBeforeOptimization(resultKey, sqlSth.conditionSet);
                 String mapper = mapping(resultKey, q);
                 mapperPropertyMap.put(mapper, resultKey);
-                mapper = generate(mapper, resultMapped);
+                mapper = generate(mapper, xq);
                 columnBuilder.append(SqlScript.SPACE).append(mapper);
                 if (i < size - 1) {
                     columnBuilder.append(SqlScript.COMMA);
@@ -455,7 +455,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         }
 
-        List<KV> resultListAssignedAliaList = resultMapped.getResultKeyAssignedAliaList();
+        List<KV> resultListAssignedAliaList = xq.getResultKeyAssignedAliaList();
         if (!resultListAssignedAliaList.isEmpty()) {
             if (flag) {
                 columnBuilder.append(SqlScript.COMMA);
@@ -468,7 +468,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 String mapper = mapping(key, q);
                 mapperPropertyMap.put(mapper, key);
                 String alian = kv.getV().toString();
-                resultMapped.getResultKeyAliaMap().put(alian, mapper);
+                xq.getResultKeyAliaMap().put(alian, mapper);
                 columnBuilder.append(SqlScript.SPACE).append(mapper).append(SqlScript.AS).append(alian);
                 if (i < size - 1) {
                     columnBuilder.append(SqlScript.COMMA);
@@ -478,13 +478,13 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         }
 
-        List<FunctionResultKey> functionList = resultMapped.getResultFunctionList();
+        List<FunctionResultKey> functionList = xq.getResultFunctionList();
         if (!functionList.isEmpty()) {//
             if (flag) {
                 columnBuilder.append(SqlScript.COMMA);
             }
 
-            Map<String, String> resultKeyAliaMap = resultMapped.getResultKeyAliaMap();
+            Map<String, String> resultKeyAliaMap = xq.getResultKeyAliaMap();
 
             int size = functionList.size();
             for (int i = 0; i < size; i++) {
@@ -516,7 +516,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         String script = columnBuilder.toString();
         if (SqliStringUtil.isNullOrEmpty(script)) {
-            throw new CriteriaSyntaxException("Suggest API: find(Criteria criteria), no any resultKey for ResultMapCriteria");
+            throw new QSyntaxException("Suggest API: find(Q Q), q any resultKey for Q.X");
         }
 
         return script;
@@ -596,14 +596,14 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         if (!(q instanceof Q.X))
             return;
 
-        Q.X resultMapped = (Q.X) q;
-        List<Having> havingList = resultMapped.getHavingList();
+        Q.X xq = (Q.X) q;
+        List<Having> havingList = xq.getHavingList();
 
         if (havingList.isEmpty())
             return;
 
         if (!q.isTotalRowsIgnored()) {
-            throw new CriteriaSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
+            throw new QSyntaxException("Reduce with having not support totalRows query, try to builder.paged().ignoreTotalRows()");
         }
 
         boolean flag = true;
@@ -701,7 +701,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String str = q.sourceScript();
-                Objects.requireNonNull(str, "Not set sourceScript of ResultMappedBuilder");
+                Objects.requireNonNull(str, "Not set sourceScript of QB.X");
                 final String strd = normalizeSql(str);
                 StringBuilder sbs = new StringBuilder();
                 mapping((reg) -> strd.split(reg), rmc, sbs);
@@ -772,13 +772,13 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         List<Bb> bbList = q.getBbList();
 
         if (q instanceof Q.X) {
-            Q.X resultMapCriteria = (Q.X) q;//FIXME 判断是虚表
-            filter(bbList, resultMapCriteria);
+            Q.X xq = (Q.X) q;//FIXME 判断是虚表
+            filter(bbList, xq);
             for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
                 List<Bb> bbs = sourceScript.getBbList();
                 if (bbs == null || bbs.isEmpty())
                     continue;
-                filter(bbs, resultMapCriteria);
+                filter(bbs, xq);
             }
         } else {
             filter(bbList, q);

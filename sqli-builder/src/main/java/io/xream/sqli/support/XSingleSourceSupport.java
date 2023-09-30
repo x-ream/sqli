@@ -16,17 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.exception;
+package io.xream.sqli.support;
+
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.SourceScript;
+import io.xream.sqli.parser.Parsed;
+import io.xream.sqli.parser.Parser;
 
 /**
  * @author Sim
  */
-public class CriteriaSyntaxException extends RuntimeException{
+public interface XSingleSourceSupport {
 
-    private static final long serialVersionUID = 5749142995547236081L;
-
-    public CriteriaSyntaxException(String message){
-        super(message);
+    default void supportSingleSource(Q.X xq) {
+        if (xq.getSourceScripts().size() == 1 && xq.getParsed() == null) {
+            SourceScript sourceScript = xq.getSourceScripts().get(0);
+            String source = sourceScript.getSource();
+            if (source != null) {
+                Parsed parsed = Parser.get(source);
+                xq.setParsed(parsed);
+                xq.setClzz(parsed.getClzz());
+            }
+        }
     }
-
 }

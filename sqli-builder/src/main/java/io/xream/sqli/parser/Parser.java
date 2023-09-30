@@ -183,7 +183,7 @@ public final class Parser {
     public static void parse(Class clz) {
 
         if (clz == Q.class || clz == Q.X.class || clz == Void.class)
-            throw new IllegalArgumentException("parser unsupport Criteria, CriteriaJoinable, ....");
+            throw new IllegalArgumentException("parser unsupport Q, Q.X, ....");
 
         Parsed parsed = new Parsed(clz);
         List<BeanElement> elementList = ParserUtil.parseElementList(clz);

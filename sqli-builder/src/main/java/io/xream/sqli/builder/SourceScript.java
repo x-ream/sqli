@@ -182,7 +182,7 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
     public String toString() {
         return "SourceScript{" +
                 "source='" + source + '\'' +
-                ", subCriteria=" + subQ +
+                ", subQ=" + subQ +
                 ", joinType=" + joinType +
                 ", joinStr='" + joinStr + '\'' +
                 ", on=" + on +

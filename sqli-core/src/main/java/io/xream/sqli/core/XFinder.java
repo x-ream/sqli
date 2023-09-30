@@ -31,13 +31,13 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public interface ResultMapFinder {
+public interface XFinder {
 
-    List<Map<String, Object>> queryForResultMapList(String sql, Collection<Object> list, XHelpful xHelpful, Class orClzz, Dialect dialect);
+    List<Map<String, Object>> queryForXList(String sql, Collection<Object> list, XHelpful xHelpful, Class orClzz, Dialect dialect);
 
     <T> void queryForMapToHandle(String sql, Collection<Object> valueList, Dialect dialect, XHelpful xHelpful, Parsed orParsed, RowHandler<T> handler);
 
-    default List<Map<String, Object>> toResultMapList(boolean isResultWithDottedKey, DataMapQuery dataMapQuery) {
+    default List<Map<String, Object>> toXList(boolean isResultWithDottedKey, DataMapQuery dataMapQuery) {
 
         List<Map<String, Object>> objectPropertyMapList = dataMapQuery.query(DataMapQuery.FIXED_ROW_MAPPER);
         if (isResultWithDottedKey)
@@ -49,7 +49,7 @@ public interface ResultMapFinder {
         return objectPropertyMapList;
     }
 
-    default Map<String,Object> toResultMap(XHelpful xHelpful, Dialect dialect, Map<String, Object> dataMap) {
+    default Map<String,Object> toXq(XHelpful xHelpful, Dialect dialect, Map<String, Object> dataMap) {
         Map<String,Object> map = DataMapQuery.FIXED_ROW_MAPPER.mapRow(dataMap,null, xHelpful,dialect);
         if (xHelpful.isResultWithDottedKey())
             return map;

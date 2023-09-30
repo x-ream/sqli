@@ -21,7 +21,7 @@ package io.xream.sqli.repository.internal;
 import io.xream.sqli.builder.Bb;
 import io.xream.sqli.builder.Op;
 import io.xream.sqli.builder.Qr;
-import io.xream.sqli.exception.CriteriaSyntaxException;
+import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
@@ -39,7 +39,7 @@ public interface SafeRefreshBiz<T> {
         Parsed parsed = Parser.get(clzz);
         Field keyField = parsed.getKeyField();
         if (Objects.isNull(keyField))
-            throw new CriteriaSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
+            throw new QSyntaxException("No PrimaryKey, UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
 
         boolean unSafe = true;//Safe
 
@@ -69,6 +69,6 @@ public interface SafeRefreshBiz<T> {
         }
 
         if (unSafe)
-            throw new CriteriaSyntaxException("UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
+            throw new QSyntaxException("UnSafe Refresh, try to invoke DefaultRepository.refreshUnSafe(qr<T> rq)");
     }
 }

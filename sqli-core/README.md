@@ -17,7 +17,7 @@
 
 ### API
     BaseRepository
-    ResultMapRepository
+    RepositoryX
     TemporaryRepository
     CacheFilter
     

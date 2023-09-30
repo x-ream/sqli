@@ -21,7 +21,7 @@ package io.xream.sqli.api;
 /**
  * to find target unit,
  * not for db sharding,
- * not suggest having Criteria,qr as the request object, the interface
+ * not suggest having Q,qr as the request object, the interface
  * of Routeable maybe meaningless, of cource, your request object clzz can implements
  * Routeable
  *

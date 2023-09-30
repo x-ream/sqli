@@ -74,10 +74,10 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
 
     @Override
-    public boolean   findToCreate(Class clzz, Q.X resultMapCriteria) {
+    public boolean   findToCreate(Class clzz, Q.X xq) {
 
         List<Object> valueList = new ArrayList<>();
-        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByCriteria(valueList,resultMapCriteria, q2Sql, dialect);
+        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList,xq, q2Sql, dialect);
         StringBuilder fromSqlSb = sqlBuilt.getSql();
 
         Parsed parsed = Parser.get(clzz);

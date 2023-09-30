@@ -19,7 +19,7 @@
 package io.xream.sqli.spi;
 
 import io.xream.sqli.core.BaseFinder;
-import io.xream.sqli.core.ResultMapFinder;
+import io.xream.sqli.core.XFinder;
 import io.xream.sqli.dialect.Dialect;
 
 import java.util.Collection;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface JdbcHelper extends BaseFinder, ResultMapFinder {
+public interface JdbcHelper extends BaseFinder, XFinder {
 
     <T> boolean createBatch(Class<T> clzz, String sql, BatchObjectValues batchObjectValues, int batchSize, Dialect dialect);
 

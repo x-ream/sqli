@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ResultMap API
+ * X API
  * @author Sim
  */
 public interface RepositoryX {

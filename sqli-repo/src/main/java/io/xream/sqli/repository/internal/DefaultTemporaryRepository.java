@@ -103,15 +103,15 @@ public final class DefaultTemporaryRepository implements TemporaryRepository, Dy
     }
 
     @Override
-    public boolean findToCreate(Class clzz, Q.X resultMapCriteria) {
+    public boolean findToCreate(Class clzz, Q.X xq) {
 
-        return doProxy("findToCreate(Class, ResultMapCriteria)", () -> {
+        return doProxy("findToCreate(Class, Q.X)", () -> {
             Parsed parsed = io.xream.sqli.parser.Parser.get(clzz.getSimpleName());
             if (parsed == null) {
                 io.xream.sqli.parser.Parser.parse(clzz);
             }
 
-            return temporaryDao.findToCreate(clzz, resultMapCriteria);
+            return temporaryDao.findToCreate(clzz, xq);
         });
 
     }

@@ -374,7 +374,7 @@ public final class ParserUtil {
 
     public static String getClzName(String alia, Map<String, String> aliaMap) {
         if (aliaMap == null)
-            throw new ParsingException("CriteriaBuilder.builder(Class) not support the key contains '.'");
+            throw new ParsingException("QB.of(Class) not support the key contains '.'");
         String a = aliaMap.get(alia);
         if (SqliStringUtil.isNotNull(a))
             return a;

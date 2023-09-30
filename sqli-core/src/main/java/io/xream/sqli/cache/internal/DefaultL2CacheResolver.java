@@ -463,11 +463,11 @@ public final class DefaultL2CacheResolver extends CacheKeyBuilder implements L2C
 
 	@Override
 	public <T> List<T> listUnderProtection(Q q, QueryForCache queryForCache, QueryFromDb<List<T>> QueryFromDb) {
-		final String criteriaKey = buildCacheKey(q);
+		final String qKey = buildCacheKey(q);
 		final Class clz = q.getClzz();
 		List<String> keyList = null;
 		try {
-			keyList = getResultKeyList(clz, criteriaKey);
+			keyList = getResultKeyList(clz, qKey);
 		}catch (NotQueryUnderProtectionException upe) {
 
 		}
@@ -489,7 +489,7 @@ public final class DefaultL2CacheResolver extends CacheKeyBuilder implements L2C
 				keyList.add(key);
 			}
 
-			setResultKeyList(clz, criteriaKey, keyList);
+			setResultKeyList(clz, qKey, keyList);
 			close();
 			return list;
 		}
@@ -568,8 +568,8 @@ public final class DefaultL2CacheResolver extends CacheKeyBuilder implements L2C
 	public <T> Page<T> findUnderProtection(Q q, QueryForCache queryForCache, QueryFromDb<Page<T>> findQueryFromDb, QueryFromDb<List<T>> listQueryFromDb){
 		Class clz = q.getClzz();
 		Parsed parsed = Parser.get(clz);
-		final String criteriaKey = buildCacheKey(q);
-		Page p = getResultKeyListPaginated(clz, criteriaKey);// FIXME
+		final String qKey = buildCacheKey(q);
+		Page p = getResultKeyListPaginated(clz, qKey);// FIXME
 
 		if (p == null) {
 
@@ -620,7 +620,7 @@ public final class DefaultL2CacheResolver extends CacheKeyBuilder implements L2C
 			p.setKeyList(keyList);
 			p.reSetList(null);
 
-			setResultKeyListPaginated(clz, criteriaKey, p);
+			setResultKeyListPaginated(clz, qKey, p);
 
 			p.setKeyList(null);
 			p.reSetList(list);

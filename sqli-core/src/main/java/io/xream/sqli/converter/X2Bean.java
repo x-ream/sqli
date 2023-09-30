@@ -33,7 +33,7 @@ public class X2Bean {
     private X2Bean(){}
 
     /**
-     * not support resultMap by builder.resultWithDottedKey();
+     * not support q by builder.resultWithDottedKey();
      */
     public static <T> T copy(Class<T> clz, Map<String, Object> map) {
 

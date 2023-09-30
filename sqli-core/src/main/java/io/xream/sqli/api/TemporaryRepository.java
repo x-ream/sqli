@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * How to update with TemporaryRepository?
  * suggest:
- *      .findToHandle(ResultMapCriteria, map -> {
+ *      .findToHandle(Q.X, map -> {
  *
  *             refresh(
  *                  qr.build()....

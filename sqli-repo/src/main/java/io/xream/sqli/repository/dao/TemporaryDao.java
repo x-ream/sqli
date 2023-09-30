@@ -24,6 +24,6 @@ import io.xream.sqli.builder.Q;
  * @author Sim
  */
 public interface TemporaryDao {
-    boolean findToCreate(Class clzz, Q.X resultMapCriteria);
+    boolean findToCreate(Class clzz, Q.X xq);
     boolean execute(String sql);
 }

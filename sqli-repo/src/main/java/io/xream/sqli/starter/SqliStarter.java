@@ -72,7 +72,7 @@ public class SqliStarter {
         CacheableRepository repository = CacheableRepository.newInstance();
 
         repository.setDao(dao);
-        ((DaoImpl)dao).setCriteriaToSql(condToSql);
+        ((DaoImpl)dao).set2Sql(condToSql);
         ((DaoImpl)dao).setJdbcHelper(jdbcHelper);
         ((DaoImpl)dao).setDialect(dialect);
 

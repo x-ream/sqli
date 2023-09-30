@@ -32,12 +32,12 @@ public final class BaseTypeFilter {
 
     public static boolean baseTypeSupported = false;
 
-    public static boolean isBaseType(String key, Object v, Mappable criteria) {
+    public static boolean isBaseType(String key, Object v, Mappable m) {
         if (! baseTypeSupported)
             return false;
         String[] arr = key.split("\\.");
         String alia = arr[0];
-        String clzName = criteria.getAliaMap().get(alia);
+        String clzName = m.getAliaMap().get(alia);
         if (clzName == null)
             clzName = alia;
         Parsed parsed = Parser.get(clzName);

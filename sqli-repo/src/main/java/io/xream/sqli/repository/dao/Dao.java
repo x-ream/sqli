@@ -56,11 +56,11 @@ public interface Dao extends QueryForCache {
 	
 	<T> List<T> in(In in);
 	
-	Page<Map<String, Object>> find(Q.X resultMapped);
+	Page<Map<String, Object>> find(Q.X xq);
 
-	List<Map<String,Object>> list(Q.X resultMapped);
+	List<Map<String,Object>> list(Q.X xq);
 
-	<K> List<K> listPlainValue(Class<K> clzz, Q.X resultMapped);
+	<K> List<K> listPlainValue(Class<K> clzz, Q.X xq);
 
 	<T> Page<T> find(Q q);
 
@@ -73,7 +73,7 @@ public interface Dao extends QueryForCache {
     <T> boolean refresh(T t);
 
 	<T> void findToHandle(Q q, RowHandler<T> handler);
-	void findToHandle(Q.X resultMapCriteria, RowHandler<Map<String, Object>> handler);
+	void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler);
 
     boolean exists(Q q);
 }

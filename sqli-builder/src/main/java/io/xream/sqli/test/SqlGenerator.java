@@ -36,7 +36,7 @@ public class SqlGenerator {
     private static SqlGenerator instance;
     private static Q2Sql condToSql;
 
-    private static List<KV> resultMapCriteriaList = new ArrayList<>();
+    private static List<KV> xKvList = new ArrayList<>();
 
 
     private SqlGenerator(){}
@@ -54,9 +54,9 @@ public class SqlGenerator {
         return instance;
     }
 
-    public SqlGenerator build(String traceKey, Q.X resultMapCriteria){
-        KV kv = new KV(traceKey,resultMapCriteria);
-        resultMapCriteriaList.add(kv);
+    public SqlGenerator build(String traceKey, Q.X xq){
+        KV kv = new KV(traceKey,xq);
+        xKvList.add(kv);
         return instance;
     }
 
@@ -64,7 +64,7 @@ public class SqlGenerator {
 
         StringBuilder sb = new StringBuilder();
 
-        for (KV kv : resultMapCriteriaList) {
+        for (KV kv : xKvList) {
 
             SqlBuilt sqlBuilt = new SqlBuilt();
 
@@ -105,7 +105,7 @@ public class SqlGenerator {
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            resultMapCriteriaList.clear();
+            xKvList.clear();
         }
     }
 }

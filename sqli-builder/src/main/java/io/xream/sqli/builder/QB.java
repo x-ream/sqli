@@ -131,8 +131,8 @@ public class QB<T> extends BbQBuilder {
     }
 
     public static X x() {
-        Q.X resultMapCriteria = new Q.X();
-        return new X(resultMapCriteria);
+        Q.X xq = new Q.X();
+        return new X(xq);
     }
 
     public Class<?> getClz() {
@@ -173,8 +173,8 @@ public class QB<T> extends BbQBuilder {
             public SourceBuilder sub(Sub sub) {
                 X subBuilder = QB.x();
                 sub.buildBy(subBuilder);
-                Q.X resultMapCriteria = subBuilder.build();
-                sourceScriptTemp.setSubQ(resultMapCriteria);
+                Q.X xq = subBuilder.build();
+                sourceScriptTemp.setSubQ(xq);
                 subBuilder.clear();
                 return this;
             }
@@ -345,11 +345,11 @@ public class QB<T> extends BbQBuilder {
         public X distinct(String... objs) {
             if (objs == null)
                 throw new IllegalArgumentException("distinct non resultKey");
-            Q.X resultMapped = get();
-            Distinct distinct = resultMapped.getDistinct();
+            Q.X xq = get();
+            Distinct distinct = xq.getDistinct();
             if (Objects.isNull(distinct)) {
                 distinct = new Distinct();
-                resultMapped.setDistinct(distinct);
+                xq.setDistinct(distinct);
             }
             for (String obj : objs) {
                 distinct.add(obj);

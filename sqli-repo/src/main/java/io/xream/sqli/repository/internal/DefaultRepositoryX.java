@@ -26,7 +26,7 @@ import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.Qr;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
-import io.xream.sqli.exception.CriteriaSyntaxException;
+import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parser;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implement of BaseRepository, ResultMapRepository
+ * Implement of BaseRepository, RepositoryX
  *
  * @param <T>
  * @author Sim
@@ -263,7 +263,7 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
     @Override
     public Page<T> find(Q q) {
-        assertCriteriaClzz(q);
+        assertQClzz(q);
         this.setDefaultClzz(q);
         Page<T> page = repository.find(q);
         page.setClzz(this.clzz);
@@ -273,7 +273,7 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
     @Override
     public List<T> list(Q q) {
-        assertCriteriaClzz(q);
+        assertQClzz(q);
         this.setDefaultClzz(q);
         return repository.list(q);
 
@@ -281,58 +281,58 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
     @Override
     public <T> void findToHandle(Q q, RowHandler<T> handler) {
-        assertCriteriaClzz(q);
+        assertQClzz(q);
         this.setDefaultClzz(q);
         this.repository.findToHandle(q,handler);
     }
 
     @Override
     public boolean exists(Q q) {
-        assertCriteriaClzz(q);
+        assertQClzz(q);
         this.setDefaultClzz(q);
         return this.repository.exists(q);
     }
 
     @Override
-    public Page<Map<String, Object>> findX(Q.X resultMapCriteria) {
-        this.setDefaultClzz(resultMapCriteria);
-        return repository.find(resultMapCriteria);
+    public Page<Map<String, Object>> findX(Q.X xq) {
+        this.setDefaultClzz(xq);
+        return repository.find(xq);
     }
 
 
     @Override
-    public List<Map<String, Object>> listX(Q.X resultMapCriteria) {
-        this.setDefaultClzz(resultMapCriteria);
-        return repository.list(resultMapCriteria);
+    public List<Map<String, Object>> listX(Q.X xq) {
+        this.setDefaultClzz(xq);
+        return repository.list(xq);
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Q.X resultMapCriteria){
-        this.setDefaultClzz(resultMapCriteria);
-        return repository.listPlainValue(clzz,resultMapCriteria);
+    public <K> List<K> listPlainValue(Class<K> clzz, Q.X xq){
+        this.setDefaultClzz(xq);
+        return repository.listPlainValue(clzz,xq);
     }
 
     @Override
-    public void findToHandleX(Q.X resultMapCriteria, RowHandler<Map<String,Object>> handler) {
-        this.setDefaultClzz(resultMapCriteria);
-        this.repository.findToHandle(resultMapCriteria,handler);
+    public void findToHandleX(Q.X xq, RowHandler<Map<String,Object>> handler) {
+        this.setDefaultClzz(xq);
+        this.repository.findToHandle(xq,handler);
     }
 
-    private void setDefaultClzz(Q.X resultMapCriteria) {
+    private void setDefaultClzz(Q.X xq) {
         if (this.clzz != Void.class) {
-            resultMapCriteria.setParsed(Parser.get(this.clzz));
+            xq.setParsed(Parser.get(this.clzz));
         }
-        resultMapCriteria.setClzz(this.clzz);
-        resultMapCriteria.setRepositoryClzz(this.repositoryClzz);
+        xq.setClzz(this.clzz);
+        xq.setRepositoryClzz(this.repositoryClzz);
     }
     private void setDefaultClzz(Q q) {
         q.setClzz(this.clzz);
         q.setParsed(Parser.get(this.clzz));
     }
 
-    private void assertCriteriaClzz(Q q) {
+    private void assertQClzz(Q q) {
         if (this.clzz != q.getClzz())
-            throw new CriteriaSyntaxException("T: " + this.clzz +", Criteria.clzz:" + q.getClzz());
+            throw new QSyntaxException("T: " + this.clzz +", Q.clzz:" + q.getClzz());
     }
     //can not delete this method: protected void setRepositoryClzz(Class clzz)
     protected void setRepositoryClzz(Class clzz){
