@@ -175,11 +175,6 @@
             union // 过于复杂
 
             
-        特别提醒
-            Retry和Fallback的正确姿势: add retry at controller, or remote client
-            不能在代码的service和repository层加retry, 和fallback
-            在不适合或没必要用分布式框架(seata, x-ream/reliable)的情况下, 做fallback的时候, 需要小心
-            
 ## 二级缓存 
 
     在x7项目里实现了springBoot的Enable
@@ -197,15 +192,15 @@
     支持二级缓存的BaseRepository的API：
             1. in(property, inList)
             2. list(Object)
-            3. find(Criteria)
-            4. list(Criteria)
+            3. find(q)
+            4. list(q)
             5. get(Id)
             6. getOne(Object)
         
     不支持二级缓存的BaseRepository, RepositoryX的API:
             1. list()
-            2. find(xq)
-            3. list(xq)
+            2. findX(xq)
+            3. listX(xq)
             4. listPlainValue(xq)
         
     以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
