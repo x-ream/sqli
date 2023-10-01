@@ -32,6 +32,7 @@ public interface SqlTemplate {
 
     String CREATE = "CREATE";
     String REMOVE = "REMOVE";
+    String REMOVE_IN = "REMOVE_IN";
     String LOAD = "LOAD";
     String GET_ONE = "GET_ONE";
 

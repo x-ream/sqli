@@ -19,14 +19,11 @@
 package io.xream.sqli.repository.core;
 
 
-import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
 import io.xream.sqli.builder.KV;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.Qr;
-import io.xream.sqli.core.KeyOne;
-import io.xream.sqli.core.NativeSupport;
-import io.xream.sqli.core.Repository;
-import io.xream.sqli.core.RowHandler;
+import io.xream.sqli.core.*;
 import io.xream.sqli.exception.QueryException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
@@ -175,6 +172,30 @@ public final class CacheableRepository implements Repository, NativeSupport {
             String key = String.valueOf(keyOne.get());
             cacheResolver.refresh(clz, key);
         }
+
+        return flag;
+    }
+
+    @Override
+    public <T> boolean removeIn(Keys<T> keys) {
+
+        Class clz = keys.getClzz();
+        Parsed parsed = Parser.get(clz);
+
+        if (parsed.getKey() == null)
+            throw new IllegalStateException("no primary key, can not call remove(id)");
+
+        boolean flag = dao.removeIn(keys);
+
+        if (!flag) return flag;
+
+        if (isCacheEnabled(parsed)) {
+            for (Object o : keys.list()) {
+                String key = String.valueOf(o);
+                cacheResolver.refresh(clz, key);
+            }
+        }
+
         return flag;
     }
 

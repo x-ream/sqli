@@ -63,7 +63,7 @@ public class SqliStarter {
         return DefaultQ2Sql.newInstance();
     }
 
-    public Repository repository(Q2Sql condToSql, JdbcHelper jdbcHelper,
+    public Repository repository(Q2Sql q2Sql, JdbcHelper jdbcHelper,
                                  Dialect dialect,
                                  L2CacheResolver l2CacheResolver
                                          ){
@@ -72,7 +72,7 @@ public class SqliStarter {
         CacheableRepository repository = CacheableRepository.newInstance();
 
         repository.setDao(dao);
-        ((DaoImpl)dao).set2Sql(condToSql);
+        ((DaoImpl)dao).set2Sql(q2Sql);
         ((DaoImpl)dao).setJdbcHelper(jdbcHelper);
         ((DaoImpl)dao).setDialect(dialect);
 
@@ -81,12 +81,12 @@ public class SqliStarter {
         return repository;
     }
 
-    public TemporaryRepository temporaryRepository(Q2Sql condToSql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
+    public TemporaryRepository temporaryRepository(Q2Sql q2Sql, JdbcHelper jdbcHelper, Dialect dialect, Repository repository){
         DefaultTemporaryTableParser temporaryTableParser = DefaultTemporaryTableParser.newInstance();
         temporaryTableParser.setDialect(dialect);
         TemporaryDao temporaryDao = TemporaryDaoImpl.newInstance();
         ((TemporaryDaoImpl)temporaryDao).setJdbcHelper(jdbcHelper);
-        ((TemporaryDaoImpl)temporaryDao).setQ2Sql(condToSql);
+        ((TemporaryDaoImpl)temporaryDao).setQ2Sql(q2Sql);
         ((TemporaryDaoImpl)temporaryDao).setDialect(dialect);
 
         TemporaryRepository tr = DefaultTemporaryRepository.newInstance();

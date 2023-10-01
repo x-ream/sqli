@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.repository.util;
 
-import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.KV;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;

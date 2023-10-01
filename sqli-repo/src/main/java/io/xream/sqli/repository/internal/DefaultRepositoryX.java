@@ -21,19 +21,20 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryX;
-import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.Qr;
 import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
-import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.PersistenceException;
+import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -155,16 +156,16 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
-    public boolean remove(String keyOne) {
+    public boolean remove(String id) {
 
-        if (SqliStringUtil.isNullOrEmpty(keyOne))
+        if (SqliStringUtil.isNullOrEmpty(id))
             return false;
 
         return repository.remove(new KeyOne<T>() {
 
             @Override
             public Object get() {
-                return keyOne;
+                return id;
             }
 
             @Override
@@ -175,15 +176,15 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
-    public boolean remove(long  keyOne) {
+    public boolean remove(long  id) {
 
-        if (keyOne == 0)
+        if (id == 0)
             return false;
 
         return repository.remove(new KeyOne<T>() {
             @Override
             public Object get() {
-                return keyOne;
+                return id;
             }
 
             @Override
@@ -191,6 +192,25 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
                 return clzz;
             }
         });
+    }
+
+    @Override
+    public boolean removeIn(List<? extends Object> idList) {
+        if (idList == null || idList.isEmpty())
+            return false;
+
+        return this.repository.removeIn(new Keys<T>() {
+            @Override
+            public List<? extends Object> list() {
+                return idList;
+            }
+
+            @Override
+            public Class getClzz() {
+                return clzz;
+            }
+        });
+
     }
 
     @Override

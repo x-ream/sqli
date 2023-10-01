@@ -22,6 +22,7 @@ import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.core.KeyOne;
+import io.xream.sqli.core.Keys;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ExceptionTranslator;
@@ -72,8 +73,8 @@ public final class DaoImpl implements Dao, SqlTemplate {
         return this.dialect;
     }
 
-    public void set2Sql(Q2Sql condToSql) {
-        this.q2Sql = condToSql;
+    public void set2Sql(Q2Sql q2Sql) {
+        this.q2Sql = q2Sql;
     }
 
     public void setJdbcHelper(JdbcHelper jdbcHelper) {
@@ -119,6 +120,19 @@ public final class DaoImpl implements Dao, SqlTemplate {
         SqliLoggerProxy.debug(clz, sql);
 
         return this.jdbcHelper.remove(sql, keyOne.get());
+    }
+
+    @Override
+    public <T> boolean removeIn(Keys<T> keys) {
+
+        Class clz = keys.getClzz();
+        String sql = getSql(clz, SqlInit.REMOVE_IN);
+
+        sql = sqlBuilder.buildQueryByInCondition(sql, clz, keys.list());
+
+        SqliLoggerProxy.debug(clz, sql);
+
+        return this.jdbcHelper.execute(sql);
     }
 
     @Override

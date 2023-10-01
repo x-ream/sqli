@@ -18,8 +18,8 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.exception.L2CacheException;
 import io.xream.sqli.exception.NoResultUnderProtectionException;

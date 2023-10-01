@@ -16,32 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.repository.init;
+package io.xream.sqli.core;
+
+import java.util.List;
 
 /**
  * @author Sim
  */
-public interface SqlInit extends SqlTemplate{
+public interface Keys<T> {
 
-    String getLoadSql(Class clz);
-
-    String getCreateSql(Class clz);
-
-    String getOneSql(Class clz);
-
-    String getRemoveSql(Class clz);
-
-    String getRemoveInSql(Class clz);
-
-    default void tryToParse(Class clz) {
-
-        getRemoveSql(clz);
-        getRemoveInSql(clz);
-        getOneSql(clz);
-        getLoadSql(clz);
-        getCreateSql(clz);
-
-    }
-
-
+    List<? extends Object> list();
+    Class<T> getClzz();
 }

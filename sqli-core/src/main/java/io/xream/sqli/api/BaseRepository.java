@@ -58,9 +58,11 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     boolean refreshUnSafe(Qr<T> qr);
 
-    boolean remove(String keyOne);
+    boolean remove(String id);
 
-    boolean remove(long keyOne);
+    boolean remove(long id);
+
+    boolean removeIn(List<? extends Object> idList);
 
     /**
      *

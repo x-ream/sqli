@@ -82,6 +82,26 @@ public final class DefaultSqlInit implements SqlInit {
         return sql;
     }
 
+    public String getRemoveInSql(Class clz) {
+        Parsed parsed = Parser.get(clz);
+        StringBuilder sb = new StringBuilder();
+        sb.append(dialect.getAlterTableDelete()).append(SqlScript.SPACE);
+        sb.append(BeanUtil.getByFirstLower(parsed.getClzName())).append(dialect.getCommandDelete());
+        sb.append("WHERE ");
+
+        parseKeyIns(sb, clz);
+
+        String sql = sb.toString();
+
+        sql = SqlParserUtil.mapper(sql, parsed);
+
+        getSqlMap(clz).put(REMOVE_IN, sql);
+
+        SqliLoggerProxy.debug(clz, sb);
+
+        return sql;
+    }
+
     public String getOneSql(Class clz) {
         Parsed parsed = Parser.get(clz);
         String space = " ";
@@ -109,6 +129,15 @@ public final class DefaultSqlInit implements SqlInit {
         if (parsed.getClzName() != null) {
             sb.append(parsed.getKey());
             sb.append(" = ?");
+        }
+    }
+
+    public void parseKeyIns(StringBuilder sb, Class clz) {
+        Parsed parsed = Parser.get(clz);
+
+        if (parsed.getClzName() != null) {
+            sb.append(parsed.getKey());
+            sb.append(" IN");
         }
     }
 

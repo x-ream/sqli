@@ -18,11 +18,12 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.In;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.Qr;
 import io.xream.sqli.cache.QueryForCache;
 import io.xream.sqli.core.KeyOne;
+import io.xream.sqli.core.Keys;
 import io.xream.sqli.core.RowHandler;
 import io.xream.sqli.page.Page;
 
@@ -44,6 +45,8 @@ public interface Dao extends QueryForCache {
 	boolean createBatch(List<? extends Object> objList);
 
 	<T> boolean remove(KeyOne<T> keyOne);
+
+	<T> boolean removeIn(Keys<T> keys);
 
 	<T> boolean refreshByCondition(Qr<T> conditon);
 	
@@ -76,4 +79,5 @@ public interface Dao extends QueryForCache {
 	void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler);
 
     boolean exists(Q q);
+
 }

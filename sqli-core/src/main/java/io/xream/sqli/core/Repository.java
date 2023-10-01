@@ -34,47 +34,26 @@ import java.util.Map;
  */
 public interface Repository extends QueryForCache {
 
-	/**
-	 * @param clz
-	 */
 	<T> void refreshCache(Class<T> clz);
-	/**
-	 * @param obj
-	 */
+
 	boolean create(Object obj);
 	boolean createOrReplace(Object obj);
-	/**
-	 * @param qr
-	 * @return true | false
-	 */
+
 	<T> boolean refresh(Qr<T> qr);
-	/**
-	 * @param keyOne
-	 */
+
 	<T> boolean remove(KeyOne<T> keyOne);
 
+	<T> boolean removeIn(Keys<T> keys);
+
+
 	<T> T get(KeyOne<T> keyOne);
-	/**
-	 * @param cond
-	 * 
-	 */
+
 	<T> List<T> list(Object cond);
 
-	/**
-	 *  @param q
-	 */
 	<T> Page<T> find(Q q);
 
-	/**
-	 * @param xq
-	 * 
-	 */
 	Page<Map<String,Object>> find(Q.X xq);
-	/**
-	 *
-	 * @param xq
-	 * 
-	 */
+
 	List<Map<String,Object>> list(Q.X xq);
 
 	<K> List<K> listPlainValue(Class<K> clzz, Q.X xq);

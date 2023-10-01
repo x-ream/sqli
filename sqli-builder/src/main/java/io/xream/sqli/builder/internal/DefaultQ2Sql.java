@@ -19,16 +19,16 @@
 package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.*;
-import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
-import io.xream.sqli.support.XSingleSourceSupport;
 import io.xream.sqli.support.TimeSupport;
+import io.xream.sqli.support.XSingleSourceSupport;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliJsonUtil;
 import io.xream.sqli.util.SqliStringUtil;

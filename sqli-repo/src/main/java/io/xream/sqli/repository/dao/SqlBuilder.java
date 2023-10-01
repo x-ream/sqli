@@ -95,6 +95,16 @@ public final class SqlBuilder implements BbQToSql {
         return sb.toString();
     }
 
+    protected String buildQueryByInCondition(String sqlSegment, Class<?> keyType, List<? extends Object> inList) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(sqlSegment);
+
+        buildIn(sb,keyType,inList);
+
+        return sb.toString();
+    }
+
     protected SqlBuilt buildQueryByQ(List<Object> valueList, Q q, Q2Sql qParser, Dialect dialect) {
 
         final SqlBuilt sqlBuilt = new SqlBuilt();

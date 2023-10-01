@@ -21,7 +21,6 @@ package io.xream.sqli.parser;
 import io.xream.sqli.annotation.X;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.exception.NotSupportedException;
-import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.ParserUtil;
 import io.xream.sqli.util.SqliExceptionUtil;
