@@ -19,7 +19,7 @@
 package io.xream.sqli.util;
 
 import io.xream.sqli.annotation.X;
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;

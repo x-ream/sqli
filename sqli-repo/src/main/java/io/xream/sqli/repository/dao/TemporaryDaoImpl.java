@@ -20,9 +20,9 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.api.TemporaryRepository;
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.Q2Sql;
-import io.xream.sqli.builder.SqlBuilt;
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.internal.Q2Sql;
+import io.xream.sqli.builder.internal.SqlBuilt;
+import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.cache.internal;
 
-import io.xream.sqli.builder.Bb;
+import io.xream.sqli.builder.internal.Bb;
 import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.Sort;

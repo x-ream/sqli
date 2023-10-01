@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.converter;
 
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.exception.ParsingException;
 import io.xream.sqli.exception.PersistenceException;

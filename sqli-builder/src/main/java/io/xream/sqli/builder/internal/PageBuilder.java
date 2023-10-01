@@ -16,15 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
 
-import java.util.List;
 
 /**
  * @author Sim
  */
-public interface SqlBuildingAttached {
 
-    List<Object> getValueList();
-    List<SqlBuilt> getSubList();
+public interface PageBuilder {
+
+    PageBuilder ignoreTotalRows();
+    PageBuilder ignoreTotalRows(boolean ignored);
+    PageBuilder rows(int rows);
+    PageBuilder page(int page);
+    PageBuilder last(long last);
 }

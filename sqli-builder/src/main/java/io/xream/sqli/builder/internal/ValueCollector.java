@@ -16,11 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
+
+import io.xream.sqli.mapping.Mapper;
+
+import java.util.List;
 
 /**
  * @author Sim
  */
-public interface PageSqlSupport {
-    String buildPageSql(String originSql, long start, long rows, long last);
+public interface ValueCollector extends Mapper {
+
+    default void add(List<Object> valueList, Object value){
+        valueList.add(value);
+    }
 }

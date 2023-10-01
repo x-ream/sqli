@@ -16,8 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
 
+import io.xream.sqli.builder.JoinType;
+import io.xream.sqli.builder.Q;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.util.SqliStringUtil;
 

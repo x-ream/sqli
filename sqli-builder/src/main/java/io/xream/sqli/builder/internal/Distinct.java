@@ -16,24 +16,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
 
-import java.util.Map;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Sim
  */
-public interface ResultKeyGenerator {
+public final class Distinct implements Serializable {
 
-    default String generate(String mapper, Q.X qx) {
+    private static final long serialVersionUID = 5436698915888081349L;
 
-        if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
-            Map<String, String> resultKeyAliaMap = qx.getResultKeyAliaMap();
-            String alian = "c" + resultKeyAliaMap.size();
-            resultKeyAliaMap.put(alian, mapper);
-            String target = mapper + SqlScript.AS + alian;
-            return target;
-        }
-        return mapper;
+    private List<String> list = new ArrayList<>();
+
+    public List<String> getList(){
+        return list;
+    }
+
+    public void add(String resultKey){
+        this.list.add(resultKey);
+    }
+
+    @Override
+    public String toString() {
+        return "Distinct{" +
+                "list=" + list +
+                '}';
     }
 }

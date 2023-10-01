@@ -20,6 +20,8 @@ package io.xream.sqli.builder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
+import io.xream.sqli.builder.internal.Bb;
+import io.xream.sqli.builder.internal.BbQ;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

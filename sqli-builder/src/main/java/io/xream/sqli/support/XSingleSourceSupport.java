@@ -19,7 +19,7 @@
 package io.xream.sqli.support;
 
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.SourceScript;
+import io.xream.sqli.builder.internal.SourceScript;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 

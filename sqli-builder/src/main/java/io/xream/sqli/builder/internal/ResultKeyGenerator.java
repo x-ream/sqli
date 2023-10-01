@@ -16,38 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
+
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.internal.SqlScript;
+
+import java.util.Map;
 
 /**
  * @author Sim
  */
-public final class SqlBuilt {
+public interface ResultKeyGenerator {
 
-    private String countSql;
-    private StringBuilder sql;
-    private boolean isWith;
+    default String generate(String mapper, Q.X qx) {
 
-    public String getCountSql() {
-        return countSql;
-    }
-
-    public void setCountSql(String countSql) {
-        this.countSql = countSql;
-    }
-
-    public StringBuilder getSql() {
-        return sql;
-    }
-
-    public void setSql(StringBuilder sql) {
-        this.sql = sql;
-    }
-
-    public boolean isWith() {
-        return isWith;
-    }
-
-    public void setWith(boolean with) {
-        isWith = with;
+        if (mapper.contains(".") && (!mapper.contains(SqlScript.SPACE) || !mapper.contains(SqlScript.AS) )) {
+            Map<String, String> resultKeyAliaMap = qx.getResultKeyAliaMap();
+            String alian = "c" + resultKeyAliaMap.size();
+            resultKeyAliaMap.put(alian, mapper);
+            String target = mapper + SqlScript.AS + alian;
+            return target;
+        }
+        return mapper;
     }
 }

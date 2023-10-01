@@ -16,18 +16,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
 
-import io.xream.sqli.mapping.Mapper;
-
-import java.util.List;
+import io.xream.sqli.builder.JoinFrom;
 
 /**
  * @author Sim
  */
-public interface ValueCollector extends Mapper {
+public final class On {
+    private String key;
+    private String op;
+    private JoinFrom joinFrom;
 
-    default void add(List<Object> valueList, Object value){
-        valueList.add(value);
+    public String getKey() {
+        return key;
     }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getOp() {
+        return op;
+    }
+
+    public void setOp(String op) {
+        this.op = op;
+    }
+
+    public JoinFrom getJoinFrom() {
+        return joinFrom;
+    }
+
+    public void setJoinFrom(JoinFrom joinFrom) {
+        this.joinFrom = joinFrom;
+    }
+
+    @Override
+    public String toString() {
+        return "On{" +
+                "key='" + key + '\'' +
+                ", op='" + op + '\'' +
+                ", joinFrom=" + joinFrom +
+                '}';
+    }
+
 }

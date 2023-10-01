@@ -16,34 +16,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
+package io.xream.sqli.builder.internal;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.Qr;
+import io.xream.sqli.mapping.Mappable;
+import io.xream.sqli.parser.Parsed;
+
 import java.util.List;
 
 
 /**
  * @author Sim
  */
-public final class Distinct implements Serializable {
+public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
-    private static final long serialVersionUID = 5436698915888081349L;
+    String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) ;
 
-    private List<String> list = new ArrayList<>();
+    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
-    public List<String> getList(){
-        return list;
-    }
+    String toSql(Parsed parsed, Qr Qr, DialectSupport dialectSupport);
 
-    public void add(String resultKey){
-        this.list.add(resultKey);
-    }
-
-    @Override
-    public String toString() {
-        return "Distinct{" +
-                "list=" + list +
-                '}';
-    }
 }

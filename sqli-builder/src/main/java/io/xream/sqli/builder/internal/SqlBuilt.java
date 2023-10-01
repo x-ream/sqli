@@ -16,14 +16,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
-
-import java.util.List;
-
+package io.xream.sqli.builder.internal;
 
 /**
  * @author Sim
  */
-public interface BbQ {
-    List<Bb> getBbList();
+public final class SqlBuilt {
+
+    private String countSql;
+    private StringBuilder sql;
+    private boolean isWith;
+
+    public String getCountSql() {
+        return countSql;
+    }
+
+    public void setCountSql(String countSql) {
+        this.countSql = countSql;
+    }
+
+    public StringBuilder getSql() {
+        return sql;
+    }
+
+    public void setSql(StringBuilder sql) {
+        this.sql = sql;
+    }
+
+    public boolean isWith() {
+        return isWith;
+    }
+
+    public void setWith(boolean with) {
+        isWith = with;
+    }
 }

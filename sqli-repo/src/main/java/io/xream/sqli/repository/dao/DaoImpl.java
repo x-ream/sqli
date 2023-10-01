@@ -20,6 +20,8 @@ package io.xream.sqli.repository.dao;
 
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.PageBuilderHelper;
+import io.xream.sqli.builder.internal.Q2Sql;
+import io.xream.sqli.builder.internal.SqlBuilt;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.core.KeyOne;
 import io.xream.sqli.core.Keys;

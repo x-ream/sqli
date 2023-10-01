@@ -19,8 +19,8 @@
 package io.xream.sqli.dialect;
 
 
-import io.xream.sqli.builder.DialectSupport;
-import io.xream.sqli.builder.PageSqlSupport;
+import io.xream.sqli.builder.internal.DialectSupport;
+import io.xream.sqli.builder.internal.PageSqlSupport;
 import io.xream.sqli.core.ValuePost;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;

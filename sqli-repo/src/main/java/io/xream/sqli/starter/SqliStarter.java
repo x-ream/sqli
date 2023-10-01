@@ -20,7 +20,7 @@ package io.xream.sqli.starter;
 
 import io.xream.sqli.api.NativeRepository;
 import io.xream.sqli.api.TemporaryRepository;
-import io.xream.sqli.builder.Q2Sql;
+import io.xream.sqli.builder.internal.Q2Sql;
 import io.xream.sqli.builder.internal.DefaultQ2Sql;
 import io.xream.sqli.core.NativeSupport;
 import io.xream.sqli.core.Repository;

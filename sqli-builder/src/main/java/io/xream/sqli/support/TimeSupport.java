@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.support;
 
-import io.xream.sqli.builder.Bb;
+import io.xream.sqli.builder.internal.Bb;
 
 import java.sql.Timestamp;
 import java.time.Instant;

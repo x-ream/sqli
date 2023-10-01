@@ -18,6 +18,8 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.builder.internal.BbQBuilder;
+
 /**
  * @author Sim
  */

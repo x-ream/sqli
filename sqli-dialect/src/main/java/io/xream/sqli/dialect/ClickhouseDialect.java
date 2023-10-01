@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.dialect;
 
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.internal.SqlScript;
 
 /**
  * @author Sim

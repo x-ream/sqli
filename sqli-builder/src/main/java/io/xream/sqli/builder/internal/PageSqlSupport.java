@@ -16,23 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder;
-
-import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.parser.Parsed;
-
-import java.util.List;
-
+package io.xream.sqli.builder.internal;
 
 /**
  * @author Sim
  */
-public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
-
-    String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) ;
-
-    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
-
-    String toSql(Parsed parsed, Qr Qr, DialectSupport dialectSupport);
-
+public interface PageSqlSupport {
+    String buildPageSql(String originSql, long start, long rows, long last);
 }

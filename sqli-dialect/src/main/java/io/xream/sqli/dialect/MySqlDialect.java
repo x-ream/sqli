@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.dialect;
 
-import io.xream.sqli.builder.SqlScript;
+import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.support.TimeSupport;

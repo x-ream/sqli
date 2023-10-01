@@ -20,6 +20,9 @@ package io.xream.sqli.test;
 
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.DefaultQ2Sql;
+import io.xream.sqli.builder.internal.Q2Sql;
+import io.xream.sqli.builder.internal.SqlBuildingAttached;
+import io.xream.sqli.builder.internal.SqlBuilt;
 import io.xream.sqli.parser.Parser;
 
 import java.io.File;

@@ -18,6 +18,8 @@
  */
 package io.xream.sqli.builder;
 
+import io.xream.sqli.builder.internal.Bb;
+import io.xream.sqli.builder.internal.BbQBuilder;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
