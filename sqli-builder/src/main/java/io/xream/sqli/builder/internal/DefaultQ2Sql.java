@@ -55,11 +55,11 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     @Override
-    public String toBbqSql(BbQ qCondition, List<Object> valueList, Mappable mappable) {
-        if (Objects.isNull(qCondition))
+    public String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) {
+        if (Objects.isNull(bbq))
             return "";
         StringBuilder sb = new StringBuilder();
-        List<Bb> bbList = qCondition.getBbList();
+        List<Bb> bbList = bbq.getBbList();
 
         if (bbList.isEmpty())
             return "";

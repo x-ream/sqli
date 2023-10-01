@@ -29,7 +29,7 @@ import java.util.List;
  */
 public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
-    String toBbqSql(BbQ qCondition, List<Object> valueList, Mappable mappable) ;
+    String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) ;
 
     void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
 
