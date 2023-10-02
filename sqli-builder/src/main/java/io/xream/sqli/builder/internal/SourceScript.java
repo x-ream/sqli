@@ -127,7 +127,7 @@ public final class SourceScript implements BbQToSql, BbQToSql.Pre {
     }
 
 
-    public void pre(SqlBuildingAttached attached, Q2Sql condToSql, Mappable mappable) {
+    public void pre(SqlSubsAndValueBinding attached, Q2Sql condToSql, Mappable mappable) {
 
         if (subQ != null) {
             final SqlBuilt sqlBuilt = new SqlBuilt();

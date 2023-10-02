@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface SqlBuildingAttached {
+public interface SqlSubsAndValueBinding {
 
     List<Object> getValueList();
     List<SqlBuilt> getSubList();

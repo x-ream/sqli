@@ -78,7 +78,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     @Override
-    public void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) {
+    public void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding) {
 
         SqlSth sqlSth = SqlSth.get();
 
@@ -88,19 +88,19 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         /*
          * select column
          */
-        select(sqlSth, resultKey(sqlSth, q, sqlBuildingAttached));
+        select(sqlSth, resultKey(sqlSth, q, subsAndValueBinding));
 
-        sourceScriptPre(q, sqlBuildingAttached);
+        sourceScriptPre(q, subsAndValueBinding);
 
         lastForPage(q);
         /*
          * StringList
          */
-        condition(sqlSth, q, sqlBuildingAttached.getValueList());
+        condition(sqlSth, q, subsAndValueBinding.getValueList());
 
         count(isSub, q.isTotalRowsIgnored(), sqlSth);
 
-        xAggr(sqlSth, q, sqlBuildingAttached.getValueList());
+        xAggr(sqlSth, q, subsAndValueBinding.getValueList());
         /*
          * group by
          */
@@ -116,7 +116,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
          */
         sourceScript(sqlSth, q);
 
-        sqlArr(isSub, q.isTotalRowsIgnored(), sqlBuilt, sqlBuildingAttached, sqlSth);
+        sqlArr(isSub, q.isTotalRowsIgnored(), sqlBuilt, subsAndValueBinding, sqlSth);
 
     }
 
@@ -281,18 +281,18 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         }
     }
 
-    private void sqlArr(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
+    private void sqlArr(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding, SqlSth sb) {
         if (sb.with == null)
-            sqlArr0(isSub,isTotalRowsIgnored,sqlBuilt,sqlBuildingAttached,sb);
+            sqlArr0(isSub,isTotalRowsIgnored,sqlBuilt, subsAndValueBinding,sb);
         else
-            sqlArr1(isSub,isTotalRowsIgnored,sqlBuilt,sqlBuildingAttached,sb);
+            sqlArr1(isSub,isTotalRowsIgnored,sqlBuilt, subsAndValueBinding,sb);
     }
 
-    private void sqlArr0(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
+    private void sqlArr0(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding, SqlSth sb) {
 
         if (!isSub) {
 
-            for (SqlBuilt sub : sqlBuildingAttached.getSubList()) {
+            for (SqlBuilt sub : subsAndValueBinding.getSubList()) {
                 int start = sb.sbSource.indexOf(SqlScript.SUB);
                 sb.sbSource.replace(start, start + SqlScript.SUB.length(),
                         SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
@@ -313,14 +313,14 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         sqlBuilt.setSql(sqlSb);
     }
 
-    private void sqlArr1(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached, SqlSth sb) {
+    private void sqlArr1(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding, SqlSth sb) {
 
         if (!isSub) {
 
             StringBuilder sqlSb = new StringBuilder();
             sqlSb.append(sb.with).append(SqlScript.WITH_PLACE).append(sb.sbSource);
 
-            for (SqlBuilt sub : sqlBuildingAttached.getSubList()) {
+            for (SqlBuilt sub : subsAndValueBinding.getSubList()) {
                 int start = sqlSb.indexOf(SqlScript.SUB);
                 sqlSb.replace(start, start + SqlScript.SUB.length(),
                         SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
@@ -352,7 +352,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
 
-    private String resultKey(SqlSth sqlSth, Q q, SqlBuildingAttached sqlBuildingAttached) {
+    private String resultKey(SqlSth sqlSth, Q q, SqlSubsAndValueBinding subsAndValueBinding) {
         if (!(q instanceof Q.X))
             return SqlScript.STAR;
 
@@ -500,7 +500,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 }
 
                 for (Object obj : functionResultKey.getValues()) {
-                    sqlBuildingAttached.getValueList().add(obj);
+                    subsAndValueBinding.getValueList().add(obj);
                 }
 
                 String aliaKey = functionResultKey.getAlia();
@@ -785,7 +785,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         }
     }
 
-    private void sourceScriptPre(Q q, SqlBuildingAttached attached) {
+    private void sourceScriptPre(Q q, SqlSubsAndValueBinding attached) {
         if (q instanceof Q.X) {
             for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
                 sourceScript.pre(attached, this, q);

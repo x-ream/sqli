@@ -111,7 +111,7 @@ public final class SqlBuilder implements BbQToSql {
         final SqlBuilt sqlBuilt = new SqlBuilt();
         final List<SqlBuilt> subList = new ArrayList<>();
 
-        qParser.toSql(false, q, sqlBuilt, new SqlBuildingAttached() {
+        qParser.toSql(false, q, sqlBuilt, new SqlSubsAndValueBinding() {
             @Override
             public List<Object> getValueList() {
                 return valueList;

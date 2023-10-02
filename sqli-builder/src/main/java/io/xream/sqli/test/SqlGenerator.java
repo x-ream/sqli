@@ -21,7 +21,7 @@ package io.xream.sqli.test;
 import io.xream.sqli.builder.*;
 import io.xream.sqli.builder.internal.DefaultQ2Sql;
 import io.xream.sqli.builder.internal.Q2Sql;
-import io.xream.sqli.builder.internal.SqlBuildingAttached;
+import io.xream.sqli.builder.internal.SqlSubsAndValueBinding;
 import io.xream.sqli.builder.internal.SqlBuilt;
 import io.xream.sqli.parser.Parser;
 
@@ -74,7 +74,7 @@ public class SqlGenerator {
             List<Object> valueList = new ArrayList<>();
             List<SqlBuilt> sqlBuiltList = new ArrayList<>();
 
-            SqlBuildingAttached sqlBuildingAttached = new SqlBuildingAttached() {
+            SqlSubsAndValueBinding subsAndValueBinding = new SqlSubsAndValueBinding() {
                 @Override
                 public List<Object> getValueList() {
                     return valueList;
@@ -85,7 +85,7 @@ public class SqlGenerator {
                     return sqlBuiltList;
                 }
             };
-            condToSql.toSql(false,(Q.X) kv.getV(),sqlBuilt,sqlBuildingAttached);
+            condToSql.toSql(false,(Q.X) kv.getV(),sqlBuilt, subsAndValueBinding);
 
             sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");

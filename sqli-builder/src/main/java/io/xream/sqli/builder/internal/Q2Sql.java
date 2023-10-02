@@ -33,7 +33,7 @@ public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
 
     String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) ;
 
-    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlBuildingAttached sqlBuildingAttached) ;
+    void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding) ;
 
     String toSql(Parsed parsed, Qr Qr, DialectSupport dialectSupport);
 
