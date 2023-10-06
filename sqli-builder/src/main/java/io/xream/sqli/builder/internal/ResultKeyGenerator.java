@@ -19,7 +19,6 @@
 package io.xream.sqli.builder.internal;
 
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.internal.SqlScript;
 
 import java.util.Map;
 

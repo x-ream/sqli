@@ -18,7 +18,9 @@
  */
 package io.xream.sqli.repository.dao;
 
-import io.xream.sqli.builder.*;
+import io.xream.sqli.builder.Op;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.Qr;
 import io.xream.sqli.builder.internal.*;
 import io.xream.sqli.converter.ObjectDataConverter;
 import io.xream.sqli.dialect.Dialect;

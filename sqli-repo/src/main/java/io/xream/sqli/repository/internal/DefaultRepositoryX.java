@@ -34,7 +34,6 @@ import io.xream.sqli.util.SqliStringUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

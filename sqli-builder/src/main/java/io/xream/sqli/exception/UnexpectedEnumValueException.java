@@ -18,12 +18,10 @@
  */
 package io.xream.sqli.exception;
 
-import java.io.Serializable;
-
 /**
  * @author Sim
  */
-public class UnexpectedEnumValueException extends RuntimeException implements Serializable {
+public class UnexpectedEnumValueException extends RuntimeException {
 
     public UnexpectedEnumValueException(String message){
         super(message);

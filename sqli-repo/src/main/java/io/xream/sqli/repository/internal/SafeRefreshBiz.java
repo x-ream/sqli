@@ -18,9 +18,9 @@
  */
 package io.xream.sqli.repository.internal;
 
-import io.xream.sqli.builder.internal.Bb;
 import io.xream.sqli.builder.Op;
 import io.xream.sqli.builder.Qr;
+import io.xream.sqli.builder.internal.Bb;
 import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;

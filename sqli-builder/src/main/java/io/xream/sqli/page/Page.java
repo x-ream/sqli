@@ -22,7 +22,6 @@ package io.xream.sqli.page;
 import io.xream.sqli.builder.Sort;
 import io.xream.sqli.util.SqliJsonUtil;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +33,7 @@ import java.util.Objects;
  *
  * @param <T>
  */
-public final class Page<T> implements Paged, Serializable{
-	
-	private static final long serialVersionUID = -3917421382413274341L;
+public final class Page<T> implements Paged {
 
 	private Class<T> clzz;
 

@@ -18,16 +18,12 @@
  */
 package io.xream.sqli.builder;
 
-import io.xream.sqli.builder.Direction;
-
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Sim
  */
-public final class Sort implements Serializable {
-    private static final long serialVersionUID = 7492946384236689679L;
+public final class Sort {
 
     private Direction direction = Direction.DESC;
     private String orderBy;

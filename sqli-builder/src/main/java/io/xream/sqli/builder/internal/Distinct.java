@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.builder.internal;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class Distinct implements Serializable {
-
-    private static final long serialVersionUID = 5436698915888081349L;
+public final class Distinct {
 
     private List<String> list = new ArrayList<>();
 

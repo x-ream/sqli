@@ -18,12 +18,10 @@
  */
 package io.xream.sqli.exception;
 
-import java.io.Serializable;
-
 /**
  * @author Sim
  */
-public class ParsingException extends RuntimeException implements Serializable {
+public class ParsingException extends RuntimeException {
 
     public ParsingException(String message){
         super(message);
