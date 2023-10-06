@@ -19,7 +19,7 @@
 package io.xream.sqli.page;
 
 
-import io.xream.sqli.builder.internal.Sort;
+import io.xream.sqli.builder.Sort;
 import io.xream.sqli.util.SqliJsonUtil;
 
 import java.io.Serializable;

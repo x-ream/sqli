@@ -89,7 +89,7 @@ public class QB<T> extends BbQBuilder {
 
     public QB<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
-            KV kv = new KV(porperty, inList);
+            KV kv = KV.of(porperty, inList);
             List<KV> fixedSortList = q.getFixedSortList();
             if (fixedSortList == null){
                 fixedSortList = new ArrayList<>();
@@ -300,7 +300,7 @@ public class QB<T> extends BbQBuilder {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
-            get().getResultKeyAssignedAliaList().add(new KV(resultKey,alia));
+            get().getResultKeyAssignedAliaList().add(KV.of(resultKey,alia));
             return this;
         }
 

@@ -58,7 +58,7 @@ public class SqlGenerator {
     }
 
     public SqlGenerator build(String traceKey, Q.X xq){
-        KV kv = new KV(traceKey,xq);
+        KV kv = KV.of(traceKey,xq);
         xKvList.add(kv);
         return instance;
     }

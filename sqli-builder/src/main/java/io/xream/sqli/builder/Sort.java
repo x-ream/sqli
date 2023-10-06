@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder.internal;
+package io.xream.sqli.builder;
 
 import io.xream.sqli.builder.Direction;
 

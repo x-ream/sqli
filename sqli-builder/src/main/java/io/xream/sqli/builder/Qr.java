@@ -129,7 +129,7 @@ public final class Qr<T>  implements Mappable, BbQ, Routable {
         for (Bb bb : bbList) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
-                return new KV(key, bb.getValue());
+                return KV.of(key, bb.getValue());
             }
         }
         return null;

@@ -100,7 +100,7 @@ public class QrB<T> extends BbQBuilder {
         for (Bb bb : this.qr.getBbList()) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
-                return new KV(key, bb.getValue());
+                return KV.of(key, bb.getValue());
             }
         }
         return null;

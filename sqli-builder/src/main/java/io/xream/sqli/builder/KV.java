@@ -18,20 +18,21 @@
  */
 package io.xream.sqli.builder;
 
-import java.io.Serializable;
-
 /**
  * @author Sim
  */
-public final class KV implements Serializable{
+public final class KV {
 
-	private static final long serialVersionUID = -3617796537738183236L;
 	public String k;
 	public Object v;
 	public KV(){}
-	public KV(String k, Object v){
+	private KV(String k, Object v){
 		this.k = k;
 		this.v = v;
+	}
+
+	public static KV of(String k, Object v) {
+		return new KV(k,v);
 	}
 	
 	public String getK() {
