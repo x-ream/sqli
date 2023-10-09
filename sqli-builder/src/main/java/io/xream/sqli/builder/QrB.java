@@ -149,18 +149,18 @@ public class QrB<T> extends BbQBuilder {
         return (QrB<T>) super.notLike(property, value);
     }
 
-    public QrB<T> in(String property, List<? extends Object> list) {
+    public QrB<T> in(String property, List list) {
         return (QrB<T>) super.in(property,list);
     }
 
-    public QrB<T> inRequired(String property, List<? extends Object> list) {
+    public QrB<T> inRequired(String property, List list) {
         if (list.isEmpty()) {
             qr.setAbort(true);
         }
         return (QrB<T>) super.in(property,list);
     }
 
-    public QrB<T> nin(String property, List<? extends Object> list) {
+    public QrB<T> nin(String property, List list) {
         return (QrB<T>) super.nin(property,list);
     }
 

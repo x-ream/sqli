@@ -149,6 +149,93 @@ public class QB<T> extends BbQBuilder {
         return this.q;
     }
 
+
+
+    public QB eq(String key, Object value) {
+        return (QB) super.eq(key,value);
+    }
+
+    public QB gt(String key, Object value) {
+        return (QB) super.gt(key,value);
+    }
+
+    public QB gte(String key, Object value) {
+        return (QB) super.gte(key,value);
+    }
+
+    public QB lt(String key, Object value) {
+        return (QB) super.lt(key,value);
+    }
+
+    public QB lte(String key, Object value) {
+        return (QB) super.lte(key,value);
+    }
+
+    public QB ne(String property, Object value) {
+        return (QB) super.ne(property, value);
+    }
+
+    public QB like(String property, String value) {
+        return (QB) super.like(property, value);
+    }
+
+    public QB likeRight(String property, String value) {
+        return (QB) super.likeRight(property, value);
+    }
+
+    public QB notLike(String property, String value) {
+        return (QB) super.notLike(property, value);
+    }
+
+    public QB in(String property, List list) {
+        return (QB) super.in(property,list);
+    }
+
+    public QB inRequired(String property, List list) {
+        return (QB) super.inRequired(property,list);
+    }
+
+    public QB nin(String property, List list) {
+        return (QB) super.nin(property,list);
+    }
+
+    public QB nonNull(String property){
+        return (QB) super.nonNull(property);
+    }
+
+    public QB isNull(String property){
+        return (QB) super.isNull(property);
+    }
+
+    public QB x(String sqlSegment){
+        return (QB) super.x(sqlSegment);
+    }
+
+    public QB x(String sqlSegment, Object...values){
+        return (QB) super.x(sqlSegment, values);
+    }
+
+    public QB beginSub(){
+        return (QB) super.beginSub();
+    }
+
+    public QB endSub(){
+        return (QB) super.endSub();
+    }
+
+    public QB bool(Bool cond, Then then){
+        return (QB) super.bool(cond, then);
+    }
+
+    public QB or(){
+        return (QB) super.or();
+    }
+
+    public QB and(){
+        return (QB) super.and();
+    }
+
+
     public void clear(){
         this.q = null;
     }
@@ -455,15 +542,15 @@ public class QB<T> extends BbQBuilder {
             return (X) super.notLike(property, value);
         }
 
-        public X in(String property, List<? extends Object> list) {
+        public X in(String property, List list) {
             return (X) super.in(property,list);
         }
 
-        public X inRequired(String property, List<? extends Object> list) {
+        public X inRequired(String property, List list) {
             return (X) super.inRequired(property,list);
         }
 
-        public X nin(String property, List<? extends Object> list) {
+        public X nin(String property, List list) {
             return (X) super.nin(property,list);
         }
 
@@ -493,6 +580,14 @@ public class QB<T> extends BbQBuilder {
 
         public X bool(Bool cond, Then then){
             return (X) super.bool(cond, then);
+        }
+
+        public X or(){
+            return (X) super.or();
+        }
+
+        public X and(){
+            return (X) super.and();
         }
 
         public void clear(){

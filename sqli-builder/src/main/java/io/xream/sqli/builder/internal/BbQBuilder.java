@@ -133,18 +133,18 @@ public class BbQBuilder implements SqlNormalizer {
         return doLike(Op.NOT_LIKE,property,likeValue);
     }
 
-    public BbQBuilder in(String property, List<? extends Object> list){
+    public BbQBuilder in(String property, List list){
         return doIn(Op.IN,property,list);
     }
 
-    public BbQBuilder inRequired(String property, List<? extends Object> list){
+    public BbQBuilder inRequired(String property, List list){
         if (list == null || list.isEmpty()){
             this.instance.isAbort = true;
         }
         return doIn(Op.IN,property,list);
     }
 
-    public BbQBuilder nin(String property, List<? extends Object> list){
+    public BbQBuilder nin(String property, List list){
         return doIn(Op.NOT_IN,property,list);
     }
 
