@@ -193,6 +193,30 @@ public class BbQBuilder implements SqlNormalizer {
         return this.instance;
     }
 
+    public BbQBuilder and(BbQBuilder sub){
+        return orAnd(Op.AND, sub);
+    }
+
+    public BbQBuilder or(BbQBuilder sub) {
+        return orAnd(Op.OR, sub);
+    }
+
+    private BbQBuilder orAnd(Op c, BbQBuilder sub){
+
+        if (sub.bbList == null || sub.bbList.isEmpty())
+            return instance;
+
+        Bb bb = new Bb(isOr());
+        bb.setP(Op.SUB);
+        bb.setC(c);
+
+        List<Bb> subList = new ArrayList<>();
+        bb.setSubList(subList);
+        this.add(bb);
+
+        return instance;
+    }
+
     public BbQBuilder beginSub(){
         Bb bb = new Bb(isOr());
         bb.setP(Op.SUB);
