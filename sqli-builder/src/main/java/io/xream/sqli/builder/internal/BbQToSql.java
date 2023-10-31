@@ -56,7 +56,7 @@ public interface BbQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
                     continue;
                 bb.getSubList().get(0).setC(Op.NONE);
                 sb.append(bb.getC().sql());
-                sb.append(SqlScript.SPACE).append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);
+                sb.append(SqlScript.LEFT_PARENTTHESIS).append(SqlScript.SPACE);
                 buildConditionSql(sb, bb.getSubList(), mappable);
                 sb.append(SqlScript.SPACE).append(SqlScript.RIGHT_PARENTTHESIS);
                 continue;
