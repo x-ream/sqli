@@ -215,6 +215,14 @@ public class QB<T> extends BbQBuilder {
         return (QB) super.x(sqlSegment, values);
     }
 
+    public QB and(BbSub sub){
+        return (QB) super.and(sub);
+    }
+
+    public QB or(BbSub sub){
+        return (QB) super.or(sub);
+    }
+
     public QB beginSub(){
         return (QB) super.beginSub();
     }
@@ -568,6 +576,14 @@ public class QB<T> extends BbQBuilder {
 
         public X x(String sqlSegment, Object...values){
             return (X) super.x(sqlSegment, values);
+        }
+
+        public X and(BbSub sub){
+            return (X) super.and(sub);
+        }
+
+        public X or(BbSub sub){
+            return (X) super.or(sub);
         }
 
         public X beginSub(){

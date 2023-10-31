@@ -94,7 +94,9 @@ public final class DataObjectConverter {
                 be = ele;
                 Method method = ele.getSetMethod();
                 String mapper = ele.getMapper();
-
+                if (mapper.startsWith("`")){
+                    mapper = mapper.substring(1, mapper.length() - 1);
+                }
                 value = map.get(mapper);
 
                 if (value == null) {

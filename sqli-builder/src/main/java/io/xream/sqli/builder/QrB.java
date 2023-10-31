@@ -19,7 +19,6 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.builder.internal.Bb;
-import io.xream.sqli.builder.internal.BbQBuilder;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
@@ -178,6 +177,14 @@ public class QrB<T> extends BbQBuilder {
 
     public QrB<T> x(String sqlSegment, Object...values){
         return (QrB<T>) super.x(sqlSegment, values);
+    }
+
+    public QrB<T> and(BbSub sub) {
+        return (QrB<T>) super.and(sub);
+    }
+
+    public QrB<T> or(BbSub sub) {
+        return (QrB<T>) super.or(sub);
     }
 
     public QrB<T> beginSub(){

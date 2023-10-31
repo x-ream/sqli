@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder.internal;
+package io.xream.sqli.builder;
 
-import io.xream.sqli.builder.Bool;
-import io.xream.sqli.builder.Op;
-import io.xream.sqli.builder.Then;
+import io.xream.sqli.builder.internal.Bb;
+import io.xream.sqli.builder.internal.BbQ;
+import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.util.EnumUtil;
 import io.xream.sqli.util.SqliStringUtil;
@@ -193,24 +193,28 @@ public class BbQBuilder implements SqlNormalizer {
         return this.instance;
     }
 
-    public BbQBuilder and(BbQBuilder sub){
+    public BbQBuilder and(BbSub sub){
         return orAnd(Op.AND, sub);
     }
 
-    public BbQBuilder or(BbQBuilder sub) {
+    public BbQBuilder or(BbSub sub) {
         return orAnd(Op.OR, sub);
     }
 
-    private BbQBuilder orAnd(Op c, BbQBuilder sub){
+    private BbQBuilder orAnd(Op c, BbSub sub){
 
-        if (sub.bbList == null || sub.bbList.isEmpty())
+        BbQBuilder subBuilder = BbQBuilder.builder();
+        sub.buildBy(subBuilder);
+        BbQ bbQ = subBuilder.build();
+
+        List<Bb> subList = bbQ.getBbList();
+        if (subList == null || subList.isEmpty())
             return instance;
 
         Bb bb = new Bb(isOr());
         bb.setP(Op.SUB);
         bb.setC(c);
 
-        List<Bb> subList = new ArrayList<>();
         bb.setSubList(subList);
         this.add(bb);
 

@@ -5,7 +5,7 @@
 	<groupId>io.xream.sqli</groupId>
 	<artifactId>sqli-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.1.1</version>
+	<version>2.1.2</version>
 
 	<name>sqli-parent</name>
 	<description>http://sqli.xream.io</description>
@@ -23,7 +23,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
 		<maven.test.skip>true</maven.test.skip>
-		<sqli.version>2.1.1</sqli.version>
+		<sqli.version>2.1.2</sqli.version>
 		<jackson.version>2.13.4.2</jackson.version>
 		<sl4j.version>1.7.30</sl4j.version>
 	</properties>
@@ -32,7 +32,7 @@
 		<connection>scm:git:https://github.com/x-ream/sqli</connection>
 		<developerConnection>scm:git:https://github.com/x-ream/sqli</developerConnection>
 		<url>scm:git:https://github.com/x-ream/sqli</url>
-		<tag>2.1.1</tag>
+		<tag>2.1.2</tag>
 	</scm>
 
 	<licenses>
