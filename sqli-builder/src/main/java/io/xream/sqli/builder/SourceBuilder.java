@@ -109,12 +109,12 @@ public interface SourceBuilder {
 
                 int j = i;
                 for (;j<size;j++) {
-                    if (BbQParser.JOIN_SET.contains(sourceScriptsSplittedList.get(j).toUpperCase())){
+                    if (CondQParser.JOIN_SET.contains(sourceScriptsSplittedList.get(j).toUpperCase())){
                         break;
                     }
                 }
 
-                i = BbQParser.parse(i, sourceScriptsSplittedList,
+                i = CondQParser.parse(i, sourceScriptsSplittedList,
                         bbList, sourceScriptValueList);
 
                 if (i == -1){

@@ -25,7 +25,7 @@ import io.xream.sqli.util.ParserUtil;
 import java.lang.reflect.Method;
 
 /**
- * JDK reflect cached better than RelfectASM
+ *
  * @author Sim
  */
 public final class BeanElement {

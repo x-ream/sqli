@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface BbQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
+public interface CondQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
 
     default void buildConditionSql(StringBuilder sb, List<Bb> bbList, Mappable mappable) {
         if (bbList == null || bbList.isEmpty())

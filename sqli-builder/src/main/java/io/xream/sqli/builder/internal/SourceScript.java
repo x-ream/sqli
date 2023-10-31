@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class SourceScript implements BbQToSql, BbQToSql.Pre {
+public final class SourceScript implements CondQToSql, CondQToSql.Pre {
 
     private String source;
     private Q.X subQ;

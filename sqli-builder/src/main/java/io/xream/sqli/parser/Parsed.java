@@ -32,7 +32,6 @@ import java.util.*;
  */
 public final class Parsed {
 
-	private boolean isChecked = false;
 
 	private Class clzz;
 	private String tableName;
@@ -198,20 +197,4 @@ public final class Parsed {
 		this.isNoSpec = isNoSpec2;
 	}
 
-	@Override
-	public String toString() {
-		return "Parsed{" +
-				", isChecked=" + isChecked +
-				", clz=" + clzz +
-				", tableName='" + tableName + '\'' +
-				", originTable='" + originTable + '\'' +
-				", isNoSpec=" + isNoSpec +
-				", key=" + key +
-				", keyField=" + keyField +
-				", beanElementList=" + beanElementList +
-				", elementMap=" + elementMap +
-				", propertyMapperMap=" + propertyMapperMap +
-				", isNoCache=" + isNoCache +
-				'}';
-	}
 }

@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public final class SqlBuilder implements BbQToSql {
+public final class SqlBuilder implements CondQToSql {
 
     private static SqlBuilder instance;
     private SqlBuilder(){}

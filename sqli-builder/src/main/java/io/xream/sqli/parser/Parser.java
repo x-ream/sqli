@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class Parser {
 
-    private static Logger logger = LoggerFactory.getLogger(Parser.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Parser.class);
     @SuppressWarnings("rawtypes")
     private final static Map<Class, Parsed> map = new ConcurrentHashMap<Class, Parsed>();
     private final static Map<String, Parsed> simpleNameMap = new ConcurrentHashMap<String, Parsed>();
@@ -95,7 +95,7 @@ public final class Parser {
                 }
             }
         } catch (Exception e) {
-            logger.info(SqliExceptionUtil.getMessage(e));
+            LOGGER.info(SqliExceptionUtil.getMessage(e));
         }
         parsed.setNoSpec(isNoSpec);
         parsed.reset(elementList);
@@ -153,7 +153,6 @@ public final class Parser {
             if (be.getProperty().equals(parsed.getKey())) {
                 one = be;
                 ite.remove();
-                continue;
             }
         }
 
@@ -172,7 +171,6 @@ public final class Parser {
             for (BeanElement be: tempList) {
                 if (be.getProperty().equals(field.getName())){
                     elementList.add(be);
-                    continue;
                 }
             }
         }

@@ -29,9 +29,9 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface Q2Sql extends BbQToSql, BbQToSql.Filter, BbQToSql.Pre {
+public interface Q2Sql extends CondQToSql, CondQToSql.Filter, CondQToSql.Pre {
 
-    String toBbqSql(CondQ bbq, List<Object> valueList, Mappable mappable) ;
+    String toCondSql(CondQ condQ, List<Object> valueList, Mappable mappable) ;
 
     void toSql(boolean isSub, Q q, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding) ;
 

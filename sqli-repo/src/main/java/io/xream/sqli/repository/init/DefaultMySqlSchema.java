@@ -27,6 +27,7 @@ import io.xream.sqli.util.EnumUtil;
 
 import java.math.BigDecimal;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -90,8 +91,11 @@ public class DefaultMySqlSchema implements Schema{
                 sb.append("(").append(bet.getLength()).append(") NULL");
             } else if (type != Types.LONGVARCHAR){
                 Class clzz = bet.getClz();
-                if (clzz == Boolean.class || clzz == boolean.class || clzz == Integer.class
-                        || clzz == int.class || clzz == Long.class || clzz == long.class) {
+                if (clzz == Boolean.class || clzz == boolean.class) {
+                    sb.append(" DEFAULT b'0'");
+                }else if (clzz == Long.class || clzz == long.class
+                        || clzz == Integer.class
+                        || clzz == int.class ) {
                     sb.append(" DEFAULT 0");
                 } else {
                     sb.append(" DEFAULT NULL");
@@ -99,7 +103,6 @@ public class DefaultMySqlSchema implements Schema{
             }
             sb.append(",").append("\n");
         }
-
 
         sb.append("   PRIMARY KEY ( ").append(keyOneBe.getProperty()).append(" )");
 
@@ -114,12 +117,13 @@ public class DefaultMySqlSchema implements Schema{
         return map.get(type);
     }
 
-    private static final Map<Integer, String> map = new HashMap<Integer, String>() {
+    private static final Map<Integer, String> map = new HashMap<>() {
         {
             put(Types.DATE, "timestamp");
-            put(Types.TINYINT, "tinyint(1)");
-            put(Types.INTEGER, "int(11)");
-            put(Types.BIGINT, "bigint(13)");
+            put(Types.BOOLEAN, "bit");
+            put(Types.TINYINT, "tinyint");
+            put(Types.INTEGER, "int");
+            put(Types.BIGINT, "bigint");
             put(Types.DECIMAL, "decimal(15,2)");
             put(Types.VARCHAR, "varchar");
             put(Types.LONGVARCHAR, "text");
@@ -127,13 +131,16 @@ public class DefaultMySqlSchema implements Schema{
     };
 
     private String getDefaultEngine() {
-        return "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        return "ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4";
     }
 
     private int getSqlType(BeanElement be) {
 
         Class clz = be.getClz();
-        if (clz == Date.class || clz == java.sql.Date.class || clz == java.sql.Timestamp.class) {
+        if (clz == LocalDateTime.class
+                || clz == Date.class
+                || clz == java.sql.Date.class
+                || clz == java.sql.Timestamp.class) {
             return Types.DATE;
         } else if (clz == String.class) {
             return Types.VARCHAR;
@@ -150,7 +157,7 @@ public class DefaultMySqlSchema implements Schema{
         } else if (clz == BigDecimal.class) {
             return Types.DECIMAL;
         } else if (clz == boolean.class || clz == Boolean.class) {
-            return Types.TINYINT;
+            return Types.BOOLEAN;
         } else if (clz == short.class || clz == Short.class) {
             return Types.INTEGER;
         } else if (clz == byte.class || clz == Byte.class) {

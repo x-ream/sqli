@@ -55,11 +55,11 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     @Override
-    public String toBbqSql(CondQ bbq, List<Object> valueList, Mappable mappable) {
-        if (Objects.isNull(bbq))
+    public String toCondSql(CondQ condQ, List<Object> valueList, Mappable mappable) {
+        if (Objects.isNull(condQ))
             return "";
         StringBuilder sb = new StringBuilder();
-        List<Bb> bbList = bbq.getBbs();
+        List<Bb> bbList = condQ.getBbs();
 
         if (bbList.isEmpty())
             return "";
@@ -163,7 +163,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         concatRefresh(sb, parsed, qr, dialectSupport);
 
-        String conditionSql = toBbqSql(qr, qr.getValueList(), qr);
+        String conditionSql = toCondSql(qr, qr.getValueList(), qr);
 
         sb.append(conditionSql);
 
