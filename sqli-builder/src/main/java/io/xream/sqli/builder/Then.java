@@ -22,5 +22,5 @@ package io.xream.sqli.builder;
  * @author Sim
  */
 public interface Then {
-    void build(BbQBuilder builder);
+    void build(CondBuilder builder);
 }

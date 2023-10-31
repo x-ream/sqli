@@ -32,7 +32,7 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class QB<T> extends BbQBuilder {
+public class QB<T> extends CondBuilder {
 
     private Q q;
     private PageBuilder pageBuilder;
@@ -114,7 +114,7 @@ public class QB<T> extends BbQBuilder {
     }
 
     private QB(Q q) {
-        super(q.getBbList());
+        super(q.getBbs());
         this.q = q;
     }
 
@@ -215,11 +215,11 @@ public class QB<T> extends BbQBuilder {
         return (QB) super.x(sqlSegment, values);
     }
 
-    public QB and(BbSub sub){
+    public QB and(SubCond sub){
         return (QB) super.and(sub);
     }
 
-    public QB or(BbSub sub){
+    public QB or(SubCond sub){
         return (QB) super.or(sub);
     }
 
@@ -237,10 +237,6 @@ public class QB<T> extends BbQBuilder {
 
     public QB or(){
         return (QB) super.or();
-    }
-
-    public QB and(){
-        return (QB) super.and();
     }
 
 
@@ -324,7 +320,7 @@ public class QB<T> extends BbQBuilder {
             }
 
             @Override
-            public BbQBuilder more() {
+            public CondBuilder more() {
                 List<Bb> bbList = new ArrayList<>();
                 sourceScriptTemp.setBbList(bbList);
                 return builder(bbList);
@@ -578,11 +574,11 @@ public class QB<T> extends BbQBuilder {
             return (X) super.x(sqlSegment, values);
         }
 
-        public X and(BbSub sub){
+        public X and(SubCond sub){
             return (X) super.and(sub);
         }
 
-        public X or(BbSub sub){
+        public X or(SubCond sub){
             return (X) super.or(sub);
         }
 
@@ -602,9 +598,6 @@ public class QB<T> extends BbQBuilder {
             return (X) super.or();
         }
 
-        public X and(){
-            return (X) super.and();
-        }
 
         public void clear(){
             super.clear();

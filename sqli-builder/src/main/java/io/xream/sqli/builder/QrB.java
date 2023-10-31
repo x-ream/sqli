@@ -28,13 +28,13 @@ import java.util.Objects;
 /**
  * @author Sim
  */
-public class QrB<T> extends BbQBuilder {
+public class QrB<T> extends CondBuilder {
 
     private Qr<T> qr;
 
     private QrB(Qr qr){
         super();
-        init(qr.getBbList());
+        init(qr.getBbs());
     }
 
 
@@ -49,10 +49,6 @@ public class QrB<T> extends BbQBuilder {
 
     public Qr<T> build(){
         return this.qr;
-    }
-
-    public QrB<T> and(){
-        return this;
     }
 
     public QrB<T> or() {
@@ -96,7 +92,7 @@ public class QrB<T> extends BbQBuilder {
             return null;
         Parsed parsed = Parser.get(this.qr.getClz());
         String keyOne = parsed.getKey();
-        for (Bb bb : this.qr.getBbList()) {
+        for (Bb bb : this.qr.getBbs()) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
                 return KV.of(key, bb.getValue());
@@ -179,11 +175,11 @@ public class QrB<T> extends BbQBuilder {
         return (QrB<T>) super.x(sqlSegment, values);
     }
 
-    public QrB<T> and(BbSub sub) {
+    public QrB<T> and(SubCond sub) {
         return (QrB<T>) super.and(sub);
     }
 
-    public QrB<T> or(BbSub sub) {
+    public QrB<T> or(SubCond sub) {
         return (QrB<T>) super.or(sub);
     }
 

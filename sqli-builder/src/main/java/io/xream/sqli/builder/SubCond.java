@@ -16,14 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.xream.sqli.builder.internal;
-
-import java.util.List;
+package io.xream.sqli.builder;
 
 
 /**
  * @author Sim
  */
-public interface BbQ {
-    List<Bb> getBbList();
+public interface SubCond {
+    void buildBy(CondBuilder subBuilder);
 }

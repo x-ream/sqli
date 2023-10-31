@@ -21,7 +21,7 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
 import io.xream.sqli.builder.internal.Bb;
-import io.xream.sqli.builder.internal.BbQ;
+import io.xream.sqli.builder.internal.CondQ;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -35,12 +35,11 @@ import java.util.Map;
 /**
  * @author Sim
  */
-public final class Qr<T>  implements Mappable, BbQ, Routable {
+public final class Qr<T>  implements Mappable, CondQ, Routable {
 
     private List<Bb> refreshList = new ArrayList<>();
     private String sourceScript;//FIXME
-
-    private List<Bb> bbList = new ArrayList<>();
+    private List<Bb> bbs = new ArrayList<>();
     private boolean isAbort;
     private Object routeKey;
     private transient int limit;
@@ -85,8 +84,8 @@ public final class Qr<T>  implements Mappable, BbQ, Routable {
     }
 
     @Override
-    public List<Bb> getBbList() {
-        return bbList;
+    public List<Bb> getBbs() {
+        return bbs;
     }
 
     @Override
@@ -126,7 +125,7 @@ public final class Qr<T>  implements Mappable, BbQ, Routable {
             return null;
         Parsed parsed = Parser.get(clz);
         String keyOne = parsed.getKey();
-        for (Bb bb : bbList) {
+        for (Bb bb : bbs) {
             String key = bb.getKey();
             if (key != null && key.equals(keyOne)) {
                 return KV.of(key, bb.getValue());

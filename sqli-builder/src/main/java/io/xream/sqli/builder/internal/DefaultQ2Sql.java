@@ -55,11 +55,11 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     @Override
-    public String toBbqSql(BbQ bbq, List<Object> valueList, Mappable mappable) {
+    public String toBbqSql(CondQ bbq, List<Object> valueList, Mappable mappable) {
         if (Objects.isNull(bbq))
             return "";
         StringBuilder sb = new StringBuilder();
-        List<Bb> bbList = bbq.getBbList();
+        List<Bb> bbList = bbq.getBbs();
 
         if (bbList.isEmpty())
             return "";
@@ -134,7 +134,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         bb.setValue(last);
         if (sort.getDirection() == Direction.ASC) bb.setP(Op.GT);
         else bb.setP(Op.LT);
-        q.getBbList().add(bb);
+        q.getBbs().add(bb);
     }
 
     private String sourceScriptOfRefresh(Parsed parsed, Qr qr) {
@@ -769,7 +769,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     private void filter0(Q q) {
-        List<Bb> bbList = q.getBbList();
+        List<Bb> bbList = q.getBbs();
 
         if (q instanceof Q.X) {
             Q.X xq = (Q.X) q;//FIXME 判断是虚表
@@ -794,7 +794,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     private void condition(SqlSth sqlSth, Q q, List<Object> valueList) {
-        List<Bb> bbList = q.getBbList();
+        List<Bb> bbList = q.getBbs();
         if (bbList.isEmpty())
             return;
         addConditionBeforeOptimization(bbList, sqlSth.conditionSet);//优化连表查询前的准备

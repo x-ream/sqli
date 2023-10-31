@@ -45,7 +45,7 @@ public interface SafeRefreshBiz<T> {
 
         if (unSafe) {
             String key = parsed.getKey();
-            List<Bb> bbList = qr.getBbList();
+            List<Bb> bbList = qr.getBbs();
             for (Bb bb : bbList) {
                 String k = bb.getKey();
                 boolean b = k.contains(".") ? k.endsWith("."+key) : key.equals(k);

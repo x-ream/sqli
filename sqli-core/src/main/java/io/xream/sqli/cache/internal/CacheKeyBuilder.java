@@ -39,7 +39,7 @@ public class CacheKeyBuilder implements CacheKeyBuildable {
     public String buildCacheKey(Q q, boolean isOfTotalRows){
         StringBuilder sb = new StringBuilder();
         sb.append(q.getRouteKey());
-        buildCacheKeyByBbList(q.getBbList(), sb);
+        buildCacheKeyByBbList(q.getBbs(), sb);
 
         if (! isOfTotalRows) {
             sb.append(q.getPage()).append(q.getRows());

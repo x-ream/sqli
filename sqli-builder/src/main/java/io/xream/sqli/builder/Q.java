@@ -21,7 +21,7 @@ package io.xream.sqli.builder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.xream.sqli.api.Routable;
 import io.xream.sqli.builder.internal.Bb;
-import io.xream.sqli.builder.internal.BbQ;
+import io.xream.sqli.builder.internal.CondQ;
 import io.xream.sqli.builder.internal.Distinct;
 import io.xream.sqli.builder.internal.SourceScript;
 import io.xream.sqli.mapping.Mappable;
@@ -39,7 +39,7 @@ import java.util.*;
  * @author Sim
  *
  */
-public class Q<T> implements Mappable, BbQ, Paged, Routable {
+public class Q<T> implements Mappable, CondQ, Paged, Routable {
 
 	private Class<T> clzz;
 	private boolean isTotalRowsIgnored;
@@ -49,7 +49,7 @@ public class Q<T> implements Mappable, BbQ, Paged, Routable {
 	private Object routeKey;
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
-	private List<Bb> bbList = new ArrayList<>();
+	private List<Bb> bbs = new ArrayList<>();
 	private boolean isAbort;
 
 	@JsonIgnore
@@ -159,12 +159,12 @@ public class Q<T> implements Mappable, BbQ, Paged, Routable {
 	}
 
 	@Override
-	public List<Bb> getBbList() {
-		return this.bbList;
+	public List<Bb> getBbs() {
+		return this.bbs;
 	}
 	
 	protected void add(Bb bb) {
-		this.bbList.add(bb);
+		this.bbs.add(bb);
 	}
 
 	public boolean isFixedSort() {
@@ -197,7 +197,7 @@ public class Q<T> implements Mappable, BbQ, Paged, Routable {
 				", rows=" + rows +
 				", last=" + last +
 				", sortList='" + sortList + '\'' +
-				", bbList=" + bbList +
+				", bbList=" + bbs +
 				", clz=" + clzz +
 				'}';
 	}

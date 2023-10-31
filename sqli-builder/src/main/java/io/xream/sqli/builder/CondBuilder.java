@@ -19,7 +19,7 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.builder.internal.Bb;
-import io.xream.sqli.builder.internal.BbQ;
+import io.xream.sqli.builder.internal.CondQ;
 import io.xream.sqli.builder.internal.SqlScript;
 import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.util.EnumUtil;
@@ -32,9 +32,9 @@ import java.util.List;
 /**
  * @author Sim
  */
-public class BbQBuilder implements SqlNormalizer {
+public class CondBuilder implements SqlNormalizer {
 
-    private BbQBuilder instance;
+    private CondBuilder instance;
 
     private transient List<Bb> bbList;
     protected transient boolean isAbort;
@@ -43,11 +43,11 @@ public class BbQBuilder implements SqlNormalizer {
     private transient List<Bb> tempList;
     private transient List<List<Bb>> subsList;
 
-    protected BbQBuilder(){
+    protected CondBuilder(){
         this.instance = this;
     }
 
-    protected BbQBuilder(List<Bb> bbList){
+    protected CondBuilder(List<Bb> bbList){
         this.instance = this;
         this.instance.bbList = bbList;
     }
@@ -63,50 +63,50 @@ public class BbQBuilder implements SqlNormalizer {
         return this.subsList;
     }
 
-    public static BbQBuilder builder(List<Bb> bbList){
-        return new BbQBuilder(bbList);
+    public static CondBuilder builder(List<Bb> bbList){
+        return new CondBuilder(bbList);
     }
 
-    public static BbQBuilder builder() {
-        return new BbQBuilder(new ArrayList<>());
+    public static CondBuilder builder() {
+        return new CondBuilder(new ArrayList<>());
     }
 
-    public BbQ build() {
+    public CondQ build() {
         return () -> bbList;
     }
 
-    public BbQBuilder bool(Bool condition, Then then) {
+    public CondBuilder bool(Bool condition, Then then) {
         if (condition.isOk()) {
             then.build(this.instance);
         }
         return this.instance;
     }
 
-    public BbQBuilder eq(String property, Object value){
+    public CondBuilder eq(String property, Object value){
         return doGle(Op.EQ, property, value);
     }
 
-    public BbQBuilder lt(String property, Object value){
+    public CondBuilder lt(String property, Object value){
         return doGle(Op.LT, property, value);
     }
 
-    public BbQBuilder lte(String property, Object value){
+    public CondBuilder lte(String property, Object value){
         return doGle(Op.LTE, property, value);
     }
 
-    public BbQBuilder gt(String property, Object value){
+    public CondBuilder gt(String property, Object value){
         return doGle(Op.GT, property, value);
     }
 
-    public BbQBuilder gte(String property, Object value){
+    public CondBuilder gte(String property, Object value){
         return doGle(Op.GTE, property, value);
     }
 
-    public BbQBuilder ne(String property, Object value){
+    public CondBuilder ne(String property, Object value){
         return doGle(Op.NE, property, value);
     }
 
-    public BbQBuilder like(String property, String value){
+    public CondBuilder like(String property, String value){
         if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
@@ -115,7 +115,7 @@ public class BbQBuilder implements SqlNormalizer {
         return doLike(Op.LIKE,property,likeValue);
     }
 
-    public BbQBuilder likeRight(String property, String value){
+    public CondBuilder likeRight(String property, String value){
         if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
@@ -124,7 +124,7 @@ public class BbQBuilder implements SqlNormalizer {
         return doLike(Op.LIKE,property,likeValue);
     }
 
-    public BbQBuilder notLike(String property, String value){
+    public CondBuilder notLike(String property, String value){
         if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;
@@ -133,30 +133,30 @@ public class BbQBuilder implements SqlNormalizer {
         return doLike(Op.NOT_LIKE,property,likeValue);
     }
 
-    public BbQBuilder in(String property, List list){
+    public CondBuilder in(String property, List list){
         return doIn(Op.IN,property,list);
     }
 
-    public BbQBuilder inRequired(String property, List list){
+    public CondBuilder inRequired(String property, List list){
         if (list == null || list.isEmpty()){
             this.instance.isAbort = true;
         }
         return doIn(Op.IN,property,list);
     }
 
-    public BbQBuilder nin(String property, List list){
+    public CondBuilder nin(String property, List list){
         return doIn(Op.NOT_IN,property,list);
     }
 
-    public BbQBuilder nonNull(String property){
+    public CondBuilder nonNull(String property){
         return doNull(Op.IS_NOT_NULL,property);
     }
 
-    public BbQBuilder isNull(String property){
+    public CondBuilder isNull(String property){
         return doNull(Op.IS_NULL,property);
     }
 
-    public BbQBuilder x(String sqlSegment, Object... values){
+    public CondBuilder x(String sqlSegment, Object... values){
 
         if (SqliStringUtil.isNullOrEmpty(sqlSegment)){
             isOr();
@@ -183,31 +183,31 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
 
-    public BbQBuilder and(){
+    public CondBuilder and(){
         this.isOr = false;
         return this.instance;
     }
 
-    public BbQBuilder or(){
+    public CondBuilder or(){
         this.isOr = true;
         return this.instance;
     }
 
-    public BbQBuilder and(BbSub sub){
+    public CondBuilder and(SubCond sub){
         return orAnd(Op.AND, sub);
     }
 
-    public BbQBuilder or(BbSub sub) {
+    public CondBuilder or(SubCond sub) {
         return orAnd(Op.OR, sub);
     }
 
-    private BbQBuilder orAnd(Op c, BbSub sub){
+    private CondBuilder orAnd(Op c, SubCond s){
 
-        BbQBuilder subBuilder = BbQBuilder.builder();
-        sub.buildBy(subBuilder);
-        BbQ bbQ = subBuilder.build();
+        CondBuilder sub = CondBuilder.builder();
+        s.buildBy(sub);
+        CondQ condQ = sub.build();
 
-        List<Bb> subList = bbQ.getBbList();
+        List<Bb> subList = condQ.getBbs();
         if (subList == null || subList.isEmpty())
             return instance;
 
@@ -221,7 +221,7 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
 
-    public BbQBuilder beginSub(){
+    public CondBuilder beginSub(){
         Bb bb = new Bb(isOr());
         bb.setP(Op.SUB);
 
@@ -235,7 +235,7 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
     
-    public BbQBuilder endSub(){
+    public CondBuilder endSub(){
         isOr();
         int size = getSubsList().size();
         if (--size >= 0)
@@ -249,7 +249,7 @@ public class BbQBuilder implements SqlNormalizer {
         return this.instance;
     }
 
-    private BbQBuilder doGle(Op p, String property, Object value) {
+    private CondBuilder doGle(Op p, String property, Object value) {
         if (value == null){
             isOr();
             return instance;
@@ -270,7 +270,7 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
 
-    private BbQBuilder doLike(Op p, String property, String likeWalue){
+    private CondBuilder doLike(Op p, String property, String likeWalue){
 
         Bb bb = new Bb(isOr());
         bb.setP(p);
@@ -280,7 +280,7 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
 
-    private BbQBuilder doIn(Op p, String property, List<? extends Object> list){
+    private CondBuilder doIn(Op p, String property, List<? extends Object> list){
 
         if (list == null || list.isEmpty()){
             isOr();
@@ -310,7 +310,7 @@ public class BbQBuilder implements SqlNormalizer {
         return instance;
     }
 
-    private BbQBuilder doNull(Op p, String property){
+    private CondBuilder doNull(Op p, String property){
         if (SqliStringUtil.isNullOrEmpty(property)){
             isOr();
             return instance;

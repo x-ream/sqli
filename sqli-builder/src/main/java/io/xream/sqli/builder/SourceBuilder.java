@@ -52,7 +52,7 @@ public interface SourceBuilder {
 
     SourceBuilder on(String key, Op op, JoinFrom joinFrom);
 
-    BbQBuilder more();
+    CondBuilder more();
 
     QB.X build();
 
