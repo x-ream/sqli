@@ -23,12 +23,12 @@ package io.xream.sqli.builder;
  */
 public enum JoinType {
     MAIN(""),
-    JOIN(" JOIN "),
-    INNER_JOIN(" INNER JOIN "),
-    OUTER_JOIN(" OUTER JOIN "),
-    LEFT_JOIN(" LEFT JOIN "),
-    RIGHT_JOIN(" RIGHT JOIN "),
-    COMMA(" , ");
+    JOIN("JOIN"),
+    INNER_JOIN("INNER JOIN"),
+    OUTER_JOIN("OUTER JOIN"),
+    LEFT_JOIN("LEFT JOIN"),
+    RIGHT_JOIN("RIGHT JOIN"),
+    COMMA(",");
 
     private String sql;
     private JoinType(String sql){

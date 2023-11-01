@@ -18,7 +18,6 @@
  */
 package io.xream.sqli.builder.internal;
 
-import io.xream.sqli.builder.JoinType;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.util.SqliStringUtil;
@@ -32,11 +31,8 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
 
     private String source;
     private Q.X subQ;
-    private JoinType joinType;
-    private String joinStr;
-    private On on;
     private String alia;
-    private List<Bb> bbList;
+    private Join join;
     private boolean isWith;
 
     private transient boolean used;
@@ -58,28 +54,20 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
         this.subQ = subQ;
     }
 
-    public JoinType getJoinType() {
-        return joinType;
+    public String getAlia() {
+        return alia;
     }
 
-    public void setJoinType(JoinType joinType) {
-        this.joinType = joinType;
+    public void setAlia(String alia) {
+        this.alia = alia;
     }
 
-    public String getJoinStr() {
-        return joinStr;
+    public Join getJoin() {
+        return join;
     }
 
-    public void setJoinStr(String joinStr) {
-        this.joinStr = joinStr;
-    }
-
-    public List<Bb> getBbList() {
-        return bbList;
-    }
-
-    public void setBbList(List<Bb> bbs) {
-        this.bbList = bbs;
+    public void setJoin(Join join) {
+        this.join = join;
     }
 
     public boolean isWith() {
@@ -90,37 +78,30 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
         isWith = with;
     }
 
-    public On getOn() {
-        return on;
-    }
-
-    public void setOn(On on) {
-        this.on = on;
-    }
-
-    public String getAlia() {
-        return alia;
-    }
-
-    public void setAlia(String alia) {
-        this.alia = alia;
-    }
-
     public boolean isUsed() {
-        return this.used;
+        return used;
     }
 
-    public void used() {
-        this.used = true;
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 
     public boolean isTargeted() {
         return targeted;
     }
 
+    public void setTargeted(boolean targeted) {
+        this.targeted = targeted;
+    }
+
+    public void used() {
+        this.used = true;
+    }
+
     public void targeted() {
         this.targeted = true;
     }
+
 
     public String alia() {
         return alia == null ? source : alia;
@@ -134,6 +115,9 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
             attached.getSubList().add(sqlBuilt);
             condToSql.toSql(true, subQ, sqlBuilt, attached);
         }
+        if (join == null || join.getOn() == null)
+            return;
+        List<Bb> bbList = join.getOn().getBbs();
         if (bbList == null || bbList.isEmpty())
             return;
         pre(attached.getValueList(), bbList, subQ == null ? mappable : subQ);
@@ -148,50 +132,31 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
             source = isWith ? "" : SqlScript.SUB;
         if (source == null)
             source = "";
-        if (joinStr == null && (joinType == null || joinType == JoinType.MAIN)) {
+        if (join == null) {
             if (alia != null && !alia.equals(source)) {
                 return mapping(source, mappable) + " " + alia;
             }
             return mapping(source, mappable);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(joinStr == null ? joinType.sql() : SqlScript.SPACE + joinStr + SqlScript.SPACE);
+        if (join.getJoin() != null) {
+            sb.append(SqlScript.SPACE + join.getJoin() + SqlScript.SPACE);
+        }
 
         sb.append(mapping(source, mappable));
 
-        if (alia != null && !alia.equals(source))
+        if (alia != null && !alia.equals(source)) {
             sb.append(SqlScript.SPACE).append(alia);
-
-        if (on != null) {
-            sb.append(SqlScript.ON);
-            String aliaName = alia == null ? mapping(source, mappable) : alia;
-            String key = on.getKey();
-            if (SqliStringUtil.isNotNull(key)) {
-                sb.append(
-                        mapping(on.getJoinFrom().getAlia() + "." + on.getJoinFrom().getKey(), mappable)
-                ).append(SqlScript.SPACE).append(on.getOp()).append(SqlScript.SPACE)
-                        .append(
-                                mapping(aliaName + "." +key, mappable)
-                        );
-            }
         }
-        buildConditionSql(sb, bbList, mappable);
+
+        On on = join.getOn();
+        if (on != null && !on.getBbs().isEmpty()) {
+            sb.append(SqlScript.ON);
+            buildConditionSql(sb, on.getBbs(), mappable);
+        }
+
 
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return "SourceScript{" +
-                "source='" + source + '\'' +
-                ", subQ=" + subQ +
-                ", joinType=" + joinType +
-                ", joinStr='" + joinStr + '\'' +
-                ", on=" + on +
-                ", alia='" + alia + '\'' +
-                ", bbList=" + bbList +
-                ", used=" + used +
-                ", targeted=" + targeted +
-                '}';
-    }
 }

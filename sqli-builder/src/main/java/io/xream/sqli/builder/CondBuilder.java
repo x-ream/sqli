@@ -183,11 +183,6 @@ public class CondBuilder implements SqlNormalizer {
         return instance;
     }
 
-    public CondBuilder and(){
-        this.isOr = false;
-        return this.instance;
-    }
-
     public CondBuilder or(){
         this.isOr = true;
         return this.instance;

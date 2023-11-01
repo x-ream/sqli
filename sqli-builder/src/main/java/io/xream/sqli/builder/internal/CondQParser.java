@@ -71,7 +71,6 @@ public interface CondQParser {
                 bb.setSubList(subList);
                 i = parse(i, conditionScriptSplittedList,
                         subList, valueList);
-                continue;
             }
 
             else if (s.startsWith(")")) {

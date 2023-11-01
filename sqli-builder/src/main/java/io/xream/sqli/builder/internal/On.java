@@ -18,47 +18,41 @@
  */
 package io.xream.sqli.builder.internal;
 
-import io.xream.sqli.builder.JoinFrom;
+import io.xream.sqli.builder.CondBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sim
  */
 public final class On {
-    private String key;
-    private String op;
-    private JoinFrom joinFrom;
 
-    public String getKey() {
-        return key;
+    private List<Bb> bbs = new ArrayList<>();
+    private CondBuilder builder;
+    private String orUsingKey;
+
+    public List<Bb> getBbs() {
+        return bbs;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setBbs(List<Bb> bbs) {
+        this.bbs = bbs;
     }
 
-    public String getOp() {
-        return op;
+    public CondBuilder getBuilder() {
+        return builder;
     }
 
-    public void setOp(String op) {
-        this.op = op;
+    public void setBuilder(CondBuilder builder) {
+        this.builder = builder;
     }
 
-    public JoinFrom getJoinFrom() {
-        return joinFrom;
+    public String getOrUsingKey() {
+        return orUsingKey;
     }
 
-    public void setJoinFrom(JoinFrom joinFrom) {
-        this.joinFrom = joinFrom;
+    public void setOrUsingKey(String orUsingKey) {
+        this.orUsingKey = orUsingKey;
     }
-
-    @Override
-    public String toString() {
-        return "On{" +
-                "key='" + key + '\'' +
-                ", op='" + op + '\'' +
-                ", joinFrom=" + joinFrom +
-                '}';
-    }
-
 }

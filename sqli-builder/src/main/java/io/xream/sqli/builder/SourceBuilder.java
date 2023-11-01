@@ -34,9 +34,7 @@ import java.util.List;
  */
 public interface SourceBuilder {
 
-    SourceBuilder source(String source);
-
-    SourceBuilder source(Class clzz);
+    SourceBuilder source(Class clz);
 
     SourceBuilder sub(Sub sub);
 
@@ -44,17 +42,13 @@ public interface SourceBuilder {
 
     SourceBuilder alia(String alia);
 
-    SourceBuilder join(JoinType joinType);
+    SourceBuilder join(JoinType joinType, Class clz);
 
-    SourceBuilder join(String joinStr);
+    SourceBuilder join(String joinStr, Class clz);
 
-    SourceBuilder on(String key, JoinFrom joinFrom);
+    CondBuilder on(String onSql);
 
-    SourceBuilder on(String key, Op op, JoinFrom joinFrom);
 
-    CondBuilder more();
-
-    QB.X build();
 
 
     static void checkSourceAndAlia(List<SourceScript> list) {
@@ -62,10 +56,8 @@ public interface SourceBuilder {
             final String source = sourceScript.getSource();
             if (SqliStringUtil.isNotNull(source) && !Parser.contains(source)) {
                 String tip = "";
-                if (sourceScript.getJoinType() != null) {
-                    tip += sourceScript.getJoinType().name().replace("_", " ");
-                } else if (SqliStringUtil.isNotNull(sourceScript.getJoinStr())) {
-                    tip += sourceScript.getJoinStr();
+                if (sourceScript.getJoin().getJoin() != null) {
+                    tip += sourceScript.getJoin().getJoin().replace("_", " ");
                 } else {
                     tip += SqlScript.FROM;
                 }
@@ -101,11 +93,8 @@ public interface SourceBuilder {
             if (strUpper.equals("AND") || strUpper.equals("OR")) {
 
                 sourceScript = getLast(list);
-                List<Bb> bbList = sourceScript.getBbList();
-                if (bbList == null) {
-                    bbList = new ArrayList<>();
-                    sourceScript.setBbList(bbList);
-                }
+                List<Bb> bbList = sourceScript.getJoin().getOn().getBbs();
+
 
                 int j = i;
                 for (;j<size;j++) {
@@ -130,38 +119,38 @@ public interface SourceBuilder {
             switch (strUpper) {
                 case "INNER":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.INNER_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.INNER_JOIN);
                     i++;
                     break;
                 case "LEFT":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.LEFT_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.LEFT_JOIN);
                     i++;
                     break;
                 case "RIGHT":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.RIGHT_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.RIGHT_JOIN);
                     i++;
                     break;
                 case "OUTER":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.OUTER_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.OUTER_JOIN);
                     i++;
                     break;
                 case "FULL":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.JOIN);
                     i++;
                     break;
                 case "JOIN":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.JOIN);
                     break;
                 case ",":
                     sourceScript = createAndGet(list);
-                    sourceScript.setJoinType(JoinType.COMMA);
+                    sourceScript.getJoin().setJoin(JoinType.COMMA);
                     break;
-                case "ON":
+                case "ON","AND","OR":
                     String selfKey = sourceScriptsSplittedList.get(++i);
                     String op = sourceScriptsSplittedList.get(++i);// op
                     String fromKey = sourceScriptsSplittedList.get(++i);
@@ -170,18 +159,12 @@ public interface SourceBuilder {
                         selfKey = fromKey;
                         fromKey = temp;
                     }
+                    Bb bb = new Bb();
+                    bb.setC(Op.NONE);
+                    bb.setP(Op.X);
+                    bb.setKey(selfKey + " " + op + " " + fromKey);
+                    sourceScript.getJoin().getOn().getBbs().add(bb);
 
-                    int selfIndex = selfKey.indexOf(".");
-                    int fromIndex = fromKey.indexOf(".");
-
-                    JoinFrom joinFrom = new JoinFrom();
-                    joinFrom.setAlia(fromKey.substring(0, fromIndex));
-                    joinFrom.setKey(fromKey.substring(fromIndex + 1));
-                    On on = new On();
-                    on.setKey(selfKey.substring(selfIndex + 1));
-                    on.setOp(op);
-                    on.setJoinFrom(joinFrom);
-                    sourceScript.setOn(on);
                     break;
                 default:
                     if (sourceScript == null) {
@@ -242,6 +225,10 @@ public interface SourceBuilder {
 
     static SourceScript createAndGet(List<SourceScript> list) {
         SourceScript sourceScript = new SourceScript();
+        On on = new On();
+        Join join = new Join();
+        join.setOn(on);
+        sourceScript.setJoin(join);
         list.add(sourceScript);
         return sourceScript;
     }

@@ -23,6 +23,7 @@ import io.xream.sqli.util.SqliStringUtil;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Sim
@@ -36,7 +37,10 @@ public interface SourceScriptOptimizable {
     default void addConditionBeforeOptimization(List<Bb> bbList, Set<String> conditionSet) {
         if (bbList == null)
             return;
+        int i = 0;
         for (Bb bb : bbList) {
+            if (i++ == 0)
+                continue;
             conditionSet.add(bb.getKey());
             List<Bb> subList = bb.getSubList();
             if (subList != null && !subList.isEmpty()) {
@@ -65,13 +69,13 @@ public interface SourceScriptOptimizable {
             for (String key : conditionSet) {
                 if (key == null)
                     continue;
-                if (SqliStringUtil.isNullOrEmpty(sourceScript.getAlia())) {
+                if (SqliStringUtil.isNullOrEmpty(sourceScript.alia())) {
                     if (key.contains(sourceScript.getSource() + ".")) {
                         sourceScript.used();
                         break;
                     }
                 } else {
-                    if (key.contains(sourceScript.getAlia() + ".")) {
+                    if (key.contains(sourceScript.alia() + ".")) {
                         sourceScript.used();
                         break;
                     }
@@ -86,17 +90,23 @@ public interface SourceScriptOptimizable {
                 sourceScript.targeted();
                 continue;
             }
-            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
+//            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
+//                continue;
+            if (sourceScript.getJoin() == null)
                 continue;
+            On on = sourceScript.getJoin().getOn();
+            if (on == null )
+                continue;
+            String str = on.getBbs().stream().map(Bb::getKey).collect(Collectors.joining(","));
+
             for (int j = i - 1; j >= 0; j--) {
                 SourceScript sc = sourceScripts.get(j);
+                if (sc.isTargeted())
+                    continue;
                 if (sourceScript.getSource().equals(sc.getSource()))
                     continue;
                 //FIXME
-                On on = sourceScript.getOn();
-                if (on == null || on.getJoinFrom() == null)
-                    continue;
-                if (sc.alia().equals(on.getJoinFrom().getAlia())) {
+                if (str.contains(sc.alia()+".")) {
                     sc.targeted();
                     break;
                 }

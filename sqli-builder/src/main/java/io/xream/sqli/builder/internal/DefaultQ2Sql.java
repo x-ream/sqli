@@ -670,7 +670,10 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             }
 
             for (SourceScript sourceScript : rmc.getSourceScripts()) {
-                addConditionBeforeOptimization(sourceScript.getBbList(), sqlSth.conditionSet);
+                Join join = sourceScript.getJoin();
+                if (join != null && join.getOn() != null) {
+                    addConditionBeforeOptimization(join.getOn().getBbs(), sqlSth.conditionSet);
+                }
             }
         }
 
@@ -697,23 +700,23 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
         String script = null;
         if (q instanceof Q.X) {
-            Q.X rmc = (Q.X) q;
+            Q.X xq = (Q.X) q;
 
-            if (rmc.getSourceScripts().isEmpty()) {// builderSource null
+            if (xq.getSourceScripts().isEmpty()) {// builderSource null
                 String str = q.sourceScript();
                 Objects.requireNonNull(str, "Not set sourceScript of QB.X");
                 final String strd = normalizeSql(str);
                 StringBuilder sbs = new StringBuilder();
-                mapping((reg) -> strd.split(reg), rmc, sbs);
+                mapping((reg) -> strd.split(reg), xq, sbs);
                 script = sbs.toString();
             } else {
-                if (!rmc.isWithoutOptimization()) {
-                    optimizeSourceScript(sb.conditionSet, rmc.getSourceScripts());//FIXME  + ON AND
+                if (!xq.isWithoutOptimization()) {
+                    optimizeSourceScript(sb.conditionSet, xq.getSourceScripts());//FIXME  + ON AND
                 }
-                script = rmc.getSourceScripts().stream()
-                        .map(sourceScript -> sourceScript.sql(rmc))
+                script = xq.getSourceScripts().stream()
+                        .map(sourceScript -> sourceScript.sql(xq))
                         .collect(Collectors.joining()).trim();
-                with(sb,rmc);
+                with(sb,xq);
             }
 
             sb.sbSource.append(SqlScript.FROM).append(SqlScript.SPACE);
@@ -775,7 +778,9 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             Q.X xq = (Q.X) q;//FIXME 判断是虚表
             filter(bbList, xq);
             for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
-                List<Bb> bbs = sourceScript.getBbList();
+                if (sourceScript.getJoin() == null || sourceScript.getJoin().getOn() == null)
+                    continue;
+                List<Bb> bbs = sourceScript.getJoin().getOn().getBbs();
                 if (bbs == null || bbs.isEmpty())
                     continue;
                 filter(bbs, xq);

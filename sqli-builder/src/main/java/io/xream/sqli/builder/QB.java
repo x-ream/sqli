@@ -294,14 +294,8 @@ public class QB<T> extends CondBuilder {
         private SourceBuilder sourceBuilder = new SourceBuilder() {
 
             @Override
-            public SourceBuilder source(String source) {
-                sourceScriptTemp.setSource(source);
-                return this;
-            }
-
-            @Override
-            public SourceBuilder source(Class clzz) {
-                sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clzz.getSimpleName()));
+            public SourceBuilder source(Class clz) {
+                sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clz.getSimpleName()));
                 return this;
             }
 
@@ -328,67 +322,60 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder join(JoinType joinType) {
-                sourceScriptTemp.setJoinType(joinType);
+            public SourceBuilder join(JoinType joinType,Class clz) {
+                Join join = join();
+                join.setJoin(joinType);
                 return this;
             }
 
             @Override
-            public SourceBuilder join(String joinStr) {
-                sourceScriptTemp.setJoinStr(joinStr);
+            public SourceBuilder join(String joinStr,Class clz) {
+                Join join = join();
+                join.setJoin(joinStr);
                 return this;
             }
 
+
+
             @Override
-            public SourceBuilder on(String key, JoinFrom joinFrom) {
-                if (key.contains("."))
-                    throw new IllegalArgumentException("On key can not contains '.'");
+            public CondBuilder on(String onSql) {
+
+                Bb bb = new Bb();
+                bb.setC(Op.NONE);
+                bb.setP(Op.X);
+                bb.setKey(onSql);
+
                 On on = new On();
-                on.setKey(key);
-                on.setOp(Op.EQ.sql());
-                on.setJoinFrom(joinFrom);
-                sourceScriptTemp.setOn(on);
-                return this;
+                Join join = join();
+                join.setOn(on);
+                on.setBuilder(new CondBuilder(on.getBbs()));
+                on.getBbs().add(bb);
+                return on.getBuilder();
             }
 
-            @Override
-            public SourceBuilder on(String key, Op op, JoinFrom joinFrom) {
-                if (key.contains("."))
-                    throw new IllegalArgumentException("On key can not contains '.'");
-                On on = new On();
-                on.setKey(key);
-                on.setOp(op.sql());
-                on.setJoinFrom(joinFrom);
-                sourceScriptTemp.setOn(on);
-                return this;
+            private Join join(){
+                Join join = sourceScriptTemp.getJoin();
+                if (join == null) {
+                    join = new Join();
+                    sourceScriptTemp.setJoin(join);
+                }
+                return join;
             }
 
-            @Override
-            public CondBuilder more() {
-                List<Bb> bbList = new ArrayList<>();
-                sourceScriptTemp.setBbList(bbList);
-                return builder(bbList);
-            }
-
-            @Override
-            public X build() {
-                return getInstance();
-            }
 
         };
 
         private X instance;
-        protected X getInstance(){
-            return this.instance;
-        }
 
-        public SourceBuilder sourceBuilder() {
-            sourceScriptTemp = new SourceScript();
-            get().getSourceScripts().add(sourceScriptTemp);
-            return this.sourceBuilder;
-        }
+//        public SourceBuilder sourceBuilder() {
+//            sourceScriptTemp = new SourceScript();
+//            get().getSourceScripts().add(sourceScriptTemp);
+//            return this.sourceBuilder;
+//        }
 
         public X sourceX(SourceX x) {
+            sourceScriptTemp = new SourceScript();
+            get().getSourceScripts().add(sourceScriptTemp);
             x.buildBy(sourceBuilder);
             return this;
         }
