@@ -43,6 +43,49 @@ public class QB<T> extends CondBuilder {
         return this;
     }
 
+    public QB<T> paged(Pageable pageable) {
+        if ( this.pageBuilder != null) {
+            pageable.buildBy(pageBuilder);
+            return this;
+        }
+        this.pageBuilder  = new PageBuilder() {
+
+            @Override
+            public PageBuilder ignoreTotalRows() {
+                q.setTotalRowsIgnored(true);
+                return this;
+            }
+
+            @Override
+            public PageBuilder ignoreTotalRows(boolean ignored) {
+                q.setTotalRowsIgnored(ignored);
+                return this;
+            }
+
+            @Override
+            public PageBuilder rows(int rows) {
+                q.setRows(rows);
+                return this;
+            }
+
+            @Override
+            public PageBuilder page(int page) {
+                q.setPage(page);
+                return this;
+            }
+
+            @Override
+            public PageBuilder last(long last) {
+                q.setLast(last);
+                return this;
+            }
+
+
+        };
+        pageable.buildBy(pageBuilder);
+        return this;
+    }
+
     public PageBuilder paged() {
         if ( this.pageBuilder != null)
             return this.pageBuilder;
@@ -83,8 +126,9 @@ public class QB<T> extends CondBuilder {
         return this.pageBuilder;
     }
 
-    public void paged(Paged paged) {
+    public QB<T> paged(Paged paged) {
         q.paged(paged);
+        return this;
     }
 
     public QB<T> sortIn(String porperty, List<? extends Object> inList) {
@@ -344,6 +388,11 @@ public class QB<T> extends CondBuilder {
             return this.sourceBuilder;
         }
 
+        public X sourceX(SourceX x) {
+            x.buildBy(sourceBuilder);
+            return this;
+        }
+
         public X withoutOptimization() {
             get().setWithoutOptimization(true);
             return this;
@@ -601,6 +650,20 @@ public class QB<T> extends CondBuilder {
 
         public void clear(){
             super.clear();
+        }
+
+        public X paged(Pageable pageable) {
+
+            super.paged(pageable);
+
+            return this;
+        }
+
+        public X paged(Paged paged) {
+
+            super.paged(paged);
+
+            return this;
         }
 
     }
