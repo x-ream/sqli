@@ -5,11 +5,11 @@ import io.xream.sqli.builder.JoinType;
 /**
  * @author sim
  */
-public class Join {
+public class JOIN {
 
     private String join;
     private String alia;
-    private On on;
+    private ON on;
 
     public String getJoin() {
         return join;
@@ -27,11 +27,11 @@ public class Join {
         this.alia = alia;
     }
 
-    public On getOn() {
+    public ON getOn() {
         return on;
     }
 
-    public void setOn(On on) {
+    public void setOn(ON on) {
         this.on = on;
     }
 

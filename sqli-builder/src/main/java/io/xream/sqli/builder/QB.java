@@ -44,11 +44,11 @@ public class QB<T> extends CondBuilder {
     }
 
     public QB<T> paged(Pageable pageable) {
-        if ( this.pageBuilder != null) {
+        if (this.pageBuilder != null) {
             pageable.buildBy(pageBuilder);
             return this;
         }
-        this.pageBuilder  = new PageBuilder() {
+        this.pageBuilder = new PageBuilder() {
 
             @Override
             public PageBuilder ignoreTotalRows() {
@@ -87,16 +87,16 @@ public class QB<T> extends CondBuilder {
     }
 
     public PageBuilder paged() {
-        if ( this.pageBuilder != null)
+        if (this.pageBuilder != null)
             return this.pageBuilder;
-        this.pageBuilder  = new PageBuilder() {
+        this.pageBuilder = new PageBuilder() {
 
             @Override
             public PageBuilder ignoreTotalRows() {
                 q.setTotalRowsIgnored(true);
                 return this;
             }
-            
+
             @Override
             public PageBuilder ignoreTotalRows(boolean ignored) {
                 q.setTotalRowsIgnored(ignored);
@@ -135,7 +135,7 @@ public class QB<T> extends CondBuilder {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = KV.of(porperty, inList);
             List<KV> fixedSortList = q.getFixedSortList();
-            if (fixedSortList == null){
+            if (fixedSortList == null) {
                 fixedSortList = new ArrayList<>();
                 q.setFixedSortList(fixedSortList);
             }
@@ -188,31 +188,29 @@ public class QB<T> extends CondBuilder {
         return this.q;
     }
 
-    public Q<T> build(){
+    public Q<T> build() {
         this.q.setAbort(isAbort);
         return this.q;
     }
 
-
-
     public QB eq(String key, Object value) {
-        return (QB) super.eq(key,value);
+        return (QB) super.eq(key, value);
     }
 
     public QB gt(String key, Object value) {
-        return (QB) super.gt(key,value);
+        return (QB) super.gt(key, value);
     }
 
     public QB gte(String key, Object value) {
-        return (QB) super.gte(key,value);
+        return (QB) super.gte(key, value);
     }
 
     public QB lt(String key, Object value) {
-        return (QB) super.lt(key,value);
+        return (QB) super.lt(key, value);
     }
 
     public QB lte(String key, Object value) {
-        return (QB) super.lte(key,value);
+        return (QB) super.lte(key, value);
     }
 
     public QB ne(String property, Object value) {
@@ -232,59 +230,59 @@ public class QB<T> extends CondBuilder {
     }
 
     public QB in(String property, List list) {
-        return (QB) super.in(property,list);
+        return (QB) super.in(property, list);
     }
 
     public QB inRequired(String property, List list) {
-        return (QB) super.inRequired(property,list);
+        return (QB) super.inRequired(property, list);
     }
 
     public QB nin(String property, List list) {
-        return (QB) super.nin(property,list);
+        return (QB) super.nin(property, list);
     }
 
-    public QB nonNull(String property){
+    public QB nonNull(String property) {
         return (QB) super.nonNull(property);
     }
 
-    public QB isNull(String property){
+    public QB isNull(String property) {
         return (QB) super.isNull(property);
     }
 
-    public QB x(String sqlSegment){
+    public QB x(String sqlSegment) {
         return (QB) super.x(sqlSegment);
     }
 
-    public QB x(String sqlSegment, Object...values){
+    public QB x(String sqlSegment, Object... values) {
         return (QB) super.x(sqlSegment, values);
     }
 
-    public QB and(SubCond sub){
+    public QB and(SubCond sub) {
         return (QB) super.and(sub);
     }
 
-    public QB or(SubCond sub){
+    public QB or(SubCond sub) {
         return (QB) super.or(sub);
     }
 
-    public QB beginSub(){
+    public QB beginSub() {
         return (QB) super.beginSub();
     }
 
-    public QB endSub(){
+    public QB endSub() {
         return (QB) super.endSub();
     }
 
-    public QB bool(Bool cond, Then then){
+    public QB bool(Bool cond, Then then) {
         return (QB) super.bool(cond, then);
     }
 
-    public QB or(){
+    public QB or() {
         return (QB) super.or();
     }
 
 
-    public void clear(){
+    public void clear() {
         this.q = null;
     }
 
@@ -295,12 +293,32 @@ public class QB<T> extends CondBuilder {
 
             @Override
             public SourceBuilder source(Class clz) {
+                return source(clz, null);
+            }
+
+            @Override
+            public SourceBuilder join(JoinType joinType, Class clz) {
+                return join(joinType, clz, null);
+            }
+
+            @Override
+            public SourceBuilder join(String joinStr, Class clz) {
+                return join(joinStr, clz, null);
+            }
+
+            @Override
+            public SourceBuilder source(Class clz, String alia) {
+                sourceScript();
+                sourceScriptTemp.setAlia(alia);
                 sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clz.getSimpleName()));
                 return this;
             }
 
             @Override
-            public SourceBuilder sub(Sub sub) {
+            public SourceBuilder sub(Sub sub, String alia) {
+                sourceScript();
+                sourceScriptTemp.setAlia(alia);
+
                 X subBuilder = QB.x();
                 sub.buildBy(subBuilder);
                 Q.X xq = subBuilder.build();
@@ -310,53 +328,83 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder with(Sub sub){
+            public SourceBuilder with(Sub sub, String alia) {
+                sub(sub, alia);
                 sourceScriptTemp.setWith(true);
-                return sub(sub);
-            }
-
-            @Override
-            public SourceBuilder alia(String alia) {
-                sourceScriptTemp.setAlia(alia);
                 return this;
             }
 
-            @Override
-            public SourceBuilder join(JoinType joinType,Class clz) {
-                Join join = join();
+            private SourceBuilder join(JoinType joinType) {
+                JOIN join = join();
                 join.setJoin(joinType);
                 return this;
             }
 
-            @Override
-            public SourceBuilder join(String joinStr,Class clz) {
-                Join join = join();
+            private SourceBuilder join(String joinStr) {
+                JOIN join = join();
                 join.setJoin(joinStr);
                 return this;
             }
 
-
-
             @Override
-            public CondBuilder on(String onSql) {
-
-                Bb bb = new Bb();
-                bb.setC(Op.NONE);
-                bb.setP(Op.X);
-                bb.setKey(onSql);
-
-                On on = new On();
-                Join join = join();
-                join.setOn(on);
-                on.setBuilder(new CondBuilder(on.getBbs()));
-                on.getBbs().add(bb);
-                return on.getBuilder();
+            public SourceBuilder join(JoinType joinType, Class clz, String alia) {
+                sourceScript();
+                source(clz, alia);
+                return join(joinType);
             }
 
-            private Join join(){
-                Join join = sourceScriptTemp.getJoin();
+            @Override
+            public SourceBuilder join(String joinStr, Class clz, String alia) {
+                source(clz, alia);
+                return join(joinStr);
+            }
+
+            @Override
+            public SourceBuilder join(JoinType joinType, Sub sub, String alia) {
+                sub(sub, alia);
+                return join(joinType);
+            }
+
+            @Override
+            public SourceBuilder join(String joinStr, Sub sub, String alia) {
+                sub(sub, alia);
+                return join(joinStr);
+            }
+
+            @Override
+            public SourceBuilder on(String onSql) {
+
+                return on(onSql, null);
+            }
+
+            @Override
+            public SourceBuilder on(String onSql, On on) {
+
+                JOIN join = join();
+                ON onE = join.getOn();
+                if (onE == null) {
+
+                    onE = new ON();
+                    join.setOn(onE);
+                    CondBuilder cb = new CondBuilder(onE.getBbs());
+                    onE.setBuilder(cb);
+                    onE.getBbs().add(Bb.of(Op.NONE,Op.X,onSql,null));
+
+                    if (on != null) {
+                        on.buildBy(cb);
+                    }
+                }else {
+                    onE.getBbs().add(Bb.of(Op.AND,Op.X,onSql,null));
+                }
+
+
+                return this;
+            }
+
+            private JOIN join() {
+                JOIN join = sourceScriptTemp.getJoin();
                 if (join == null) {
-                    join = new Join();
+                    join = new JOIN();
                     sourceScriptTemp.setJoin(join);
                 }
                 return join;
@@ -367,15 +415,18 @@ public class QB<T> extends CondBuilder {
 
         private X instance;
 
-//        public SourceBuilder sourceBuilder() {
-//            sourceScriptTemp = new SourceScript();
-//            get().getSourceScripts().add(sourceScriptTemp);
-//            return this.sourceBuilder;
-//        }
 
-        public X sourceX(SourceX x) {
+        private void sourceScript() {
             sourceScriptTemp = new SourceScript();
             get().getSourceScripts().add(sourceScriptTemp);
+        }
+
+        public X source(Class clz) {
+            get().setSourceScript(BeanUtil.getByFirstLower(clz.getSimpleName()));
+            return this;
+        }
+
+        public X sourceX(SourceX x) {
             x.buildBy(sourceBuilder);
             return this;
         }
@@ -410,24 +461,22 @@ public class QB<T> extends CondBuilder {
         public X resultKeys(String... resultKeys) {
             if (resultKeys == null)
                 return this;
-            for (String resultKey : resultKeys){
+            for (String resultKey : resultKeys) {
                 resultKey(resultKey);
             }
             return this;
         }
 
         /**
-         *
          * @param resultKey
          * @param alia
          * @return resultKey set by framework, not alia, (temporaryRepository.findToCreate)
-         *
          */
         public X resultKey(String resultKey, String alia) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
-            Objects.requireNonNull(alia,"resultKeyAssignedAlia(), alia can not null");
-            get().getResultKeyAssignedAliaList().add(KV.of(resultKey,alia));
+            Objects.requireNonNull(alia, "resultKeyAssignedAlia(), alia can not null");
+            get().getResultKeyAssignedAliaList().add(KV.of(resultKey, alia));
             return this;
         }
 
@@ -438,7 +487,7 @@ public class QB<T> extends CondBuilder {
 
         /**
          * @param functionScript FUNCTION(?,?)
-         * @param values           "test", 1000
+         * @param values         "test", 1000
          */
         public X resultKeyFunction(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
@@ -461,7 +510,7 @@ public class QB<T> extends CondBuilder {
             return this;
         }
 
-        public X sourceScript(String sourceScript, Object...vs) {
+        public X sourceScript(String sourceScript, Object... vs) {
             if (SqliStringUtil.isNullOrEmpty(sourceScript))
                 return this;
             sourceScript = normalizeSql(sourceScript);
@@ -490,7 +539,7 @@ public class QB<T> extends CondBuilder {
             return this;
         }
 
-        public X xAggr(String function, Object...values) {
+        public X xAggr(String function, Object... values) {
             List<Bb> list = get().getAggrList();
             if (list == null) {
                 list = new ArrayList<>();
@@ -505,14 +554,14 @@ public class QB<T> extends CondBuilder {
         }
 
         public X having(ResultKeyAlia resultKeyAlia, Op op, Object value) {
-            Having having = Having.of(op,value);
+            Having having = Having.of(op, value);
             having.setAliaOrFunction(resultKeyAlia.getKey());
             get().getHavingList().add(having);
             return this;
         }
 
         public X having(String functionScript, Op op, Object value) {
-            Having having = Having.of(op,value);
+            Having having = Having.of(op, value);
             having.setAliaOrFunction(functionScript);
             get().getHavingList().add(having);
             return this;
@@ -527,8 +576,8 @@ public class QB<T> extends CondBuilder {
         }
 
         @Override
-        public X sort(String orderBy, Direction direction){
-            return (X) super.sort(orderBy,direction);
+        public X sort(String orderBy, Direction direction) {
+            return (X) super.sort(orderBy, direction);
         }
 
         /**
@@ -547,23 +596,23 @@ public class QB<T> extends CondBuilder {
 
 
         public X eq(String key, Object value) {
-            return (X) super.eq(key,value);
+            return (X) super.eq(key, value);
         }
 
         public X gt(String key, Object value) {
-            return (X) super.gt(key,value);
+            return (X) super.gt(key, value);
         }
 
         public X gte(String key, Object value) {
-            return (X) super.gte(key,value);
+            return (X) super.gte(key, value);
         }
 
         public X lt(String key, Object value) {
-            return (X) super.lt(key,value);
+            return (X) super.lt(key, value);
         }
 
         public X lte(String key, Object value) {
-            return (X) super.lte(key,value);
+            return (X) super.lte(key, value);
         }
 
         public X ne(String property, Object value) {
@@ -583,59 +632,59 @@ public class QB<T> extends CondBuilder {
         }
 
         public X in(String property, List list) {
-            return (X) super.in(property,list);
+            return (X) super.in(property, list);
         }
 
         public X inRequired(String property, List list) {
-            return (X) super.inRequired(property,list);
+            return (X) super.inRequired(property, list);
         }
 
         public X nin(String property, List list) {
-            return (X) super.nin(property,list);
+            return (X) super.nin(property, list);
         }
 
-        public X nonNull(String property){
+        public X nonNull(String property) {
             return (X) super.nonNull(property);
         }
 
-        public X isNull(String property){
+        public X isNull(String property) {
             return (X) super.isNull(property);
         }
 
-        public X x(String sqlSegment){
+        public X x(String sqlSegment) {
             return (X) super.x(sqlSegment);
         }
 
-        public X x(String sqlSegment, Object...values){
+        public X x(String sqlSegment, Object... values) {
             return (X) super.x(sqlSegment, values);
         }
 
-        public X and(SubCond sub){
+        public X and(SubCond sub) {
             return (X) super.and(sub);
         }
 
-        public X or(SubCond sub){
+        public X or(SubCond sub) {
             return (X) super.or(sub);
         }
 
-        public X beginSub(){
+        public X beginSub() {
             return (X) super.beginSub();
         }
 
-        public X endSub(){
+        public X endSub() {
             return (X) super.endSub();
         }
 
-        public X bool(Bool cond, Then then){
+        public X bool(Bool cond, Then then) {
             return (X) super.bool(cond, then);
         }
 
-        public X or(){
+        public X or() {
             return (X) super.or();
         }
 
 
-        public void clear(){
+        public void clear() {
             super.clear();
         }
 

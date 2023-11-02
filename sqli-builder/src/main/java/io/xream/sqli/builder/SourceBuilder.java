@@ -34,21 +34,24 @@ import java.util.List;
  */
 public interface SourceBuilder {
 
+
     SourceBuilder source(Class clz);
 
-    SourceBuilder sub(Sub sub);
-
-    SourceBuilder with(Sub sub);
-
-    SourceBuilder alia(String alia);
-
     SourceBuilder join(JoinType joinType, Class clz);
-
     SourceBuilder join(String joinStr, Class clz);
 
-    CondBuilder on(String onSql);
+    SourceBuilder source(Class clz, String alia);
+    SourceBuilder sub(Sub sub, String alia);
+    SourceBuilder with(Sub sub, String alia);
 
+    SourceBuilder join(JoinType joinType, Class clz, String alia);
+    SourceBuilder join(String joinStr, Class clz, String alia);
 
+    SourceBuilder join(JoinType joinType, Sub sub, String alia);
+    SourceBuilder join(String joinStr, Sub sub, String alia);
+
+    SourceBuilder on(String onSql);
+    SourceBuilder on(String onSql, On on);
 
 
     static void checkSourceAndAlia(List<SourceScript> list) {
@@ -94,7 +97,6 @@ public interface SourceBuilder {
 
                 sourceScript = getLast(list);
                 List<Bb> bbList = sourceScript.getJoin().getOn().getBbs();
-
 
                 int j = i;
                 for (;j<size;j++) {
@@ -225,8 +227,8 @@ public interface SourceBuilder {
 
     static SourceScript createAndGet(List<SourceScript> list) {
         SourceScript sourceScript = new SourceScript();
-        On on = new On();
-        Join join = new Join();
+        ON on = new ON();
+        JOIN join = new JOIN();
         join.setOn(on);
         sourceScript.setJoin(join);
         list.add(sourceScript);

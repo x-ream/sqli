@@ -35,6 +35,16 @@ public final class Bb {
     private Object value;
     private List<Bb> subList;
     public Bb(){}
+
+    public static Bb of(Op c, Op p, String key, Object value){
+        Bb bb = new Bb();
+        bb.setC(c);
+        bb.setP(p);
+        bb.setKey(key);
+        bb.setValue(value);
+        return bb;
+    }
+
     public Bb(boolean isOr){
         if (isOr)
             c = Op.OR;

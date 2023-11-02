@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class On {
+public final class ON {
 
     private List<Bb> bbs = new ArrayList<>();
     private CondBuilder builder;

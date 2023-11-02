@@ -94,7 +94,7 @@ public interface SourceScriptOptimizable {
 //                continue;
             if (sourceScript.getJoin() == null)
                 continue;
-            On on = sourceScript.getJoin().getOn();
+            ON on = sourceScript.getJoin().getOn();
             if (on == null )
                 continue;
             String str = on.getBbs().stream().map(Bb::getKey).collect(Collectors.joining(","));

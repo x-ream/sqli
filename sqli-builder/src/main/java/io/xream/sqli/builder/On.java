@@ -18,44 +18,10 @@
  */
 package io.xream.sqli.builder;
 
+
 /**
  * @author Sim
  */
-public final class JoinFrom {
-
-    private String alia;
-    private String key;
-
-    public String getAlia() {
-        return alia;
-    }
-
-    public void setAlia(String alia) {
-        this.alia = alia;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public static JoinFrom of(String alia, String key) {
-        if (key.contains("."))
-            throw new IllegalArgumentException("JoinFrom key can not contains '.'");
-        JoinFrom joinFrom = new JoinFrom();
-        joinFrom.setAlia(alia);
-        joinFrom.setKey(key);
-        return joinFrom;
-    }
-
-    @Override
-    public String toString() {
-        return "JoinFrom{" +
-                "alia='" + alia + '\'' +
-                ", key='" + key + '\'' +
-                '}';
-    }
+public interface On {
+    void buildBy(CondBuilder subBuilder);
 }

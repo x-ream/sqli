@@ -32,7 +32,7 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
     private String source;
     private Q.X subQ;
     private String alia;
-    private Join join;
+    private JOIN join;
     private boolean isWith;
 
     private transient boolean used;
@@ -62,11 +62,11 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
         this.alia = alia;
     }
 
-    public Join getJoin() {
+    public JOIN getJoin() {
         return join;
     }
 
-    public void setJoin(Join join) {
+    public void setJoin(JOIN join) {
         this.join = join;
     }
 
@@ -149,7 +149,7 @@ public final class SourceScript implements CondQToSql, CondQToSql.Pre {
             sb.append(SqlScript.SPACE).append(alia);
         }
 
-        On on = join.getOn();
+        ON on = join.getOn();
         if (on != null && !on.getBbs().isEmpty()) {
             sb.append(SqlScript.ON);
             buildConditionSql(sb, on.getBbs(), mappable);
