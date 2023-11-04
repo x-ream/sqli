@@ -19,7 +19,6 @@
 package io.xream.sqli.builder;
 
 import io.xream.sqli.builder.internal.*;
-import io.xream.sqli.page.Paged;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.BeanUtil;
@@ -509,17 +508,9 @@ public class QB<T> extends CondBuilder {
             return this;
         }
 
-        public X having(ResultKeyAlia resultKeyAlia, Op op, Object value) {
-            Having having = Having.of(op, value);
-            having.setAliaOrFunction(resultKeyAlia.getKey());
-            get().getHavingList().add(having);
-            return this;
-        }
-
-        public X having(String functionScript, Op op, Object value) {
-            Having having = Having.of(op, value);
-            having.setAliaOrFunction(functionScript);
-            get().getHavingList().add(having);
+        public X having(Having having) {
+            CondBuilder cb = new CondBuilder(get().getHavingList());
+            having.buildBy(cb);
             return this;
         }
 
@@ -539,13 +530,13 @@ public class QB<T> extends CondBuilder {
         /**
          * @param type
          * @param property
-         * @param having   paged().totalRowsIgnored(true), if isTotalRowsIgnored == false，will throw Exception
+         * @param havingBb   paged().totalRowsIgnored(true), if isTotalRowsIgnored == false，will throw Exception
          */
-        public X reduce(ReduceType type, String property, Having having) {
+        public X reduce(ReduceType type, String property, Bb havingBb) {
             Reduce reduce = new Reduce();
             reduce.setType(type);
             reduce.setProperty(property);
-            reduce.setHaving(having);
+            reduce.setHaving(havingBb);
             get().getReduceList().add(reduce);
             return this;
         }

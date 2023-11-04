@@ -425,9 +425,8 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                         .append(SqlScript.RIGHT_PARENTTHESIS).append(SqlScript.SPACE)//" ) "
                         .append(SqlScript.AS).append(SqlScript.SPACE).append(alianName);
 
-                Having h = reduce.getHaving();
+                Bb h = reduce.getHaving();
                 if (h != null) {
-                    h.setAliaOrFunction(alianName);
                     xq.getHavingList().add(h);
                 }
                 flag = true;
@@ -597,9 +596,9 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             return;
 
         Q.X xq = (Q.X) q;
-        List<Having> havingList = xq.getHavingList();
+        List<Bb> bbList = xq.getHavingList();
 
-        if (havingList.isEmpty())
+        if (bbList == null || bbList.isEmpty())
             return;
 
         if (!q.isTotalRowsIgnored()) {
@@ -607,7 +606,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         }
 
         boolean flag = true;
-        for (Having h : havingList) {
+        for (Bb h : bbList) {
             if (h == null)
                 continue;
             if (flag) {
@@ -617,7 +616,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 sqlSth.sbCondition.append(Op.AND.sql());
             }
 
-            String alia = h.getAliaOrFunction();
+            String alia = h.getKey();
             if (alia.contains(SqlScript.LEFT_PARENTTHESIS)) {
                 alia = normalizeSql(alia);
                 final String finalKey = alia;
@@ -626,10 +625,10 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
             } else {
-                sqlSth.sbCondition.append(alia);
+                sqlSth.sbCondition.append(mapping(alia,q));
                 addConditonBeforeOptimization(alia, sqlSth.conditionSet);
             }
-            sqlSth.sbCondition.append(SqlScript.SPACE).append(h.getOp().sql()).append(SqlScript.SPACE).append(h.getValue());
+            sqlSth.sbCondition.append(SqlScript.SPACE).append(h.getP().sql()).append(SqlScript.SPACE).append(h.getValue());
         }
     }
 

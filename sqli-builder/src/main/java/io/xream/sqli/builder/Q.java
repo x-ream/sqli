@@ -214,7 +214,7 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 		private List<Object> sourceScriptValueList;
 		private List<SourceScript> sourceScripts;
 		private List<Reduce> reduceList;
-		private List<Having> havingList;
+		private List<Bb> havingBbList;
 		private boolean isResultWithDottedKey;
 		private boolean isWithoutOptimization;
 		@JsonIgnore
@@ -237,11 +237,15 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 			return reduceList;
 		}
 
-		public List<Having> getHavingList() {
-			if (this.havingList == null) {
-				this.havingList = new ArrayList<>();
+		public List<Bb> getHavingList() {
+			if (this.havingBbList == null) {
+				this.havingBbList = new ArrayList<>();
 			}
-			return havingList;
+			return havingBbList;
+		}
+
+		public void setHavingList(List<Bb> havingBbList) {
+			this.havingBbList = havingBbList;
 		}
 
 		public List<SourceScript> getSourceScripts() {
@@ -354,10 +358,6 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 
 		public void setReduceList(List<Reduce> reduceList) {
 			this.reduceList = reduceList;
-		}
-
-		public void setHavingList(List<Having> havingList) {
-			this.havingList = havingList;
 		}
 
 		@Override

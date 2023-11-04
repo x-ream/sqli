@@ -19,13 +19,15 @@
 package io.xream.sqli.builder;
 
 
+import io.xream.sqli.builder.internal.Bb;
+
 /**
  * @author Sim
  */
 public final class Reduce {
     private ReduceType type;
     private String property;
-    private Having having;
+    private Bb having;
 
     public ReduceType getType() {
         return type;
@@ -43,11 +45,11 @@ public final class Reduce {
         this.property = property;
     }
 
-    public Having getHaving() {
+    public Bb getHaving() {
         return having;
     }
 
-    public void setHaving(Having having) {
+    public void setHaving(Bb having) {
         this.having = having;
     }
 
