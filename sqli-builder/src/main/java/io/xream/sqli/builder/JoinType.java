@@ -22,12 +22,12 @@ package io.xream.sqli.builder;
  * @author Sim
  */
 public enum JoinType {
-    MAIN(""),
+    NON_JOIN(","),
     JOIN("JOIN"),
-    INNER_JOIN("INNER JOIN"),
-    OUTER_JOIN("OUTER JOIN"),
-    LEFT_JOIN("LEFT JOIN"),
-    RIGHT_JOIN("RIGHT JOIN"),
+    INNER("INNER JOIN"),
+    OUTER("OUTER JOIN"),
+    LEFT("LEFT JOIN"),
+    RIGHT("RIGHT JOIN"),
     COMMA(",");
 
     private String sql;

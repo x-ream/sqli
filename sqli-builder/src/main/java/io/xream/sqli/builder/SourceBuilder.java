@@ -37,8 +37,8 @@ public interface SourceBuilder {
 
     SourceBuilder source(Class clz);
 
-    SourceBuilder join(JoinType joinType);
-    SourceBuilder join(String joinStr);
+    SourceBuilder JOIN(JoinType joinType);
+    SourceBuilder JOIN(String joinStr);
 
     SourceBuilder source(Class clz, String alia);
     SourceBuilder sub(Sub sub, String alia);
@@ -115,22 +115,22 @@ public interface SourceBuilder {
             switch (strUpper) {
                 case "INNER":
                     sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.INNER_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.INNER);
                     i++;
                     break;
                 case "LEFT":
                     sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.LEFT_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.LEFT);
                     i++;
                     break;
                 case "RIGHT":
                     sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.RIGHT_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.RIGHT);
                     i++;
                     break;
                 case "OUTER":
                     sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.OUTER_JOIN);
+                    sourceScript.getJoin().setJoin(JoinType.OUTER);
                     i++;
                     break;
                 case "FULL":
@@ -144,7 +144,7 @@ public interface SourceBuilder {
                     break;
                 case ",":
                     sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.COMMA);
+                    sourceScript.getJoin().setJoin(JoinType.NON_JOIN);
                     break;
                 case "ON","AND","OR":
                     String selfKey = sourceScriptsSplittedList.get(++i);

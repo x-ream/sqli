@@ -321,17 +321,17 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder join(JoinType joinType) {
+            public SourceBuilder JOIN(JoinType joinType) {
                 sourceScript();
-                JOIN join = join();
+                JOIN join = JOIN();
                 join.setJoin(joinType);
                 return this;
             }
 
             @Override
-            public SourceBuilder join(String joinStr) {
+            public SourceBuilder JOIN(String joinStr) {
                 sourceScript();
-                JOIN join = join();
+                JOIN join = JOIN();
                 join.setJoin(joinStr);
                 return this;
             }
@@ -345,7 +345,7 @@ public class QB<T> extends CondBuilder {
             @Override
             public SourceBuilder on(String onSql, On on) {
 
-                JOIN join = join();
+                JOIN join = JOIN();
                 ON onE = join.getOn();
                 if (onE == null) {
 
@@ -366,7 +366,7 @@ public class QB<T> extends CondBuilder {
                 return this;
             }
 
-            private JOIN join() {
+            private JOIN JOIN() {
                 JOIN join = sourceScriptTemp.getJoin();
                 if (join == null) {
                     join = new JOIN();
@@ -414,7 +414,7 @@ public class QB<T> extends CondBuilder {
             instance = this;
         }
 
-        public X resultKey(String resultKey) {
+        private X resultKey(String resultKey) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             get().getResultKeyList().add(resultKey);
