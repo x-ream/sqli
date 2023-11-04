@@ -37,18 +37,12 @@ public interface SourceBuilder {
 
     SourceBuilder source(Class clz);
 
-    SourceBuilder join(JoinType joinType, Class clz);
-    SourceBuilder join(String joinStr, Class clz);
+    SourceBuilder join(JoinType joinType);
+    SourceBuilder join(String joinStr);
 
     SourceBuilder source(Class clz, String alia);
     SourceBuilder sub(Sub sub, String alia);
     SourceBuilder with(Sub sub, String alia);
-
-    SourceBuilder join(JoinType joinType, Class clz, String alia);
-    SourceBuilder join(String joinStr, Class clz, String alia);
-
-    SourceBuilder join(JoinType joinType, Sub sub, String alia);
-    SourceBuilder join(String joinStr, Sub sub, String alia);
 
     SourceBuilder on(String onSql);
     SourceBuilder on(String onSql, On on);

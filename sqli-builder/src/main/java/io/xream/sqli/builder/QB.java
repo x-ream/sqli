@@ -297,18 +297,10 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder join(JoinType joinType, Class clz) {
-                return join(joinType, clz, null);
-            }
-
-            @Override
-            public SourceBuilder join(String joinStr, Class clz) {
-                return join(joinStr, clz, null);
-            }
-
-            @Override
             public SourceBuilder source(Class clz, String alia) {
-                sourceScript();
+                if (get().getSourceScripts().isEmpty()) {
+                    sourceScript();
+                }
                 sourceScriptTemp.setAlia(alia);
                 sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clz.getSimpleName()));
                 return this;
@@ -334,41 +326,20 @@ public class QB<T> extends CondBuilder {
                 return this;
             }
 
-            private SourceBuilder join(JoinType joinType) {
+            @Override
+            public SourceBuilder join(JoinType joinType) {
+                sourceScript();
                 JOIN join = join();
                 join.setJoin(joinType);
                 return this;
             }
 
-            private SourceBuilder join(String joinStr) {
+            @Override
+            public SourceBuilder join(String joinStr) {
+                sourceScript();
                 JOIN join = join();
                 join.setJoin(joinStr);
                 return this;
-            }
-
-            @Override
-            public SourceBuilder join(JoinType joinType, Class clz, String alia) {
-                sourceScript();
-                source(clz, alia);
-                return join(joinType);
-            }
-
-            @Override
-            public SourceBuilder join(String joinStr, Class clz, String alia) {
-                source(clz, alia);
-                return join(joinStr);
-            }
-
-            @Override
-            public SourceBuilder join(JoinType joinType, Sub sub, String alia) {
-                sub(sub, alia);
-                return join(joinType);
-            }
-
-            @Override
-            public SourceBuilder join(String joinStr, Sub sub, String alia) {
-                sub(sub, alia);
-                return join(joinStr);
             }
 
             @Override
@@ -409,8 +380,6 @@ public class QB<T> extends CondBuilder {
                 }
                 return join;
             }
-
-
         };
 
         private X instance;
@@ -691,13 +660,6 @@ public class QB<T> extends CondBuilder {
         public X paged(Pageable pageable) {
 
             super.paged(pageable);
-
-            return this;
-        }
-
-        public X paged(Paged paged) {
-
-            super.paged(paged);
 
             return this;
         }
