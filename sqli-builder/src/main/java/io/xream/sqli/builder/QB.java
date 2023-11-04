@@ -126,11 +126,6 @@ public class QB<T> extends CondBuilder {
         return this.pageBuilder;
     }
 
-    public QB<T> paged(Paged paged) {
-        q.paged(paged);
-        return this;
-    }
-
     public QB<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = KV.of(porperty, inList);
@@ -468,14 +463,6 @@ public class QB<T> extends CondBuilder {
             functionResultKey.setAlia(resultKeyAlia.getAlia());
             functionResultKey.setValues(values);
             get().getResultFunctionList().add(functionResultKey);
-            return this;
-        }
-
-        public X sourceScript(String sourceScript) {
-            if (SqliStringUtil.isNullOrEmpty(sourceScript))
-                return this;
-            sourceScript = normalizeSql(sourceScript);
-            get().setSourceScript(sourceScript);
             return this;
         }
 
