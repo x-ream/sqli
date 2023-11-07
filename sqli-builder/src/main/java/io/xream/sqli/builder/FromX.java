@@ -18,7 +18,7 @@
  */
 package io.xream.sqli.builder;
 
-public interface SourceX {
+public interface FromX {
 
-    void buildBy(SourceBuilder sourceBuilder);
+    void buildBy(FromBuilder fromBuilder);
 }

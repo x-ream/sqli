@@ -32,35 +32,35 @@ import java.util.List;
 /**
  * @author Sim
  */
-public interface SourceBuilder {
+public interface FromBuilder {
 
 
-    SourceBuilder source(Class clz);
+    FromBuilder of(Class clz);
 
-    SourceBuilder JOIN(JoinType joinType);
-    SourceBuilder JOIN(String joinStr);
+    FromBuilder JOIN(JoinType joinType);
+    FromBuilder JOIN(String joinStr);
 
-    SourceBuilder source(Class clz, String alia);
-    SourceBuilder sub(Sub sub, String alia);
-    SourceBuilder with(Sub sub, String alia);
+    FromBuilder of(Class clz, String alia);
+    FromBuilder sub(Sub sub, String alia);
+    FromBuilder with(Sub sub, String alia);
 
-    SourceBuilder on(String onSql);
-    SourceBuilder on(String onSql, On on);
+    FromBuilder on(String onSql);
+    FromBuilder on(String onSql, On on);
 
 
-    static void checkSourceAndAlia(List<SourceScript> list) {
-        for (SourceScript sourceScript : list) {
-            final String source = sourceScript.getSource();
+    static void checkSourceAndAlia(List<Froms> list) {
+        for (Froms froms : list) {
+            final String source = froms.getSource();
             if (SqliStringUtil.isNotNull(source) && !Parser.contains(source)) {
                 String tip = "";
-                if (sourceScript.getJoin().getJoin() != null) {
-                    tip += sourceScript.getJoin().getJoin().replace("_", " ");
+                if (froms.getJoin().getJoin() != null) {
+                    tip += froms.getJoin().getJoin().replace("_", " ");
                 } else {
                     tip += SqlScript.FROM;
                 }
                 throw new ParsingException(tip + SqlScript.SPACE + source);
             }
-            String alia = sourceScript.getAlia();
+            String alia = froms.getAlia();
             if (source != null && alia != null && !alia.equals(source) && Parser.contains(alia)) {
                 throw new NotSupportedException("not support table alia = firstLetterLower(parsedEntityName), name+alia: " + source + " " + alia);
             }
@@ -72,16 +72,16 @@ public interface SourceBuilder {
      * @param sourceScriptsSplittedList
      * @return
      */
-    static List<SourceScript> parseScriptAndBuild(List<String> sourceScriptsSplittedList, List<Object> sourceScriptValues) {
+    static List<Froms> parseScriptAndBuild(List<String> sourceScriptsSplittedList, List<Object> sourceScriptValues) {
 
         List<Object> sourceScriptValueList = new LinkedList<>();
         if (sourceScriptValues != null) {
             sourceScriptValueList.addAll(sourceScriptValues);
         }
 
-        List<SourceScript> list = new ArrayList<>();
+        List<Froms> list = new ArrayList<>();
 
-        SourceScript sourceScript = null;
+        Froms froms = null;
         int size = sourceScriptsSplittedList.size();
         for (int i = 0; i < size; i++) {
             String str = sourceScriptsSplittedList.get(i);
@@ -89,8 +89,8 @@ public interface SourceBuilder {
 
             if (strUpper.equals("AND") || strUpper.equals("OR")) {
 
-                sourceScript = getLast(list);
-                List<Bb> bbList = sourceScript.getJoin().getOn().getBbs();
+                froms = getLast(list);
+                List<Bb> bbList = froms.getJoin().getOn().getBbs();
 
                 int j = i;
                 for (;j<size;j++) {
@@ -114,43 +114,43 @@ public interface SourceBuilder {
 
             switch (strUpper) {
                 case "INNER":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.INNER);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.INNER);
                     i++;
                     break;
                 case "LEFT":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.LEFT);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.LEFT);
                     i++;
                     break;
                 case "RIGHT":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.RIGHT);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.RIGHT);
                     i++;
                     break;
                 case "OUTER":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.OUTER);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.OUTER);
                     i++;
                     break;
                 case "FULL":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.JOIN);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.JOIN);
                     i++;
                     break;
                 case "JOIN":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.JOIN);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.JOIN);
                     break;
                 case ",":
-                    sourceScript = createAndGet(list);
-                    sourceScript.getJoin().setJoin(JoinType.NON_JOIN);
+                    froms = createAndGet(list);
+                    froms.getJoin().setJoin(JoinType.NON_JOIN);
                     break;
                 case "ON","AND","OR":
                     String selfKey = sourceScriptsSplittedList.get(++i);
                     String op = sourceScriptsSplittedList.get(++i);// op
                     String fromKey = sourceScriptsSplittedList.get(++i);
-                    if (fromKey.startsWith(sourceScript.getSource()) || (sourceScript.getAlia() != null && fromKey.startsWith(sourceScript.getAlia()))) {
+                    if (fromKey.startsWith(froms.getSource()) || (froms.getAlia() != null && fromKey.startsWith(froms.getAlia()))) {
                         String temp = selfKey;
                         selfKey = fromKey;
                         fromKey = temp;
@@ -159,18 +159,18 @@ public interface SourceBuilder {
                     bb.setC(Op.NONE);
                     bb.setP(Op.X);
                     bb.setKey(selfKey + " " + op + " " + fromKey);
-                    sourceScript.getJoin().getOn().getBbs().add(bb);
+                    froms.getJoin().getOn().getBbs().add(bb);
 
                     break;
                 default:
-                    if (sourceScript == null) {
-                        sourceScript = createAndGet(list);
+                    if (froms == null) {
+                        froms = createAndGet(list);
                     }
-                    sourceScript.setSource(str);
+                    froms.setSource(str);
                     if (i < size - 1) {
                         String tryAlia = sourceScriptsSplittedList.get(i + 1);
                         if (!SqlScript.SOURCE_SCRIPT.contains(tryAlia.toUpperCase())) {
-                            sourceScript.setAlia(tryAlia);
+                            froms.setAlia(tryAlia);
                             i++;
                         }
                     }
@@ -219,17 +219,17 @@ public interface SourceBuilder {
         return list;
     }
 
-    static SourceScript createAndGet(List<SourceScript> list) {
-        SourceScript sourceScript = new SourceScript();
+    static Froms createAndGet(List<Froms> list) {
+        Froms froms = new Froms();
         ON on = new ON();
         JOIN join = new JOIN();
         join.setOn(on);
-        sourceScript.setJoin(join);
-        list.add(sourceScript);
-        return sourceScript;
+        froms.setJoin(join);
+        list.add(froms);
+        return froms;
     }
 
-    static SourceScript getLast(List<SourceScript> list) {
+    static Froms getLast(List<Froms> list) {
         return list.get(list.size() - 1);
     }
 

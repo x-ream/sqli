@@ -19,7 +19,7 @@
 package io.xream.sqli.support;
 
 import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.internal.SourceScript;
+import io.xream.sqli.builder.internal.Froms;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
@@ -30,8 +30,8 @@ public interface XSingleSourceSupport {
 
     default void supportSingleSource(Q.X xq) {
         if (xq.getSourceScripts().size() == 1 && xq.getParsed() == null) {
-            SourceScript sourceScript = xq.getSourceScripts().get(0);
-            String source = sourceScript.getSource();
+            Froms froms = xq.getSourceScripts().get(0);
+            String source = froms.getSource();
             if (source != null) {
                 Parsed parsed = Parser.get(source);
                 xq.setParsed(parsed);

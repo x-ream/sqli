@@ -23,7 +23,7 @@ import io.xream.sqli.api.Routable;
 import io.xream.sqli.builder.internal.Bb;
 import io.xream.sqli.builder.internal.CondQ;
 import io.xream.sqli.builder.internal.Distinct;
-import io.xream.sqli.builder.internal.SourceScript;
+import io.xream.sqli.builder.internal.Froms;
 import io.xream.sqli.mapping.Mappable;
 import io.xream.sqli.mapping.SqlNormalizer;
 import io.xream.sqli.mapping.XHelpful;
@@ -212,7 +212,7 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 		private Distinct distinct;
 		private String sourceScript;
 		private List<Object> sourceScriptValueList;
-		private List<SourceScript> sourceScripts;
+		private List<Froms> froms;
 		private List<Reduce> reduceList;
 		private List<Bb> havingBbList;
 		private boolean isResultWithDottedKey;
@@ -248,11 +248,11 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 			this.havingBbList = havingBbList;
 		}
 
-		public List<SourceScript> getSourceScripts() {
-			if (this.sourceScripts == null){
-				this.sourceScripts = new ArrayList<>();
+		public List<Froms> getSourceScripts() {
+			if (this.froms == null){
+				this.froms = new ArrayList<>();
 			}
-			return this.sourceScripts;
+			return this.froms;
 		}
 
 		public String getGroupBy() {
@@ -352,8 +352,8 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 			this.resultKeyAssignedAliaList = resultKeyAssignedAliaList;
 		}
 
-		public void setSourceScripts(List<SourceScript> sourceScripts) {
-			this.sourceScripts = sourceScripts;
+		public void setSourceScripts(List<Froms> froms) {
+			this.froms = froms;
 		}
 
 		public void setReduceList(List<Reduce> reduceList) {
@@ -388,19 +388,19 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 		public boolean isAbort(){
 			if (super.isAbort())
 				return true;
-			if (this.sourceScripts == null)
+			if (this.froms == null)
 				return false;
-			return isSubAbort(this.sourceScripts);
+			return isSubAbort(this.froms);
 		}
 
-		private boolean isSubAbort(List<SourceScript> sourceScripts){
-			for (SourceScript ss : sourceScripts) {
+		private boolean isSubAbort(List<Froms> froms){
+			for (Froms ss : froms) {
 				X sub = ss.getSubQ();
 				if (sub == null)
 					continue;
-				if (sub.sourceScripts == null)
+				if (sub.froms == null)
 					continue;
-				if (sub.isSubAbort(sub.sourceScripts))
+				if (sub.isSubAbort(sub.froms))
 					return true;
 			}
 			return false;

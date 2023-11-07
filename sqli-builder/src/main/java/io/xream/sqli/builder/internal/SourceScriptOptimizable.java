@@ -49,8 +49,8 @@ public interface SourceScriptOptimizable {
         }
     }
 
-    default void optimizeSourceScript(Set<String> conditionSet, List<SourceScript> sourceScripts) {
-        if (sourceScripts.size() <= 1)
+    default void optimizeSourceScript(Set<String> conditionSet, List<Froms> fromsList) {
+        if (fromsList.size() <= 1)
             return;
         if (conditionSet.size() > 0) {
             for (String test : conditionSet) {
@@ -61,49 +61,49 @@ public interface SourceScriptOptimizable {
                 }
             }
         }
-        for (SourceScript sourceScript : sourceScripts) {
-            if (sourceScript.getSubQ() != null) {
-                sourceScript.used();
+        for (Froms froms : fromsList) {
+            if (froms.getSubQ() != null) {
+                froms.used();
                 continue;
             }
             for (String key : conditionSet) {
                 if (key == null)
                     continue;
-                if (SqliStringUtil.isNullOrEmpty(sourceScript.alia())) {
-                    if (key.contains(sourceScript.getSource() + ".")) {
-                        sourceScript.used();
+                if (SqliStringUtil.isNullOrEmpty(froms.alia())) {
+                    if (key.contains(froms.getSource() + ".")) {
+                        froms.used();
                         break;
                     }
                 } else {
-                    if (key.contains(sourceScript.alia() + ".")) {
-                        sourceScript.used();
+                    if (key.contains(froms.alia() + ".")) {
+                        froms.used();
                         break;
                     }
                 }
             }
         }
 
-        int size = sourceScripts.size();
+        int size = fromsList.size();
         for (int i = size - 1; i >= 0; i--) {
-            SourceScript sourceScript = sourceScripts.get(i);
-            if (sourceScript.getSubQ() != null) {
-                sourceScript.targeted();
+            Froms from = fromsList.get(i);
+            if (from.getSubQ() != null) {
+                from.targeted();
                 continue;
             }
 //            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
 //                continue;
-            if (sourceScript.getJoin() == null)
+            if (from.getJoin() == null)
                 continue;
-            ON on = sourceScript.getJoin().getOn();
+            ON on = from.getJoin().getOn();
             if (on == null )
                 continue;
             String str = on.getBbs().stream().map(Bb::getKey).collect(Collectors.joining(","));
 
             for (int j = i - 1; j >= 0; j--) {
-                SourceScript sc = sourceScripts.get(j);
+                Froms sc = fromsList.get(j);
                 if (sc.isTargeted())
                     continue;
-                if (sourceScript.getSource().equals(sc.getSource()))
+                if (from.getSource().equals(sc.getSource()))
                     continue;
                 //FIXME
                 if (str.contains(sc.alia()+".")) {
@@ -113,10 +113,10 @@ public interface SourceScriptOptimizable {
             }
         }
 
-        Iterator<SourceScript> ite = sourceScripts.iterator();
+        Iterator<Froms> ite = fromsList.iterator();
         while (ite.hasNext()) {
-            SourceScript sourceScript = ite.next();
-            if (!sourceScript.isUsed() && !sourceScript.isTargeted())
+            Froms froms = ite.next();
+            if (!froms.isUsed() && !froms.isTargeted())
                 ite.remove();
         }
     }

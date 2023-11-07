@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Sim
  */
-public final class SourceScript implements CondQToSql, CondQToSql.Pre {
+public final class Froms implements CondQToSql, CondQToSql.Pre {
 
     private String source;
     private Q.X subQ;

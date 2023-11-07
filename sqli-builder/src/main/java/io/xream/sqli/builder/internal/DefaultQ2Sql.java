@@ -635,10 +635,10 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     private void parseAliaFromRefresh(Qr qr) {
 
         String script = qr.getSourceScript();//string -> list<>
-        List<String> list = SourceBuilder.split(script);
-        List<SourceScript> sourceScripts = SourceBuilder.parseScriptAndBuild(list,null);
-        SourceBuilder.checkSourceAndAlia(sourceScripts);
-        for (SourceScript sc : sourceScripts) {
+        List<String> list = FromBuilder.split(script);
+        List<Froms> froms = FromBuilder.parseScriptAndBuild(list,null);
+        FromBuilder.checkSourceAndAlia(froms);
+        for (Froms sc : froms) {
             qr.getAliaMap().put(sc.alia(), sc.getSource());
         }
 
@@ -653,23 +653,23 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             if (rmc.getSourceScripts().isEmpty()) {// builderSource null
                 String sourceScript = rmc.sourceScript();//string -> list<>
 
-                List<String> list = SourceBuilder.split(sourceScript);
-                List<SourceScript> sourceScripts = SourceBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
-                rmc.getSourceScripts().addAll(sourceScripts);
+                List<String> list = FromBuilder.split(sourceScript);
+                List<Froms> froms = FromBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
+                rmc.getSourceScripts().addAll(froms);
             }
 
-            SourceBuilder.checkSourceAndAlia(rmc.getSourceScripts());
+            FromBuilder.checkSourceAndAlia(rmc.getSourceScripts());
             supportSingleSource(rmc);
 
             Map<String, String> aliaMap = rmc.getAliaMap();
-            for (SourceScript sc : rmc.getSourceScripts()) {
+            for (Froms sc : rmc.getSourceScripts()) {
                 if (SqliStringUtil.isNotNull(sc.getSource())) {
                     aliaMap.put(sc.alia(), sc.getSource());
                 }
             }
 
-            for (SourceScript sourceScript : rmc.getSourceScripts()) {
-                JOIN join = sourceScript.getJoin();
+            for (Froms froms : rmc.getSourceScripts()) {
+                JOIN join = froms.getJoin();
                 if (join != null && join.getOn() != null) {
                     addConditionBeforeOptimization(join.getOn().getBbs(), sqlSth.conditionSet);
                 }
@@ -680,9 +680,9 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
     private void with(SqlSth sb, Q.X rmc) {
         
-        List<SourceScript> ssList = rmc.getSourceScripts();
+        List<Froms> ssList = rmc.getSourceScripts();
         String subStr = null;
-        for (SourceScript ss : ssList) {
+        for (Froms ss : ssList) {
             if (ss.isWith()) {
                 subStr = subStr == null ? "" : subStr + ", ";
                 subStr += (ss.getAlia() + SqlScript.AS + SqlScript.SUB );
@@ -776,10 +776,10 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         if (q instanceof Q.X) {
             Q.X xq = (Q.X) q;//FIXME 判断是虚表
             filter(bbList, xq);
-            for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
-                if (sourceScript.getJoin() == null || sourceScript.getJoin().getOn() == null)
+            for (Froms froms : ((Q.X) q).getSourceScripts()) {
+                if (froms.getJoin() == null || froms.getJoin().getOn() == null)
                     continue;
-                List<Bb> bbs = sourceScript.getJoin().getOn().getBbs();
+                List<Bb> bbs = froms.getJoin().getOn().getBbs();
                 if (bbs == null || bbs.isEmpty())
                     continue;
                 filter(bbs, xq);
@@ -791,8 +791,8 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
     private void sourceScriptPre(Q q, SqlSubsAndValueBinding attached) {
         if (q instanceof Q.X) {
-            for (SourceScript sourceScript : ((Q.X) q).getSourceScripts()) {
-                sourceScript.pre(attached, this, q);
+            for (Froms froms : ((Q.X) q).getSourceScripts()) {
+                froms.pre(attached, this, q);
             }
         }
     }

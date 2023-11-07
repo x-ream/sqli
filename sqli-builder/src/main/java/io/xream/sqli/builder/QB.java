@@ -35,7 +35,7 @@ public class QB<T> extends CondBuilder {
 
     private Q q;
     private PageBuilder pageBuilder;
-    protected SourceScript sourceScriptTemp;
+    protected Froms fromsTemp;
 
     public QB<T> routeKey(Object routeKey) {
         this.q.setRouteKey(routeKey);
@@ -283,45 +283,45 @@ public class QB<T> extends CondBuilder {
 
     public static final class X extends QB {
 
-        private SourceBuilder sourceBuilder = new SourceBuilder() {
+        private FromBuilder fb = new FromBuilder() {
 
             @Override
-            public SourceBuilder source(Class clz) {
-                return source(clz, null);
+            public FromBuilder of(Class clz) {
+                return of(clz, null);
             }
 
             @Override
-            public SourceBuilder source(Class clz, String alia) {
+            public FromBuilder of(Class clz, String alia) {
                 if (get().getSourceScripts().isEmpty()) {
                     sourceScript();
                 }
-                sourceScriptTemp.setAlia(alia);
-                sourceScriptTemp.setSource(BeanUtil.getByFirstLower(clz.getSimpleName()));
+                fromsTemp.setAlia(alia);
+                fromsTemp.setSource(BeanUtil.getByFirstLower(clz.getSimpleName()));
                 return this;
             }
 
             @Override
-            public SourceBuilder sub(Sub sub, String alia) {
+            public FromBuilder sub(Sub sub, String alia) {
                 sourceScript();
-                sourceScriptTemp.setAlia(alia);
+                fromsTemp.setAlia(alia);
 
                 X subBuilder = QB.x();
                 sub.buildBy(subBuilder);
                 Q.X xq = subBuilder.build();
-                sourceScriptTemp.setSubQ(xq);
+                fromsTemp.setSubQ(xq);
                 subBuilder.clear();
                 return this;
             }
 
             @Override
-            public SourceBuilder with(Sub sub, String alia) {
+            public FromBuilder with(Sub sub, String alia) {
                 sub(sub, alia);
-                sourceScriptTemp.setWith(true);
+                fromsTemp.setWith(true);
                 return this;
             }
 
             @Override
-            public SourceBuilder JOIN(JoinType joinType) {
+            public FromBuilder JOIN(JoinType joinType) {
                 sourceScript();
                 JOIN join = JOIN();
                 join.setJoin(joinType);
@@ -329,7 +329,7 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder JOIN(String joinStr) {
+            public FromBuilder JOIN(String joinStr) {
                 sourceScript();
                 JOIN join = JOIN();
                 join.setJoin(joinStr);
@@ -337,13 +337,13 @@ public class QB<T> extends CondBuilder {
             }
 
             @Override
-            public SourceBuilder on(String onSql) {
+            public FromBuilder on(String onSql) {
 
                 return on(onSql, null);
             }
 
             @Override
-            public SourceBuilder on(String onSql, On on) {
+            public FromBuilder on(String onSql, On on) {
 
                 JOIN join = JOIN();
                 ON onE = join.getOn();
@@ -367,10 +367,10 @@ public class QB<T> extends CondBuilder {
             }
 
             private JOIN JOIN() {
-                JOIN join = sourceScriptTemp.getJoin();
+                JOIN join = fromsTemp.getJoin();
                 if (join == null) {
                     join = new JOIN();
-                    sourceScriptTemp.setJoin(join);
+                    fromsTemp.setJoin(join);
                 }
                 return join;
             }
@@ -380,17 +380,17 @@ public class QB<T> extends CondBuilder {
 
 
         private void sourceScript() {
-            sourceScriptTemp = new SourceScript();
-            get().getSourceScripts().add(sourceScriptTemp);
+            fromsTemp = new Froms();
+            get().getSourceScripts().add(fromsTemp);
         }
 
-        public X source(Class clz) {
+        public X from(Class clz) {
             get().setSourceScript(BeanUtil.getByFirstLower(clz.getSimpleName()));
             return this;
         }
 
-        public X sourceX(SourceX x) {
-            x.buildBy(sourceBuilder);
+        public X fromX(FromX x) {
+            x.buildBy(fb);
             return this;
         }
 
@@ -414,7 +414,7 @@ public class QB<T> extends CondBuilder {
             instance = this;
         }
 
-        private X resultKey(String resultKey) {
+        private X selectWithAlia(String resultKey) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             get().getResultKeyList().add(resultKey);
@@ -425,7 +425,16 @@ public class QB<T> extends CondBuilder {
             if (resultKeys == null)
                 return this;
             for (String resultKey : resultKeys) {
-                resultKey(resultKey);
+                selectWithAlia(resultKey);
+            }
+            return this;
+        }
+
+        public X select(String... resultKeys) {
+            if (resultKeys == null)
+                return this;
+            for (String resultKey : resultKeys) {
+                selectWithAlia(resultKey);
             }
             return this;
         }
@@ -435,7 +444,7 @@ public class QB<T> extends CondBuilder {
          * @param alia
          * @return resultKey set by framework, not alia, (temporaryRepository.findToCreate)
          */
-        public X resultKey(String resultKey, String alia) {
+        public X selectWithAlia(String resultKey, String alia) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             Objects.requireNonNull(alia, "resultKeyAssignedAlia(), alia can not null");
@@ -452,7 +461,7 @@ public class QB<T> extends CondBuilder {
          * @param functionScript FUNCTION(?,?)
          * @param values         "test", 1000
          */
-        public X resultKeyFunction(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
+        public X selectWithFunc(ResultKeyAlia resultKeyAlia, String functionScript, String... values) {
             if (SqliStringUtil.isNullOrEmpty(functionScript) || values == null)
                 return this;
             Objects.requireNonNull(resultKeyAlia, "function no alia");
@@ -470,6 +479,15 @@ public class QB<T> extends CondBuilder {
                 return this;
             sourceScript = normalizeSql(sourceScript);
             get().setSourceScript(sourceScript);
+            get().setSourceScriptValueList(vs);
+            return this;
+        }
+
+        public X from(String fromSql, Object... vs) {
+            if (SqliStringUtil.isNullOrEmpty(fromSql))
+                return this;
+            fromSql = normalizeSql(fromSql);
+            get().setSourceScript(fromSql);
             get().setSourceScriptValueList(vs);
             return this;
         }

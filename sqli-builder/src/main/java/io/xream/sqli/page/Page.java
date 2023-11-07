@@ -108,6 +108,11 @@ public final class Page<T> implements Paged {
 		this.list = list;
 	}
 
+	public void reSetList(List<T> list, Class<T> clz){
+		this.list = list;
+		this.clzz = clz;
+	}
+
 	@Deprecated
 	public void setList(List<T> list) {
 		if (Objects.isNull(this.clzz) || this.clzz == Void.class){
