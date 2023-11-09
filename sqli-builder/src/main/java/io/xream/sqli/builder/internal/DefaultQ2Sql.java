@@ -24,6 +24,7 @@ import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.mapping.Mappable;
+import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -673,8 +674,14 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                 if (join != null && join.getOn() != null && join.getOn().getBbs() != null ) {
                     List<Bb>  bbs = join.getOn().getBbs();
                     if (bbs.size() > 1) {
-                        bbs.remove(0);
-                        addConditionBeforeOptimization(bbs, sqlSth.conditionSet);
+                        List<Bb> tempList = new ArrayList<>();
+                        int i = 0;
+                        for (Bb bb : bbs) {
+                            if (i++ > 0) {
+                                tempList.add(bb);
+                            }
+                        }
+                        addConditionBeforeOptimization(tempList, sqlSth.conditionSet);
                     }
                 }
             }

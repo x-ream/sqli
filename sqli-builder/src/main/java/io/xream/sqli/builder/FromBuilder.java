@@ -146,7 +146,7 @@ public interface FromBuilder {
                     froms = createAndGet(list);
                     froms.getJoin().setJoin(JoinType.NON_JOIN);
                     break;
-                case "ON","AND","OR":
+                case "ON":
                     String selfKey = sourceScriptsSplittedList.get(++i);
                     String op = sourceScriptsSplittedList.get(++i);// op
                     String fromKey = sourceScriptsSplittedList.get(++i);
