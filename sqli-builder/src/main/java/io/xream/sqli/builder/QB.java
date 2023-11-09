@@ -85,46 +85,6 @@ public class QB<T> extends CondBuilder {
         return this;
     }
 
-    public PageBuilder paged() {
-        if (this.pageBuilder != null)
-            return this.pageBuilder;
-        this.pageBuilder = new PageBuilder() {
-
-            @Override
-            public PageBuilder ignoreTotalRows() {
-                q.setTotalRowsIgnored(true);
-                return this;
-            }
-
-            @Override
-            public PageBuilder ignoreTotalRows(boolean ignored) {
-                q.setTotalRowsIgnored(ignored);
-                return this;
-            }
-
-            @Override
-            public PageBuilder rows(int rows) {
-                q.setRows(rows);
-                return this;
-            }
-
-            @Override
-            public PageBuilder page(int page) {
-                q.setPage(page);
-                return this;
-            }
-
-            @Override
-            public PageBuilder last(long last) {
-                q.setLast(last);
-                return this;
-            }
-
-
-        };
-        return this.pageBuilder;
-    }
-
     public QB<T> sortIn(String porperty, List<? extends Object> inList) {
         if (Objects.nonNull(inList) && inList.size() > 0) {
             KV kv = KV.of(porperty, inList);
@@ -257,14 +217,6 @@ public class QB<T> extends CondBuilder {
 
     public QB or(SubCond sub) {
         return (QB) super.or(sub);
-    }
-
-    public QB beginSub() {
-        return (QB) super.beginSub();
-    }
-
-    public QB endSub() {
-        return (QB) super.endSub();
     }
 
     public QB bool(Bool cond, Then then) {
@@ -414,27 +366,19 @@ public class QB<T> extends CondBuilder {
             instance = this;
         }
 
-        private X selectWithAlia(String resultKey) {
+        private X select0(String resultKey) {
             if (SqliStringUtil.isNullOrEmpty(resultKey))
                 return this;
             get().getResultKeyList().add(resultKey);
             return this;
         }
 
-        public X resultKeys(String... resultKeys) {
-            if (resultKeys == null)
-                return this;
-            for (String resultKey : resultKeys) {
-                selectWithAlia(resultKey);
-            }
-            return this;
-        }
 
         public X select(String... resultKeys) {
             if (resultKeys == null)
                 return this;
             for (String resultKey : resultKeys) {
-                selectWithAlia(resultKey);
+                select0(resultKey);
             }
             return this;
         }
@@ -471,15 +415,6 @@ public class QB<T> extends CondBuilder {
             functionResultKey.setAlia(resultKeyAlia.getAlia());
             functionResultKey.setValues(values);
             get().getResultFunctionList().add(functionResultKey);
-            return this;
-        }
-
-        public X sourceScript(String sourceScript, Object... vs) {
-            if (SqliStringUtil.isNullOrEmpty(sourceScript))
-                return this;
-            sourceScript = normalizeSql(sourceScript);
-            get().setSourceScript(sourceScript);
-            get().setSourceScriptValueList(vs);
             return this;
         }
 
@@ -632,14 +567,6 @@ public class QB<T> extends CondBuilder {
             return (X) super.or(sub);
         }
 
-        public X beginSub() {
-            return (X) super.beginSub();
-        }
-
-        public X endSub() {
-            return (X) super.endSub();
-        }
-
         public X bool(Bool cond, Then then) {
             return (X) super.bool(cond, then);
         }
@@ -647,7 +574,6 @@ public class QB<T> extends CondBuilder {
         public X or() {
             return (X) super.or();
         }
-
 
         public void clear() {
             super.clear();

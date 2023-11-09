@@ -37,10 +37,7 @@ public interface SourceScriptOptimizable {
     default void addConditionBeforeOptimization(List<Bb> bbList, Set<String> conditionSet) {
         if (bbList == null)
             return;
-        int i = 0;
         for (Bb bb : bbList) {
-            if (i++ == 0)
-                continue;
             conditionSet.add(bb.getKey());
             List<Bb> subList = bb.getSubList();
             if (subList != null && !subList.isEmpty()) {

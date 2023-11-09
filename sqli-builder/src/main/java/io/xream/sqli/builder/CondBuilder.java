@@ -216,34 +216,6 @@ public class CondBuilder implements SqlNormalizer {
         return instance;
     }
 
-    public CondBuilder beginSub(){
-        Bb bb = new Bb(isOr());
-        bb.setP(Op.SUB);
-
-        List<Bb> subList = new ArrayList<>();
-        bb.setSubList(subList);
-        this.add(bb);
-
-        this.tempList = subList;
-        this.getSubsList().add(subList);
-
-        return instance;
-    }
-    
-    public CondBuilder endSub(){
-        isOr();
-        int size = getSubsList().size();
-        if (--size >= 0)
-            getSubsList().remove(size);
-        if (--size >= 0){
-            this.tempList = getSubsList().get(size);
-        }else {
-            this.tempList = null;
-        }
-
-        return this.instance;
-    }
-
     private CondBuilder doGle(Op p, String property, Object value) {
         if (value == null){
             isOr();

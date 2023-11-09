@@ -183,14 +183,6 @@ public class QrB<T> extends CondBuilder {
         return (QrB<T>) super.or(sub);
     }
 
-    public QrB<T> beginSub(){
-        return (QrB<T>) super.beginSub();
-    }
-
-    public QrB<T> endSub(){
-        return (QrB<T>) super.endSub();
-    }
-
     public QrB<T> bool(Bool condition, ThenRefresh then){
         if (condition.isOk()) {
             then.build(this);

@@ -670,8 +670,12 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
             for (Froms froms : rmc.getSourceScripts()) {
                 JOIN join = froms.getJoin();
-                if (join != null && join.getOn() != null) {
-                    addConditionBeforeOptimization(join.getOn().getBbs(), sqlSth.conditionSet);
+                if (join != null && join.getOn() != null && join.getOn().getBbs() != null ) {
+                    List<Bb>  bbs = join.getOn().getBbs();
+                    if (bbs.size() > 1) {
+                        bbs.remove(0);
+                        addConditionBeforeOptimization(bbs, sqlSth.conditionSet);
+                    }
                 }
             }
         }
