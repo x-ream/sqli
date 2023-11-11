@@ -150,7 +150,7 @@
             25. from(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
             26. fromBuilder.of(Order.class).alia("o") //连表里的主表
             27. fromBuilder.JOIN(LEFT).of(OrderItem.class).alia("i")
-                                              .on("orderItem.orderId = order.id", 
+                                              .on("i.orderId = o.id", 
             28                  on -> on.gt(...)) //LEFT JOIN等, 更多条件
             29. fromBuilder.sub(....) // INNER JOIN (....) i  有限支持clickhouse等数据库
                             .alia("i").JOIN("ANY INNER JOIN").on(....) //fluent构建连表sql
