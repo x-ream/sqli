@@ -25,6 +25,7 @@ import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -328,8 +329,20 @@ public final class ParserUtil {
             if (a != null) {
                 f.setAccessible(true);
                 parsed.setKeyField(f);
+                break;
+            }else {
+                for (Annotation anno :f.getAnnotations()){
+                    String annoName = anno.annotationType().getName();
+                    if (annoName.endsWith(".Id") || annoName.endsWith(".ID")){
+                        f.setAccessible(true);
+                        parsed.setKeyField(f);
+                        break;
+                    }
+                }
+                if (SqliStringUtil.isNotNull(parsed.getKey())){
+                    break;
+                }
             }
-
         }
     }
 

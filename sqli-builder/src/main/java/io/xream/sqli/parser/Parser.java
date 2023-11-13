@@ -48,7 +48,8 @@ public final class Parser {
     public static String mappingPrefix;
     public static String mappingSpec;
 
-    private Parser(){}
+    private Parser() {
+    }
 
     @SuppressWarnings("rawtypes")
     public static void put(Class clz, Parsed parsed) {
@@ -75,7 +76,7 @@ public final class Parser {
         return simpleNameMap.containsKey(simpleName);
     }
 
-    private static void parseElement(Class clz, Parsed parsed,List<BeanElement> elementList) {
+    private static void parseElement(Class clz, Parsed parsed, List<BeanElement> elementList) {
 
         for (BeanElement element : elementList) {
             if (SqliStringUtil.isNullOrEmpty(element.getMapper())) {
@@ -105,26 +106,12 @@ public final class Parser {
 
     private static void parseTableNameMapping(Class clz, Parsed parsed) {
         X.Mapping mapping = (X.Mapping) clz.getAnnotation(X.Mapping.class);
-        if (mapping != null) {
-            String tableName = mapping.value();
-            if (!tableName.equals("")) {
-                parsed.setTableName(tableName);
-                parsed.setOriginTable(tableName);
-                parsed.setNoSpec(false);
-            } else {
-                String name = BeanUtil.getByFirstLower(clz.getSimpleName());
-                String mapper = ParserUtil.getMapper(name);
-                String prefix = mappingPrefix;
-                if (SqliStringUtil.isNotNull(prefix)) {
-                    if (!prefix.endsWith("_")) {
-                        prefix += "_";
-                    }
-                    mapper = prefix + mapper;
-                }
+        if (mapping != null && !mapping.value().equals("")) {
 
-                parsed.setTableName(mapper);
-                parsed.setOriginTable(mapper);
-            }
+            parsed.setTableName(mapping.value());
+            parsed.setOriginTable(mapping.value());
+            parsed.setNoSpec(false);
+
         } else {
             String name = BeanUtil.getByFirstLower(clz.getSimpleName());
             String mapper = ParserUtil.getMapper(name);
@@ -167,9 +154,9 @@ public final class Parser {
             elementList.add(0, one);
         }
 
-        for (Field field : parsed.getClzz().getDeclaredFields()){
-            for (BeanElement be: tempList) {
-                if (be.getProperty().equals(field.getName())){
+        for (Field field : parsed.getClzz().getDeclaredFields()) {
+            for (BeanElement be : tempList) {
+                if (be.getProperty().equals(field.getName())) {
                     elementList.add(be);
                 }
             }
@@ -189,7 +176,7 @@ public final class Parser {
 
         parseTableNameMapping(clz, parsed);
 
-        sortOnParsing(parsed,elementList);
+        sortOnParsing(parsed, elementList);
 
         ParserUtil.parseCacheableAnno(clz, parsed);
 
@@ -197,15 +184,15 @@ public final class Parser {
 
     }
 
-    protected static void onStarted(){
-        for (Map.Entry<String,Parsed> entry : simpleNameMap.entrySet()) {
+    protected static void onStarted() {
+        for (Map.Entry<String, Parsed> entry : simpleNameMap.entrySet()) {
             Parsed parsed = entry.getValue();
-            for (Map.Entry<String,String> pmEntry : parsed.getPropertyMapperMap().entrySet()) {
+            for (Map.Entry<String, String> pmEntry : parsed.getPropertyMapperMap().entrySet()) {
                 String property = pmEntry.getKey();
                 String mapper = pmEntry.getValue();
                 Parsed same = simpleNameMap.get(property);
                 if (same != null && !same.getTableName().equals(mapper)) {
-                    throw new NotSupportedException("not support the spell of property: " + parsed.getClzz().getName()+"."+property +", modify " + property + " or try @X.Mapping(\"" + same.getTableName() +"\")");
+                    throw new NotSupportedException("not support the spell of property: " + parsed.getClzz().getName() + "." + property + ", modify " + property + " or try @X.Mapping(\"" + same.getTableName() + "\")");
                 }
             }
         }
