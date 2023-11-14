@@ -21,7 +21,6 @@ package io.xream.sqli.converter;
 import io.xream.sqli.util.SqliJsonUtil;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
