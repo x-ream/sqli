@@ -40,7 +40,6 @@ public class CondBuilder implements SqlNormalizer {
     protected transient boolean isAbort;
     private transient boolean isOr;
 
-    private transient List<Bb> tempList;
     private transient List<List<Bb>> subsList;
 
     protected CondBuilder(){
@@ -302,10 +301,7 @@ public class CondBuilder implements SqlNormalizer {
     }
 
     private void add(Bb bb){
-        if (this.tempList == null)
-            this.bbList.add(bb);
-        else
-            this.tempList.add(bb);
+        this.bbList.add(bb);
     }
 
 }

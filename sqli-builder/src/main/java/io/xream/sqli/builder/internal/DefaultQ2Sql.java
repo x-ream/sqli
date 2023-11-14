@@ -24,7 +24,6 @@ import io.xream.sqli.exception.QSyntaxException;
 import io.xream.sqli.exception.SqlBuildException;
 import io.xream.sqli.filter.BaseTypeFilter;
 import io.xream.sqli.mapping.Mappable;
-import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
@@ -542,12 +541,12 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
                     addConditonBeforeOptimization(origin, sqlSth.conditionSet);
                 }
                 Object values = bb.getValue();
-                if (values instanceof Object[]) {
-                    for (Object obj : (Object[]) values) {
+                if (values instanceof Object[] arr) {
+                    for (Object obj : arr) {
                         add(valueList, obj);
                     }
-                }else if (values instanceof List) {//deserialized from json
-                    for (Object obj : (List) values) {
+                }else if (values instanceof List arr) {//deserialized from json
+                    for (Object obj : arr) {
                         add(valueList, obj);
                     }
                 }
@@ -556,8 +555,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     private void groupBy(SqlSth sqlSth, Q q) {
-        if (q instanceof Q.X) {
-            Q.X rm = (Q.X) q;
+        if (q instanceof Q.X rm) {
 
             String groupByS = rm.getGroupBy();
             if (SqliStringUtil.isNullOrEmpty(groupByS))
@@ -648,28 +646,27 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
     private void parseAlia(Q q, SqlSth sqlSth) {
 
-        if (q instanceof Q.X) {
-            Q.X rmc = (Q.X) q;
+        if (q instanceof Q.X xq) {
 
-            if (rmc.getSourceScripts().isEmpty()) {// builderSource null
-                String sourceScript = rmc.sourceScript();//string -> list<>
+            if (xq.getSourceScripts().isEmpty()) {// builderSource null
+                String sourceScript = xq.sourceScript();//string -> list<>
 
                 List<String> list = FromBuilder.split(sourceScript);
-                List<Froms> froms = FromBuilder.parseScriptAndBuild(list,rmc.getSourceScriptValueList());
-                rmc.getSourceScripts().addAll(froms);
+                List<Froms> froms = FromBuilder.parseScriptAndBuild(list,xq.getSourceScriptValueList());
+                xq.getSourceScripts().addAll(froms);
             }
 
-            FromBuilder.checkSourceAndAlia(rmc.getSourceScripts());
-            supportSingleSource(rmc);
+            FromBuilder.checkSourceAndAlia(xq.getSourceScripts());
+            supportSingleSource(xq);
 
-            Map<String, String> aliaMap = rmc.getAliaMap();
-            for (Froms sc : rmc.getSourceScripts()) {
+            Map<String, String> aliaMap = xq.getAliaMap();
+            for (Froms sc : xq.getSourceScripts()) {
                 if (SqliStringUtil.isNotNull(sc.getSource())) {
                     aliaMap.put(sc.alia(), sc.getSource());
                 }
             }
 
-            for (Froms froms : rmc.getSourceScripts()) {
+            for (Froms froms : xq.getSourceScripts()) {
                 JOIN join = froms.getJoin();
                 if (join != null && join.getOn() != null && join.getOn().getBbs() != null ) {
                     List<Bb>  bbs = join.getOn().getBbs();
@@ -689,9 +686,9 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
     }
 
-    private void with(SqlSth sb, Q.X rmc) {
+    private void with(SqlSth sb, Q.X xq) {
         
-        List<Froms> ssList = rmc.getSourceScripts();
+        List<Froms> ssList = xq.getSourceScripts();
         String subStr = null;
         for (Froms ss : ssList) {
             if (ss.isWith()) {
@@ -709,8 +706,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         sb.sbSource.append(SqlScript.SPACE);
 
         String script = null;
-        if (q instanceof Q.X) {
-            Q.X xq = (Q.X) q;
+        if (q instanceof Q.X xq) {
 
             if (xq.getSourceScripts().isEmpty()) {// builderSource null
                 String str = q.sourceScript();
@@ -784,8 +780,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     private void filter0(Q q) {
         List<Bb> bbList = q.getBbs();
 
-        if (q instanceof Q.X) {
-            Q.X xq = (Q.X) q;//FIXME 判断是虚表
+        if (q instanceof Q.X xq) {
             filter(bbList, xq);
             for (Froms froms : ((Q.X) q).getSourceScripts()) {
                 if (froms.getJoin() == null || froms.getJoin().getOn() == null)
@@ -801,8 +796,8 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
     }
 
     private void sourceScriptPre(Q q, SqlSubsAndValueBinding attached) {
-        if (q instanceof Q.X) {
-            for (Froms froms : ((Q.X) q).getSourceScripts()) {
+        if (q instanceof Q.X xq) {
+            for (Froms froms : xq.getSourceScripts()) {
                 froms.pre(attached, this, q);
             }
         }
@@ -831,7 +826,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         if (objectList != null ){
             for (Object v : objectList) {
                 if (v == null) continue;
-                if (v instanceof List && ((List) v).isEmpty()) continue;
+                if (v instanceof List list && list.isEmpty()) continue;
                 valueList.add(0,v);
             }
         }

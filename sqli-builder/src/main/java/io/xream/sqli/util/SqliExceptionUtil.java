@@ -51,10 +51,10 @@ public class SqliExceptionUtil {
     public static Throwable unwrapThrowable(Throwable wrapped) {
         Throwable unwrapped = wrapped;
         while (true) {
-            if (unwrapped instanceof InvocationTargetException) {
-                unwrapped = ((InvocationTargetException) unwrapped).getTargetException();
-            } else if (unwrapped instanceof UndeclaredThrowableException) {
-                unwrapped = ((UndeclaredThrowableException) unwrapped).getUndeclaredThrowable();
+            if (unwrapped instanceof InvocationTargetException ite) {
+                unwrapped = ite.getTargetException();
+            } else if (unwrapped instanceof UndeclaredThrowableException ute) {
+                unwrapped = ute.getUndeclaredThrowable();
             } else {
                 Throwable t = wrapped.getCause();
                 if (t != null)

@@ -253,12 +253,12 @@ public interface CondQToSql extends Mapper, SqlNormalizer, UnsafeSyntaxFilter {
                     Object value = bb.getValue();
                     if (value == null)
                         continue;
-                    if (value instanceof Object[]) {
-                        for (Object v : (Object[])value){
+                    if (value instanceof Object[] arr) {
+                        for (Object v : arr){
                             add(valueList,v);
                         }
-                    }else if (value instanceof List) { //deserialized from json
-                        for (Object v : (List)value){
+                    }else if (value instanceof List arr) { //deserialized from json
+                        for (Object v : arr){
                             add(valueList,v);
                         }
                     }
