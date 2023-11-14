@@ -18,7 +18,10 @@
  */
 package io.xream.sqli.converter;
 
+import io.xream.sqli.util.SqliJsonUtil;
+
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +50,14 @@ public class X2Bean {
         }
         filedList.addAll(Arrays.asList(clz.getDeclaredFields()));
 
+        if (clz.isRecord()) {
+            return SqliJsonUtil.toObject(map,clz);
+        }
+
         T obj = null;
         try {
-            obj = clz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            obj = clz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
 
