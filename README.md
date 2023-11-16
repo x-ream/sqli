@@ -100,8 +100,8 @@
                 QB.X qbx =  QB.x();
                 qbx.resultKey("o.id");
                 qbx.eq("o.status","PAID");
-                qbx.beginSub().gt("o.createAt",obj.getStartTime()).lt("o.createAt",obj.getEndTime()).endSub();
-                qbx.beginSub().eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()).endSub();
+                qbx.and(sub -> sub.gt("o.createAt",obj.getStartTime()).lt("o.createAt",obj.getEndTime()));
+                qbx.or(sub -> sub.eq("o.test",obj.getTest()).or().eq("i.test",obj.getTest()));
                 qbx.from("FROM order o INNER JOIN orderItem i ON i.orderId = o.id");
                 qbx.paged(obj);
                 Q.X xq = qbx.build();
@@ -148,7 +148,7 @@
            
         连表构建API  (QB.X)
             25. from(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
-            26. fromBuilder.of(Order.class).alia("o") //连表里的主表
+            26. fromBuilder.of(Order.class).alia("o") //连表里的主表, API: .fromX(fromX FromX)
             27. fromBuilder.JOIN(LEFT).of(OrderItem.class).alia("i")
                                               .on("i.orderId = o.id", 
             28                  on -> on.gt(...)) //LEFT JOIN等, 更多条件
