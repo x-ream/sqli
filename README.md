@@ -115,8 +115,8 @@
             }
         
         条件构建API  (QB | QB.X)
-            1. and // AND 默认, 可省略，也可不省略
-            2. or // OR
+            1. or(sub) // or(sql)
+            2. or() // OR
             3. eq // = (eq, 以及其它的API, 值为null，不会被拼接到SQL)
             4. ne // !=
             5. gt // >
@@ -131,8 +131,8 @@
             14. isNull // is null
             15. nonNull // is not null
             16. x // 简单的手写sql片段， 例如 x("foo.amount = bar.price * bar.qty") , x("item.quantity = 0")
-            17. beginSub // 左括号
-            18. endSub // 右括号
+            17. sub(sql, sub) //
+            18. and(sub)
 
         MAP查询结果构建API  (QB.X)
             19. distinct //去重
