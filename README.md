@@ -124,7 +124,7 @@
             7. lt // <
             8. lte // <=
             9. like //like %xxx%
-            10. likeRight // like xxx%
+            10. likeLeft // like xxx%
             11. notLike // not like %xxx%
             12. in // in
             13. nin // not in

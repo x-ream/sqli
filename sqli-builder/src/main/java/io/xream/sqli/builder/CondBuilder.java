@@ -105,6 +105,11 @@ public class CondBuilder implements SqlNormalizer {
         return doGle(Op.NE, property, value);
     }
 
+    /**
+     * like() default LIKE %value%
+     * @param property
+     * @param value
+     */
     public CondBuilder like(String property, String value){
         if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
@@ -113,8 +118,12 @@ public class CondBuilder implements SqlNormalizer {
         String likeValue = SqlScript.LIKE_HOLDER + value + SqlScript.LIKE_HOLDER;
         return doLike(Op.LIKE,property,likeValue);
     }
-
-    public CondBuilder likeRight(String property, String value){
+    /**
+     * like() default LIKE %value%, then likeLeft() LIKE value%
+     * @param property
+     * @param value
+     */
+    public CondBuilder likeLeft(String property, String value){
         if (SqliStringUtil.isNullOrEmpty(value)) {
             isOr();
             return instance;

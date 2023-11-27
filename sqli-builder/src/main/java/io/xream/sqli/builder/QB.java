@@ -175,8 +175,8 @@ public class QB<T> extends CondBuilder {
         return (QB) super.like(property, value);
     }
 
-    public QB likeRight(String property, String value) {
-        return (QB) super.likeRight(property, value);
+    public QB likeLeft(String property, String value) {
+        return (QB) super.likeLeft(property, value);
     }
 
     public QB notLike(String property, String value) {
@@ -523,8 +523,8 @@ public class QB<T> extends CondBuilder {
             return (X) super.like(property, value);
         }
 
-        public X likeRight(String property, String value) {
-            return (X) super.likeRight(property, value);
+        public X likeLeft(String property, String value) {
+            return (X) super.likeLeft(property, value);
         }
 
         public X notLike(String property, String value) {

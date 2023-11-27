@@ -136,8 +136,8 @@ public class QrB<T> extends CondBuilder {
         return (QrB<T>) super.like(property, value);
     }
 
-    public QrB<T> likeRight(String property, String value) {
-        return (QrB<T>) super.likeRight(property, value);
+    public QrB<T> likeLeft(String property, String value) {
+        return (QrB<T>) super.likeLeft(property, value);
     }
 
     public QrB<T> notLike(String property, String value) {
