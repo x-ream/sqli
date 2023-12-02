@@ -123,7 +123,7 @@
             6. gte // >=
             7. lt // <
             8. lte // <=
-            9. like //like %xxx%
+            9. like //like %xxx%, if likeLeftRight => xxx, likeLeft => xxx%, then like => %xxx%
             10. likeLeft // like xxx%
             11. notLike // not like %xxx%
             12. in // in
