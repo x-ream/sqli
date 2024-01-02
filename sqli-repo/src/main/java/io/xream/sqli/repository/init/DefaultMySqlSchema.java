@@ -26,6 +26,7 @@ import io.xream.sqli.util.BeanUtil;
 import io.xream.sqli.util.EnumUtil;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -66,6 +67,8 @@ public class DefaultMySqlSchema implements Schema{
             sb.append(" ").append(get(type) + " NOT NULL");
         } else if (type == Types.BIGINT) {
             sb.append(" ").append(get(type) + " NOT NULL");
+        } else if (type == 999999) {
+            sb.append(" ").append(get(type) +" NOT NULL");
         } else if (type == Types.VARCHAR) {
             sb.append(" ").append(get(type)).append("(").append(keyOneBe.getLength()).append(") NOT NULL");
         }
@@ -95,7 +98,7 @@ public class DefaultMySqlSchema implements Schema{
                     sb.append(" DEFAULT b'0'");
                 }else if (clzz == Long.class || clzz == long.class
                         || clzz == Integer.class
-                        || clzz == int.class ) {
+                        || clzz == int.class || clzz == BigInteger.class ) {
                     sb.append(" DEFAULT 0");
                 } else {
                     sb.append(" DEFAULT NULL");
@@ -127,6 +130,7 @@ public class DefaultMySqlSchema implements Schema{
             put(Types.DECIMAL, "decimal(15,2)");
             put(Types.VARCHAR, "varchar");
             put(Types.LONGVARCHAR, "text");
+            put(999999,"bigint unsigned");
         }
     };
 
@@ -158,7 +162,9 @@ public class DefaultMySqlSchema implements Schema{
             return Types.DECIMAL;
         } else if (clz == boolean.class || clz == Boolean.class) {
             return Types.BOOLEAN;
-        } else if (clz == short.class || clz == Short.class) {
+        } else if (clz == BigInteger.class) {
+            return 999999;
+        }else if (clz == short.class || clz == Short.class) {
             return Types.INTEGER;
         } else if (clz == byte.class || clz == Byte.class) {
             return Types.TINYINT;
