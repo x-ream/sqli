@@ -30,6 +30,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -171,12 +172,15 @@ public final class ParserUtil {
 
             Class ec = element.getClz();
             if (element.getSqlType() == null) {
-                if (ec == int.class || ec == Integer.class) {
-                    element.setSqlType(SqlFieldType.INT);
-                    element.setLength(11);
-                } else if (ec == long.class || ec == Long.class) {
+                if (ec == long.class || ec == Long.class) {
                     element.setSqlType(SqlFieldType.LONG);
                     element.setLength(13);
+                } else if (ec == int.class || ec == Integer.class) {
+                    element.setSqlType(SqlFieldType.INT);
+                    element.setLength(11);
+                } else if (ec == BigInteger.class) {
+                    element.setSqlType(SqlFieldType.BIG_INTEGER);
+                    element.setLength(20);
                 } else if (ec == double.class || ec == Double.class) {
                     element.setSqlType(SqlFieldType.DOUBLE);
                     element.setLength(13);
@@ -483,5 +487,7 @@ public final class ParserUtil {
         String DOUBLE = "float";//float
         String FLOAT = "float";//real
         String DECIMAL = "decimal";
+
+        String BIG_INTEGER = "bigint unsigned";
     }
 }
