@@ -40,7 +40,7 @@ public final class PageBuilderHelper {
             int size = list.size();
             if (page == 0) {
                 count = size;
-            } else if (size > 0) {
+            } else {
                 try {
                     count = totalRows.count();
                 }catch (Exception e){
