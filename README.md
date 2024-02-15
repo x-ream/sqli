@@ -64,24 +64,23 @@
 ###    BaseRepository API
 
             1. in(property, inList) //in查询, 例如: 页面上需要的主表ID或记录已经查出后，补充查询其他表的文本说明数据时使用
-            2. list(Object) //对象查列表
-            3. find(q) //标准拼接查询，返回对象形式记录，返回分页对象
-            4. list(q) //标准拼接查询，返回对象形式记录，不返回分页对象
-            5. get(Id) //根据主键查询记录
-            6. getOne(Object) //数据库只有一条记录时，就返回那条记录
-            7. list() //无条件查全表, 几乎没使用场景
-            8. creaet(Object) //插入一条, 不支持返回自增键, 框架自带ID生成器
-            9. createBatch(List<Object>) //批量插入
-            10. refresh( qr) //根据主键更新
-            11. refreshUnSafe( qr)//不根据主键更新
-            12. remove(Id)//根据主键删除
-            13. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
+            2. find(q) //标准拼接查询，返回对象形式记录，返回分页对象
+            3. list(q) //标准拼接查询，返回对象形式记录，不返回分页对象
+            4. get(Id) //根据主键查询记录
+            5. getOne(q) //数据库只有一条记录时，就返回那条记录
+            6. list() //无条件查全表, 几乎没使用场景
+            7. creaet(Object) //插入一条, 不支持返回自增键, 框架自带ID生成器
+            8. createBatch(List<Object>) //批量插入
+            9. refresh( qr) //根据主键更新
+            10. refreshUnSafe( qr)//不根据主键更新
+            11. remove(Id)//根据主键删除
+            12. removeRefreshCreate(RemoveRefreshCreate<T>) //编辑页面列表时写数据库
 
 ###     RepositoryX API
-            14. find(xq) //标准拼接查询，返回Map形式记录，返回分页对象
-            15. list(xq) //标准拼接查询，返回Map形式记录，不返回分页对象
-            16. listPlainValue(Class<K>, qx)//返回没有key的单列数据列表 (结果优化1)
-            17. findToHandle(xq, RowHandler<Map<String,Object>>) //流处理API
+            13. find(xq) //标准拼接查询，返回Map形式记录，返回分页对象
+            14. list(xq) //标准拼接查询，返回Map形式记录，不返回分页对象
+            15. listPlainValue(Class<K>, qx)//返回没有key的单列数据列表 (结果优化1)
+            16. findToHandle(xq, RowHandler<Map<String,Object>>) //流处理API
 
 ###     QueryBuilder拼接API
         QB // 返回q, 查出对象形式记录
