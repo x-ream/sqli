@@ -19,6 +19,8 @@
 package io.xream.sqli.mapping;
 
 import io.xream.sqli.exception.ParsingException;
+import io.xream.sqli.exception.SqlBuildException;
+import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.util.ParserUtil;
@@ -117,8 +119,13 @@ public interface Mapper {
         }
 
         Parsed parsed = mappable.getParsed();
-        if (parsed != null)
-            return parsed.getElement(key).getClz();
+        if (parsed != null) {
+            BeanElement lastTest = parsed.getElement(key);
+            if (lastTest == null) {
+                throw new SqlBuildException("not found property: " + key);
+            }
+            return lastTest.getClz();
+        }
 
         return String.class;
     }
