@@ -190,6 +190,10 @@ public class QrB<T> extends CondBuilder {
         return this;
     }
 
+    public QrB<T> any(Any any){
+        return (QrB<T>) super.any(any);
+    }
+
     public QrB<T> sourceScript(String sourceScript) {
         this.qr.setSourceScript(sourceScript);
         return this;

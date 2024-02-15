@@ -81,6 +81,11 @@ public class CondBuilder implements SqlNormalizer {
         return this.instance;
     }
 
+    public CondBuilder any(Any any) {
+        any.build(this.instance);
+        return this.instance;
+    }
+
     public CondBuilder eq(String property, Object value){
         return doGle(Op.EQ, property, value);
     }

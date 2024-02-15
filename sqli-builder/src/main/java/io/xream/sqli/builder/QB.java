@@ -223,6 +223,10 @@ public class QB<T> extends CondBuilder {
         return (QB) super.bool(cond, then);
     }
 
+    public QB any(Any any) {
+        return (QB)super.any(any);
+    }
+
     public QB or() {
         return (QB) super.or();
     }
@@ -570,6 +574,11 @@ public class QB<T> extends CondBuilder {
         public X bool(Bool cond, Then then) {
             return (X) super.bool(cond, then);
         }
+
+        public X any(Any any) {
+            return (X) super.any(any);
+        }
+
 
         public X or() {
             return (X) super.or();
