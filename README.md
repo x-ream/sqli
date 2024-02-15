@@ -148,12 +148,11 @@
            
         连表构建API  (QB.X)
             25. from(joinSql) //简单的连表SQL，不支持LEFT JOIN  ON 多条件; 多条件，请用API[28]
-            26. fromBuilder.of(Order.class).alia("o") //连表里的主表, API: .fromX(FromX fromX)
-            27. fromBuilder.JOIN(LEFT).of(OrderItem.class).alia("i")
+            26. fromBuilder.of(Order.class,"o") //连表里的主表, API: .fromX(FromX fromX)
+            27. fromBuilder.JOIN(LEFT).of(OrderItem.class,"i")
                                               .on("i.orderId = o.id", 
             28                  on -> on.gt(...)) //LEFT JOIN等, 更多条件
-            29. fromBuilder.sub(....) // INNER JOIN (....) i  有限支持clickhouse等数据库
-                            .alia("i").JOIN("ANY INNER JOIN").on(....) //fluent构建连表sql
+            29. fromBuilder.sub(....,"i").JOIN("ANY INNER JOIN").on(....) //fluent构建连表sql
         
         分页及排序API  (QB | QB.X)
             30. sort("o.id", Direction.DESC)

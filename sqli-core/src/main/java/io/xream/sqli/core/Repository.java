@@ -48,6 +48,7 @@ public interface Repository extends QueryForCache {
 
 	<T> T get(KeyOne<T> keyOne);
 
+	@Deprecated
 	<T> List<T> list(Object cond);
 
 	<T> Page<T> find(Q q);
@@ -62,7 +63,10 @@ public interface Repository extends QueryForCache {
 
 	boolean createBatch(List<? extends Object> objList);
 
+	@Deprecated
 	<T> T getOne(T condition);
+
+	<T> T getOne(Q q);
 
     <T> boolean refresh(T t);
 

@@ -69,7 +69,7 @@ public interface BaseRepository<T> extends Typed<T> {
      * caution:  sometimes, should not use the api </>
      *
      */
-    boolean removeRefreshCreate(RemoveRefreshCreate<T> RemoveRrefreshCreate_of);
+    boolean removeRefreshCreate(RemoveRefreshCreate<T> RemoveRefreshCreate_of);
     /**
      * @param keyOne
      */
@@ -88,10 +88,13 @@ public interface BaseRepository<T> extends Typed<T> {
      *
      * @param conditionObj
      */
+    @Deprecated
     List<T> list(T conditionObj);
 
+    @Deprecated
     T getOne(T conditionObj);
 
+    T getOne(Q<T> q);
     /**
      * in API
      *
@@ -103,9 +106,9 @@ public interface BaseRepository<T> extends Typed<T> {
      *
      * @param q
      */
-    Page<T> find(Q q);
+    Page<T> find(Q<T> q);
 
-    List<T> list(Q q);
+    List<T> list(Q<T> q);
 
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
@@ -113,8 +116,8 @@ public interface BaseRepository<T> extends Typed<T> {
      * @param handler
      * @param <T>
      */
-    <T> void findToHandle(Q q, RowHandler<T> handler);
+    <T> void findToHandle(Q<T> q, RowHandler<T> handler);
 
-    boolean exists(Q q);
+    boolean exists(Q<T> q);
     
 }

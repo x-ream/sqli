@@ -48,9 +48,11 @@ public final class CacheableRepository implements Repository, NativeSupport {
     private Dao dao;
     private L2CacheResolver cacheResolver;
 
-    private CacheableRepository(){}
-    public static CacheableRepository newInstance(){
-        if (instance == null){
+    private CacheableRepository() {
+    }
+
+    public static CacheableRepository newInstance() {
+        if (instance == null) {
             instance = new CacheableRepository();
             return instance;
         }
@@ -67,9 +69,9 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
     private boolean isCacheEnabled(Parsed parsed) {
         boolean b = cacheResolver.isEnabled() && !parsed.isNoCache();
-        if (b){
+        if (b) {
             SqliLoggerProxy.debug(parsed.getClzz(), "L2Cache effected");
-        }else{
+        } else {
             SqliLoggerProxy.debug(parsed.getClzz(), "L2Cache not effected");
         }
         return b;
@@ -93,7 +95,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
         Class clz = obj.getClass();
         Parsed parsed = Parser.get(clz);
-        Object id = CreateOrReplaceOptimization.tryToGetId(obj,parsed);
+        Object id = CreateOrReplaceOptimization.tryToGetId(obj, parsed);
 
         boolean flag = dao.createOrReplace(obj);
 
@@ -203,7 +205,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
     public <T> List<T> listByClzz(Class<T> clzz) {
         try {
             return this.dao.list(clzz.newInstance());
-        }catch (Exception e){
+        } catch (Exception e) {
             SqliExceptionUtil.throwRuntimeExceptionFirst(e);
             throw new QueryException(SqliExceptionUtil.getMessage(e));
         }
@@ -268,8 +270,8 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
 
-    public boolean execute(String sql, Object...objs) {
-        return dao.execute(sql,objs);
+    public boolean execute(String sql, Object... objs) {
+        return dao.execute(sql, objs);
     }
 
 
@@ -343,6 +345,18 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
+    public <T> T getOne(Q q) {
+
+        Class<T> clz = (Class<T>) q.getClzz();
+        Parsed parsed = Parser.get(clz);
+
+        if (!isCacheEnabled(parsed))
+            return dao.getOne(q);
+
+        return cacheResolver.getOneUnderProtection(clz, q, () -> dao.getOne(q));
+    }
+
+    @Override
     public Page<Map<String, Object>> find(Q.X xq) {
         if (xq.isAbort()) {
             Page page = new Page<>();
@@ -364,10 +378,10 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <K> List<K> listPlainValue(Class<K> clzz, Q.X xq){
+    public <K> List<K> listPlainValue(Class<K> clzz, Q.X xq) {
         if (xq.isAbort())
             return new ArrayList<>();
-        return dao.listPlainValue(clzz,xq);
+        return dao.listPlainValue(clzz, xq);
     }
 
 
@@ -380,14 +394,14 @@ public final class CacheableRepository implements Repository, NativeSupport {
     public <T> void findToHandle(Q q, RowHandler<T> handler) {
         if (q.isAbort())
             return;
-        this.dao.findToHandle(q,handler);
+        this.dao.findToHandle(q, handler);
     }
 
     @Override
     public void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler) {
         if (xq.isAbort())
             return;
-        this.dao.findToHandle(xq,handler);
+        this.dao.findToHandle(xq, handler);
     }
 
     @Override

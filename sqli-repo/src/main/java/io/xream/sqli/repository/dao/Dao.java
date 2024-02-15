@@ -49,7 +49,8 @@ public interface Dao extends QueryForCache {
 	<T> boolean removeIn(Keys<T> keys);
 
 	<T> boolean refreshByCondition(Qr<T> conditon);
-	
+
+	@Deprecated
 	<T> List<T> list(Object conditionObj);
 	
 	List<Map<String,Object>>  list(String sql,
@@ -71,7 +72,10 @@ public interface Dao extends QueryForCache {
 
 	boolean execute(String sql, Object...objs);
 
+	@Deprecated
 	<T> T getOne(T conditionObj);
+
+	<T> T getOne(Q q);
 
     <T> boolean refresh(T t);
 

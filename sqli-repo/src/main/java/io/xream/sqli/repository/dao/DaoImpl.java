@@ -412,6 +412,23 @@ public final class DaoImpl implements Dao, SqlTemplate {
     }
 
     @Override
+    public <T> T getOne(Q q) {
+        Class clz = q.getClzz();
+        List<Object> valueList = new ArrayList<>();
+        SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
+        String sql = sqlBuilt.getSql().toString();
+        SqliLoggerProxy.debug(clz, sql);
+
+        List<T> list = this.jdbcHelper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
+
+        if (list.isEmpty())
+            return null;
+        if (list.size() > 1)
+            throw new TooManyResultsException("Expected one result (or null) to be returned by API of getOne(T), but found: " + list.size());
+        return list.get(0);
+    }
+
+    @Override
     public void findToHandle(Q.X xq, RowHandler<Map<String,Object>> handler) {
 
         List<Object> valueList = new ArrayList<>();

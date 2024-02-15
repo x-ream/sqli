@@ -265,6 +265,13 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
+    public T getOne(Q<T> q) {
+        if (q == null)
+            return null;
+        return repository.getOne(q);
+    }
+
+    @Override
     public void refreshCache() {
         repository.refreshCache(this.clzz);
     }
@@ -281,7 +288,7 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
 
     @Override
-    public Page<T> find(Q q) {
+    public Page<T> find(Q<T> q) {
         assertQClzz(q);
         this.setDefaultClzz(q);
         Page<T> page = repository.find(q);
@@ -291,7 +298,7 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
 
     @Override
-    public List<T> list(Q q) {
+    public List<T> list(Q<T> q) {
         assertQClzz(q);
         this.setDefaultClzz(q);
         return repository.list(q);
@@ -299,14 +306,14 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
-    public <T> void findToHandle(Q q, RowHandler<T> handler) {
+    public <T> void findToHandle(Q<T> q, RowHandler<T> handler) {
         assertQClzz(q);
         this.setDefaultClzz(q);
         this.repository.findToHandle(q,handler);
     }
 
     @Override
-    public boolean exists(Q q) {
+    public boolean exists(Q<T> q) {
         assertQClzz(q);
         this.setDefaultClzz(q);
         return this.repository.exists(q);
