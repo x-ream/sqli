@@ -188,11 +188,10 @@
     
     支持二级缓存的BaseRepository的API：
             1. in(property, inList)
-            2. list(Object)
-            3. find(q)
-            4. list(q)
-            5. get(Id)
-            6. getOne(Object)
+            2. find(q)
+            3. list(q)
+            4. get(Id)
+            5. getOne(q)
         
     不支持二级缓存的BaseRepository, RepositoryX的API:
             1. list()
