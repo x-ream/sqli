@@ -45,7 +45,6 @@ public interface Repository extends QueryForCache {
 
 	<T> boolean removeIn(Keys<T> keys);
 
-
 	<T> T get(KeyOne<T> keyOne);
 
 	@Deprecated

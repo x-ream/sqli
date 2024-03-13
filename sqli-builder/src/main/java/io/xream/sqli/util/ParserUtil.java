@@ -337,7 +337,7 @@ public final class ParserUtil {
             }else {
                 for (Annotation anno :f.getAnnotations()){
                     String annoName = anno.annotationType().getName();
-                    if (annoName.endsWith(".Id") || annoName.endsWith(".ID")){
+                    if (annoName.endsWith(".Id") || annoName.endsWith(".ID") || annoName.endsWith(".TableId")){
                         f.setAccessible(true);
                         parsed.setKeyField(f);
                         break;
