@@ -21,10 +21,7 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryX;
-import io.xream.sqli.builder.In;
-import io.xream.sqli.builder.Q;
-import io.xream.sqli.builder.Qr;
-import io.xream.sqli.builder.RemoveRefreshCreate;
+import io.xream.sqli.builder.*;
 import io.xream.sqli.core.*;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.exception.QSyntaxException;
@@ -126,7 +123,6 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     public boolean createOrReplace(T obj) {
         return repository.createOrReplace(obj);
     }
-
 
     @Override
     public boolean refresh(Qr<T> qr) {
@@ -249,19 +245,7 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
 
     @Override
     public List<T> list() {
-        return repository.listByClzz(this.clzz);
-    }
-
-    @Override
-    public List<T> list(T conditionObj) {
-        return repository.list(conditionObj);
-    }
-
-    @Override
-    public T getOne(T conditionObj) {
-        if (conditionObj == null)
-            return null;
-        return repository.getOne(conditionObj);
+        return repository.list(QB.of(this.clzz).build());
     }
 
     @Override

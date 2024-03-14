@@ -202,31 +202,6 @@ public final class CacheableRepository implements Repository, NativeSupport {
     }
 
     @Override
-    public <T> List<T> listByClzz(Class<T> clzz) {
-        try {
-            return this.dao.list(clzz.newInstance());
-        } catch (Exception e) {
-            SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-            throw new QueryException(SqliExceptionUtil.getMessage(e));
-        }
-    }
-
-    @Override
-    public <T> List<T> list(Object conditionObj) {
-
-        Class clz = conditionObj.getClass();
-        Parsed parsed = Parser.get(clz);
-
-        if (!isCacheEnabled(parsed))
-            return dao.list(conditionObj);
-
-        return cacheResolver.listUnderProtection(clz,
-                conditionObj,
-                dao,
-                () -> dao.list(conditionObj));
-    }
-
-    @Override
     public <T> Page<T> find(Q q) {
 
         if (q.isAbort()) {
@@ -330,18 +305,6 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
         return cacheResolver.getUnderProtection(clz, condition, () -> dao.get(keyOne));
 
-    }
-
-    @Override
-    public <T> T getOne(T condition) {
-
-        Class<T> clz = (Class<T>) condition.getClass();
-        Parsed parsed = Parser.get(clz);
-
-        if (!isCacheEnabled(parsed))
-            return dao.getOne(condition);
-
-        return cacheResolver.getOneUnderProtection(clz, condition, () -> dao.getOne(condition));
     }
 
     @Override

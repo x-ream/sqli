@@ -211,23 +211,6 @@ public final class DaoImpl implements Dao, SqlTemplate {
         return list.get(0);
     }
 
-
-    @Override
-    public <T> List<T> list(Object conditionObj) {
-
-        Class clz = conditionObj.getClass();
-        String sql = getSql(clz, SqlInit.LOAD);
-        Parsed parsed = Parser.get(clz);
-
-        Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
-        sql = sqlBuilder.buildQueryByObject(parsed, sql, queryMap);
-        SqliLoggerProxy.debug(clz, conditionObj);
-        SqliLoggerProxy.debug(clz, sql);
-
-        return this.jdbcHelper.queryForList(sql, queryMap.values(), parsed, this.dialect);
-
-    }
-
     @Override
     public <T> List<T> list(Q q) {
 
@@ -383,32 +366,6 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         List<K> list = this.jdbcHelper.queryForPlainValueList(clzz,sql,valueList,this.dialect);
         return list;
-    }
-
-
-    @Override
-    public <T> T getOne(T conditionObj) {
-
-        Class clz = conditionObj.getClass();
-        String sql = getSql(clz, SqlInit.LOAD);
-        Parsed parsed = Parser.get(clz);
-
-        Map<String, Object> queryMap = ObjectDataConverter.objectToMap(parsed, conditionObj);
-        sql = sqlBuilder.buildQueryByObject(parsed, sql, queryMap);
-        sql = sqlBuilder.buildPageSql(sql, 1, 1, this.dialect);
-        SqliLoggerProxy.debug(clz, conditionObj);
-        SqliLoggerProxy.debug(clz, sql);
-
-        if (queryMap.isEmpty())
-            throw new IllegalArgumentException("API of getOne(T) can't accept blank object: " + conditionObj);
-
-        List<T> list = this.jdbcHelper.queryForList(sql, queryMap.values(),parsed, this.dialect);
-
-        if (list.isEmpty())
-            return null;
-        if (list.size() > 1)
-            throw new TooManyResultsException("Expected one result (or null) to be returned by API of getOne(T), but found: " + list.size());
-        return list.get(0);
     }
 
     @Override

@@ -47,9 +47,6 @@ public interface Repository extends QueryForCache {
 
 	<T> T get(KeyOne<T> keyOne);
 
-	@Deprecated
-	<T> List<T> list(Object cond);
-
 	<T> Page<T> find(Q q);
 
 	Page<Map<String,Object>> find(Q.X xq);
@@ -62,9 +59,6 @@ public interface Repository extends QueryForCache {
 
 	boolean createBatch(List<? extends Object> objList);
 
-	@Deprecated
-	<T> T getOne(T condition);
-
 	<T> T getOne(Q q);
 
     <T> boolean refresh(T t);
@@ -72,8 +66,6 @@ public interface Repository extends QueryForCache {
 	<T> void findToHandle(Q q, RowHandler<T> handler);
 
 	void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler);
-
-	<T> List<T> listByClzz(Class<T> clzz);
 
 	boolean exists(Q q);
 }

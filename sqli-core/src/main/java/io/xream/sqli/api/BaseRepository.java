@@ -50,6 +50,8 @@ public interface BaseRepository<T> extends Typed<T> {
      */
     boolean createOrReplace(T obj);
 
+//    boolean createOrReplaceBatch(List<T> objList);
+
     boolean refresh(Qr<T> qr);
 
     /**
