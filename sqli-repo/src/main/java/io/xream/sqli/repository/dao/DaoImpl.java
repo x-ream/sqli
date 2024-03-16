@@ -111,7 +111,38 @@ public final class DaoImpl implements Dao, SqlTemplate {
             return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
         } catch (Exception e) {
             throw ExceptionTranslator.onRollback(clz, e, logger);
-        }//1618978538016
+        }
+    }
+
+    @Override
+    public <T> boolean createOrReplaceBatch(List<T> objList) {
+
+        if (objList.isEmpty())
+            return false;
+        Object obj = objList.get(0);
+        Class clz = obj.getClass();
+        String createSql = getSql(clz, SqlInit.CREATE);
+
+        final String sql = this.dialect.createOrReplaceSql(createSql);
+
+        SqliLoggerProxy.debug(clz, sql);
+
+        Parsed parsed = Parser.get(clz);
+        JdbcHelper.BatchObjectValues batchObjectValues =  () -> {
+            List<Collection<Object>> valuesList = new ArrayList<>();
+            for (Object o : objList) {
+                Collection<Object> values= ObjectDataConverter.objectToListForCreate(o, parsed, dialect);
+                valuesList.add(values);
+            }
+            return valuesList;
+        };
+
+        final int batchSize = 500;
+        try {
+            return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
+        } catch (Exception e) {
+            throw ExceptionTranslator.onRollback(clz, e, logger);
+        }
     }
 
     @Override
@@ -256,6 +287,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         SqliLoggerProxy.debug(clz, sql);
         return this.jdbcHelper.queryForPlainValueList(Long.class,sql,list,this.dialect).get(0);
     }
+
 
 
     /**
@@ -422,6 +454,41 @@ public final class DaoImpl implements Dao, SqlTemplate {
         SqliLoggerProxy.debug(clz, sql);
 
         return ! this.jdbcHelper.queryForPlainValueList(Long.class, sql, valueList,this.dialect).isEmpty();
+    }
+
+    @Override
+    public boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList) {
+
+        if (propValueList.isEmpty())
+            return false;
+
+        String createSql = getSql(clz, SqlInit.CREATE);
+
+        final String sql = this.dialect.createOrReplaceSql(createSql);
+
+        List<String> eles = CREATE_ELE_MAP.get(clz);
+
+        SqliLoggerProxy.debug(clz, sql);
+
+        JdbcHelper.BatchObjectValues batchObjectValues =  () -> {
+            List<Collection<Object>> valuesList = new ArrayList<>();
+            for (Map map : propValueList) {
+                Collection<Object> values = new ArrayList<>();
+                for (String ele : eles) {
+                    Object value = map.get(ele);
+                    values.add(value);
+                }
+                valuesList.add(values);
+            }
+            return valuesList;
+        };
+
+        final int batchSize = 500;
+        try {
+            return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
+        } catch (Exception e) {
+            throw ExceptionTranslator.onRollback(clz, e, logger);
+        }
     }
 
     private boolean update(String sql, Collection<Object> list, Dialect dialect, JdbcHelper jdbcHelper) {

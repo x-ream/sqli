@@ -26,6 +26,8 @@ import java.util.Map;
  */
 public interface NativeSupport {
 
+     boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList);
+
      boolean execute(String sql, Object...objs);
 
      List<Map<String,Object>> list(String sql, List<Object> conditionList);

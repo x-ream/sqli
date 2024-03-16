@@ -24,14 +24,12 @@ import io.xream.sqli.builder.KV;
 import io.xream.sqli.builder.Q;
 import io.xream.sqli.builder.Qr;
 import io.xream.sqli.core.*;
-import io.xream.sqli.exception.QueryException;
 import io.xream.sqli.page.Page;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
 import io.xream.sqli.repository.dao.Dao;
 import io.xream.sqli.spi.L2CacheResolver;
 import io.xream.sqli.util.ParserUtil;
-import io.xream.sqli.util.SqliExceptionUtil;
 import io.xream.sqli.util.SqliLoggerProxy;
 
 import java.util.ArrayList;
@@ -106,6 +104,7 @@ public final class CacheableRepository implements Repository, NativeSupport {
         }
         return flag;
     }
+
 
     @Override
     public <T> boolean refresh(T t) {
@@ -244,6 +243,11 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
     }
 
+
+    @Override
+    public boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList) {
+        return dao.createOrReplaceBatch(clz, propValueList);
+    }
 
     public boolean execute(String sql, Object... objs) {
         return dao.execute(sql, objs);

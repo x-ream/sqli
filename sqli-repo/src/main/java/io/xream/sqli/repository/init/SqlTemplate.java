@@ -21,6 +21,7 @@ package io.xream.sqli.repository.init;
 import io.xream.sqli.dialect.Dialect;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,8 @@ import java.util.Map;
 public interface SqlTemplate {
 
     Map<Class, Map<String, String>> SQLS_MAP = new HashMap<>();
+    Map<Class, List<String>> CREATE_ELE_MAP = new HashMap<>();
+
 
     String CREATE = "CREATE";
     String REMOVE = "REMOVE";

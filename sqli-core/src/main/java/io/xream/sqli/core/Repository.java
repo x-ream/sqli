@@ -68,4 +68,5 @@ public interface Repository extends QueryForCache {
 	void findToHandle(Q.X xq, RowHandler<Map<String, Object>> handler);
 
 	boolean exists(Q q);
+
 }

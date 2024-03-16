@@ -44,13 +44,11 @@ public interface BaseRepository<T> extends Typed<T> {
     boolean create(T obj);
 
     /**
-     * replace: clear all the value of the row, and insert the new value </>
+     * replace: REPLACE INTO, clear all the value of the row, and insert the new value </>
      * is not refreshOrCreate </>
      * x7 will not support refreshOrCreate, coding: query at first, then refresh of create <br>
      */
     boolean createOrReplace(T obj);
-
-//    boolean createOrReplaceBatch(List<T> objList);
 
     boolean refresh(Qr<T> qr);
 
@@ -65,13 +63,12 @@ public interface BaseRepository<T> extends Typed<T> {
     boolean remove(long id);
 
     boolean removeIn(List<? extends Object> idList);
-
     /**
      *
      * caution:  sometimes, should not use the api </>
      *
      */
-    boolean removeRefreshCreate(RemoveRefreshCreate<T> RemoveRefreshCreate_of);
+    boolean removeRefreshCreate(RemoveRefreshCreate<T> removeRefreshCreate_of);
     /**
      * @param keyOne
      */
@@ -79,30 +76,12 @@ public interface BaseRepository<T> extends Typed<T> {
 
     T get(String keyOne);
 
-    /**
-     * LOAD
-     *
-     */
-    List<T> list();
-
-    /**
-     * 根据对象查询
-     *
-     * @param conditionObj
-     */
-    @Deprecated
-    List<T> list(T conditionObj);
-
-    @Deprecated
-    T getOne(T conditionObj);
-
     T getOne(Q<T> q);
     /**
      * in API
      *
      */
     List<T> in(String property, List<? extends Object> inList);
-
     /**
      * Standard query pageable API
      *

@@ -102,6 +102,20 @@ public final class DefaultSqlInit implements SqlInit {
         return sql;
     }
 
+    @Override
+    public List<String> getCreatEle(Class clz) {
+
+        List<BeanElement> list = Parser.get(clz).getBeanElementList();
+
+        List<String> tempList = new ArrayList<>();
+        for (BeanElement p : list) {
+            tempList.add(p.getProperty());
+        }
+
+        CREATE_ELE_MAP.put(clz, tempList);
+        return tempList;
+    }
+
     public String getOneSql(Class clz) {
         Parsed parsed = Parser.get(clz);
         String space = " ";
@@ -178,5 +192,6 @@ public final class DefaultSqlInit implements SqlInit {
 
         return sql;
     }
+
 
 }

@@ -18,6 +18,8 @@
  */
 package io.xream.sqli.repository.init;
 
+import java.util.List;
+
 /**
  * @author Sim
  */
@@ -33,6 +35,8 @@ public interface SqlInit extends SqlTemplate{
 
     String getRemoveInSql(Class clz);
 
+    List<String> getCreatEle(Class clz);
+
     default void tryToParse(Class clz) {
 
         getRemoveSql(clz);
@@ -40,6 +44,7 @@ public interface SqlInit extends SqlTemplate{
         getOneSql(clz);
         getLoadSql(clz);
         getCreateSql(clz);
+        getCreatEle(clz);
 
     }
 

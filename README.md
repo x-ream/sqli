@@ -68,8 +68,8 @@
             3. list(q) //标准拼接查询，返回对象形式记录，不返回分页对象
             4. get(Id) //根据主键查询记录
             5. getOne(q) //数据库只有一条记录时，就返回那条记录
-            6. list() //无条件查全表, 几乎没使用场景
-            7. creaet(Object) //插入一条, 不支持返回自增键, 框架自带ID生成器
+            6. creaet(Object) //插入一条, 不支持返回自增键, 框架自带ID生成器
+            7. createOrReplace(Object) //插入或替换一条
             8. createBatch(List<Object>) //批量插入
             9. refresh( qr) //根据主键更新
             10. refreshUnSafe( qr)//不根据主键更新
@@ -194,10 +194,9 @@
             5. getOne(q)
         
     不支持二级缓存的BaseRepository, RepositoryX的API:
-            1. list()
-            2. findX(xq)
-            3. listX(xq)
-            4. listPlainValue(xq)
+            1. findX(xq)
+            2. listX(xq)
+            3. listPlainValue(xq)
         
     以上设计意味着，如果in和list查询返回记录条数超过20条, 二级缓存
     会失去高速响应的效果，请务必关闭二级缓存. 

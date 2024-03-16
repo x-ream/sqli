@@ -244,11 +244,6 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
-    public List<T> list() {
-        return repository.list(QB.of(this.clzz).build());
-    }
-
-    @Override
     public T getOne(Q<T> q) {
         if (q == null)
             return null;
