@@ -26,6 +26,7 @@ import io.xream.sqli.core.Typed;
 import io.xream.sqli.page.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * API
@@ -52,6 +53,7 @@ public interface BaseRepository<T> extends Typed<T> {
 
     boolean refresh(Qr<T> qr);
 
+    boolean createOrReplaceBatch(List<Map<String,Object>> propValueList);
     /**
      *
      *  qr without keyOne

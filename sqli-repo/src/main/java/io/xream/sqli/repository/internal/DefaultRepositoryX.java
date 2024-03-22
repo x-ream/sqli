@@ -124,6 +124,10 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
         return repository.createOrReplace(obj);
     }
 
+    public boolean createOrReplaceBatch(List<Map<String,Object>> propValueList) {
+        return repository.createOrReplaceBatch(clzz, propValueList);
+    }
+
     @Override
     public boolean refresh(Qr<T> qr) {
 

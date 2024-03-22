@@ -54,18 +54,6 @@ public final class DefaultNativeRepository implements NativeRepository, DynamicD
 	}
 
 	@Override
-	public boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList) {
-		try {
-			return nativeSupport.createOrReplaceBatch(clz, propValueList);
-		}catch (Exception e) {
-			SqliExceptionUtil.throwRuntimeExceptionFirst(e);
-			throw new PersistenceException(e);
-		}finally {
-			removeDialectKey();
-		}
-	}
-
-	@Override
 	public boolean execute(String sql, Object...objs){
 		try {
 			return nativeSupport.execute(sql, objs);

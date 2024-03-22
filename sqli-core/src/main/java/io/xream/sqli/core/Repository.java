@@ -38,6 +38,7 @@ public interface Repository extends QueryForCache {
 
 	boolean create(Object obj);
 	boolean createOrReplace(Object obj);
+	boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList);
 
 	<T> boolean refresh(Qr<T> qr);
 

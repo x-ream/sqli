@@ -243,7 +243,6 @@ public final class CacheableRepository implements Repository, NativeSupport {
 
     }
 
-
     @Override
     public boolean createOrReplaceBatch(Class clz, List<Map<String,Object>> propValueList) {
         return dao.createOrReplaceBatch(clz, propValueList);
