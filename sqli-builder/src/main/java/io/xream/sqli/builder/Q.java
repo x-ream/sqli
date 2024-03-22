@@ -46,6 +46,7 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 	private int page;
 	private int rows;
 	private long last;
+	private String lastSqlSegment;
 	private Object routeKey;
 	private List<Sort> sortList;
 	private List<KV> fixedSortList;
@@ -147,6 +148,14 @@ public class Q<T> implements Mappable, CondQ, Paged, Routable {
 
 	public void setLast(long last) {
 		this.last = last;
+	}
+
+	public String getLastSqlSegment() {
+		return lastSqlSegment;
+	}
+
+	public void setLastSqlSegment(String lastSqlSegment) {
+		this.lastSqlSegment = lastSqlSegment;
 	}
 
 	@Override

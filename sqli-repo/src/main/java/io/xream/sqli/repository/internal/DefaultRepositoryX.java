@@ -322,6 +322,15 @@ public abstract class DefaultRepositoryX<T> implements BaseRepository<T>, Reposi
     }
 
     @Override
+    public <K> K getPlainValue(Class<K> clzz, Q.X xq){
+        this.setDefaultClzz(xq);
+        List<K> list = repository.listPlainValue(clzz,xq);
+        if (list.isEmpty())
+            return null;
+        return list.get(0);
+    }
+
+    @Override
     public void findToHandleX(Q.X xq, RowHandler<Map<String,Object>> handler) {
         this.setDefaultClzz(xq);
         this.repository.findToHandle(xq,handler);

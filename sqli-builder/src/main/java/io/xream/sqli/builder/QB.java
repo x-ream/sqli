@@ -231,6 +231,11 @@ public class QB<T> extends CondBuilder {
         return (QB) super.or();
     }
 
+    public QB last(String lastSqlSegment) {
+        this.q.setLastSqlSegment(lastSqlSegment);
+        return this;
+    }
+
 
     public void clear() {
         this.q = null;
@@ -592,6 +597,11 @@ public class QB<T> extends CondBuilder {
 
             super.paged(pageable);
 
+            return this;
+        }
+
+        public X last(String lastSqlSegment) {
+            super.last(lastSqlSegment);
             return this;
         }
 

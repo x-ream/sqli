@@ -27,6 +27,7 @@ import io.xream.sqli.dialect.Dialect;
 import io.xream.sqli.parser.BeanElement;
 import io.xream.sqli.parser.Parsed;
 import io.xream.sqli.parser.Parser;
+import io.xream.sqli.util.SqliStringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +127,9 @@ public final class SqlBuilder implements CondQToSql {
         });
 
         String sql = sqlBuilt.getSql().toString();
+        if (SqliStringUtil.isNotNull(q.getLastSqlSegment())) {
+            sql = sql + " " + q.getLastSqlSegment();
+        }
 
         int page = q.getPage();
         int rows = q.getRows();

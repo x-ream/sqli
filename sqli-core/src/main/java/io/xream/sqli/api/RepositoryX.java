@@ -37,6 +37,7 @@ public interface RepositoryX {
 
     <K> List<K> listPlainValue(Class<K> clzz, Q.X xq);
 
+    <K> K getPlainValue(Class<K> clzz, Q.X xq);
     /**
      * like stream, fetchSize=50, the api not fast, to avoid OOM when scheduling
      * @param xq
