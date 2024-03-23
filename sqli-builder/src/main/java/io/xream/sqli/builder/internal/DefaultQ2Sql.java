@@ -295,7 +295,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             for (SqlBuilt sub : subsAndValueBinding.getSubList()) {
                 int start = sb.sbSource.indexOf(SqlScript.SUB);
                 sb.sbSource.replace(start, start + SqlScript.SUB.length(),
-                        SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
+                        SqlScript.LEFT_PARENTTHESIS + sub.getSb().toString() + SqlScript.RIGHT_PARENTTHESIS
                 );
             }
 
@@ -310,7 +310,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
         StringBuilder sqlSb = new StringBuilder();
         sqlSb.append(sb.sbResult).append(sb.sbSource).append(sb.sbCondition);
 
-        sqlBuilt.setSql(sqlSb);
+        sqlBuilt.setSb(sqlSb);
     }
 
     private void sqlArr1(boolean isSub, boolean isTotalRowsIgnored, SqlBuilt sqlBuilt, SqlSubsAndValueBinding subsAndValueBinding, SqlSth sb) {
@@ -323,7 +323,7 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
             for (SqlBuilt sub : subsAndValueBinding.getSubList()) {
                 int start = sqlSb.indexOf(SqlScript.SUB);
                 sqlSb.replace(start, start + SqlScript.SUB.length(),
-                        SqlScript.LEFT_PARENTTHESIS + sub.getSql().toString() + SqlScript.RIGHT_PARENTTHESIS
+                        SqlScript.LEFT_PARENTTHESIS + sub.getSb().toString() + SqlScript.RIGHT_PARENTTHESIS
                 );
             }
 
@@ -341,14 +341,14 @@ public final class DefaultQ2Sql implements Q2Sql, ResultKeyGenerator, SourceScri
 
             int start = sqlSb.indexOf(SqlScript.WITH_PLACE);
             sqlSb.replace(start, start + SqlScript.WITH_PLACE.length(),sb.sbResult.toString()).append(sb.sbCondition);
-            sqlBuilt.setSql(sqlSb);
+            sqlBuilt.setSb(sqlSb);
             return;
         }
 
         StringBuilder sqlSb = new StringBuilder();
         sqlSb.append(sb.with).append(sb.sbResult).append(sb.sbSource).append(sb.sbCondition);
 
-        sqlBuilt.setSql(sqlSb);
+        sqlBuilt.setSb(sqlSb);
     }
 
 

@@ -90,7 +90,7 @@ public class SqlGenerator {
 
             sb.append("-- Test trace: " + kv.getK()).append("\r\n");
             sb.append("-- Test value: " + valueList).append("\r\n");
-            sb.append(sqlBuilt.getSql()).append(";").append("\r\n");
+            sb.append(sqlBuilt.getSb()).append(";").append("\r\n");
             sb.append("-- -------------------------------------------").append("\r\n").append("\r\n");
         }
 

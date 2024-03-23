@@ -78,7 +78,7 @@ public final class TemporaryDaoImpl implements TemporaryDao{
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList,xq, q2Sql, dialect);
-        StringBuilder fromSqlSb = sqlBuilt.getSql();
+        StringBuilder fromSqlSb = sqlBuilt.getSb();
 
         Parsed parsed = Parser.get(clzz);
 

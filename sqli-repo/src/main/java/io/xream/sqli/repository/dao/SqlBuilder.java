@@ -126,9 +126,9 @@ public final class SqlBuilder implements CondQToSql {
             }
         });
 
-        StringBuilder sqlBuilder = sqlBuilt.getSql();
+        StringBuilder sb = sqlBuilt.getSb();
         if (SqliStringUtil.isNotNull(q.getLastSqlSegment())) {
-            sqlBuilder.append(SPACE).append(q.getLastSqlSegment());
+            sb.append(SPACE).append(q.getLastSqlSegment());
         }
 
         int page = q.getPage();
@@ -137,11 +137,11 @@ public final class SqlBuilder implements CondQToSql {
         int start = (page - 1) * rows;
         long last = q.getLast();
 
-        sqlBuilder = dialect.buildPageSql(sqlBuilder, start, rows,last);
+        sb = dialect.buildPageSql(sb, start, rows,last);
 
 //        StringBuilder sb = new StringBuilder();
 //        sb.append(sql);
-        sqlBuilt.setSql(sqlBuilder);
+        sqlBuilt.setSb(sb);
         ObjectDataConverter.log(q, valueList);
 
         return sqlBuilt;

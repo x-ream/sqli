@@ -24,7 +24,7 @@ package io.xream.sqli.builder.internal;
 public final class SqlBuilt {
 
     private String countSql;
-    private StringBuilder sql;
+    private StringBuilder sb;
     private boolean isWith;
 
     public String getCountSql() {
@@ -35,12 +35,12 @@ public final class SqlBuilt {
         this.countSql = countSql;
     }
 
-    public StringBuilder getSql() {
-        return sql;
+    public StringBuilder getSb() {
+        return sb;
     }
 
-    public void setSql(StringBuilder sql) {
-        this.sql = sql;
+    public void setSb(StringBuilder sb) {
+        this.sb = sb;
     }
 
     public boolean isWith() {

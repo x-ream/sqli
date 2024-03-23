@@ -217,7 +217,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         Class clz = q.getClzz();
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
         SqliLoggerProxy.debug(clz, sql);
 
         List<T> list = this.jdbcHelper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
@@ -231,7 +231,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         Class clz = q.getClzz();
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
 
         SqliLoggerProxy.debug(clz, sql);
 
@@ -331,7 +331,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, xq, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
         Class clz = xq.getClzz();
 
         SqliLoggerProxy.debug(xq.getRepositoryClzz(), sql);
@@ -348,7 +348,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, xq, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
 
         SqliLoggerProxy.debug(xq.getRepositoryClzz(), sql);
 
@@ -361,7 +361,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
     public <K> List<K> listPlainValue(Class<K> clzz, Q.X xq){
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, xq, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
 
         SqliLoggerProxy.debug(xq.getRepositoryClzz(), sql);
 
@@ -374,7 +374,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         Class clz = q.getClzz();
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
         SqliLoggerProxy.debug(clz, sql);
 
         List<T> list = this.jdbcHelper.queryForList(sql, valueList, Parser.get(clz), this.dialect);
@@ -391,7 +391,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, xq, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
 
         SqliLoggerProxy.debug(xq.getRepositoryClzz(), sql);
 
@@ -403,7 +403,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
 
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
         Class clz = q.getClzz();
 
         SqliLoggerProxy.debug(clz, sql);
@@ -417,7 +417,7 @@ public final class DaoImpl implements Dao, SqlTemplate {
         Class clz = q.getClzz();
         List<Object> valueList = new ArrayList<>();
         SqlBuilt sqlBuilt = sqlBuilder.buildQueryByQ(valueList, q, q2Sql, dialect);
-        String sql = sqlBuilt.getSql().toString();
+        String sql = sqlBuilt.getSb().toString();
         sql = sql.replace("*","1");
         sql += " LIMIT 1";
         SqliLoggerProxy.debug(clz, sql);
