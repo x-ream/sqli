@@ -44,7 +44,6 @@ public interface Dao extends QueryForCache {
 
 	boolean createBatch(List<? extends Object> objList);
 
-	<T> boolean createOrReplaceBatch(List<T> objList);
 	<T> boolean remove(KeyOne<T> keyOne);
 
 	<T> boolean removeIn(Keys<T> keys);

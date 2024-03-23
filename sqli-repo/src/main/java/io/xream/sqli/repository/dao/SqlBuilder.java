@@ -48,11 +48,11 @@ public final class SqlBuilder implements CondQToSql {
         return instance;
     }
 
-    protected String buildPageSql(String sql, int page, int rows, Dialect dialect) {
-        int start = (page - 1) * rows;
-
-        return dialect.buildPageSql(sql, start, rows,0);
-    }
+//    protected String buildPageSql(String sql, int page, int rows, Dialect dialect) {
+//        int start = (page - 1) * rows;
+//
+//        return dialect.buildPageSql(sql, start, rows,0);
+//    }
 
     /**
      * 拼接SQL
@@ -126,9 +126,9 @@ public final class SqlBuilder implements CondQToSql {
             }
         });
 
-        String sql = sqlBuilt.getSql().toString();
+        StringBuilder sqlBuilder = sqlBuilt.getSql();
         if (SqliStringUtil.isNotNull(q.getLastSqlSegment())) {
-            sql = sql + " " + q.getLastSqlSegment();
+            sqlBuilder.append(SPACE).append(q.getLastSqlSegment());
         }
 
         int page = q.getPage();
@@ -137,11 +137,11 @@ public final class SqlBuilder implements CondQToSql {
         int start = (page - 1) * rows;
         long last = q.getLast();
 
-        sql = dialect.buildPageSql(sql, start, rows,last);
+        sqlBuilder = dialect.buildPageSql(sqlBuilder, start, rows,last);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(sql);
-        sqlBuilt.setSql(sb);
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(sql);
+        sqlBuilt.setSql(sqlBuilder);
         ObjectDataConverter.log(q, valueList);
 
         return sqlBuilt;

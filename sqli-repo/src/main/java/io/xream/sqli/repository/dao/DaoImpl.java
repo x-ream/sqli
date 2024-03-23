@@ -115,37 +115,6 @@ public final class DaoImpl implements Dao, SqlTemplate {
     }
 
     @Override
-    public <T> boolean createOrReplaceBatch(List<T> objList) {
-
-        if (objList.isEmpty())
-            return false;
-        Object obj = objList.get(0);
-        Class clz = obj.getClass();
-        String createSql = getSql(clz, SqlInit.CREATE);
-
-        final String sql = this.dialect.createOrReplaceSql(createSql);
-
-        SqliLoggerProxy.debug(clz, sql);
-
-        Parsed parsed = Parser.get(clz);
-        JdbcHelper.BatchObjectValues batchObjectValues =  () -> {
-            List<Collection<Object>> valuesList = new ArrayList<>();
-            for (Object o : objList) {
-                Collection<Object> values= ObjectDataConverter.objectToListForCreate(o, parsed, dialect);
-                valuesList.add(values);
-            }
-            return valuesList;
-        };
-
-        final int batchSize = 500;
-        try {
-            return this.jdbcHelper.createBatch(clz, sql, batchObjectValues, batchSize, this.dialect);
-        } catch (Exception e) {
-            throw ExceptionTranslator.onRollback(clz, e, logger);
-        }
-    }
-
-    @Override
     public <T> boolean remove(KeyOne<T> keyOne) {
 
         Class clz = keyOne.getClzz();

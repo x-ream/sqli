@@ -64,13 +64,16 @@ public class OracleDialect implements Dialect {
         return "oracle";
     }
     @Override
-    public String buildPageSql(String origin, long start, long rows,long last) {
+    public StringBuilder buildPageSql(StringBuilder sb, long start, long rows,long last) {
 
-        if (rows > 0)
-            return ORACLE_PAGINATION.replace(ORACLE_PAGINATION_REGX_END, String.valueOf(start + rows))
+        if (rows > 0) {
+            String origin = sb.toString();
+            ORACLE_PAGINATION.replace(ORACLE_PAGINATION_REGX_END, String.valueOf(start + rows))
                     .replace(ORACLE_PAGINATION_REGX_BEGIN, String.valueOf(start)).replace(ORACLE_PAGINATION_REGX_SQL, origin);
-        return origin;
-
+            sb = new StringBuilder();
+            sb.append(origin);
+        }
+        return sb;
     }
 
 

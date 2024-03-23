@@ -21,7 +21,10 @@ package io.xream.sqli.repository.internal;
 
 import io.xream.sqli.api.BaseRepository;
 import io.xream.sqli.api.RepositoryX;
-import io.xream.sqli.builder.*;
+import io.xream.sqli.builder.In;
+import io.xream.sqli.builder.Q;
+import io.xream.sqli.builder.Qr;
+import io.xream.sqli.builder.RemoveRefreshCreate;
 import io.xream.sqli.core.*;
 import io.xream.sqli.exception.PersistenceException;
 import io.xream.sqli.exception.QSyntaxException;

@@ -45,17 +45,15 @@ public class MySqlDialect implements Dialect {
     }
 
     @Override
-    public String buildPageSql(String origin, long start, long rows,long last) {
+    public StringBuilder buildPageSql(StringBuilder sb, long start, long rows,long last) {
 
         if (rows == 0)
-            return origin;
-        StringBuilder sb = new StringBuilder();
-        sb.append(origin);
+            return sb;
         sb.append(SqlScript.LIMIT).append(rows);
         if (last == 0 && start > 0){
             sb.append(SqlScript.OFFSET).append(start);
         }
-        return sb.toString();
+        return sb;
     }
 
 
