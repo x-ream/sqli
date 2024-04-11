@@ -18,24 +18,36 @@
  */
 package io.xream.sqli.builder;
 
+import java.util.Map;
+
 /**
  * @author Sim
  */
 public enum JoinType {
-    NON_JOIN(","),
-    JOIN("JOIN"),
-    INNER("INNER JOIN"),
-    OUTER("OUTER JOIN"),
-    LEFT("LEFT JOIN"),
-    RIGHT("RIGHT JOIN"),
-    COMMA(",");
+    NON_JOIN,
+    JOIN,
+    INNER,
+    OUTER,
+    LEFT,
+    RIGHT,
+    COMMA;
 
-    private String sql;
-    private JoinType(String sql){
-        this.sql = sql;
-    }
+//    private String sql;
+//    private JoinType(String sql){ //UNWORKABLE IN JAVA 17+
+//        this.sql = sql;
+//    }
+
+    private static Map<JoinType, String> config = Map.of(
+            NON_JOIN,",",
+            JOIN,"JOIN",
+            INNER,"INNER JOIN",
+            OUTER,"OUTER JOIN",
+            LEFT,"LEFT JOIN",
+            RIGHT,"RIGHT JOIN",
+            COMMA,","
+            );
 
     public String sql(){
-        return this.sql;
+        return config.get(this);
     }
 }
