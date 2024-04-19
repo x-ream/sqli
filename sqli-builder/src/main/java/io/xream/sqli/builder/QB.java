@@ -147,91 +147,91 @@ public class QB<T> extends CondBuilder {
         return this.q;
     }
 
-    public QB eq(String key, Object value) {
-        return (QB) super.eq(key, value);
+    public QB<T> eq(String key, Object value) {
+        return (QB<T>) super.eq(key, value);
     }
 
-    public QB gt(String key, Object value) {
-        return (QB) super.gt(key, value);
+    public QB<T> gt(String key, Object value) {
+        return (QB<T>) super.gt(key, value);
     }
 
-    public QB gte(String key, Object value) {
-        return (QB) super.gte(key, value);
+    public QB<T> gte(String key, Object value) {
+        return (QB<T>) super.gte(key, value);
     }
 
-    public QB lt(String key, Object value) {
-        return (QB) super.lt(key, value);
+    public QB<T> lt(String key, Object value) {
+        return (QB<T>) super.lt(key, value);
     }
 
-    public QB lte(String key, Object value) {
-        return (QB) super.lte(key, value);
+    public QB<T> lte(String key, Object value) {
+        return (QB<T>) super.lte(key, value);
     }
 
-    public QB ne(String property, Object value) {
-        return (QB) super.ne(property, value);
+    public QB<T> ne(String property, Object value) {
+        return (QB<T>) super.ne(property, value);
     }
 
-    public QB like(String property, String value) {
-        return (QB) super.like(property, value);
+    public QB<T> like(String property, String value) {
+        return (QB<T>) super.like(property, value);
     }
 
-    public QB likeLeft(String property, String value) {
-        return (QB) super.likeLeft(property, value);
+    public QB<T> likeLeft(String property, String value) {
+        return (QB<T>) super.likeLeft(property, value);
     }
 
-    public QB notLike(String property, String value) {
-        return (QB) super.notLike(property, value);
+    public QB<T> notLike(String property, String value) {
+        return (QB<T>) super.notLike(property, value);
     }
 
-    public QB in(String property, List list) {
-        return (QB) super.in(property, list);
+    public QB<T> in(String property, List list) {
+        return (QB<T>) super.in(property, list);
     }
 
-    public QB inRequired(String property, List list) {
-        return (QB) super.inRequired(property, list);
+    public QB<T> inRequired(String property, List list) {
+        return (QB<T>) super.inRequired(property, list);
     }
 
-    public QB nin(String property, List list) {
-        return (QB) super.nin(property, list);
+    public QB<T> nin(String property, List list) {
+        return (QB<T>) super.nin(property, list);
     }
 
-    public QB nonNull(String property) {
-        return (QB) super.nonNull(property);
+    public QB<T> nonNull(String property) {
+        return (QB<T>) super.nonNull(property);
     }
 
-    public QB isNull(String property) {
-        return (QB) super.isNull(property);
+    public QB<T> isNull(String property) {
+        return (QB<T>) super.isNull(property);
     }
 
-    public QB x(String sqlSegment) {
-        return (QB) super.x(sqlSegment);
+    public QB<T> x(String sqlSegment) {
+        return (QB<T>) super.x(sqlSegment);
     }
 
-    public QB x(String sqlSegment, Object... values) {
-        return (QB) super.x(sqlSegment, values);
+    public QB<T> x(String sqlSegment, Object... values) {
+        return (QB<T>) super.x(sqlSegment, values);
     }
 
-    public QB and(SubCond sub) {
-        return (QB) super.and(sub);
+    public QB<T> and(SubCond sub) {
+        return (QB<T>) super.and(sub);
     }
 
-    public QB or(SubCond sub) {
-        return (QB) super.or(sub);
+    public QB<T> or(SubCond sub) {
+        return (QB<T>) super.or(sub);
     }
 
-    public QB bool(Bool cond, Then then) {
-        return (QB) super.bool(cond, then);
+    public QB<T> bool(Bool cond, Then then) {
+        return (QB<T>) super.bool(cond, then);
     }
 
-    public QB any(Any any) {
-        return (QB)super.any(any);
+    public QB<T> any(Any any) {
+        return (QB<T>)super.any(any);
     }
 
-    public QB or() {
-        return (QB) super.or();
+    public QB<T> or() {
+        return (QB<T>) super.or();
     }
 
-    public QB last(String lastSqlSegment) {
+    public QB<T> last(String lastSqlSegment) {
         this.q.setLastSqlSegment(lastSqlSegment);
         return this;
     }
