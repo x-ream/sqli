@@ -26,7 +26,7 @@
 		<sqli.annotation.version>1.0.0</sqli.annotation.version>
 		<sqli.version>2.1.9</sqli.version>
 		<jackson.version>2.17.0</jackson.version>
-		<sl4j.version>1.7.30</sl4j.version>
+		<slf4j.version>2.0.13</slf4j.version>
 	</properties>
 
 	<scm>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${sl4j.version}</version>
+			<version>${slf4j.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
