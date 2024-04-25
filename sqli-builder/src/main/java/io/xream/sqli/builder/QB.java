@@ -147,24 +147,24 @@ public class QB<T> extends CondBuilder {
         return this.q;
     }
 
-    public QB<T> eq(String key, Object value) {
-        return (QB<T>) super.eq(key, value);
+    public QB<T> eq(String property, Object value) {
+        return (QB<T>) super.eq(property, value);
     }
 
-    public QB<T> gt(String key, Object value) {
-        return (QB<T>) super.gt(key, value);
+    public QB<T> gt(String property, Object value) {
+        return (QB<T>) super.gt(property, value);
     }
 
-    public QB<T> gte(String key, Object value) {
-        return (QB<T>) super.gte(key, value);
+    public QB<T> gte(String property, Object value) {
+        return (QB<T>) super.gte(property, value);
     }
 
-    public QB<T> lt(String key, Object value) {
-        return (QB<T>) super.lt(key, value);
+    public QB<T> lt(String property, Object value) {
+        return (QB<T>) super.lt(property, value);
     }
 
-    public QB<T> lte(String key, Object value) {
-        return (QB<T>) super.lte(key, value);
+    public QB<T> lte(String property, Object value) {
+        return (QB<T>) super.lte(property, value);
     }
 
     public QB<T> ne(String property, Object value) {
@@ -504,24 +504,24 @@ public class QB<T> extends CondBuilder {
         }
 
 
-        public X eq(String key, Object value) {
-            return (X) super.eq(key, value);
+        public X eq(String property, Object value) {
+            return (X) super.eq(property, value);
         }
 
-        public X gt(String key, Object value) {
-            return (X) super.gt(key, value);
+        public X gt(String property, Object value) {
+            return (X) super.gt(property, value);
         }
 
-        public X gte(String key, Object value) {
-            return (X) super.gte(key, value);
+        public X gte(String property, Object value) {
+            return (X) super.gte(property, value);
         }
 
-        public X lt(String key, Object value) {
-            return (X) super.lt(key, value);
+        public X lt(String property, Object value) {
+            return (X) super.lt(property, value);
         }
 
-        public X lte(String key, Object value) {
-            return (X) super.lte(key, value);
+        public X lte(String property, Object value) {
+            return (X) super.lte(property, value);
         }
 
         public X ne(String property, Object value) {
