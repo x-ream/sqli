@@ -142,63 +142,78 @@ public class QB<T> extends CondBuilder {
         return this.q;
     }
 
+    @Override
     public Q<T> build() {
         this.q.setAbort(isAbort);
         return this.q;
     }
 
+    @Override
     public QB<T> eq(String property, Object value) {
         return (QB<T>) super.eq(property, value);
     }
 
+    @Override
     public QB<T> gt(String property, Object value) {
         return (QB<T>) super.gt(property, value);
     }
 
+    @Override
     public QB<T> gte(String property, Object value) {
         return (QB<T>) super.gte(property, value);
     }
 
+    @Override
     public QB<T> lt(String property, Object value) {
         return (QB<T>) super.lt(property, value);
     }
 
+    @Override
     public QB<T> lte(String property, Object value) {
         return (QB<T>) super.lte(property, value);
     }
 
+    @Override
     public QB<T> ne(String property, Object value) {
         return (QB<T>) super.ne(property, value);
     }
 
+    @Override
     public QB<T> like(String property, String value) {
         return (QB<T>) super.like(property, value);
     }
 
+    @Override
     public QB<T> likeLeft(String property, String value) {
         return (QB<T>) super.likeLeft(property, value);
     }
 
+    @Override
     public QB<T> notLike(String property, String value) {
         return (QB<T>) super.notLike(property, value);
     }
 
+    @Override
     public QB<T> in(String property, List list) {
         return (QB<T>) super.in(property, list);
     }
 
+    @Override
     public QB<T> inRequired(String property, List list) {
         return (QB<T>) super.inRequired(property, list);
     }
 
+    @Override
     public QB<T> nin(String property, List list) {
         return (QB<T>) super.nin(property, list);
     }
 
+    @Override
     public QB<T> nonNull(String property) {
         return (QB<T>) super.nonNull(property);
     }
 
+    @Override
     public QB<T> isNull(String property) {
         return (QB<T>) super.isNull(property);
     }
@@ -207,26 +222,32 @@ public class QB<T> extends CondBuilder {
         return (QB<T>) super.x(sqlSegment);
     }
 
+    @Override
     public QB<T> x(String sqlSegment, Object... values) {
         return (QB<T>) super.x(sqlSegment, values);
     }
 
+    @Override
     public QB<T> and(SubCond sub) {
         return (QB<T>) super.and(sub);
     }
 
+    @Override
     public QB<T> or(SubCond sub) {
         return (QB<T>) super.or(sub);
     }
 
+    @Override
     public QB<T> bool(Bool cond, Then then) {
         return (QB<T>) super.bool(cond, then);
     }
 
+    @Override
     public QB<T> any(Any any) {
         return (QB<T>)super.any(any);
     }
 
+    @Override
     public QB<T> or() {
         return (QB<T>) super.or();
     }
@@ -451,6 +472,7 @@ public class QB<T> extends CondBuilder {
             return this;
         }
 
+
         public X groupBy(String property) {
             get().setGroupBy(property);
             return this;
@@ -504,95 +526,118 @@ public class QB<T> extends CondBuilder {
         }
 
 
+        @Override
         public X eq(String property, Object value) {
             return (X) super.eq(property, value);
         }
 
+        @Override
         public X gt(String property, Object value) {
             return (X) super.gt(property, value);
         }
 
+        @Override
         public X gte(String property, Object value) {
             return (X) super.gte(property, value);
         }
 
+        @Override
         public X lt(String property, Object value) {
             return (X) super.lt(property, value);
         }
 
+        @Override
         public X lte(String property, Object value) {
             return (X) super.lte(property, value);
         }
 
+        @Override
         public X ne(String property, Object value) {
             return (X) super.ne(property, value);
         }
 
+        @Override
         public X like(String property, String value) {
             return (X) super.like(property, value);
         }
 
+        @Override
         public X likeLeft(String property, String value) {
             return (X) super.likeLeft(property, value);
         }
 
+        @Override
         public X notLike(String property, String value) {
             return (X) super.notLike(property, value);
         }
 
+        @Override
         public X in(String property, List list) {
             return (X) super.in(property, list);
         }
 
+        @Override
         public X inRequired(String property, List list) {
             return (X) super.inRequired(property, list);
         }
 
+        @Override
         public X nin(String property, List list) {
             return (X) super.nin(property, list);
         }
 
+        @Override
         public X nonNull(String property) {
             return (X) super.nonNull(property);
         }
 
+        @Override
         public X isNull(String property) {
             return (X) super.isNull(property);
         }
 
+        @Override
         public X x(String sqlSegment) {
             return (X) super.x(sqlSegment);
         }
 
+        @Override
         public X x(String sqlSegment, Object... values) {
             return (X) super.x(sqlSegment, values);
         }
 
+        @Override
         public X and(SubCond sub) {
             return (X) super.and(sub);
         }
 
+        @Override
         public X or(SubCond sub) {
             return (X) super.or(sub);
         }
 
+        @Override
         public X bool(Bool cond, Then then) {
             return (X) super.bool(cond, then);
         }
 
+        @Override
         public X any(Any any) {
             return (X) super.any(any);
         }
 
 
+        @Override
         public X or() {
             return (X) super.or();
         }
 
+        @Override
         public void clear() {
             super.clear();
         }
 
+        @Override
         public X paged(Pageable pageable) {
 
             super.paged(pageable);
@@ -600,6 +645,7 @@ public class QB<T> extends CondBuilder {
             return this;
         }
 
+        @Override
         public X last(String lastSqlSegment) {
             super.last(lastSqlSegment);
             return this;

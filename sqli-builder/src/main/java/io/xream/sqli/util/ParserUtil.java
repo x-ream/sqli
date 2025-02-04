@@ -457,17 +457,17 @@ public final class ParserUtil {
 
                 }
 
-                String str = "";
+                StringBuilder str = new StringBuilder();
 
                 int size = list.size();
                 for (int i = 0; i < size; i++) {
                     String s = list.get(i);
-                    str += s;
+                    str.append(s);
                     if (i < size - 1) {
-                        str += "_";
+                        str.append("_");
                     }
                 }
-                return str;
+                return str.toString();
             }
 
         } catch (Exception e) {
